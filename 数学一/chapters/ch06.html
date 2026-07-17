@@ -1,0 +1,28 @@
+<section class="chapter-card" id="ch06">
+    <div class="ch-header">
+        <div class="ch-title">第六章：多元函数积分学 <span class="ch-score">| 12分</span></div>
+        <div class="ch-stars star-low">★★</div>
+    </div>
+    <div class="ch-content">
+        <p><span class="section-tag tag-core">🎯 重点掌握：二重积分</span></p>
+        <p><span class="section-tag tag-warn">⚠️ 三重积分、曲线曲面积分建议放弃</span></p>
+        <div class="must-card">
+            <div class="must-label">📖 二重积分（直角坐标）</div>
+            <div class="formula-box">∫∫<sub>D</sub> f(x,y) dσ = ∫<sub>a</sub><sup>b</sup> dx ∫<sub>y₁(x)</sub><sup>y₂(x)</sup> f(x,y) dy</div>
+            <p style="margin-top:6px;font-size:13px;color:#555;">先对 y 积分，再对 x 积分</p>
+        </div>
+        <div class="must-card">
+            <div class="must-label">📖 二重积分（极坐标）</div>
+            <div class="formula-box">∫∫<sub>D</sub> f(x,y) dσ = ∫<sub>α</sub><sup>β</sup> dθ ∫<sub>r₁(θ)</sub><sup>r₂(θ)</sup> f(r cos θ, r sin θ) r dr</div>
+            <p style="margin-top:6px;font-size:13px;color:#555;">适用于圆形、扇形区域，别忘了多乘一个 r</p>
+        </div>
+        <div class="example-card">
+            <div class="example-label">📝 例题：计算二重积分</div>
+            <div class="example-question">计算 ∫∫<sub>D</sub> (x+y) dxdy，其中区域 D：0 ≤ x ≤ 1，0 ≤ y ≤ 1</div>
+            <div class="example-hint">
+                原式 = ∫<sub>0</sub><sup>1</sup>dx ∫<sub>0</sub><sup>1</sup>(x+y)dy = ∫<sub>0</sub><sup>1</sup>[xy + y²/2]<sub>0</sub><sup>1</sup>dx<br>
+                = ∫<sub>0</sub><sup>1</sup>(x + 1/2)dx = [x²/2 + x/2]<sub>0</sub><sup>1</sup> = <strong>1</strong>
+            </div>
+        </div>
+    </div>
+</section>

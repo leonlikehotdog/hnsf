@@ -1,0 +1,36 @@
+<section class="chapter-card" id="ch09">
+    <div class="ch-header">
+        <div class="ch-title">第九章：指令系统 <span class="ch-score">| 7分</span></div>
+        <div class="ch-stars star-high">★★★</div>
+    </div>
+    <div class="ch-content">
+        <p><span class="section-tag tag-core">🎯 核心考点</span></p>
+        <ul>
+            <li>指令格式（操作码、地址码）</li>
+            <li>寻址方式（立即寻址、直接寻址、间接寻址、变址寻址等）</li>
+            <li>CISC vs RISC</li>
+        </ul>
+        <div class="must-card">
+            <div class="must-label">📖 必背：七种寻址方式</div>
+            <table>
+                <thead><tr><th>寻址方式</th><th>有效地址</th><th>大白话</th></tr></thead>
+                <tbody>
+                    <tr><td>立即寻址</td><td>指令直接给出操作数</td><td>5块就是5块</td></tr>
+                    <tr><td>直接寻址</td><td>EA = A（地址码）</td><td>去xxx房间找人</td></tr>
+                    <tr><td>间接寻址</td><td>EA = (A)</td><td>去xxx房间拿纸条，上面写着目的地</td></tr>
+                    <tr><td>寄存器寻址</td><td>操作数在寄存器</td><td>东西就在手上</td></tr>
+                    <tr><td>基址寻址</td><td>EA = BR + A</td><td>从基地出发走A步</td></tr>
+                    <tr><td>变址寻址</td><td>EA = IX + A</td><td>从A出发，走IX步（适合遍历数组）</td></tr>
+                    <tr><td>相对寻址</td><td>EA = PC + A</td><td>当前指令往后跳A步</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="must-card">
+            <div class="must-label">📖 CISC vs RISC</div>
+            <ul>
+                <li><strong>CISC：</strong>指令复杂、长度不固定、微程序控制，代表：x86</li>
+                <li><strong>RISC：</strong>指令精简、长度固定、硬布线控制，代表：ARM</li>
+            </ul>
+        </div>
+    </div>
+</section>

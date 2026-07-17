@@ -1,0 +1,40 @@
+<section class="chapter-card" id="ch13">
+    <div class="ch-header">
+        <div class="ch-title">第十三章：内存管理 <span class="ch-score">| 8分</span></div>
+        <div class="ch-stars star-high">★★★★</div>
+    </div>
+    <div class="ch-content">
+        <p><span class="section-tag tag-core">🎯 核心考点</span></p>
+        <ul>
+            <li>分页存储管理、页面置换算法</li>
+            <li>分段存储管理、段页式</li>
+            <li>虚拟内存（请求分页、缺页中断）</li>
+        </ul>
+        <div class="must-card">
+            <div class="must-label">📖 必背：页面置换算法对比</div>
+            <table>
+                <thead><tr><th>算法</th><th>策略</th><th>优缺点</th></tr></thead>
+                <tbody>
+                    <tr><td>FIFO</td><td>淘汰最早进入的页面</td><td>简单但可能产生Belady异常</td></tr>
+                    <tr><td>LRU</td><td>淘汰最久未使用的页面</td><td>性能好、最常用</td></tr>
+                    <tr><td>OPT</td><td>淘汰未来最晚使用的页面</td><td>理论最优但无法实现</td></tr>
+                    <tr><td>Clock（NRU）</td><td>循环扫描，有机会标记</td><td>近似LRU，实现简单</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="must-card">
+            <div class="must-label">📖 分页 vs 分段</div>
+            <ul>
+                <li><strong>分页：</strong>固定大小（如4KB），用户无感，解决内存碎片</li>
+                <li><strong>分段：</strong>按逻辑划分（代码段、数据段），用户可见，方便共享保护</li>
+                <li><strong>段页式：</strong>先分段，段内再分页</li>
+            </ul>
+        </div>
+        <div class="example-card">
+            <div class="example-label">📝 历年真题（2023年·页面置换）</div>
+            <div class="example-question">某请求分页系统，页面大小为4KB。进程访问序列为：1,2,3,4,1,2,5,1,2,3,4,5。若采用FIFO置换算法且分配3个物理块，求缺页次数和缺页率。</div>
+            <div class="example-hint">💡小白解析：模拟页面置换过程。初始3个物理块都为空：<br>
+①1缺页→[1]<br>②2缺页→[1,2]<br>③3缺页→[1,2,3]<br>④4缺页→[2,3,4]（淘汰1）<br>⑤1缺页→[3,4,1]（淘汰2）<br>⑥2缺页→[4,1,2]（淘汰3）<br>⑦5缺页→[1,2,5]（淘汰4）<br>⑧1命中→[1,2,5]<br>⑨2命中→[1,2,5]<br>⑩3缺页→[2,5,3]（淘汰1）<br>⑪4缺页→[5,3,4]（淘汰2）<br>⑫5命中→[5,3,4]<br>缺页次数=9次，缺页率=9/12=75%。FIFO就是"先进先出"，淘汰在内存中停留最久的页面。FIFO有一个反直觉的特性叫Belady异常——增加物理块反而可能增加缺页次数，考选择题时要注意。</div>
+        </div>
+    </div>
+</section>

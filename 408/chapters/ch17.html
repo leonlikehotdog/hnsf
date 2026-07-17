@@ -1,0 +1,51 @@
+<section class="chapter-card" id="ch17">
+    <div class="ch-header">
+        <div class="ch-title">第十七章：物理层与数据链路层 <span class="ch-score">| 5分</span></div>
+        <div class="ch-stars star-high">★★★</div>
+    </div>
+    <div class="ch-content">
+        <p><span class="section-tag tag-core">🎯 核心考点</span></p>
+        <ul>
+            <li>奈氏准则、香农定理</li>
+            <li>CSMA/CD、MAC地址、以太网帧格式</li>
+            <li>交换机、VLAN</li>
+        </ul>
+        <div class="must-card">
+            <div class="must-label">📖 必背：奈氏 vs 香农</div>
+            <table>
+                <thead><tr><th>定理</th><th>公式</th><th>解决什么问题</th></tr></thead>
+                <tbody>
+                    <tr><td>奈奎斯特定理</td><td>最大码元速率 = 2W</td><td>无噪声时最高传输速率</td></tr>
+                    <tr><td>香农定理</td><td>C = W log₂(1+S/N)</td><td>有噪声时最大数据传输率</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="must-card">
+            <div class="must-label">📖 CSMA/CD（先听后说，边听边说）</div>
+            <ul>
+                <li>发送前先监听，忙则等待</li>
+                <li>发送时继续监听，检测到冲突就发干扰信号</li>
+                <li>随机等待后重传（截断二进制指数退避）</li>
+            </ul>
+        </div>
+        <div class="must-card">
+            <div class="must-label">📖 以太网帧结构</div>
+            <p>前导码(8B) + 目的MAC(6B) + 源MAC(6B) + 类型(2B) + 数据(46-1500B) + FCS(4B)</p>
+        </div>
+        <div class="example-card">
+            <div class="example-label">📝 历年真题（高频）</div>
+            <div class="example-question">CSMA/CD协议主要用于（ ）。<br>
+A.以太网的介质访问控制<br>
+B.无线局域网的冲突避免<br>
+C.广域网的路由选择<br>
+D.传输层的流量控制</div>
+            <div class="example-hint">💡小白解析：CSMA/CD（载波监听多点接入/碰撞检测）用于<strong>有线以太网</strong>（IEEE 802.3），通过"先听后说、边听边说"来检测冲突。无线局域网使用的是CSMA/CA（冲突避免）。答案是<strong>A</strong>。记住：有线用CD（检测），无线用CA（避免）。</div>
+        </div>
+        <div class="example-card">
+            <div class="example-label">📝 历年真题（子网掩码计算）</div>
+            <div class="example-question">IP地址192.168.1.0/24的子网掩码是（ ）。<br>
+A.255.255.255.0  B.255.255.0.0  C.255.0.0.0  D.255.255.255.255</div>
+            <div class="example-hint">💡小白解析：/24表示前24位是网络号，后8位是主机号。子网掩码就是前24位为1，后8位为0：11111111.11111111.11111111.00000000 = 255.255.255.0。答案是<strong>A</strong>。速算：/24 = 255.255.255.0；/16 = 255.255.0.0；/8 = 255.0.0.0。</div>
+        </div>
+    </div>
+</section>

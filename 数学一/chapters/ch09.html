@@ -1,0 +1,39 @@
+<h2 class="part-title">第二部分：线性代数 <span class="part-score">约33分 · 占比22%</span></h2>
+<section class="chapter-card" id="ch09">
+    <div class="ch-header">
+        <div class="ch-title">第九章：行列式 <span class="ch-score">| 5分</span></div>
+        <div class="ch-stars star-high">★★★★</div>
+    </div>
+    <div class="ch-content">
+        <p><span class="section-tag tag-core">🎯 核心考点</span></p>
+        <ul>
+            <li>2阶、3阶行列式计算</li>
+            <li>行列式性质（转置不变、两行互换变号、提取公因子等）</li>
+        </ul>
+        <div class="must-card">
+            <div class="must-label">📖 必背：行列式性质</div>
+            <ul>
+                <li>|A<sup>T</sup>| = |A|（转置行列式值不变）</li>
+                <li>两行（列）互换，行列式变号</li>
+                <li>某行（列）有公因子 k，可提到行列式外</li>
+                <li>两行（列）成比例，行列式为 0</li>
+                <li>某行（列）乘以 k 加到另一行，值不变</li>
+            </ul>
+        </div>
+        <div class="must-card">
+            <div class="must-label">📖 必背：克拉默法则</div>
+            <p>对于 n 元线性方程组 Ax = b，若 |A| ≠ 0，则：</p>
+            <div class="formula-box">x<sub>j</sub> = |A<sub>j</sub>| / |A| &nbsp;（j = 1,2,...,n）</div>
+            <p style="font-size:13px;color:#555;">其中 A<sub>j</sub> 是将 A 的第 j 列换成 b 所得矩阵</p>
+        </div>
+        <div class="example-card">
+            <div class="example-label">📝 例题</div>
+            <div class="example-question">计算行列式 | 1  2  3；4  5  6；7  8  10 |</div>
+            <div class="example-hint">
+                按公式计算：1·(5·10 - 6·8) - 2·(4·10 - 6·7) + 3·(4·8 - 5·7)<br>
+                = 1·(50-48) - 2·(40-42) + 3·(32-35)<br>
+                = 1·2 - 2·(-2) + 3·(-3) = 2 + 4 - 9 = <strong>-3</strong>
+            </div>
+        </div>
+    </div>
+</section>

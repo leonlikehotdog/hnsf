@@ -1,0 +1,106 @@
+<h2 class="part-title">第一部分：数据结构 <span class="part-score">约45分 · 占比30%</span></h2>
+<section class="chapter-card" id="ch01">
+    <div class="ch-header">
+        <div class="ch-title">第一章：线性表 <span class="ch-score">| 10分</span></div>
+        <div class="ch-stars star-high">⭐⭐⭐⭐⭐</div>
+    </div>
+    <div class="ch-content">
+        <p>
+            <span class="section-tag tag-core">🎯 核心考点</span>
+            <span class="chip key">顺序表</span>
+            <span class="chip key">链表</span>
+            <span class="chip exam">必考算法题</span>
+            <span class="chip trick">三指针法</span>
+        </p>
+        <ul>
+            <li>顺序表与链表的定义、基本操作（插入、删除、查找）</li>
+            <li>单链表、双链表、循环链表的操作实现</li>
+        </ul>
+
+        <div class="must-card">
+            <div class="must-label">📖 必背：顺序表 vs 链表 对比</div>
+            <table>
+                <thead><tr><th>特性</th><th>顺序表</th><th>链表</th></tr></thead>
+                <tbody>
+                    <tr><td>存储方式</td><td>连续空间</td><td>离散空间</td></tr>
+                    <tr><td>随机存取</td><td>O(1) — 下标访问</td><td>O(n) — 需遍历</td></tr>
+                    <tr><td>插入/删除</td><td>O(n) — 需移动元素</td><td>O(1) — 改指针即可</td></tr>
+                    <tr><td>空间利用率</td><td>高（无指针开销）</td><td>低（需存指针）</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ====== 新增：固定小标题 ====== -->
+        <div class="tag-float t-tip">
+            <div class="tf-title">小白技巧：怎么判断用顺序表还是链表？</div>
+            <div class="tf-body">看到题目里说「频繁插入删除」→ 链表；看到「按下标查找 / 排序 / 二分」→ 顺序表。这是选择题必考点。</div>
+        </div>
+
+        <div class="tag-float t-example">
+            <div class="tf-title">例题：单链表反转（LeetCode 206）</div>
+            <div class="tf-body">
+                题目：反转一个单链表，使原链表 <code>1→2→3→4→5</code> 变为 <code>5→4→3→2→1</code>。
+            </div>
+        </div>
+
+        <div class="example-card">
+            <div class="example-label">📝 高频代码题：单链表反转</div>
+            <div class="example-question">反转一个单链表（LeetCode 206）</div>
+            <div class="example-hint">三指针法：pre=null, cur=head, while(cur){next=cur.next; cur.next=pre; pre=cur; cur=next;} 最后返回pre。核心思路：每步把当前节点的next指向前一个节点。</div>
+        </div>
+
+        <div class="tag-float t-summary">
+            <div class="tf-title">解法总结：三指针法套路</div>
+            <div class="tf-body">
+                <ul>
+                    <li><strong>pre</strong>：保存「已经反转好」的部分的头节点。</li>
+                    <li><strong>cur</strong>：当前正要反转的节点。</li>
+                    <li><strong>next</strong>：临时保存 cur 还没断开的下一个节点，否则链表就丢了。</li>
+                    <li>每步 <code>cur.next = pre</code>，然后三个指针同步后移（pre=cur, cur=next）。</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="tag-float t-warn">
+            <div class="tf-title">踩坑预警：常见错误</div>
+            <div class="tf-body">
+                ① 忘了在循环外初始化 <code>pre=null</code>，导致反转后尾节点没有正确指向 null；<br>
+                ② 用了「头插法」新建链表，原链表节点没有释放（408 真题要求 O(1) 空间）。
+            </div>
+        </div>
+
+        <div class="tag-float t-real">
+            <div class="tf-title">历年真题 2010·41 题（10 分）</div>
+            <div class="tf-body">将长度为 n 的数组循环左移 p 个位置，要求时间 O(n)、空间 O(1)。</div>
+        </div>
+        <div class="example-card">
+            <div class="example-label">📝 历年真题（2010年·41题·10分）</div>
+            <div class="example-question">设将n(n&gt;1)个整数存放到一维数组R中。设计一个在时间和空间两方面都尽可能高效的算法。将R中保存的序列循环左移p(0&lt;p&lt;n)个位置。要求：给出算法的基本设计思想；根据设计思想，采用C或C++描述算法，关键之处给出注释；说明时间复杂度和空间复杂度。</div>
+            <div class="example-hint">💡小白解析：这道题用三次逆置法。先将整个数组逆置，再将前n-p个逆置，最后将后p个逆置。例：数组[1,2,3,4,5,6]，p=4要左移4位，即把前4个[1,2,3,4]移到后面。三次逆置：①整体逆置→[6,5,4,3,2,1]；②前n-p=2个逆置→[5,6,4,3,2,1]；③后p=4个逆置→[5,6,1,2,3,4]。时间复杂度O(n)，空间复杂度O(1)。关键思想：左移p位 = 前p个和后n-p个交换位置。</div>
+        </div>
+
+        <div class="tag-float t-strategy">
+            <div class="tf-title">应试策略：算法题拿分三步走</div>
+            <div class="tf-body">
+                ① 先写思路（3~5 行文字），即使后面代码写错也至少有 3 分；<br>
+                ② 写出完整可编译代码，不要只写伪代码；<br>
+                ③ 主动写出时间/空间复杂度分析（白送 1~2 分）。
+            </div>
+        </div>
+
+        <div class="tag-float t-real">
+            <div class="tf-title">历年真题 2011·42 题（11 分）</div>
+            <div class="tf-body">两个等长升序序列 A、B，找它们合并序列的中位数。</div>
+        </div>
+        <div class="example-card">
+            <div class="example-label">📝 历年真题（2011年·42题·11分）</div>
+            <div class="example-question">一个长度为L(L≥1)的升序序列S，处在第⌈L/2⌉个位置的数称为S的中位数。现有两个等长升序序列A和B（长度均为n），设计一个时间和空间两方面都尽可能高效的算法，找出A和B的中位数。</div>
+            <div class="example-hint">💡小白解析：使用"减半"策略。每次比较两个序列的中位数a和b：若a=b则直接返回；若a&lt;b，舍弃a左边的较小半（保留a），同时舍弃b右边的较大半（保留b），保持两序列剩余长度相等；若a&gt;b则对称操作。直到两序列都只剩一个元素时，取较小者。暴力解法：合并两个序列取第n个元素，时间复杂度O(n)。最优解法利用二分思想，时间复杂度O(log₂n)，空间复杂度O(1)。考场上想不出最优解，用暴力合并法也能拿大半分数。</div>
+        </div>
+
+        <div class="tag-float t-tip">
+            <div class="tf-title">小白技巧：考场上想不出最优解怎么办？</div>
+            <div class="tf-body">先用暴力合并法（O(n)）写出来拿到大部分分，再在最后写一句「可用二分优化到 O(log n)」，阅卷老师看到思路分往往给满。</div>
+        </div>
+    </div>
+</section>

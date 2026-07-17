@@ -1,0 +1,39 @@
+<section class="chapter-card" id="ch03">
+    <div class="ch-header">
+        <div class="ch-title">第三章：树与二叉树 <span class="ch-score">| 12分</span></div>
+        <div class="ch-stars star-high">⭐⭐⭐⭐⭐</div>
+    </div>
+    <div class="ch-content">
+        <p><span class="section-tag tag-core">🎯 核心考点</span></p>
+        <ul>
+            <li>二叉树遍历（前中后序、层序）</li>
+            <li>二叉排序树（BST）、平衡二叉树（AVL）、哈夫曼树</li>
+            <li>树与森林的转换</li>
+        </ul>
+        <div class="must-card">
+            <div class="must-label">📖 必背：二叉树遍历口诀</div>
+            <table>
+                <thead><tr><th>遍历方式</th><th>访问顺序</th><th>记忆口诀</th></tr></thead>
+                <tbody>
+                    <tr><td>前序遍历</td><td>根 → 左 → 右</td><td>先看根，再看左，最后右</td></tr>
+                    <tr><td>中序遍历</td><td>左 → 根 → 右</td><td>左根右，中间是根</td></tr>
+                    <tr><td>后序遍历</td><td>左 → 右 → 根</td><td>左右根，最后看根</td></tr>
+                    <tr><td>层序遍历</td><td>从上到下，从左到右</td><td>用队列，一层层出</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="must-card">
+            <div class="must-label">📖 必背：BST的查找</div>
+            <p>从根开始：若key < 当前节点，往左走；若key > 当前节点，往右走。每次排除一半子树，平均查找长度O(log₂n)。</p>
+        </div>
+        <div class="example-card">
+            <div class="example-label">📝 必背算法：二叉树中序遍历（递归）</div>
+            <div class="example-hint">void inorder(Node* root) { if(!root) return; inorder(root->left); visit(root); inorder(root->right); }</div>
+        </div>
+        <div class="example-card">
+            <div class="example-label">📝 历年真题（2024年·选择题）</div>
+            <div class="example-question">一棵二叉树中序遍历序列为 b,c,d,e,f,a,g；层次遍历序列为 a,b,g,c,d,e,f。其后序遍历序列为（ ）。<br>A.c,e,d,f,b,g,a  B.c,e,f,d,b,g,a  C.e,f,d,c,b,g,a  D.e,g,f,d,b,c,a</div>
+            <div class="example-hint">💡小白解析：层次遍历第一个为根a；中序中a左侧b,c,d,e,f是左子树，右侧g是右子树。继续用层次序确定每层：第2层有b,g，左侧第一个b是左子树根，g是右子树根。逐步还原整棵树后，后序遍历为"左-右-根"：先遍历左子树全部(得到e,f,d,c,b)，再遍历右子树g，最后根a得到e,f,d,c,b,g,a。选C。</div>
+        </div>
+    </div>
+</section>

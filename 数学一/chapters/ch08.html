@@ -1,0 +1,36 @@
+<section class="chapter-card" id="ch08">
+    <div class="ch-header">
+        <div class="ch-title">第八章：常微分方程 <span class="ch-score">| 8分</span></div>
+        <div class="ch-stars star-high">★★★</div>
+    </div>
+    <div class="ch-content">
+        <p><span class="section-tag tag-core">🎯 核心考点</span></p>
+        <ul>
+            <li>一阶线性微分方程</li>
+            <li>二阶常系数线性微分方程</li>
+        </ul>
+        <div class="must-card">
+            <div class="must-label">📖 必背：一阶线性微分方程通解公式</div>
+            <p>标准形式：y' + P(x)y = Q(x)</p>
+            <div class="formula-box">y = e<sup>-∫Pdx</sup>[ ∫Q·e<sup>∫Pdx</sup>dx + C ]</div>
+        </div>
+        <div class="must-card">
+            <div class="must-label">📖 二阶常系数齐次微分方程</div>
+            <p>y'' + py' + qy = 0，写特征方程 r² + pr + q = 0：</p>
+            <ul>
+                <li>两个不等实根 r₁ ≠ r₂：y = C₁e<sup>r₁x</sup> + C₂e<sup>r₂x</sup></li>
+                <li>重根 r₁ = r₂ = r：y = (C₁ + C₂x)e<sup>rx</sup></li>
+                <li>共轭复根 r = α ± βi：y = e<sup>αx</sup>(C₁cos βx + C₂sin βx)</li>
+            </ul>
+        </div>
+        <div class="example-card">
+            <div class="example-label">📝 例题</div>
+            <div class="example-question">求微分方程 y' + 2y = e<sup>x</sup> 的通解</div>
+            <div class="example-hint">
+                这是一阶线性微分方程，P(x) = 2，Q(x) = e<sup>x</sup>。<br>
+                ∫Pdx = 2x，e<sup>∫Pdx</sup> = e<sup>2x</sup>，e<sup>-∫Pdx</sup> = e<sup>-2x</sup>。<br>
+                y = e<sup>-2x</sup>[∫e<sup>x</sup>·e<sup>2x</sup>dx + C] = e<sup>-2x</sup>[∫e<sup>3x</sup>dx + C] = e<sup>-2x</sup>[e<sup>3x</sup>/3 + C] = <strong>e<sup>x</sup>/3 + Ce<sup>-2x</sup></strong>
+            </div>
+        </div>
+    </div>
+</section>

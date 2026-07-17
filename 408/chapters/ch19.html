@@ -1,0 +1,53 @@
+<section class="chapter-card" id="ch19">
+    <div class="ch-header">
+        <div class="ch-title">第十九章：传输层 <span class="ch-score">| 5分</span></div>
+        <div class="ch-stars star-high">★★★★</div>
+    </div>
+    <div class="ch-content">
+        <p><span class="section-tag tag-core">🎯 核心考点</span></p>
+        <ul>
+            <li>TCP三次握手、四次挥手</li>
+            <li>TCP流量控制（滑动窗口）</li>
+            <li>TCP拥塞控制（慢启动、拥塞避免、快重传、快恢复）</li>
+        </ul>
+        <div class="must-card">
+            <div class="must-label">📖 必背：TCP三次握手</div>
+            <ol>
+                <li>客户端 → SYN=1, seq=x → 服务端</li>
+                <li>服务端 → SYN=1, ACK=1, seq=y, ack=x+1 → 客户端</li>
+                <li>客户端 → ACK=1, seq=x+1, ack=y+1 → 服务端</li>
+            </ol>
+            <p>三次握手是为了确认双方都能收发。握手期间<strong>不传数据</strong>。</p>
+        </div>
+        <div class="must-card">
+            <div class="must-label">📖 TCP vs UDP</div>
+            <table>
+                <thead><tr><th>特性</th><th>TCP</th><th>UDP</th></tr></thead>
+                <tbody>
+                    <tr><td>连接</td><td>面向连接</td><td>无连接</td></tr>
+                    <tr><td>可靠性</td><td>可靠传输</td><td>不可靠</td></tr>
+                    <tr><td>速度</td><td>慢（需确认重传）</td><td>快（没有确认）</td></tr>
+                    <tr><td>应用</td><td>HTTP、FTP、SMTP</td><td>DNS、视频直播、游戏</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="example-card">
+            <div class="example-label">📝 历年真题（高频·三次握手）</div>
+            <div class="example-question">在TCP三次握手中，客户端发送SYN=1,seq=x后，服务端返回的报文段中，SYN和ACK标志位以及seq和ack字段分别是（ ）。<br>
+A.SYN=1,ACK=0,seq=y,ack=x<br>
+B.SYN=1,ACK=1,seq=y,ack=x+1<br>
+C.SYN=0,ACK=1,seq=y,ack=x+1<br>
+D.SYN=1,ACK=1,seq=x,ack=y+1</div>
+            <div class="example-hint">💡小白解析：TCP三次握手第二步，服务端回复SYN=1,ACK=1，表示"我收到了你的同步请求，同时我也想和你同步"。seq=y（服务端自己的初始序号），ack=x+1（确认收到了客户端的第x号报文，期待下一个是x+1）。答案是<strong>B</strong>。记忆方法：①客户端说"我要连你"（SYN）→②服务端说"好，我也连你"（SYN+ACK）→③客户端说"收到"（ACK）。</div>
+        </div>
+        <div class="example-card">
+            <div class="example-label">📝 历年真题（TCP拥塞控制）</div>
+            <div class="example-question">TCP拥塞控制中，慢启动阶段拥塞窗口的增长方式是（ ）。<br>
+A.每收到一个ACK窗口加1<br>
+B.每经过一个RTT窗口翻倍<br>
+C.每收到一个ACK窗口加1/MSS<br>
+D.窗口固定为1</div>
+            <div class="example-hint">💡小白解析：慢启动阶段，每经过一个RTT（往返时间），拥塞窗口cwnd<strong>翻倍</strong>（指数增长）。具体来说，每收到一个ACK，cwnd增加1个MSS，一个RTT内收到一个窗口的ACK，窗口翻倍。答案是<strong>B</strong>。注意区分：拥塞避免阶段是每经过一个RTT，cwnd加1（线性增长）。慢启动=指数，拥塞避免=线性。</div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>考研英语一</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    /* ===== Reset & Base ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+      font-size: 14px;
+      color: #333;
+      background: #f5f5f5;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      overflow: hidden;
+    }
+    #app {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      max-width: 100%;
+      margin: 0 auto;
+      position: relative;
+      background: #f5f5f5;
+    }
+
+    /* ===== Tab Content ===== */
+    .tab-content {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 8px;
+    }
+    .tab-page { display: none; height: 100%; }
+    .tab-page.active { display: flex; flex-direction: column; }
+
+    /* ===== Bottom Tab Navigation ===== */
+    .bottom-nav {
+      display: flex;
+      height: 56px;
+      min-height: 56px;
+      background: #fff;
+      border-top: 1px solid #e0e0e0;
+      box-shadow: 0 -2px 8px rgba(0,0,0,0.06);
+      z-index: 100;
+    }
+    .bottom-nav .tab-btn {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: none;
+      border: none;
+      font-size: 12px;
+      color: #999;
+      cursor: pointer;
+      transition: color 0.2s;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      padding: 4px 0;
+      user-select: none;
+    }
+    .bottom-nav .tab-btn .tab-icon { font-size: 22px; line-height: 1.2; }
+    .bottom-nav .tab-btn .tab-label { font-size: 11px; margin-top: 1px; }
+    .bottom-nav .tab-btn.active { color: #2e7d32; }
+
+    /* ===== Page 1: 背单词 ===== */
+    #page-words {
+      padding: 16px 16px 0;
+    }
+    .progress-indicator {
+      text-align: center;
+      font-size: 15px;
+      color: #666;
+      padding: 8px 0 12px;
+      font-weight: 500;
+    }
+    .card-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      perspective: 1200px;
+      min-height: 0;
+    }
+    .word-card {
+      width: 100%;
+      height: 0;
+      padding-bottom: 62%;
+      position: relative;
+      cursor: pointer;
+      transform-style: preserve-3d;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      border-radius: 12px;
+    }
+    .word-card.flipped { transform: rotateY(180deg); }
+    .word-card .card-face {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 20px;
+    }
+    .word-card .card-back {
+      transform: rotateY(180deg);
+      overflow-y: auto;
+    }
+    .card-word { font-size: 28px; font-weight: 700; color: #1a1a1a; text-align: center; margin-bottom: 6px; }
+    .card-phonetic { font-size: 16px; color: #888; text-align: center; margin-bottom: 4px; }
+    .card-pos { font-size: 14px; color: #2e7d32; text-align: center; font-weight: 500; }
+
+    .card-back .card-meaning { font-size: 20px; font-weight: 600; color: #1a1a1a; text-align: center; margin-bottom: 16px; }
+    .card-back .card-example { font-size: 15px; color: #444; line-height: 1.7; text-align: left; width: 100%; margin-bottom: 8px; padding: 0 4px; }
+    .card-back .card-example-cn { font-size: 14px; color: #999; line-height: 1.6; text-align: left; width: 100%; padding: 0 4px; }
+
+    .word-actions {
+      display: flex;
+      gap: 12px;
+      padding: 16px 0 8px;
+    }
+    .word-actions button {
+      flex: 1;
+      height: 50px;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      touch-action: manipulation;
+      transition: transform 0.15s, opacity 0.15s;
+      user-select: none;
+    }
+    .word-actions button:active { transform: scale(0.96); opacity: 0.85; }
+    .word-actions .btn-prev { background: #e8f5e9; color: #2e7d32; }
+    .word-actions .btn-known { background: #2e7d32; color: #fff; }
+    .word-actions .btn-next { background: #e8f5e9; color: #2e7d32; }
+
+    /* ===== Page 2: 长难句 ===== */
+    #page-sentences {
+      padding: 16px 16px 0;
+    }
+    .sentence-progress {
+      text-align: center;
+      font-size: 15px;
+      color: #666;
+      padding: 8px 0 12px;
+      font-weight: 500;
+    }
+    .sentence-content {
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .sentence-original {
+      font-size: 17px;
+      font-weight: 700;
+      line-height: 1.8;
+      color: #1a1a1a;
+      padding: 16px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      margin-bottom: 12px;
+    }
+    .sentence-translation {
+      font-size: 15px;
+      color: #999;
+      line-height: 1.7;
+      padding: 0 4px 12px;
+    }
+    .sentence-details {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+    .details-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      font-size: 15px;
+      font-weight: 600;
+      color: #2e7d32;
+      cursor: pointer;
+      user-select: none;
+      touch-action: manipulation;
+    }
+    .details-header .arrow { transition: transform 0.3s; font-size: 12px; }
+    .details-header .arrow.open { transform: rotate(180deg); }
+    .details-body {
+      padding: 0 16px 16px;
+    }
+    .details-body.collapsed { display: none; }
+
+    .grammar-analysis {
+      font-size: 14px;
+      line-height: 1.8;
+      color: #444;
+      margin-bottom: 14px;
+    }
+    .grammar-points {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    .grammar-tag {
+      display: inline-block;
+      padding: 4px 12px;
+      background: #e8f5e9;
+      color: #2e7d32;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .section-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: #555;
+      margin-bottom: 8px;
+    }
+    .key-vocab-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .key-vocab-item {
+      padding: 10px 14px;
+      background: #f9fafb;
+      border-radius: 8px;
+      border-left: 3px solid #2e7d32;
+    }
+    .key-vocab-item .kv-word { font-weight: 600; font-size: 14px; color: #1a1a1a; }
+    .key-vocab-item .kv-def { font-size: 13px; color: #888; margin-top: 2px; }
+
+    .sentence-actions {
+      display: flex;
+      gap: 12px;
+      padding: 12px 0 8px;
+    }
+    .sentence-actions button {
+      flex: 1;
+      height: 50px;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      touch-action: manipulation;
+      background: #e8f5e9;
+      color: #2e7d32;
+      transition: transform 0.15s, opacity 0.15s;
+      user-select: none;
+    }
+    .sentence-actions button:active { transform: scale(0.96); opacity: 0.85; }
+
+    /* ===== Page 3: 进度 ===== */
+    #page-progress {
+      padding: 24px 16px;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .progress-rings {
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      padding: 20px 0 32px;
+    }
+    .ring-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .ring-wrapper .ring-label { font-size: 14px; color: #666; font-weight: 500; }
+    .ring {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .ring-inner {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: #f5f5f5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 1;
+    }
+    .ring-num { font-size: 24px; font-weight: 700; color: #1a1a1a; line-height: 1.2; }
+    .ring-sub { font-size: 12px; color: #999; }
+
+    .progress-records {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      padding: 16px;
+    }
+    .progress-records h3 {
+      font-size: 15px;
+      color: #2e7d32;
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
+    .record-list { list-style: none; }
+    .record-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 14px;
+    }
+    .record-item:last-child { border-bottom: none; }
+    .record-item .record-type {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .record-type.word { background: #e8f5e9; color: #2e7d32; }
+    .record-type.sentence { background: #fff3e0; color: #e65100; }
+    .record-item .record-time { font-size: 12px; color: #aaa; }
+
+    /* ===== Loading & Error ===== */
+    .loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 0;
+      color: #999;
+      font-size: 15px;
+    }
+    .loading::after {
+      content: '';
+      width: 20px;
+      height: 20px;
+      margin-left: 8px;
+      border: 2px solid #e0e0e0;
+      border-top-color: #2e7d32;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: #bbb;
+      font-size: 15px;
+    }
+    .error-msg {
+      text-align: center;
+      padding: 20px;
+      color: #d32f2f;
+      font-size: 14px;
+    }
+
+    /* ===== Scrollbar ===== */
+    .tab-content::-webkit-scrollbar { width: 4px; }
+    .tab-content::-webkit-scrollbar-thumb { background: #ddd; border-radius: 2px; }
+
+    /* ===== Safe area for notch phones ===== */
+    @supports (padding-bottom: env(safe-area-inset-bottom)) {
+      .bottom-nav { padding-bottom: env(safe-area-inset-bottom); height: calc(56px + env(safe-area-inset-bottom)); min-height: calc(56px + env(safe-area-inset-bottom)); }
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+
+  <!-- ============ Tab Pages ============ -->
+  <div class="tab-content">
+
+    <!-- Page 1: 背单词 -->
+    <div id="page-words" class="tab-page active">
+      <div class="progress-indicator" id="wordProgress">第 1 / 0 词</div>
+      <div class="card-container">
+        <div class="word-card" id="wordCard" onclick="flipCard()">
+          <div class="card-face card-front">
+            <div class="card-word" id="cardWord">—</div>
+            <div class="card-phonetic" id="cardPhonetic">—</div>
+            <div class="card-pos" id="cardPos">—</div>
+          </div>
+          <div class="card-face card-back">
+            <div class="card-meaning" id="cardMeaning">—</div>
+            <div class="card-example" id="cardExample">—</div>
+            <div class="card-example-cn" id="cardExampleCn">—</div>
+          </div>
+        </div>
+      </div>
+      <div class="word-actions">
+        <button class="btn-prev" onclick="prevWord()">⬅️ 上一个</button>
+        <button class="btn-known" onclick="markKnown()">✅ 记住了</button>
+        <button class="btn-next" onclick="nextWord()">➡️ 下一个</button>
+      </div>
+    </div>
+
+    <!-- Page 2: 长难句 -->
+    <div id="page-sentences" class="tab-page">
+      <div class="sentence-progress" id="sentenceProgress">第 1 / 0 句</div>
+      <div class="sentence-content">
+        <div class="sentence-original" id="sentenceText">加载中...</div>
+        <div class="sentence-translation" id="sentenceTranslation"></div>
+        <div class="sentence-details">
+          <div class="details-header" onclick="toggleDetails()">
+            <span>📖 详解</span>
+            <span class="arrow open" id="detailsArrow">▼</span>
+          </div>
+          <div class="details-body" id="detailsBody">
+            <div class="section-label">🏷️ 语法分析</div>
+            <div class="grammar-analysis" id="grammarAnalysis"></div>
+            <div class="section-label">📌 语法点</div>
+            <div class="grammar-points" id="grammarPoints"></div>
+            <div class="section-label">🔑 核心词汇</div>
+            <div class="key-vocab-list" id="keyVocabList"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sentence-actions">
+        <button onclick="prevSentence()">⬅️ 上一句</button>
+        <button onclick="nextSentence()">➡️ 下一句</button>
+      </div>
+    </div>
+
+    <!-- Page 3: 进度 -->
+    <div id="page-progress" class="tab-page">
+      <div class="progress-rings">
+        <div class="ring-wrapper">
+          <div class="ring" id="wordRing" style="background: conic-gradient(#e0e0e0 0deg 360deg);">
+            <div class="ring-inner">
+              <div class="ring-num" id="wordRingNum">0/0</div>
+              <div class="ring-sub">单词</div>
+            </div>
+          </div>
+        </div>
+        <div class="ring-wrapper">
+          <div class="ring" id="sentenceRing" style="background: conic-gradient(#e0e0e0 0deg 360deg);">
+            <div class="ring-inner">
+              <div class="ring-num" id="sentenceRingNum">0/0</div>
+              <div class="ring-sub">长难句</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="progress-records">
+        <h3>📋 最近学习记录</h3>
+        <ul class="record-list" id="recordList">
+          <li class="empty-state" style="padding:20px 0;">暂无记录</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ Bottom Tab Navigation ============ -->
+  <nav class="bottom-nav">
+    <button class="tab-btn active" data-tab="page-words" onclick="switchTab('page-words')">
+      <span class="tab-icon">📖</span>
+      <span class="tab-label">背单词</span>
+    </button>
+    <button class="tab-btn" data-tab="page-sentences" onclick="switchTab('page-sentences')">
+      <span class="tab-icon">📝</span>
+      <span class="tab-label">长难句</span>
+    </button>
+    <button class="tab-btn" data-tab="page-progress" onclick="switchTab('page-progress')">
+      <span class="tab-icon">📊</span>
+      <span class="tab-label">进度</span>
+    </button>
+  </nav>
+</div>
+
+<script>
+// ===== Supabase Initialization =====
+const SUPABASE_URL = 'https://yucploakclaznlmfpdkk.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1Y3Bsb2FrY2xhem5sbWZwZGtrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQxNjAyNDQsImV4cCI6MjA5OTczNjI0NH0.-VpUDJgIR0KlEReUM5LzSShIwog2YiJgH28QJAj6GHI';
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+  auth: { persistSession: false }
+});
+
+// ===== State =====
+let words = [];
+let wordIndex = 0;
+let wordTotal = 0;
+
+let sentences = [];
+let sentenceIndex = 0;
+let sentenceTotal = 0;
+
+let isFlipped = false;
+let isLoadingWord = false;
+let isLoadingSentence = false;
+
+// ===== Tab Switching =====
+function switchTab(tabId) {
+  document.querySelectorAll('.tab-page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+  document.querySelector(`.tab-btn[data-tab="${tabId}"]`).classList.add('active');
+
+  if (tabId === 'page-words' && words.length === 0) {
+    loadRandomWord();
+  } else if (tabId === 'page-sentences' && sentences.length === 0) {
+    loadSentences();
+  } else if (tabId === 'page-progress') {
+    loadProgress();
+  }
+}
+
+// ================================================================
+// Page 1: 背单词
+// ================================================================
+
+function flipCard() {
+  if (!document.getElementById('cardWord').textContent || document.getElementById('cardWord').textContent === '—') return;
+  isFlipped = !isFlipped;
+  document.getElementById('wordCard').classList.toggle('flipped', isFlipped);
+}
+
+async function loadRandomWord() {
+  if (isLoadingWord) return;
+  isLoadingWord = true;
+  try {
+    const { count, error: countErr } = await db
+      .from('words')
+      .select('id', { count: 'exact', head: true });
+    if (countErr) throw countErr;
+    wordTotal = count || 0;
+
+    if (wordTotal === 0) {
+      document.getElementById('cardWord').textContent = '暂无单词';
+      document.getElementById('cardPhonetic').textContent = '';
+      document.getElementById('cardPos').textContent = '';
+      document.getElementById('cardMeaning').textContent = '';
+      document.getElementById('cardExample').textContent = '';
+      document.getElementById('cardExampleCn').textContent = '';
+      document.getElementById('wordProgress').textContent = '第 0 / 0 词';
+      return;
+    }
+
+    // Try to get a random unmastered word first
+    let query = db.from('words').select('*');
+    
+    // Get IDs of mastered words
+    const { data: mastered } = await db
+      .from('study_progress')
+      .select('item_id')
+      .eq('item_type', 'word')
+      .eq('mastered', true);
+    
+    const masteredIds = mastered ? mastered.map(m => m.item_id) : [];
+    if (masteredIds.length > 0) {
+      query = query.not('id', 'in', '(' + masteredIds.join(',') + ')');
+    }
+
+    const { data, error } = await query.limit(50);
+    if (error) throw error;
+
+    if (!data || data.length === 0) {
+      // All words mastered, fallback to all words
+      const { data: allData, error: allErr } = await db.from('words').select('*').limit(50);
+      if (allErr) throw allErr;
+      words = allData || [];
+    } else {
+      words = data;
+    }
+
+    // Shuffle and pick first
+    for (let i = words.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [words[i], words[j]] = [words[j], words[i]];
+    }
+
+    wordIndex = 0;
+    displayWord();
+    // Preload more words in background
+    preloadWords();
+  } catch (err) {
+    console.error('loadRandomWord error:', err);
+    document.getElementById('cardWord').textContent = '加载失败';
+    document.getElementById('cardPhonetic').textContent = '请检查网络后重试';
+  } finally {
+    isLoadingWord = false;
+  }
+}
+
+async function preloadWords() {
+  try {
+    const { data, error } = await db.from('words').select('*').limit(100);
+    if (!error && data) {
+      // Merge without duplicates
+      const existingIds = new Set(words.map(w => w.id));
+      for (const w of data) {
+        if (!existingIds.has(w.id)) {
+          words.push(w);
+          existingIds.add(w.id);
+        }
+      }
+    }
+  } catch (e) { /* silent */ }
+}
+
+function displayWord() {
+  if (words.length === 0) return;
+  const w = words[wordIndex];
+  document.getElementById('wordProgress').textContent = `第 ${wordIndex + 1} / ${wordTotal} 词`;
+  document.getElementById('cardWord').textContent = w.word || '—';
+  document.getElementById('cardPhonetic').textContent = w.phonetic || '';
+  document.getElementById('cardPos').textContent = w.part_of_speech || '';
+  document.getElementById('cardMeaning').textContent = w.meaning || '—';
+  document.getElementById('cardExample').textContent = w.example_sentence || '';
+  document.getElementById('cardExampleCn').textContent = w.example_translation || '';
+
+  // Reset flip
+  isFlipped = false;
+  document.getElementById('wordCard').classList.remove('flipped');
+}
+
+function prevWord() {
+  if (words.length === 0) return;
+  wordIndex = (wordIndex - 1 + words.length) % words.length;
+  displayWord();
+}
+
+function nextWord() {
+  if (words.length === 0) return;
+  wordIndex = (wordIndex + 1) % words.length;
+  displayWord();
+}
+
+async function markKnown() {
+  if (words.length === 0) return;
+  const w = words[wordIndex];
+  try {
+    const record = {
+      item_id: w.id,
+      item_type: 'word',
+      mastered: true,
+      last_reviewed: new Date().toISOString()
+    };
+
+    // 使用 upsert 逻辑
+    const { error } = await db.from('study_progress').upsert(record, { onConflict: 'item_type,item_id' });
+    if (error) throw error;
+
+    // Show brief feedback
+    const btn = document.querySelector('.btn-known');
+    const orig = btn.textContent;
+    btn.textContent = '✅ 已记';
+    btn.style.opacity = '0.7';
+    setTimeout(() => { btn.textContent = orig; btn.style.opacity = '1'; }, 600);
+
+    // Remove from current list and load next
+    words.splice(wordIndex, 1);
+    if (words.length === 0) {
+      await loadRandomWord();
+    } else {
+      if (wordIndex >= words.length) wordIndex = 0;
+      displayWord();
+    }
+    wordTotal = Math.max(0, wordTotal - 1);
+  } catch (err) {
+    console.error('markKnown error:', err);
+  }
+}
+
+// ================================================================
+// Page 2: 长难句
+// ================================================================
+
+async function loadSentences() {
+  if (isLoadingSentence) return;
+  isLoadingSentence = true;
+  try {
+    const { count, error: countErr } = await db
+      .from('long_sentences')
+      .select('id', { count: 'exact', head: true });
+    if (countErr) throw countErr;
+    sentenceTotal = count || 0;
+
+    const { data, error } = await db.from('long_sentences').select('*').limit(100);
+    if (error) throw error;
+    sentences = data || [];
+    sentenceIndex = 0;
+
+    if (sentences.length === 0) {
+      document.getElementById('sentenceText').textContent = '暂无长难句';
+      document.getElementById('sentenceTranslation').textContent = '';
+      document.getElementById('grammarAnalysis').textContent = '';
+      document.getElementById('grammarPoints').innerHTML = '';
+      document.getElementById('keyVocabList').innerHTML = '';
+      document.getElementById('sentenceProgress').textContent = '第 0 / 0 句';
+      return;
+    }
+
+    displaySentence();
+  } catch (err) {
+    console.error('loadSentences error:', err);
+    document.getElementById('sentenceText').textContent = '加载失败';
+    document.getElementById('sentenceTranslation').textContent = '请检查网络后重试';
+  } finally {
+    isLoadingSentence = false;
+  }
+}
+
+function displaySentence() {
+  if (sentences.length === 0) return;
+  const s = sentences[sentenceIndex];
+  document.getElementById('sentenceProgress').textContent = `第 ${sentenceIndex + 1} / ${sentenceTotal} 句`;
+  document.getElementById('sentenceText').textContent = s.english || '—';
+  document.getElementById('sentenceTranslation').textContent = s.chinese || '';
+
+  // Grammar analysis
+  document.getElementById('grammarAnalysis').textContent = s.analysis || '暂无分析';
+
+  // Grammar points
+  const gpContainer = document.getElementById('grammarPoints');
+  gpContainer.innerHTML = '';
+  let gp = s.grammar_points;
+  if (typeof gp === 'string') {
+    // 处理字符串格式，如果是 "点1、点2" 形式
+    gp = gp.split(/[、,，]/).map(item => item.trim());
+  }
+  if (Array.isArray(gp) && gp.length > 0) {
+    gp.forEach(point => {
+      const tag = document.createElement('span');
+      tag.className = 'grammar-tag';
+      tag.textContent = point;
+      gpContainer.appendChild(tag);
+    });
+  } else {
+    gpContainer.innerHTML = '<span style="color:#bbb;font-size:13px;">暂无</span>';
+  }
+
+  // Key vocabulary
+  const kvContainer = document.getElementById('keyVocabList');
+  kvContainer.innerHTML = '';
+  let kv = s.key_vocabulary;
+  if (Array.isArray(kv) && kv.length > 0) {
+    kv.forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'key-vocab-item';
+      let word = '', def = '';
+      if (typeof item === 'string') {
+        if (item.includes(':') || item.includes('：')) {
+          const parts = item.split(/[:：]/);
+          word = parts[0].trim();
+          def = parts[1].trim();
+        } else {
+          word = item;
+        }
+      }
+      div.innerHTML = `<div class="kv-word">${word}</div>${def ? `<div class="kv-def">${def}</div>` : ''}`;
+      kvContainer.appendChild(div);
+    });
+  } else {
+    kvContainer.innerHTML = '<span style="color:#bbb;font-size:13px;">暂无</span>';
+  }
+
+  // Reset details to expanded
+  document.getElementById('detailsBody').classList.remove('collapsed');
+  document.getElementById('detailsArrow').classList.add('open');
+}
+
+function prevSentence() {
+  if (sentences.length === 0) return;
+  sentenceIndex = (sentenceIndex - 1 + sentences.length) % sentences.length;
+  displaySentence();
+}
+
+function nextSentence() {
+  if (sentences.length === 0) return;
+  sentenceIndex = (sentenceIndex + 1) % sentences.length;
+  displaySentence();
+}
+
+function toggleDetails() {
+  const body = document.getElementById('detailsBody');
+  const arrow = document.getElementById('detailsArrow');
+  body.classList.toggle('collapsed');
+  arrow.classList.toggle('open');
+}
+
+// ================================================================
+// Page 3: 进度
+// ================================================================
+
+async function loadProgress() {
+  try {
+    // Word count
+    const { count: wordTotalCount, error: wordCountErr } = await db
+      .from('words')
+      .select('id', { count: 'exact', head: true });
+    if (wordCountErr) throw wordCountErr;
+
+    const { count: sentenceTotalCount, error: sentCountErr } = await db
+      .from('long_sentences')
+      .select('id', { count: 'exact', head: true });
+    if (sentCountErr) throw sentCountErr;
+
+    // Count mastered
+    let wordMastered = 0, sentenceMastered = 0;
+    
+    const { data: wMastered, error: wErr } = await db
+      .from('study_progress')
+      .select('item_id')
+      .eq('item_type', 'word')
+      .eq('mastered', true);
+    if (!wErr) wordMastered = wMastered?.length || 0;
+
+    const { data: sMastered, error: sErr } = await db
+      .from('study_progress')
+      .select('item_id')
+      .eq('item_type', 'sentence')
+      .eq('mastered', true);
+    if (!sErr) sentenceMastered = sMastered?.length || 0;
+
+    // Update rings
+    updateRing('wordRing', 'wordRingNum', wordMastered, wordTotalCount || 0, '单词');
+    updateRing('sentenceRing', 'sentenceRingNum', sentenceMastered, sentenceTotalCount || 0, '长难句');
+
+    // Load recent records
+    const { data: records, error: recErr } = await db
+      .from('study_progress')
+      .select('*')
+      .order('last_reviewed', { ascending: false })
+      .limit(30);
+    if (recErr) throw recErr;
+
+    const listEl = document.getElementById('recordList');
+    listEl.innerHTML = '';
+    if (!records || records.length === 0) {
+      listEl.innerHTML = '<li class="empty-state" style="padding:20px 0;">暂无学习记录</li>';
+      return;
+    }
+
+    // Lookup word/sentence text
+    const wordIds = records.filter(r => r.item_type === 'word').map(r => r.item_id);
+    const sentenceIds = records.filter(r => r.item_type === 'sentence').map(r => r.item_id);
+
+    let wordMap = {};
+    let sentenceMap = {};
+    if (wordIds.length > 0) {
+      const { data: wData } = await db.from('words').select('id, word').in('id', wordIds);
+      if (wData) wData.forEach(w => wordMap[w.id] = w.word);
+    }
+    if (sentenceIds.length > 0) {
+      const { data: sData } = await db.from('long_sentences').select('id, english').in('id', sentenceIds);
+      if (sData) sData.forEach(s => sentenceMap[s.id] = s.english);
+    }
+
+    records.forEach(r => {
+      const li = document.createElement('li');
+      li.className = 'record-item';
+      let typeLabel = '', content = '';
+      if (r.item_type === 'word') {
+        typeLabel = '<span class="record-type word">单词</span>';
+        content = wordMap[r.item_id] || `ID:${r.item_id}`;
+      } else if (r.item_type === 'sentence') {
+        typeLabel = '<span class="record-type sentence">长难句</span>';
+        content = sentenceMap[r.item_id] ? sentenceMap[r.item_id].substring(0, 30) + '...' : `ID:${r.item_id}`;
+      }
+      const time = r.last_reviewed ? new Date(r.last_reviewed).toLocaleString('zh-CN', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }) : '';
+      li.innerHTML = `${typeLabel} <span style="flex:1;padding:0 8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${content}</span> <span class="record-time">${time}</span>`;
+      listEl.appendChild(li);
+    });
+  } catch (err) {
+    console.error('loadProgress error:', err);
+  }
+}
+
+function updateRing(ringId, numId, mastered, total, label) {
+  const ring = document.getElementById(ringId);
+  const numEl = document.getElementById(numId);
+  numEl.textContent = `${mastered}/${total}`;
+
+  if (total === 0) {
+    ring.style.background = 'conic-gradient(#e0e0e0 0deg 360deg)';
+    return;
+  }
+
+  const pct = mastered / total;
+  const deg = pct * 360;
+  const color = '#2e7d32';
+  const bg = '#e0e0e0';
+
+  if (pct <= 0.5) {
+    ring.style.background = `conic-gradient(${color} 0deg ${deg}deg, ${bg} ${deg}deg 360deg)`;
+  } else {
+    ring.style.background = `conic-gradient(${bg} 0deg 180deg, ${color} 180deg ${180 + (pct - 0.5) * 360}deg, ${bg} ${180 + (pct - 0.5) * 360}deg 360deg)`;
+  }
+}
+
+// ================================================================
+// Initialization
+// ================================================================
+
+// Start with words tab
+document.addEventListener('DOMContentLoaded', () => {
+  loadRandomWord();
+});
+</script>
+</body>
+</html>

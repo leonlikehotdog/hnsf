@@ -1,0 +1,40 @@
+<section class="chapter-card" id="ch05">
+    <div class="ch-header">
+        <div class="ch-title">第五章：查找与排序 <span class="ch-score">| 10分</span></div>
+        <div class="ch-stars star-high">⭐⭐⭐⭐⭐</div>
+    </div>
+    <div class="ch-content">
+        <p><span class="section-tag tag-core">🎯 核心考点</span></p>
+        <ul>
+            <li>7大排序算法的时间/空间复杂度、稳定性</li>
+            <li>二分查找、哈希查找（冲突处理）</li>
+        </ul>
+        <div class="must-card">
+            <div class="must-label">📖 必背：排序算法对比表</div>
+            <table>
+                <thead><tr><th>算法</th><th>平均时间</th><th>最坏时间</th><th>空间</th><th>稳定</th></tr></thead>
+                <tbody>
+                    <tr><td>直接插入</td><td>O(n²)</td><td>O(n²)</td><td>O(1)</td><td>✅ 稳定</td></tr>
+                    <tr><td>冒泡排序</td><td>O(n²)</td><td>O(n²)</td><td>O(1)</td><td>✅ 稳定</td></tr>
+                    <tr><td>简单选择</td><td>O(n²)</td><td>O(n²)</td><td>O(1)</td><td>❌ 不稳</td></tr>
+                    <tr><td>快速排序</td><td>O(nlogn)</td><td>O(n²)</td><td>O(logn)</td><td>❌ 不稳</td></tr>
+                    <tr><td>堆排序</td><td>O(nlogn)</td><td>O(nlogn)</td><td>O(1)</td><td>❌ 不稳</td></tr>
+                    <tr><td>归并排序</td><td>O(nlogn)</td><td>O(nlogn)</td><td>O(n)</td><td>✅ 稳定</td></tr>
+                    <tr><td>希尔排序</td><td>O(n^1.3)</td><td>O(n²)</td><td>O(1)</td><td>❌ 不稳</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="must-card">
+            <div class="must-label">📖 哈希冲突处理方法</div>
+            <ul>
+                <li><strong>开放定址法：</strong>线性探测、平方探测、再哈希</li>
+                <li><strong>链地址法：</strong>同义词用链表链接（最常用）</li>
+            </ul>
+        </div>
+        <div class="example-card">
+            <div class="example-label">📝 历年真题（2024年·选择题·有序度题）</div>
+            <div class="example-question">直接插入排序升序排列，以下序列比较次数最少的是（ ）。<br>A.30,27,56,41,80,95,69<br>B.31,43,26,55,63,99,77<br>C.61,84,51,23,34,91,40<br>D.93,32,48,81,50,21,72</div>
+            <div class="example-hint">💡小白解析：直接插入排序每插入一个元素，若序列已有序则只需比较1次；若完全逆序则要比较n次。因此原始序列有序度越高，比较次数越少。判断有序度就是看"有多少对相邻元素是升序的"。B选项逆序对最少，有序度最高，比较次数最少。选B。这类题考的不是运行代码，而是一眼看出序列"是否大体排好了"。</div>
+        </div>
+    </div>
+</section>

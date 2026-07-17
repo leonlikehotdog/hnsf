@@ -1,0 +1,33 @@
+<section class="chapter-card" id="ch07">
+    <div class="ch-header">
+        <div class="ch-title">第七章：数据的表示与运算 <span class="ch-score">| 8分</span></div>
+        <div class="ch-stars star-high">★★★</div>
+    </div>
+    <div class="ch-content">
+        <p><span class="section-tag tag-core">🎯 核心考点</span></p>
+        <ul>
+            <li>原码、反码、补码的表示与转换</li>
+            <li>溢出判断、浮点数IEEE754标准</li>
+        </ul>
+        <div class="must-card">
+            <div class="must-label">📖 必背：补码</div>
+            <ul>
+                <li><strong>正数：</strong>原码 = 反码 = 补码</li>
+                <li><strong>负数补码：</strong>原码除符号位外取反+1</li>
+                <li><strong>补码减法：</strong>A - B = A + (-B的补码)，将减法转为加法</li>
+                <li><strong>溢出判断：</strong>两个正数相加得负数，或两个负数相加得正数</li>
+            </ul>
+        </div>
+        <div class="must-card">
+            <div class="must-label">📖 IEEE754 单精度浮点数（32位）</div>
+            <p>1位符号 + 8位阶码（移码127）+ 23位尾数（原码）</p>
+            <p>真值 = (-1)^s × 2^(E-127) × 1.M</p>
+        </div>
+    </div>
+        <div class="example-card">
+            <div class="example-label">📝 历年真题（2024年·第13题）</div>
+            <div class="example-question">有符号机器数中，若二进制数1000 0000先算术右移3位，结果为（ ）。<br>
+A.1111 0000  B.1111 1000  C.0001 0000  D.0001 1000</div>
+            <div class="example-hint">💡小白解析：1000 0000是一个负数（最高位为1）。算术右移时<strong>高位补符号位</strong>（即补1），低位舍去。右移1位→1100 0000，右移2位→1110 0000，右移3位→1111 0000。所以答案是<strong>A</strong>。算术右移的关键口诀：符号位不变，高位补符号，低位直接丢。算术右移3位相当于除以2³=8。1000 0000=-128，-128÷8=-16，-16的补码就是1111 0000，结果一致。</div>
+        </div>
+</section>

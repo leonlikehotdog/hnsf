@@ -1,0 +1,42 @@
+<section class="chapter-card" id="ch10">
+    <div class="ch-header">
+        <div class="ch-title">第十章：CPU结构与流水线 <span class="ch-score">| 8分</span></div>
+        <div class="ch-stars star-high">★★★★</div>
+    </div>
+    <div class="ch-content">
+        <p><span class="section-tag tag-core">🎯 核心考点</span></p>
+        <ul>
+            <li>CPU指令周期（取指→译码→执行→访存→写回）</li>
+            <li>数据通路（单周期 vs 多周期）</li>
+            <li>流水线冒险（结构冒险、数据冒险、控制冒险）</li>
+        </ul>
+        <div class="must-card">
+            <div class="must-label">📖 必背：指令周期</div>
+            <p>一条指令从取指到执行完毕的时间：</p>
+            <ul>
+                <li><strong>取指（FI）：</strong>从主存取指令到IR</li>
+                <li><strong>译码（DI）：</strong>分析指令操作码</li>
+                <li><strong>执行（EI）：</strong>ALU计算有效地址或运算</li>
+                <li><strong>访存（MA）：</strong>读写主存（LOAD/STORE）</li>
+                <li><strong>写回（WB）：</strong>结果写回寄存器</li>
+            </ul>
+        </div>
+        <div class="must-card">
+            <div class="must-label">📖 流水线冒险</div>
+            <ul>
+                <li><strong>结构冒险：</strong>硬件资源冲突（如同时访存）→ <strong>增加硬件</strong></li>
+                <li><strong>数据冒险：</strong>下条指令依赖上条结果 → <strong>插入气泡/转发</strong></li>
+                <li><strong>控制冒险：</strong>分支指令不确定下条地址 → <strong>分支预测</strong></li>
+            </ul>
+        </div>
+    </div>
+        <div class="example-card">
+            <div class="example-label">📝 历年真题（2025年）</div>
+            <div class="example-question">五级流水线CPU中，以下哪种情况不会导致流水线停顿？<br>
+A.取指和访存同时使用同一存储器<br>
+B.上条指令的结果是下条指令的源操作数<br>
+C.分支指令转移目标未知<br>
+D.上条指令写寄存器后下条指令立即读取</div>
+            <div class="example-hint">💡小白解析：A是结构冒险（硬件不够），B和D是数据冒险（需等待结果），C是控制冒险（分支不确定）。题目问"不会导致停顿"，实际不会导致；但选项配置中A如果没有单独的指令Cache和数据Cache就会导致结构冒险。注意：通过<strong>转发技术</strong>可以让D不插入气泡。如果题目说"采用转发技术"，则D可以不停顿。不采用转发时，B和D都需要插入气泡。正确答案要看题目有没有说明采用转发技术。核心记住三种冒险的应对方法：结构→加硬件，数据→转发/插气泡，控制→分支预测。</div>
+        </div>
+</section>

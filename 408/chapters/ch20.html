@@ -1,0 +1,53 @@
+<section class="chapter-card" id="ch20">
+    <div class="ch-header">
+        <div class="ch-title">第二十章：应用层 <span class="ch-score">| 4分</span></div>
+        <div class="ch-stars star-high">★★★</div>
+    </div>
+    <div class="ch-content">
+        <p><span class="section-tag tag-core">🎯 核心考点</span></p>
+        <ul>
+            <li>DNS域名解析（递归、迭代）</li>
+            <li>HTTP协议（GET/POST，状态码）</li>
+            <li>FTP、SMTP、DHCP</li>
+        </ul>
+        <div class="must-card">
+            <div class="must-label">📖 必背：常见协议端口</div>
+            <table>
+                <thead><tr><th>协议</th><th>端口</th><th>功能</th></tr></thead>
+                <tbody>
+                    <tr><td>HTTP</td><td>80</td><td>网页传输</td></tr>
+                    <tr><td>HTTPS</td><td>443</td><td>加密网页传输</td></tr>
+                    <tr><td>FTP</td><td>21(控制)/20(数据)</td><td>文件传输</td></tr>
+                    <tr><td>SMTP</td><td>25</td><td>发送邮件</td></tr>
+                    <tr><td>DNS</td><td>53</td><td>域名解析</td></tr>
+                    <tr><td>DHCP</td><td>67/68</td><td>动态IP分配</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="must-card">
+            <div class="must-label">📖 HTTP状态码</div>
+            <ul>
+                <li>1xx：信息（继续）</li>
+                <li>2xx：成功（200正常，201已创建）</li>
+                <li>3xx：重定向（301永久，302临时）</li>
+                <li>4xx：客户端错误（404找不到，403禁止）</li>
+                <li>5xx：服务器错误（500内部错误）</li>
+            </ul>
+        </div>
+        <div class="example-card">
+            <div class="example-label">📝 历年真题（高频·DNS题）</div>
+            <div class="example-question">用户在浏览器中输入www.scnu.edu.cn，DNS解析过程中，以下哪项是正确的描述？（ ）<br>
+A.首先向根域名服务器查询<br>
+B.首先向本地域名服务器查询<br>
+C.DNS使用TCP协议传输<br>
+D.域名解析只能使用递归查询</div>
+            <div class="example-hint">💡小白解析：①DNS查询<strong>首先向本地域名服务器</strong>查询。如果本地有缓存直接返回，没有才去问根服务器。②DNS使用<strong>UDP</strong>协议传输（速度快），只有区域传送用TCP。③域名解析有递归和迭代两种方式。答案是<strong>B</strong>。日常上网实际使用中，先问自己电脑上配置的本地DNS（比如运营商给的），它再去问根服务器逐级解析。</div>
+        </div>
+        <div class="example-card">
+            <div class="example-label">📝 历年真题（高频·HTTP状态码）</div>
+            <div class="example-question">用户在访问网页时遇到"404 Not Found"，该状态码属于（ ）。<br>
+A.2xx成功  B.3xx重定向  C.4xx客户端错误  D.5xx服务器错误</div>
+            <div class="example-hint">💡小白解析：404表示"资源不存在"，是客户端的请求有问题（请求了一个不存在的页面），属于<strong>4xx客户端错误</strong>。答案是<strong>C</strong>。常用状态码速记：200正常，301永久重定向，302临时重定向，403禁止访问，404找不到，500服务器内部错误，502网关错误。</div>
+        </div>
+    </div>
+</section>

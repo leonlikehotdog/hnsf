@@ -1,0 +1,40 @@
+<section class="chapter-card" id="ch18">
+    <div class="ch-header">
+        <div class="ch-title">第十八章：网络层 <span class="ch-score">| 8分</span></div>
+        <div class="ch-stars star-high">★★★★</div>
+    </div>
+    <div class="ch-content">
+        <p><span class="section-tag tag-core">🎯 核心考点</span></p>
+        <ul>
+            <li>IP协议、子网划分（CIDR）、NAT</li>
+            <li>路由算法（RIP、OSPF、BGP）</li>
+        </ul>
+        <div class="must-card">
+            <div class="must-label">📖 必背：子网划分</div>
+            <p><strong>IP地址 = 网络号 + 主机号</strong></p>
+            <p>子网掩码将IP分为网络部分和主机部分。CIDR使用 /n 表示前缀长度。</p>
+            <p>例如：192.168.1.0/24 表示前24位是网络号，后8位是主机号（256个地址）。</p>
+        </div>
+        <div class="must-card">
+            <div class="must-label">📖 路由协议对比</div>
+            <table>
+                <thead><tr><th>协议</th><th>类型</th><th>算法</th><th>适用</th></tr></thead>
+                <tbody>
+                    <tr><td>RIP</td><td>内部网关</td><td>距离向量（跳数）</td><td>小型网络</td></tr>
+                    <tr><td>OSPF</td><td>内部网关</td><td>链路状态（带宽）</td><td>大型网络</td></tr>
+                    <tr><td>BGP</td><td>外部网关</td><td>路径向量</td><td>自治系统之间</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="example-card">
+            <div class="example-label">📝 历年真题（2023年·子网划分）</div>
+            <div class="example-question">某单位申请到一个IP地址块：200.10.20.0/24。需要划分成4个子网，每个子网至少60台主机。请给出子网掩码、各子网的网络地址和广播地址。</div>
+            <div class="example-hint">💡小白解析：①每子网至少60台主机→主机号至少需要6位（2⁶=64>60，减去全0和全1得62个可用IP）。②原来/24，主机号8位，借2位给子网号（2²=4个子网），剩余6位主机号。③新子网掩码=24+2=26，即255.255.255.192。④4个子网：<br>
+子网1：200.10.20.0/26，广播200.10.20.63<br>
+子网2：200.10.20.64/26，广播200.10.20.127<br>
+子网3：200.10.20.128/26，广播200.10.20.191<br>
+子网4：200.10.20.192/26，广播200.10.20.255<br>
+子网划分口诀：看需求→算位数→定掩码→列地址。</div>
+        </div>
+    </div>
+</section>

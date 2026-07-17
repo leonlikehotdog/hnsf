@@ -1,0 +1,42 @@
+<h2 class="part-title">第四部分：计算机网络 <span class="part-score">约25分 · 占比17%</span></h2>
+<section class="chapter-card" id="ch16">
+    <div class="ch-header">
+        <div class="ch-title">第十六章：网络体系结构 <span class="ch-score">| 3分</span></div>
+        <div class="ch-stars star-low">★★</div>
+    </div>
+    <div class="ch-content">
+        <p><span class="section-tag tag-core">🎯 核心考点</span></p>
+        <ul>
+            <li>OSI七层模型、TCP/IP四层模型</li>
+            <li>数据封装与解封装过程</li>
+        </ul>
+        <div class="must-card">
+            <div class="must-label">📖 必背：OSI七层模型（上到下）</div>
+            <table>
+                <thead><tr><th>层级</th><th>数据单位</th><th>主要功能</th></tr></thead>
+                <tbody>
+                    <tr><td>7 应用层</td><td>报文</td><td>HTTP、FTP、DNS、SMTP</td></tr>
+                    <tr><td>6 表示层</td><td>报文</td><td>加密、压缩、格式转换</td></tr>
+                    <tr><td>5 会话层</td><td>报文</td><td>建立/管理/终止会话</td></tr>
+                    <tr><td>4 传输层</td><td>报文段</td><td>TCP/UDP，端到端通信</td></tr>
+                    <tr><td>3 网络层</td><td>数据报</td><td>IP协议、路由选择</td></tr>
+                    <tr><td>2 数据链路层</td><td>帧</td><td>MAC地址、差错控制</td></tr>
+                    <tr><td>1 物理层</td><td>比特</td><td>传输介质、信号编码</td></tr>
+                </tbody>
+            </table>
+            <p><strong>记忆口诀：</strong>应（7）表（6）会（5）传（4）网（3）数（2）物（1）</p>
+        </div>
+    </div>
+        <div class="example-card">
+            <div class="example-label">📝 历年真题（高频·OSI层功能题）</div>
+            <div class="example-question">在OSI七层模型中，负责数据加密的是（ ）。<br>
+A.表示层  B.会话层  C.应用层  D.传输层</div>
+            <div class="example-hint">💡小白解析：表示层负责数据<strong>编码、加密、压缩</strong>，把应用层的数据转换成网络通用的格式。答案是<strong>A</strong>。记忆口诀：应表会传网数物，加密编码找表示。</div>
+        </div>
+        <div class="example-card">
+            <div class="example-label">📝 历年真题（2023年·封装过程）</div>
+            <div class="example-question">在TCP/IP模型中，应用层数据经过传输层、网络层、数据链路层后，最终被封装成（ ）。<br>
+A.报文段  B.数据报  C.帧  D.比特流</div>
+            <div class="example-hint">💡小白解析：数据封装从上到下依次是：应用层数据→传输层加TCP/UDP头得到<strong>报文段</strong>→网络层加IP头得到<strong>数据报</strong>→数据链路层加MAC头尾得到<strong>帧</strong>→物理层变成<strong>比特流</strong>。题目问"经过传输层、网络层、数据链路层后"，最终是数据链路层的输出——<strong>帧</strong>。选C。</div>
+        </div>
+</section>

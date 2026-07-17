@@ -1,0 +1,45 @@
+# ============ 仅排除 OS / 编辑器垃圾 ============
+# 按用户要求：所有真实数据文件（含 数据库密码.txt / *.sql 等）都进库。
+
+# Windows
+Thumbs.db
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# macOS / Linux 跨平台残留
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.fseventsd
+.Spotlight-V100
+.Trashes
+
+# 编辑器 / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# 临时文件
+*.tmp
+*.bak
+*.backup
+*.log
+*.pid
+*.seed
+*.pid.lock
+
+# Node（万一后续引入）
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+
+# Vercel 部署元数据（保留 vercel.json，去掉运行缓存）
+.vercel/cache/

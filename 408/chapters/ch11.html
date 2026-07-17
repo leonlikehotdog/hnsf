@@ -1,0 +1,32 @@
+<section class="chapter-card" id="ch11">
+    <div class="ch-header">
+        <div class="ch-title">第十一章：总线与I/O <span class="ch-score">| 7分</span></div>
+        <div class="ch-stars star-low">★★</div>
+    </div>
+    <div class="ch-content">
+        <p><span class="section-tag tag-core">🎯 核心考点</span></p>
+        <ul>
+            <li>总线分类、仲裁方式</li>
+            <li>中断、DMA</li>
+        </ul>
+        <div class="must-card">
+            <div class="must-label">📖 总线仲裁</div>
+            <ul>
+                <li><strong>链式查询：</strong>设备串接，优先级由距离决定，简单但怕断路</li>
+                <li><strong>计数器定时查询：</strong>计数器轮流查询，优先级可调</li>
+                <li><strong>独立请求：</strong>每个设备独立请求线，速度快但线路多</li>
+            </ul>
+        </div>
+        <div class="must-card">
+            <div class="must-label">📖 中断 vs DMA</div>
+            <table>
+                <thead><tr><th>特性</th><th>中断</th><th>DMA</th></tr></thead>
+                <tbody>
+                    <tr><td>传输单位</td><td>字节/字</td><td>块</td></tr>
+                    <tr><td>CPU干预</td><td>每次传输都要中断CPU</td><td>整块传输完才中断CPU</td></tr>
+                    <tr><td>速度</td><td>慢</td><td>快（适合大块数据）</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>

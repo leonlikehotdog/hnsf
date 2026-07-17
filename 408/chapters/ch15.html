@@ -1,0 +1,41 @@
+<section class="chapter-card" id="ch15">
+    <div class="ch-header">
+        <div class="ch-title">第十五章：I/O管理与操作系统概述 <span class="ch-score">| 9分</span></div>
+        <div class="ch-stars star-high">★★★</div>
+    </div>
+    <div class="ch-content">
+        <p><span class="section-tag tag-core">🎯 核心考点</span></p>
+        <ul>
+            <li>SPOOLing技术、缓冲技术</li>
+            <li>设备独立性</li>
+            <li>操作系统基本特征（并发、共享、虚拟、异步）</li>
+        </ul>
+        <div class="must-card">
+            <div class="must-label">📖 SPOOLing技术</div>
+            <p>用磁盘模拟独占设备（如打印机），使多个进程能同时"打印"：</p>
+            <ul>
+                <li>进程把输出写到磁盘（输入井/输出井）</li>
+                <li>后台进程统一把磁盘内容送到打印机</li>
+                <li>用户感觉打印机是自己的</li>
+            </ul>
+        </div>
+        <div class="must-card">
+            <div class="must-label">📖 操作系统四大特征</div>
+            <ul>
+                <li><strong>并发：</strong>同一时间段内多个程序运行（不是同时）</li>
+                <li><strong>共享：</strong>资源可被多个进程共同使用</li>
+                <li><strong>虚拟：</strong>把物理资源变成逻辑资源（虚拟内存、虚拟设备）</li>
+                <li><strong>异步：</strong>程序执行不是一贯到底的</li>
+            </ul>
+        </div>
+        <div class="example-card">
+            <div class="example-label">📝 历年真题（2022年·SPOOLing）</div>
+            <div class="example-question">关于SPOOLing系统的叙述，正确的是（ ）。<br>
+A.SPOOLing系统把独占设备改造成了共享设备<br>
+B.SPOOLing系统把共享设备改造成了独占设备<br>
+C.SPOOLing系统不需要磁盘支持<br>
+D.SPOOLing系统只能用于打印机</div>
+            <div class="example-hint">💡小白解析：SPOOLing技术用磁盘等高速共享设备模拟低速独占设备（如打印机），使多个进程可以同时请求使用打印机，"独占设备"被改造为"共享设备"。正确答案是<strong>A</strong>。用生活类比：打印机只有一台（独占设备），SPOOLing相当于每个用户的打印任务先存到磁盘队列中（共享缓冲），打印机依次处理队列中的任务，用户感觉打印机是自己独享的，但实际上设备是被共享的。</div>
+        </div>
+    </div>
+</section>

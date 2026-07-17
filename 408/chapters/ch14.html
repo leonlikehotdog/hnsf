@@ -1,0 +1,34 @@
+<section class="chapter-card" id="ch14">
+    <div class="ch-header">
+        <div class="ch-title">第十四章：文件系统 <span class="ch-score">| 8分</span></div>
+        <div class="ch-stars star-high">★★★</div>
+    </div>
+    <div class="ch-content">
+        <p><span class="section-tag tag-core">🎯 核心考点</span></p>
+        <ul>
+            <li>文件目录结构（FCB、单级/两级/树形目录）</li>
+            <li>文件存储空间管理（空闲表、位示图、成组链接）</li>
+            <li>磁盘调度算法</li>
+        </ul>
+        <div class="must-card">
+            <div class="must-label">📖 磁盘调度算法</div>
+            <table>
+                <thead><tr><th>算法</th><th>策略</th><th>特点</th></tr></thead>
+                <tbody>
+                    <tr><td>FCFS</td><td>按请求顺序处理</td><td>公平但慢</td></tr>
+                    <tr><td>SSTF</td><td>优先处理离磁头最近的</td><td>可能饥饿</td></tr>
+                    <tr><td>SCAN（电梯算法）</td><td>从一头扫到另一头</td><td>性能均衡，最常用</td></tr>
+                    <tr><td>C-SCAN</td><td>单向扫描，回头快速复位</td><td>响应时间均匀</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="example-card">
+            <div class="example-label">📝 历年真题（2023年·磁盘调度）</div>
+            <div class="example-question">某磁盘的磁头从100号磁道开始，请求序列为：55,58,39,18,90,160,150,38,184。采用SCAN算法（电梯算法，向磁道号增加方向扫描），求磁头移动的总磁道数。</div>
+            <div class="example-hint">💡小白解析：SCAN算法像电梯一样先往一个方向走到头再回头。本题向增大方向扫描：<br>
+当前100→150→160→184（到最大184，然后回头）→90→58→55→39→38→18。<br>
+移动距离：(150-100)+(160-150)+(184-160)+(184-90)+(90-58)+(58-55)+(55-39)+(39-38)+(38-18)=50+10+24+94+32+3+16+1+20=250。<br>
+总移动250个磁道。SCAN算法也叫电梯算法，就是想象电梯上下楼——先往一个方向把所有请求处理完，再掉头。</div>
+        </div>
+    </div>
+</section>

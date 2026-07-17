@@ -1,0 +1,38 @@
+<section class="chapter-card" id="ch02">
+    <div class="ch-header">
+        <div class="ch-title">第二章：栈、队列与数组 <span class="ch-score">| 5分</span></div>
+        <div class="ch-stars star-high">★★★★</div>
+    </div>
+    <div class="ch-content">
+        <p><span class="section-tag tag-core">🎯 核心考点</span></p>
+        <ul>
+            <li>栈：后进先出（LIFO），入栈出栈序列判定</li>
+            <li>队列：先进先出（FIFO），循环队列</li>
+            <li>栈与队列的应用：括号匹配、表达式求值、层序遍历</li>
+        </ul>
+        <div class="must-card">
+            <div class="must-label">📖 必背：出入栈序列判定</div>
+            <p>给定入栈序列 1,2,3,4,5，判断某个出栈序列是否合法。<strong>核心规则：</strong>出栈序列中，若 a&lt;b&lt;c 且 a 最先出栈，则 c 不能在 b 之前出栈。</p>
+        </div>
+        <div class="must-card">
+            <div class="must-label">📖 必背：循环队列</div>
+            <p>队头 front，队尾 rear，队列容量为 MaxSize：</p>
+            <ul>
+                <li>入队：rear = (rear+1) % MaxSize</li>
+                <li>出队：front = (front+1) % MaxSize</li>
+                <li>判空：front == rear</li>
+                <li>判满：(rear+1) % MaxSize == front（牺牲一个空间）</li>
+            </ul>
+        </div>
+        <div class="example-card">
+            <div class="example-label">📝 应用：括号匹配</div>
+            <div class="example-question">给定字符串 "({[]})"，判断括号是否匹配</div>
+            <div class="example-hint">遍历字符串，遇到左括号入栈，遇到右括号则出栈匹配。最后栈为空则匹配成功。时间复杂度O(n)。</div>
+        </div>
+        <div class="example-card">
+            <div class="example-label">📝 历年真题（2025年·选择题）</div>
+            <div class="example-question">已知算法A用于检查字符串中各类括号是否匹配，A执行过程中使用初始为空的栈保存遇到的括号。若栈的容量是3，则下列选项中，A不能处理的是（ ）。<br>A.(a+[b+(c+d)/e]+f)+g-h<br>B.[a*((b+c)/(d-e)+f/g)-h]<br>C.[a*(b-(c-d)*e/(f+g))-h]<br>D.[a-(b+[c*(d+e)-f]+g+h)]</div>
+            <div class="example-hint">💡小白解析：栈容量3表示最多只能同时存放3个未匹配的左括号。逐项分析括号嵌套深度即可。D选项：[a-(b+[c*(d+e)-f]+g+h) 的括号序列为 [ ( [ ( ，深度达到4，超过栈容量3，因此不能处理。答案选D。</div>
+        </div>
+    </div>
+</section>

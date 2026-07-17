@@ -1,0 +1,43 @@
+<section class="chapter-card" id="ch08">
+    <div class="ch-header">
+        <div class="ch-title">第八章：存储系统 <span class="ch-score">| 10分</span></div>
+        <div class="ch-stars star-high">★★★★</div>
+    </div>
+    <div class="ch-content">
+        <p><span class="section-tag tag-core">🎯 核心考点</span></p>
+        <ul>
+            <li>Cache的基本原理、映射方式、替换算法</li>
+            <li>主存扩展（字位扩展）</li>
+            <li>虚拟存储器（页式、段式）</li>
+        </ul>
+        <div class="must-card">
+            <div class="must-label">📖 必背：Cache映射方式对比</div>
+            <table>
+                <thead><tr><th>映射方式</th><th>特点</th><th>优缺点</th></tr></thead>
+                <tbody>
+                    <tr><td>直接映射</td><td>每个主存块只能映射到固定Cache行</td><td>简单但冲突率高</td></tr>
+                    <tr><td>全相联映射</td><td>主存块可映射到任意Cache行</td><td>灵活但查找慢</td></tr>
+                    <tr><td>组相联映射</td><td>分若干组，组内全相联</td><td>折中方案，最常用</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="must-card">
+            <div class="must-label">📖 Cache替换算法</div>
+            <ul>
+                <li><strong>随机替换（RAND）</strong>：随机选一行替换</li>
+                <li><strong>先进先出（FIFO）</strong>：替换最早进入的行</li>
+                <li><strong>LRU：</strong>替换最久未使用的行（最常用）</li>
+            </ul>
+        </div>
+    </div>
+        <div class="example-card">
+            <div class="example-label">📝 历年真题（2024年）</div>
+            <div class="example-question">某计算机采用直接映射Cache，主存地址共32位，按字节编址。已知Cache有64行，每行8字节。求主存地址的格式（各字段长度）和对应的Cache行号。</div>
+            <div class="example-hint">💡小白解析：直接映射的主存地址分为3个字段：标记|行号|块内地址。<br>
+①块内地址：每行8B→log₂8=3位<br>
+②行号：64行→log₂64=6位<br>
+③标记：32-3-6=23位<br>
+因此主存地址格式为：标记23位 + 行号6位 + 块内地址3位。<br>
+小白速记：直接映射就是"分房间"——先按房间号（行号）划分，每个房间有多个床位（块），标记用来区分同一房间不同主存块。</div>
+        </div>
+</section>

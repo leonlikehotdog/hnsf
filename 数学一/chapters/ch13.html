@@ -1,0 +1,37 @@
+<section class="chapter-card" id="ch13">
+    <div class="ch-header">
+        <div class="ch-title">第十三章：特征值与特征向量 <span class="ch-score">| 6分</span></div>
+        <div class="ch-stars star-high">⭐⭐⭐⭐⭐</div>
+    </div>
+    <div class="ch-content">
+        <p><span class="section-tag tag-core">🎯 核心考点</span></p>
+        <ul>
+            <li>特征值、特征向量的计算</li>
+            <li>相似对角化</li>
+        </ul>
+        <div class="must-card">
+            <div class="must-label">📖 必背：特征方程</div>
+            <div class="formula-box">|A - λE| = 0</div>
+            <p style="margin-top:6px;">解此方程得特征值 λ，然后解 (A - λE)x = 0 得特征向量</p>
+        </div>
+        <div class="must-card">
+            <div class="must-label">📖 必背：特征值性质</div>
+            <ul>
+                <li>所有特征值之和 = 矩阵的迹（主对角线元素之和）</li>
+                <li>所有特征值之积 = 行列式 |A|</li>
+                <li>若 λ 是 A 的特征值，则 λ<sup>k</sup> 是 A<sup>k</sup> 的特征值</li>
+            </ul>
+        </div>
+        <div class="example-card">
+            <div class="example-label">📝 例题</div>
+            <div class="example-question">求矩阵 A = [2 1; 1 2] 的特征值和特征向量</div>
+            <div class="example-hint">
+                特征方程 |A-λE| = |2-λ  1; 1  2-λ| = (2-λ)² - 1 = 0<br>
+                解得 λ₁ = 3，λ₂ = 1。<br>
+                λ=3 时：(A-3E)x = 0 ⟹ [-1 1; 1 -1]x=0 ⟹ x₁=x₂，取 ξ₁=(1,1)<sup>T</sup><br>
+                λ=1 时：(A-E)x = 0 ⟹ [1 1; 1 1]x=0 ⟹ x₁=-x₂，取 ξ₂=(1,-1)<sup>T</sup><br>
+                所以特征值为 <strong>3 和 1</strong>，对应特征向量为 <strong>(1,1)<sup>T</sup> 和 (1,-1)<sup>T</sup></strong>
+            </div>
+        </div>
+    </div>
+</section>

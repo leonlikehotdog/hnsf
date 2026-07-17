@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>考研英语一学习助手</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+  </script>
+  <style>
+    /* ===== 全局重置 & 基础 ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+        "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+      background: #f5f7f5;
+      height: 100vh;
+      overflow: hidden;
+      color: #333;
+    }
+
+    /* ===== 布局 ===== */
+    .app-container {
+      display: flex;
+      height: 100vh;
+    }
+
+    /* ===== 左侧菜单 ===== */
+    .sidebar {
+      width: 250px;
+      min-width: 250px;
+      background: linear-gradient(180deg, #1b5e20 0%, #2e7d32 100%);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      padding: 32px 0;
+      box-shadow: 2px 0 12px rgba(0, 0, 0, 0.15);
+      z-index: 10;
+    }
+
+    .sidebar-title {
+      font-size: 22px;
+      font-weight: 700;
+      text-align: center;
+      padding: 0 20px 32px;
+      letter-spacing: 2px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+      margin-bottom: 16px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 28px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.25s ease;
+      border-left: 4px solid transparent;
+      user-select: none;
+    }
+
+    .nav-item:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .nav-item.active {
+      background: rgba(255, 255, 255, 0.18);
+      border-left-color: #a5d6a7;
+      font-weight: 600;
+    }
+
+    .nav-item .icon {
+      font-size: 20px;
+    }
+
+    /* ===== 右侧内容区 ===== */
+    .content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 40px 48px;
+      background: #f5f7f5;
+    }
+
+    .page {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ===== 页面1：单词卡片 ===== */
+    .word-progress-indicator {
+      text-align: right;
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 16px;
+    }
+
+    .card-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding-top: 20px;
+    }
+
+    .flip-card {
+      width: 500px;
+      height: 350px;
+      perspective: 1200px;
+      cursor: pointer;
+    }
+
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      transform-style: preserve-3d;
+      border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    }
+
+    .flip-card.flipped .flip-card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .flip-card-front,
+    .flip-card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 16px;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 36px;
+    }
+
+    .flip-card-front {
+      border: 1px solid #e8f0e8;
+    }
+
+    .flip-card-back {
+      transform: rotateY(180deg);
+      border: 1px solid #e8f0e8;
+    }
+
+    .word-display {
+      font-size: 42px;
+      font-weight: 700;
+      color: #1b5e20;
+      margin-bottom: 12px;
+      letter-spacing: 1px;
+    }
+
+    .phonetic-display {
+      font-size: 18px;
+      color: #888;
+      font-family: "Times New Roman", serif;
+      margin-bottom: 8px;
+    }
+
+    .pos-display {
+      font-size: 16px;
+      color: #666;
+      background: #e8f5e9;
+      padding: 4px 14px;
+      border-radius: 20px;
+    }
+
+    .meaning-display {
+      font-size: 28px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    .example-display {
+      font-size: 16px;
+      color: #555;
+      line-height: 1.7;
+      text-align: center;
+      max-width: 90%;
+      font-style: italic;
+      margin-bottom: 6px;
+    }
+
+    .example-trans-display {
+      font-size: 15px;
+      color: #888;
+      text-align: center;
+      max-width: 90%;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 16px;
+      margin-top: 28px;
+    }
+
+    .btn {
+      padding: 10px 26px;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn:active {
+      transform: scale(0.96);
+    }
+
+    .btn-next {
+      background: #2e7d32;
+      color: #fff;
+    }
+
+    .btn-next:hover {
+      background: #1b5e20;
+    }
+
+    .btn-mastered {
+      background: #43a047;
+      color: #fff;
+    }
+
+    .btn-mastered:hover {
+      background: #2e7d32;
+    }
+
+    .btn-review {
+      background: #ff8f00;
+      color: #fff;
+    }
+
+    .btn-review:hover {
+      background: #e65100;
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .empty-state {
+      text-align: center;
+      color: #999;
+      padding: 60px 20px;
+      font-size: 18px;
+    }
+
+    /* ===== 页面2：长难句解析 ===== */
+    .sentence-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+
+    .sentence-nav .nav-btn {
+      background: #2e7d32;
+      color: #fff;
+      border: none;
+      padding: 8px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .sentence-nav .nav-btn:hover {
+      background: #1b5e20;
+    }
+
+    .sentence-nav .nav-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .sentence-counter {
+      font-size: 14px;
+      color: #666;
+    }
+
+    .sentence-original {
+      font-size: 22px;
+      font-weight: 700;
+      color: #1b5e20;
+      line-height: 1.6;
+      margin-bottom: 16px;
+      padding: 20px 24px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+      border-left: 4px solid #2e7d32;
+    }
+
+    .sentence-translation {
+      font-size: 17px;
+      color: #555;
+      line-height: 1.7;
+      margin-bottom: 24px;
+      padding: 16px 24px;
+      background: #f1f8f1;
+      border-radius: 8px;
+    }
+
+    .tab-bar {
+      display: flex;
+      gap: 0;
+      margin-bottom: 0;
+      border-bottom: 2px solid #ddd;
+    }
+
+    .tab-item {
+      padding: 10px 24px;
+      font-size: 15px;
+      cursor: pointer;
+      color: #666;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      transition: all 0.2s;
+      user-select: none;
+    }
+
+    .tab-item:hover {
+      color: #2e7d32;
+    }
+
+    .tab-item.active {
+      color: #2e7d32;
+      border-bottom-color: #2e7d32;
+      font-weight: 600;
+    }
+
+    .tab-content {
+      display: none;
+      padding: 20px 24px;
+      background: #fff;
+      border-radius: 0 0 12px 12px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+      min-height: 120px;
+      line-height: 1.8;
+      font-size: 15px;
+    }
+
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.25s ease;
+    }
+
+    .vocab-tag {
+      display: inline-block;
+      background: #e8f5e9;
+      color: #2e7d32;
+      padding: 4px 14px;
+      border-radius: 16px;
+      font-size: 14px;
+      margin: 4px 6px 4px 0;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .vocab-tag:hover {
+      background: #c8e6c9;
+    }
+
+    /* ===== 页面3：学习进度 ===== */
+    .progress-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 36px;
+    }
+
+    .progress-card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 28px 32px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
+    }
+
+    .progress-card h3 {
+      font-size: 18px;
+      color: #333;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .progress-stat {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .progress-stat .number {
+      font-size: 36px;
+      font-weight: 700;
+      color: #2e7d32;
+    }
+
+    .progress-stat .total {
+      font-size: 18px;
+      color: #999;
+    }
+
+    .progress-bar-bg {
+      height: 10px;
+      background: #e8e8e8;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #43a047, #2e7d32);
+      border-radius: 5px;
+      transition: width 0.5s ease;
+    }
+
+    .recent-section {
+      background: #fff;
+      border-radius: 14px;
+      padding: 28px 32px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
+    }
+
+    .recent-section h3 {
+      font-size: 18px;
+      color: #333;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .recent-list {
+      list-style: none;
+    }
+
+    .recent-list li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .recent-list li:last-child {
+      border-bottom: none;
+    }
+
+    .recent-list .word-name {
+      font-size: 16px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .recent-list .word-meaning {
+      font-size: 14px;
+      color: #888;
+    }
+
+    .recent-list .word-time {
+      font-size: 13px;
+      color: #aaa;
+    }
+
+    /* ===== Toast 提示 ===== */
+    .toast {
+      position: fixed;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: #333;
+      color: #fff;
+      padding: 12px 28px;
+      border-radius: 8px;
+      font-size: 14px;
+      opacity: 0;
+      transition: all 0.35s ease;
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ===== 响应式 ===== */
+    @media (max-width: 1100px) {
+      .content {
+        padding: 28px 24px;
+      }
+      .flip-card {
+        width: 420px;
+        height: 300px;
+      }
+      .word-display {
+        font-size: 34px;
+      }
+      .meaning-display {
+        font-size: 24px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .app-container {
+        flex-direction: column;
+      }
+      .sidebar {
+        width: 100%;
+        min-width: unset;
+        flex-direction: row;
+        padding: 0;
+        height: 56px;
+        overflow-x: auto;
+      }
+      .sidebar-title {
+        display: none;
+      }
+      .nav-item {
+        padding: 0 18px;
+        border-left: none;
+        border-bottom: 3px solid transparent;
+        white-space: nowrap;
+        font-size: 14px;
+      }
+      .nav-item.active {
+        border-left-color: transparent;
+        border-bottom-color: #a5d6a7;
+      }
+      .content {
+        padding: 20px 16px;
+      }
+      .flip-card {
+        width: 94vw;
+        height: 280px;
+      }
+      .progress-grid {
+        grid-template-columns: 1fr;
+      }
+      .card-actions {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+
+    <!-- ===== 左侧菜单 ===== -->
+    <aside class="sidebar">
+      <div class="sidebar-title">📚 考研英语一</div>
+      <div class="nav-item active" data-page="word-cards" onclick="switchPage('word-cards')">
+        <span class="icon">📖</span> 单词卡片
+      </div>
+      <div class="nav-item" data-page="long-sentences" onclick="switchPage('long-sentences')">
+        <span class="icon">📝</span> 长难句解析
+      </div>
+      <div class="nav-item" data-page="study-progress" onclick="switchPage('study-progress')">
+        <span class="icon">📊</span> 学习进度
+      </div>
+    </aside>
+
+    <!-- ===== 右侧内容区 ===== -->
+    <main class="content">
+
+      <!-- ========== 页面1：单词卡片 ========== -->
+      <div class="page active" id="page-word-cards">
+        <div class="word-progress-indicator" id="wordProgress">0 / 0</div>
+        <div class="card-container">
+          <div class="flip-card" id="flipCard" onclick="toggleFlip()">
+            <div class="flip-card-inner">
+              <div class="flip-card-front">
+                <div class="word-display" id="wordDisplay">——</div>
+                <div class="phonetic-display" id="phoneticDisplay"></div>
+                <div class="pos-display" id="posDisplay"></div>
+              </div>
+              <div class="flip-card-back">
+                <div class="meaning-display" id="meaningDisplay">——</div>
+                <div class="example-display" id="exampleDisplay"></div>
+                <div class="example-trans-display" id="exampleTransDisplay"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-actions">
+            <button class="btn btn-next" onclick="event.stopPropagation(); nextWord()">🔄 下一张</button>
+            <button class="btn btn-mastered" onclick="event.stopPropagation(); markMastered()">✅ 学会了</button>
+            <button class="btn btn-review" onclick="event.stopPropagation(); markReview()">❌ 再学一次</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== 页面2：长难句解析 ========== -->
+      <div class="page" id="page-long-sentences">
+        <div class="sentence-nav">
+          <button class="nav-btn" id="prevSentenceBtn" onclick="prevSentence()">◀ 上一句</button>
+          <span class="sentence-counter" id="sentenceCounter">0 / 0</span>
+          <button class="nav-btn" id="nextSentenceBtn" onclick="nextSentence()">下一句 ▶</button>
+        </div>
+
+        <div class="sentence-original" id="sentenceEnglish">加载中...</div>
+        <div class="sentence-translation" id="sentenceChinese">加载中...</div>
+
+        <div class="tab-bar">
+          <div class="tab-item active" data-tab="analysis" onclick="switchTab('analysis')">语法分析</div>
+          <div class="tab-item" data-tab="grammar" onclick="switchTab('grammar')">语法点</div>
+          <div class="tab-item" data-tab="vocab" onclick="switchTab('vocab')">核心词汇</div>
+        </div>
+
+        <div class="tab-content active" id="tab-analysis">加载中...</div>
+        <div class="tab-content" id="tab-grammar">加载中...</div>
+        <div class="tab-content" id="tab-vocab">加载中...</div>
+      </div>
+
+      <!-- ========== 页面3：学习进度 ========== -->
+      <div class="page" id="page-study-progress">
+        <div class="progress-grid">
+          <div class="progress-card">
+            <h3>📖 单词学习进度</h3>
+            <div class="progress-stat">
+              <span class="number" id="wordMasteredCount">0</span>
+              <span class="total">/ <span id="wordTotalCount">0</span></span>
+            </div>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" id="wordProgressBar" style="width:0%"></div>
+            </div>
+          </div>
+          <div class="progress-card">
+            <h3>📝 长难句学习进度</h3>
+            <div class="progress-stat">
+              <span class="number" id="sentenceMasteredCount">0</span>
+              <span class="total">/ <span id="sentenceTotalCount">0</span></span>
+            </div>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" id="sentenceProgressBar" style="width:0%"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="recent-section">
+          <h3>🕐 最近学习的单词</h3>
+          <ul class="recent-list" id="recentList">
+            <li style="color:#999; text-align:center; list-style:none; padding:20px;">加载中...</li>
+          </ul>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ============================================================
+    //  Supabase 客户端
+    // ============================================================
+    const SUPABASE_URL = 'https://yucploakclaznlmfpdkk.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1Y3Bsb2FrY2xhem5sbWZwZGtrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQxNjAyNDQsImV4cCI6MjA5OTczNjI0NH0.-VpUDJgIR0KlEReUM5LzSShIwog2YiJgH28QJAj6GHI';
+
+    const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+      auth: { persistSession: false }
+    });
+
+    // ============================================================
+    //  状态
+    // ============================================================
+    let words = [];
+    let currentWordIndex = -1;
+    let sentences = [];
+    let currentSentenceIndex = 0;
+    let isFlipped = false;
+
+    // ============================================================
+    //  Toast 提示
+    // ============================================================
+    function showToast(msg) {
+      const el = document.getElementById('toast');
+      el.textContent = msg;
+      el.classList.add('show');
+      clearTimeout(el._timer);
+      el._timer = setTimeout(() => el.classList.remove('show'), 2000);
+    }
+
+    // ============================================================
+    //  页面切换
+    // ============================================================
+    function switchPage(pageId) {
+      // 菜单高亮
+      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+      document.querySelector(`.nav-item[data-page="${pageId}"]`).classList.add('active');
+
+      // 页面显示/隐藏
+      document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
+      document.getElementById(`page-${pageId}`).classList.add('active');
+
+      // 页面数据刷新
+      if (pageId === 'word-cards') {
+        if (words.length === 0) loadWords();
+      } else if (pageId === 'long-sentences') {
+        if (sentences.length === 0) loadSentences();
+      } else if (pageId === 'study-progress') {
+        loadProgress();
+      }
+    }
+
+    // ============================================================
+    //  单词卡片
+    // ============================================================
+    async function loadWords() {
+      const { data, error } = await db.from('words').select('*').order('id');
+      if (error) {
+        console.error('加载单词失败:', error);
+        document.getElementById('wordDisplay').textContent = '加载失败';
+        return;
+      }
+      words = data || [];
+      if (words.length > 0) {
+        currentWordIndex = Math.floor(Math.random() * words.length);
+        renderWord();
+      } else {
+        document.getElementById('wordDisplay').textContent = '暂无单词';
+      }
+      updateWordProgress();
+    }
+
+    function updateWordProgress() {
+      const total = words.length;
+      const idx = currentWordIndex >= 0 ? currentWordIndex + 1 : 0;
+      document.getElementById('wordProgress').textContent = total > 0 ? `${idx} / ${total}` : '0 / 0';
+    }
+
+    function renderWord() {
+      if (currentWordIndex < 0 || currentWordIndex >= words.length) return;
+      const w = words[currentWordIndex];
+
+      // 翻回正面
+      if (isFlipped) {
+        document.getElementById('flipCard').classList.remove('flipped');
+        isFlipped = false;
+      }
+
+      document.getElementById('wordDisplay').textContent = w.word || '——';
+      document.getElementById('phoneticDisplay').textContent = w.phonetic || '';
+      document.getElementById('posDisplay').textContent = w.part_of_speech || '';
+      document.getElementById('meaningDisplay').textContent = w.meaning || '——';
+      document.getElementById('exampleDisplay').textContent = w.example_sentence || '';
+      document.getElementById('exampleTransDisplay').textContent = w.example_translation || '';
+
+      updateWordProgress();
+    }
+
+    function toggleFlip() {
+      const card = document.getElementById('flipCard');
+      card.classList.toggle('flipped');
+      isFlipped = card.classList.contains('flipped');
+    }
+
+    function nextWord() {
+      if (words.length === 0) return;
+      let newIdx;
+      do {
+        newIdx = Math.floor(Math.random() * words.length);
+      } while (words.length > 1 && newIdx === currentWordIndex);
+      currentWordIndex = newIdx;
+      renderWord();
+    }
+
+    async function markMastered() {
+      const w = words[currentWordIndex];
+      if (!w) return;
+
+      const btn = document.querySelector('.btn-mastered');
+      btn.disabled = true;
+
+      try {
+        const { data: existing } = await db
+          .from('study_progress')
+          .select('id')
+          .eq('item_type', 'word')
+          .eq('item_id', w.id)
+          .maybeSingle();
+
+        if (existing) {
+          await db
+            .from('study_progress')
+            .update({ mastered: true, last_reviewed: new Date().toISOString() })
+            .eq('id', existing.id);
+        } else {
+          await db
+            .from('study_progress')
+            .insert({
+              item_type: 'word',
+              item_id: w.id,
+              mastered: true,
+              review_count: 0,
+              last_reviewed: new Date().toISOString()
+            });
+        }
+        showToast(`✅ "${w.word}" 已标记为掌握！`);
+      } catch (e) {
+        console.error(e);
+        showToast('操作失败，请重试');
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    async function markReview() {
+      const w = words[currentWordIndex];
+      if (!w) return;
+
+      const btn = document.querySelector('.btn-review');
+      btn.disabled = true;
+
+      try {
+        const { data: existing } = await db
+          .from('study_progress')
+          .select('id, review_count')
+          .eq('item_type', 'word')
+          .eq('item_id', w.id)
+          .maybeSingle();
+
+        if (existing) {
+          await db
+            .from('study_progress')
+            .update({
+              review_count: (existing.review_count || 0) + 1,
+              last_reviewed: new Date().toISOString(),
+              mastered: false
+            })
+            .eq('id', existing.id);
+        } else {
+          await db
+            .from('study_progress')
+            .insert({
+              item_type: 'word',
+              item_id: w.id,
+              mastered: false,
+              review_count: 1,
+              last_reviewed: new Date().toISOString()
+            });
+        }
+        showToast(`📝 "${w.word}" 已记录复习 +1`);
+      } catch (e) {
+        console.error(e);
+        showToast('操作失败，请重试');
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    // ============================================================
+    //  长难句解析
+    // ============================================================
+    async function loadSentences() {
+      const { data, error } = await db.from('long_sentences').select('*').order('id');
+      if (error) {
+        console.error('加载长难句失败:', error);
+        return;
+      }
+      sentences = data || [];
+      currentSentenceIndex = 0;
+      if (sentences.length > 0) {
+        renderSentence();
+      } else {
+        document.getElementById('sentenceEnglish').textContent = '暂无长难句数据';
+      }
+    }
+
+    function renderSentence() {
+      if (sentences.length === 0) return;
+      const s = sentences[currentSentenceIndex];
+
+      document.getElementById('sentenceEnglish').textContent = s.english || '';
+      document.getElementById('sentenceChinese').textContent = s.chinese || '';
+      document.getElementById('sentenceCounter').textContent = `${currentSentenceIndex + 1} / ${sentences.length}`;
+
+      // 更新导航按钮状态
+      document.getElementById('prevSentenceBtn').disabled = currentSentenceIndex === 0;
+      document.getElementById('nextSentenceBtn').disabled = currentSentenceIndex === sentences.length - 1;
+
+      // 填充三个 tab
+      document.getElementById('tab-analysis').textContent = s.analysis || '暂无分析';
+      document.getElementById('tab-grammar').textContent = s.grammar_points || '暂无语法点';
+
+      // 核心词汇（数组格式）
+      const vocabContainer = document.getElementById('tab-vocab');
+      if (s.key_vocabulary && s.key_vocabulary.length > 0) {
+        vocabContainer.innerHTML = s.key_vocabulary.map(v => `<span class="vocab-tag">${v}</span>`).join('');
+      } else {
+        vocabContainer.textContent = '暂无核心词汇';
+      }
+
+      // 重置 tab 到第一个
+      switchTab('analysis');
+    }
+
+    function prevSentence() {
+      if (currentSentenceIndex > 0) {
+        currentSentenceIndex--;
+        renderSentence();
+      }
+    }
+
+    function nextSentence() {
+      if (currentSentenceIndex < sentences.length - 1) {
+        currentSentenceIndex++;
+        renderSentence();
+      }
+    }
+
+    function switchTab(tabName) {
+      document.querySelectorAll('.tab-item').forEach(el => el.classList.remove('active'));
+      document.querySelector(`.tab-item[data-tab="${tabName}"]`).classList.add('active');
+
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.getElementById(`tab-${tabName}`).classList.add('active');
+    }
+
+    // ============================================================
+    //  学习进度
+    // ============================================================
+    async function loadProgress() {
+      try {
+        // 单词总数
+        const { count: wordTotal } = await db
+          .from('words')
+          .select('*', { count: 'exact', head: true });
+
+        document.getElementById('wordTotalCount').textContent = wordTotal || 0;
+
+        // 已掌握单词数
+        const { count: wordMastered } = await db
+          .from('study_progress')
+          .select('*', { count: 'exact', head: true })
+          .eq('item_type', 'word')
+          .eq('mastered', true);
+
+        document.getElementById('wordMasteredCount').textContent = wordMastered || 0;
+
+        // 进度条
+        const wp = wordTotal > 0 ? Math.round((wordMastered / wordTotal) * 100) : 0;
+        document.getElementById('wordProgressBar').style.width = wp + '%';
+
+        // 长难句总数
+        const { count: sentTotal } = await supabase
+          .from('long_sentences')
+          .select('*', { count: 'exact', head: true });
+
+        document.getElementById('sentenceTotalCount').textContent = sentTotal || 0;
+
+        // 已掌握长难句数
+        const { count: sentMastered } = await supabase
+          .from('study_progress')
+          .select('*', { count: 'exact', head: true })
+          .eq('item_type', 'sentence')
+          .eq('mastered', true);
+
+        document.getElementById('sentenceMasteredCount').textContent = sentMastered || 0;
+
+        const sp = sentTotal > 0 ? Math.round((sentMastered / sentTotal) * 100) : 0;
+        document.getElementById('sentenceProgressBar').style.width = sp + '%';
+
+        // 最近7天学习的单词
+        const sevenDaysAgo = new Date();
+        sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+        const { data: recentProgress } = await supabase
+          .from('study_progress')
+          .select('item_id, last_reviewed')
+          .eq('item_type', 'word')
+          .gte('last_reviewed', sevenDaysAgo.toISOString())
+          .order('last_reviewed', { ascending: false })
+          .limit(20);
+
+        const recentList = document.getElementById('recentList');
+
+        if (!recentProgress || recentProgress.length === 0) {
+          recentList.innerHTML = '<li style="color:#999; text-align:center; list-style:none; padding:20px;">最近7天暂无学习记录</li>';
+          return;
+        }
+
+        // 查询对应的单词信息
+        const ids = recentProgress.map(r => r.item_id);
+        const { data: recentWords } = await supabase
+          .from('words')
+          .select('id, word, meaning')
+          .in('id', ids);
+
+        const wordMap = {};
+        if (recentWords) {
+          recentWords.forEach(w => { wordMap[w.id] = w; });
+        }
+
+        recentList.innerHTML = recentProgress.map(r => {
+          const info = wordMap[r.item_id];
+          const time = new Date(r.last_reviewed);
+          const timeStr = `${time.getMonth() + 1}/${time.getDate()} ${String(time.getHours()).padStart(2, '0')}:${String(time.getMinutes()).padStart(2, '0')}`;
+          const wordName = info ? info.word : `ID:${r.item_id}`;
+          const meaning = info ? info.meaning : '';
+          return `<li>
+            <div>
+              <span class="word-name">${wordName}</span>
+              <span class="word-meaning">${meaning}</span>
+            </div>
+            <span class="word-time">${timeStr}</span>
+          </li>`;
+        }).join('');
+
+      } catch (e) {
+        console.error('加载进度失败:', e);
+      }
+    }
+
+    // ============================================================
+    //  初始化
+    // ============================================================
+    document.addEventListener('DOMContentLoaded', () => {
+      loadWords();
+      // 预加载其他数据
+      loadSentences();
+    });
+  </script>
+</body>
+</html>
