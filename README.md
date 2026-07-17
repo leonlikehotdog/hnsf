@@ -2,6 +2,22 @@
 
 > 华南师范大学软件工程学硕在职备考一站式 H5 学习平台。
 
+> 多机同步仓库：[https://github.com/leonlikehotdog/hnsf](https://github.com/leonlikehotdog/hnsf)
+
+## 另一台电脑拉取方式
+
+```bash
+# 首次拉取（含 Windows / Mac / Linux 统一 LF 行尾，自动忽略 OS 垃圾）
+git clone git@github.com:leonlikehotdog/hnsf.git
+cd hnsf
+
+# 之后每次同步只需
+git pull
+```
+
+> 若另一台电脑未配 SSH key，请先在该电脑上 `ssh-keygen -t ed25519` 生成密钥，把
+> `~/.ssh/id_ed25519.pub` 贴到 GitHub → Settings → SSH and GPG keys，再执行上面命令。
+
 ## 目录结构
 
 ```
