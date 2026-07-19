@@ -1,0 +1,65 @@
+<section class="chapter-card" id="ch08">
+    <div class="ch-header">
+        <div class="ch-title">第八章：常微分方程 <span class="ch-score">| 8分</span></div>
+        <div class="ch-stars star-high">★★★</div>
+    </div>
+    <div class="ch-content">
+        <p><span class="section-tag tag-core">🎯 核心考点</span></p>
+        <ul>
+            <li>一阶线性微分方程</li>
+            <li>二阶常系数线性微分方程</li>
+        </ul>
+        <div class="must-card">
+            <div class="must-label">📖 必背：一阶线性微分方程通解公式</div>
+            <p>标准形式：y' + P(x)y = Q(x)</p>
+            <div class="formula-box">y = e<sup>-∫Pdx</sup>[ ∫Q·e<sup>∫Pdx</sup>dx + C ]</div>
+        </div>
+        <div class="must-card">
+            <div class="must-label">📖 二阶常系数齐次微分方程</div>
+            <p>y'' + py' + qy = 0，写特征方程 r² + pr + q = 0：</p>
+            <ul>
+                <li>两个不等实根 r₁ ≠ r₂：y = C₁e<sup>r₁x</sup> + C₂e<sup>r₂x</sup></li>
+                <li>重根 r₁ = r₂ = r：y = (C₁ + C₂x)e<sup>rx</sup></li>
+                <li>共轭复根 r = α ± βi：y = e<sup>αx</sup>(C₁cos βx + C₂sin βx)</li>
+            </ul>
+        </div>
+        <div class="example-card">
+            <div class="example-label">📝 例题</div>
+            <div class="example-question">求微分方程 y' + 2y = e<sup>x</sup> 的通解</div>
+            <div class="example-hint">
+                这是一阶线性微分方程，P(x) = 2，Q(x) = e<sup>x</sup>。<br>
+                ∫Pdx = 2x，e<sup>∫Pdx</sup> = e<sup>2x</sup>，e<sup>-∫Pdx</sup> = e<sup>-2x</sup>。<br>
+                y = e<sup>-2x</sup>[∫e<sup>x</sup>·e<sup>2x</sup>dx + C] = e<sup>-2x</sup>[∫e<sup>3x</sup>dx + C] = e<sup>-2x</sup>[e<sup>3x</sup>/3 + C] = <strong>e<sup>x</sup>/3 + Ce<sup>-2x</sup></strong>
+            </div>
+        </div>
+    <!-- ====== 历年真题与考点分析 ====== -->
+<div class="part-divider pexam" id="exam-ch08">
+  <div class="pd-num">📝</div>
+  <div class="pd-text">
+    <div class="pd-name">历年真题 · 出题人考察点 · 得分点</div>
+    <div class="pd-desc">本模块整合本章高频真题，按「考什么 → 怎么答 → 易错点」拆解</div>
+  </div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 真题 1 | 2020 数一/二 | 解答题 · 12分</div>
+  <div class="example-question">求微分方程 \(y\prime\prime+2y\prime+y=xe^{x}\) 的通解。</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>① 二阶常系数非齐次线性方程求解；② 重根情形；③ 特解形式判断</p>
+  <p><span class="section-tag tag-tip">🧭 详细解析（小白逐步版）</span></p>
+  <p>**齐次解**：特征方程 \(r^2+2r+1=0\)，\(r=-1\)（重根），\(y_h=(C_1+C_2 x)e^{-x}\)。**特解**：\(f(x)=xe^x\)，\(\lambda=1\) 不是特征根，设 \(y^*=e^x(Ax+B)\)。代入解得 \(A=1/4, B=-1/4\)。\(y^*=\dfrac{1}{4}(x-1)e^x\)。通解 \(y=(C_1+C_2 x)e^{-x}+\dfrac{1}{4}(x-1)e^x\)。</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 齐次解 (4分)；② 特解形式 (2分)；③ 代入求系数 (4分)；④ 通解 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>⚠️ 重根时齐次解忘了 \(x\) 因子；⚠️ 特解形式判断错（\(\lambda\) 与特征根的关系）</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点会在本章<strong>其他例题</strong>反复出现。建议：做完本题后回头重做一遍本章前面的练习题，强化「识别信号 → 套公式」的肌肉记忆。</p>
+</div>
+<div class="must-card">
+  <div class="must-label">🎯 本章应试策略总结（80 分必备）</div>
+  <p><strong>1. 答题时间分配：</strong>选择题 2~3 分钟/题，填空题 3 分钟/题，解答题 8~12 分钟/题。</p>
+  <p><strong>2. 答题顺序：</strong>先做 5 分钟内能拿分的题，再回头啃难的。</p>
+  <p><strong>3. 关键拿分动作：</strong>写对公式 + 写出关键步骤 + 给出最终答案。每一步都对应一个得分点。</p>
+  <p><strong>4. 复盘方法：</strong>做完真题后对照「得分点」清单逐项打分，缺哪一步就回去补哪一步。</p>
+</div>
+    </div>
+</section>

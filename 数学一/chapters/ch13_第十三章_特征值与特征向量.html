@@ -1,0 +1,66 @@
+<section class="chapter-card" id="ch13">
+    <div class="ch-header">
+        <div class="ch-title">第十三章：特征值与特征向量 <span class="ch-score">| 6分</span></div>
+        <div class="ch-stars star-high">⭐⭐⭐⭐⭐</div>
+    </div>
+    <div class="ch-content">
+        <p><span class="section-tag tag-core">🎯 核心考点</span></p>
+        <ul>
+            <li>特征值、特征向量的计算</li>
+            <li>相似对角化</li>
+        </ul>
+        <div class="must-card">
+            <div class="must-label">📖 必背：特征方程</div>
+            <div class="formula-box">|A - λE| = 0</div>
+            <p style="margin-top:6px;">解此方程得特征值 λ，然后解 (A - λE)x = 0 得特征向量</p>
+        </div>
+        <div class="must-card">
+            <div class="must-label">📖 必背：特征值性质</div>
+            <ul>
+                <li>所有特征值之和 = 矩阵的迹（主对角线元素之和）</li>
+                <li>所有特征值之积 = 行列式 |A|</li>
+                <li>若 λ 是 A 的特征值，则 λ<sup>k</sup> 是 A<sup>k</sup> 的特征值</li>
+            </ul>
+        </div>
+        <div class="example-card">
+            <div class="example-label">📝 例题</div>
+            <div class="example-question">求矩阵 A = [2 1; 1 2] 的特征值和特征向量</div>
+            <div class="example-hint">
+                特征方程 |A-λE| = |2-λ  1; 1  2-λ| = (2-λ)² - 1 = 0<br>
+                解得 λ₁ = 3，λ₂ = 1。<br>
+                λ=3 时：(A-3E)x = 0 ⟹ [-1 1; 1 -1]x=0 ⟹ x₁=x₂，取 ξ₁=(1,1)<sup>T</sup><br>
+                λ=1 时：(A-E)x = 0 ⟹ [1 1; 1 1]x=0 ⟹ x₁=-x₂，取 ξ₂=(1,-1)<sup>T</sup><br>
+                所以特征值为 <strong>3 和 1</strong>，对应特征向量为 <strong>(1,1)<sup>T</sup> 和 (1,-1)<sup>T</sup></strong>
+            </div>
+        </div>
+    <!-- ====== 历年真题与考点分析 ====== -->
+<div class="part-divider pexam" id="exam-ch13">
+  <div class="pd-num">📝</div>
+  <div class="pd-text">
+    <div class="pd-name">历年真题 · 出题人考察点 · 得分点</div>
+    <div class="pd-desc">本模块整合本章高频真题，按「考什么 → 怎么答 → 易错点」拆解</div>
+  </div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 真题 1 | 2023 数一/二 | 解答题 · 12分</div>
+  <div class="example-question">设 \(A=\begin{pmatrix}1&-1&1\\2&4&-2\\-3&-3&5\end{pmatrix}\)，求 \(A\) 的特征值和特征向量。</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>① 特征多项式计算；② 特征向量求解；③ 行最简形化简</p>
+  <p><span class="section-tag tag-tip">🧭 详细解析（小白逐步版）</span></p>
+  <p>特征多项式 \(|\lambda E-A|=(\lambda-2)(\lambda-3)(\lambda-5)\)。特征值 \(\lambda_1=2,\lambda_2=3,\lambda_3=5\)。对应特征向量分别 \((1,-2,3)^T,(-1,1,0)^T,(1,-2,1)^T\)。</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 特征多项式 (5分)；② 解特征值 (2分)；③ 特征向量 (5分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>⚠️ 特征多项式展开错；⚠️ 解方程组时行变换出错</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点会在本章<strong>其他例题</strong>反复出现。建议：做完本题后回头重做一遍本章前面的练习题，强化「识别信号 → 套公式」的肌肉记忆。</p>
+</div>
+<div class="must-card">
+  <div class="must-label">🎯 本章应试策略总结（80 分必备）</div>
+  <p><strong>1. 答题时间分配：</strong>选择题 2~3 分钟/题，填空题 3 分钟/题，解答题 8~12 分钟/题。</p>
+  <p><strong>2. 答题顺序：</strong>先做 5 分钟内能拿分的题，再回头啃难的。</p>
+  <p><strong>3. 关键拿分动作：</strong>写对公式 + 写出关键步骤 + 给出最终答案。每一步都对应一个得分点。</p>
+  <p><strong>4. 复盘方法：</strong>做完真题后对照「得分点」清单逐项打分，缺哪一步就回去补哪一步。</p>
+</div>
+    </div>
+</section>

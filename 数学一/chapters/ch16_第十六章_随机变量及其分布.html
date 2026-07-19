@@ -1,0 +1,57 @@
+<section class="chapter-card" id="ch16">
+    <div class="ch-header">
+        <div class="ch-title">第十六章：随机变量及其分布 <span class="ch-score">| 6分</span></div>
+        <div class="ch-stars star-high">★★★</div>
+    </div>
+    <div class="ch-content">
+        <p><span class="section-tag tag-core">🎯 核心考点</span></p>
+        <ul>
+            <li>常见分布：0-1分布、二项分布、泊松分布、正态分布、均匀分布、指数分布</li>
+        </ul>
+        <div class="must-card">
+            <div class="must-label">📖 必背：常见分布一览表</div>
+            <table>
+                <thead>
+                    <tr><th>分布名称</th><th>概率密度/分布律</th><th>期望 E(X)</th><th>方差 D(X)</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>0-1 分布 B(1,p)</td><td>P(X=1)=p，P(X=0)=1-p</td><td>p</td><td>p(1-p)</td></tr>
+                    <tr><td>二项分布 B(n,p)</td><td>C(n,k)p<sup>k</sup>(1-p)<sup>n-k</sup></td><td>np</td><td>np(1-p)</td></tr>
+                    <tr><td>泊松分布 P(λ)</td><td>e<sup>-λ</sup>λ<sup>k</sup>/k!</td><td>λ</td><td>λ</td></tr>
+                    <tr><td>均匀分布 U[a,b]</td><td>1/(b-a), a≤x≤b</td><td>(a+b)/2</td><td>(b-a)²/12</td></tr>
+                    <tr><td>指数分布 Exp(λ)</td><td>λe<sup>-λx</sup>, x≥0</td><td>1/λ</td><td>1/λ²</td></tr>
+                    <tr><td>正态分布 N(μ,σ²)</td><td>1/(σ√2π)·e<sup>-(x-μ)²/(2σ²)</sup></td><td>μ</td><td>σ²</td></tr>
+                </tbody>
+            </table>
+        </div>
+    <!-- ====== 历年真题与考点分析 ====== -->
+<div class="part-divider pexam" id="exam-ch16">
+  <div class="pd-num">📝</div>
+  <div class="pd-text">
+    <div class="pd-name">历年真题 · 出题人考察点 · 得分点</div>
+    <div class="pd-desc">本模块整合本章高频真题，按「考什么 → 怎么答 → 易错点」拆解</div>
+  </div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 真题 1 | 2022 数一 | 填空题 · 5分</div>
+  <div class="example-question">设随机变量 \(X\sim N(2,4)\)，则 \(P(|X-2|&lt;4)=\)（ ）。</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>① 正态分布标准化；② \(\Phi(-x)=1-\Phi(x)\)；③ 查表能力</p>
+  <p><span class="section-tag tag-tip">🧭 详细解析（小白逐步版）</span></p>
+  <p>\(X\sim N(2,4)\)，\(\sigma=2\)，\(|X-2|&lt;4 \Leftrightarrow |X-2|&lt;2\sigma\)，\(P(|X-\mu|&lt;2\sigma)=2\Phi(2)-1=0.9544\)。</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 标准化 (2分)；② 查表 (2分)；③ 化简 (1分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>⚠️ \(\sigma^2=4\) 时 \(\sigma=2\) 不是 4；⚠️ \(\Phi\) 值查错</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点会在本章<strong>其他例题</strong>反复出现。建议：做完本题后回头重做一遍本章前面的练习题，强化「识别信号 → 套公式」的肌肉记忆。</p>
+</div>
+<div class="must-card">
+  <div class="must-label">🎯 本章应试策略总结（80 分必备）</div>
+  <p><strong>1. 答题时间分配：</strong>选择题 2~3 分钟/题，填空题 3 分钟/题，解答题 8~12 分钟/题。</p>
+  <p><strong>2. 答题顺序：</strong>先做 5 分钟内能拿分的题，再回头啃难的。</p>
+  <p><strong>3. 关键拿分动作：</strong>写对公式 + 写出关键步骤 + 给出最终答案。每一步都对应一个得分点。</p>
+  <p><strong>4. 复盘方法：</strong>做完真题后对照「得分点」清单逐项打分，缺哪一步就回去补哪一步。</p>
+</div>
+    </div>
+</section>

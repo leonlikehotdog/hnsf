@@ -3,8 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>考研数学一 · 小白上岸手册 | 目标80分</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css?v=4">
+    <!-- KaTeX：数学公式渲染（本地化，离线可用） -->
+    <link rel="stylesheet" href="css/katex.min.css?v=4">
+    <script defer src="js/katex.min.js?v=4"></script>
+    <script defer src="js/auto-render.min.js?v=4"></script>
+    <!-- Supabase：题目掌握记录存储 -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -29,6 +38,43 @@
             <span class="target-badge">🎯 目标 80 分 · 抓大放小</span>
         </header>
 
+        <!-- ===== 考研倒计时 ===== -->
+        <div class="countdown-bar" id="countdownBar">
+          <div class="cb-left">
+            <div class="cb-icon" id="cbIcon">⏰</div>
+            <div class="cb-info">
+              <div class="cb-title">距离 <span id="cbYear">2026</span> 考研还有</div>
+              <div class="cb-date">考试日：<span id="cbDateText">2026-12-19（周六）08:30 开考</span></div>
+            </div>
+          </div>
+          <div class="cb-units">
+            <div class="cb-unit">
+              <span class="cb-num" id="cdDays">--</span>
+              <span class="cb-unit-label">天</span>
+            </div>
+            <div class="cb-sep">:</div>
+            <div class="cb-unit">
+              <span class="cb-num" id="cdHours">--</span>
+              <span class="cb-unit-label">时</span>
+            </div>
+            <div class="cb-sep">:</div>
+            <div class="cb-unit">
+              <span class="cb-num" id="cdMins">--</span>
+              <span class="cb-unit-label">分</span>
+            </div>
+            <div class="cb-sep">:</div>
+            <div class="cb-unit">
+              <span class="cb-num" id="cdSecs">--</span>
+              <span class="cb-unit-label">秒</span>
+            </div>
+          </div>
+          <div class="cb-progress-wrap" title="距离考试进度">
+            <div class="cb-progress-bar"><div class="cb-progress-fill" id="cbProgressFill"></div></div>
+            <div class="cb-progress-text" id="cbProgressText">--%</div>
+          </div>
+          <button class="cb-settings" id="cbSettings" title="设置考试日期">⚙️</button>
+        </div>
+
         <div class="content-wrap" id="contentWrap">
             <div class="chapter-loading">
                 <div class="spinner"></div>
@@ -44,9 +90,132 @@
     </aside>
 </div>
 
+<!-- ===== 番茄钟（悬浮按钮 + 弹窗）===== -->
+<div class="pomo-float" id="pomoFloat">
+  <button class="pomo-float-btn" id="pomoFloatBtn" title="番茄钟（点击展开）">
+    <svg class="pomo-ring" viewBox="0 0 64 64">
+      <circle class="pomo-ring-bg" cx="32" cy="32" r="28"/>
+      <circle class="pomo-ring-fg" id="pomoRingFg" cx="32" cy="32" r="28"/>
+    </svg>
+    <div class="pomo-float-icon" id="pomoFloatIcon">🍅</div>
+    <div class="pomo-float-time" id="pomoFloatTime">25:00</div>
+  </button>
+
+  <div class="pomo-panel" id="pomoPanel" hidden>
+    <div class="pomo-panel-head">
+      <div class="pomo-panel-title">🍅 番茄钟 · 学霸专注器</div>
+      <button class="pomo-close" id="pomoClose" title="收起">✕</button>
+    </div>
+
+    <!-- 模式选择 -->
+    <div class="pomo-section">
+      <div class="pomo-section-label">📌 选择模式</div>
+      <div class="pomo-presets" id="pomoPresets"></div>
+    </div>
+
+    <!-- 大圆环 + 倒计时显示 -->
+    <div class="pomo-circle-wrap">
+      <svg class="pomo-big-ring" viewBox="0 0 200 200">
+        <circle class="pomo-big-ring-bg" cx="100" cy="100" r="90"/>
+        <circle class="pomo-big-ring-fg" id="pomoBigRingFg" cx="100" cy="100" r="90"/>
+      </svg>
+      <div class="pomo-time-display" id="pomoTimeDisplay">25:00</div>
+      <div class="pomo-state-display" id="pomoStateDisplay">准备开始</div>
+    </div>
+
+    <!-- 控制按钮 -->
+    <div class="pomo-controls">
+      <button class="pomo-btn pomo-btn-primary" id="pomoStartBtn">▶ 开始</button>
+      <button class="pomo-btn" id="pomoPauseBtn" hidden>⏸ 暂停</button>
+      <button class="pomo-btn" id="pomoResumeBtn" hidden>▶ 继续</button>
+      <button class="pomo-btn pomo-btn-secondary" id="pomoResetBtn">⟲ 重置</button>
+      <button class="pomo-btn pomo-btn-tertiary" id="pomoSkipBtn">⏭ 跳过</button>
+    </div>
+
+    <!-- 今日统计 -->
+    <div class="pomo-stats">
+      <div class="pomo-stat-item">
+        <div class="pomo-stat-num" id="pomoTodayCount">0</div>
+        <div class="pomo-stat-label">今日番茄</div>
+      </div>
+      <div class="pomo-stat-item">
+        <div class="pomo-stat-num" id="pomoTodayMin">0</div>
+        <div class="pomo-stat-label">专注分钟</div>
+      </div>
+      <div class="pomo-stat-item">
+        <div class="pomo-stat-num" id="pomoStreak">0</div>
+        <div class="pomo-stat-label">连续天数</div>
+      </div>
+    </div>
+
+    <!-- 自定义时长 -->
+    <div class="pomo-section" id="pomoCustomSection" hidden>
+      <div class="pomo-section-label">⚙ 自定义时长</div>
+      <div class="pomo-custom-row">
+        <label>专注 <input type="number" id="pomoWorkMin" min="1" max="180" value="25"> 分</label>
+        <label>休息 <input type="number" id="pomoBreakMin" min="0" max="60" value="5"> 分</label>
+        <button class="pomo-btn-mini" id="pomoSaveCustom">💾 保存</button>
+      </div>
+    </div>
+
+    <!-- 设置 -->
+    <div class="pomo-section">
+      <div class="pomo-section-label">⚙ 设置</div>
+      <div class="pomo-settings">
+        <label class="pomo-toggle">
+          <input type="checkbox" id="pomoAutoBreak" checked>
+          <span>自动开始休息</span>
+        </label>
+        <label class="pomo-toggle">
+          <input type="checkbox" id="pomoAutoNext" checked>
+          <span>休息后自动开始下一轮</span>
+        </label>
+        <label class="pomo-toggle">
+          <input type="checkbox" id="pomoNotify" checked>
+          <span>浏览器通知</span>
+        </label>
+        <label class="pomo-toggle">
+          <input type="checkbox" id="pomoSound" checked>
+          <span>声音提醒</span>
+        </label>
+        <label class="pomo-toggle">
+          <span>音量</span>
+          <input type="range" id="pomoVolume" min="0" max="100" value="60">
+        </label>
+        <label class="pomo-toggle">
+          <span>提示音</span>
+          <select id="pomoAlarmType">
+            <option value="bell">🔔 钟声（柔和）</option>
+            <option value="chime">🎵 风铃（清脆）</option>
+            <option value="beep">📢 蜂鸣（强烈）</option>
+            <option value="melody">🎼 旋律（多音）</option>
+          </select>
+        </label>
+      </div>
+    </div>
+
+    <!-- 今日完成列表 -->
+    <div class="pomo-section">
+      <div class="pomo-section-label">📜 今日完成</div>
+      <div class="pomo-history" id="pomoHistory"></div>
+    </div>
+
+    <div class="pomo-footer">
+      <small>💡 番茄工作法：25 分钟专注 + 5 分钟休息，每完成 4 个长休息一次</small>
+    </div>
+  </div>
+</div>
+
 <!-- ===== Back to Top ===== -->
 <button class="back-to-top" id="backToTop" aria-label="回到顶部">↑</button>
 
-<script src="js/app.js"></script>
+<script src="js/app.js?v=5"></script>
+<!-- 练习题库：每章一个文件，统一挂到 window.PRACTICE_DATA 上 -->
+<script defer src="chapters/ch01_problems.js?v=5"></script>
+<!-- 公式速查数据：每章必备公式 -->
+<script defer src="chapters/formula_data.js?v=5"></script>
+<!-- 真题精练数据 + 模块逻辑 -->
+<script defer src="chapters/zhenti_data.js?v=5"></script>
+<script defer src="js/zhenti.js?v=5"></script>
 </body>
 </html>

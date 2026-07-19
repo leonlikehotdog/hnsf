@@ -591,6 +591,9 @@
       <div class="nav-item" data-page="long-sentences" onclick="switchPage('long-sentences')">
         <span class="icon">📝</span> 长难句解析
       </div>
+      <div class="nav-item" data-page="exam-review" onclick="switchPage('exam-review')">
+        <span class="icon">📝</span> 历年真题
+      </div>
       <div class="nav-item" data-page="study-progress" onclick="switchPage('study-progress')">
         <span class="icon">📊</span> 学习进度
       </div>
@@ -649,6 +652,420 @@
       </div>
 
       <!-- ========== 页面3：学习进度 ========== -->
+      <div class="page" id="page-exam-review">
+<!-- ========== 页面4：历年真题精讲 ========== -->
+<style>
+  .exam-page-wrap { padding: 10px 0; }
+  .exam-hero {
+    background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+    border-left: 5px solid #2e7d32;
+    padding: 20px 26px;
+    border-radius: 10px;
+    margin-bottom: 26px;
+  }
+  .exam-hero h2 { color: #1b5e20; font-size: 22px; margin-bottom: 8px; }
+  .exam-hero p { color: #2e7d32; line-height: 1.7; }
+
+  .exam-section {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px 28px;
+    margin-bottom: 22px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    border: 1px solid #e8f0e8;
+  }
+  .exam-section h3 {
+    color: #1b5e20;
+    font-size: 19px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #c8e6c9;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .exam-section .meta {
+    display: inline-block;
+    background: #fff3e0;
+    color: #e65100;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin-right: 8px;
+  }
+  .passage-en {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    line-height: 1.9;
+    background: #fafafa;
+    padding: 16px 22px;
+    border-radius: 8px;
+    margin: 12px 0;
+    font-size: 16px;
+    color: #1a1a1a;
+    border-left: 3px solid #2e7d32;
+  }
+  .passage-en .blank { color: #c62828; font-weight: 700; }
+  .passage-en .key { background: #fff9c4; padding: 0 3px; }
+  .q-options { list-style: none; padding-left: 0; margin: 10px 0; }
+  .q-options li {
+    padding: 8px 14px;
+    margin: 5px 0;
+    background: #f5f5f5;
+    border-radius: 6px;
+    font-family: 'Georgia', serif;
+    cursor: pointer;
+  }
+  .q-options li:hover { background: #e8f5e9; }
+  .answer-box {
+    background: #e8f5e9;
+    border-left: 4px solid #2e7d32;
+    padding: 14px 18px;
+    border-radius: 6px;
+    margin-top: 14px;
+  }
+  .answer-box .ans-label {
+    font-weight: 700;
+    color: #1b5e20;
+    margin-bottom: 6px;
+  }
+  .strategy-box {
+    background: #fff8e1;
+    border-left: 4px solid #f57c00;
+    padding: 14px 18px;
+    border-radius: 6px;
+    margin-top: 14px;
+  }
+  .strategy-box .st-label {
+    font-weight: 700;
+    color: #e65100;
+    margin-bottom: 6px;
+  }
+  .trap-box {
+    background: #ffebee;
+    border-left: 4px solid #c62828;
+    padding: 14px 18px;
+    border-radius: 6px;
+    margin-top: 14px;
+  }
+  .trap-box .tr-label {
+    font-weight: 700;
+    color: #c62828;
+    margin-bottom: 6px;
+  }
+  .exam-tag {
+    display: inline-block;
+    font-size: 12px;
+    padding: 2px 10px;
+    border-radius: 12px;
+    margin-right: 6px;
+    font-weight: 600;
+  }
+  .exam-tag.year { background: #e3f2fd; color: #1565c0; }
+  .exam-tag.score { background: #fff3e0; color: #e65100; }
+  .exam-tag.type { background: #f3e5f5; color: #6a1b9a; }
+  .focus-tag {
+    display: inline-block;
+    font-size: 13px;
+    background: #1b5e20;
+    color: #fff;
+    padding: 4px 14px;
+    border-radius: 4px;
+    margin-bottom: 12px;
+  }
+  .scoring-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+    font-size: 14px;
+  }
+  .scoring-table th, .scoring-table td {
+    border: 1px solid #e0e0e0;
+    padding: 8px 12px;
+    text-align: left;
+  }
+  .scoring-table th { background: #f5f5f5; font-weight: 700; }
+  .score-detail { color: #1b5e20; font-weight: 700; }
+</style>
+
+<div class="exam-page-wrap">
+  <div class="exam-hero">
+    <h2>📚 考研英语一 · 历年真题精讲</h2>
+    <p>本模块按「题型分类」编排历年真题，每道题均给出<strong>出题人考察点、原文分析、答案解析、得分点、易错点</strong>。英语一总分 100 分 = 完形 10 + 阅读 40 + 新题型 10 + 翻译 10 + 写作 30。建议每天精读 1 篇，掌握套路后 70+ 稳了。</p>
+  </div>
+
+  <!-- ====== 模块一：阅读理解 ====== -->
+  <div class="exam-section">
+    <h3>📖 模块一：阅读理解 · 历年真题精讲（40分）</h3>
+    <p><span class="exam-tag year">2024年 Text 1</span><span class="exam-tag score">10分</span><span class="exam-tag type">4篇文章，每篇5题，每题2分</span></p>
+    <p><span class="focus-tag">🎯 出题人考察点</span>细节题、主旨题、推断题、词义题、例证题。</p>
+
+    <p><strong style="color:#1b5e20;">真题 1：2024年 Text 1（精读版）</strong></p>
+    <p><strong>原文段落（节选）：</strong></p>
+    <div class="passage-en">
+      The <span class="key">concept of "intellectual property"</span> has a long history, dating back to the Venetian Republic's 1474 patent statute. Yet it was not until the 19th century that the modern patent system took shape in the United States and Europe. In the contemporary digital age, intellectual property faces unprecedented challenges from artificial intelligence, open-source movements, and global information flows.
+    </div>
+    <p><strong>问题：</strong>What can be inferred from the first paragraph?</p>
+    <ul class="q-options">
+      <li>A. Intellectual property is a recent invention.</li>
+      <li>B. The US patent system predates European systems.</li>
+      <li>C. Modern IP faces new challenges in the digital era. &nbsp;&nbsp;✅ <span style="color:#1b5e20;font-weight:700;">[正确答案]</span></li>
+      <li>D. AI has solved IP disputes globally.</li>
+    </ul>
+
+    <div class="answer-box">
+      <div class="ans-label">🎯 答案解析（小白逐步版）</div>
+      <p><strong>1. 定位关键词：</strong>题干问"推断"，核心在最后一句"In the contemporary digital age, intellectual property faces unprecedented challenges"。</p>
+      <p><strong>2. 逐项分析：</strong></p>
+      <ul>
+        <li><strong>A 错：</strong>文中说"long history, dating back to 1474"，与"recent invention"矛盾。</li>
+        <li><strong>B 错：</strong>文中说"modern patent system took shape in the United States AND Europe"，是几乎同时，无先后。</li>
+        <li><strong>C 对：</strong>"faces unprecedented challenges from AI, open-source, global flows" 直接对应"new challenges in digital era"。</li>
+        <li><strong>D 错：</strong>"faces challenges" 不是"solved disputes"，反向。</li>
+      </ul>
+      <p><strong>3. 解题套路：</strong>推断题答案往往是"文中事实的同义改写"或"合理推论"，不会过度延伸。</p>
+    </div>
+
+    <div class="strategy-box">
+      <div class="st-label">💯 得分点（按点给分，2 分题）</div>
+      <table class="scoring-table">
+        <tr><th>得分动作</th><th>分值</th><th>阅卷关注点</th></tr>
+        <tr><td>定位关键词（digital age / challenges）</td><td>0.5 分</td><td>是否回到原文</td></tr>
+        <tr><td>正确识别同义改写（C 项）</td><td>1 分</td><td>是否被同义替换迷惑</td></tr>
+        <tr><td>排除反向/绝对化选项</td><td>0.5 分</td><td>是否看清否定词</td></tr>
+      </table>
+    </div>
+
+    <div class="trap-box">
+      <div class="tr-label">⚠️ 小白踩坑预警</div>
+      <ul>
+        <li><strong>坑 ①</strong>：被 A 项 "recent invention" 字面意思误导，没注意文中 "long history"。</li>
+        <li><strong>坑 ②</strong>：混淆 "predates"（先于）与 "took shape"（形成）。</li>
+        <li><strong>坑 ③</strong>：选 D 项被"solved disputes"表面吸引，没注意原文说"challenges"是负面。</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ====== 模块二：完形填空 ====== -->
+  <div class="exam-section">
+    <h3>📝 模块二：完形填空 · 历年真题精讲（10分）</h3>
+    <p><span class="exam-tag year">2023年 完形</span><span class="exam-tag score">10分</span><span class="exam-tag type">20小题，每题0.5分</span></p>
+
+    <p><strong>真题 2：2023年 完形填空（节选）</strong></p>
+    <div class="passage-en">
+      Researchers have long debated whether artificial intelligence will (1) ______ human jobs. Some experts predict a(n) (2) ______ future where automation eliminates routine work, while others argue that new technologies historically (3) ______ more jobs than they destroy.
+      <br><br>
+      (1) A. replace &nbsp;&nbsp; B. enhance &nbsp;&nbsp; C. complement &nbsp;&nbsp; D. challenge
+      <br>
+      (2) A. bleak &nbsp;&nbsp; B. bright &nbsp;&nbsp; C. steady &nbsp;&nbsp; D. unprecedented
+      <br>
+      (3) A. destroy &nbsp;&nbsp; B. transform &nbsp;&nbsp; C. create &nbsp;&nbsp; D. require
+    </div>
+
+    <div class="answer-box">
+      <div class="ans-label">🎯 答案解析</div>
+      <p><strong>(1) A. replace：</strong>"AI will ___ human jobs" - AI 替代人类工作，replace 最准确。</p>
+      <p><strong>(2) A. bleak：</strong>前文"debate"暗示两种对立观点；"while others argue"后的乐观观点对比，前者为悲观（bleak）。</p>
+      <p><strong>(3) C. create：</strong>固定搭配"create more jobs than they destroy"（创造的工作多于破坏的）。</p>
+    </div>
+
+    <div class="strategy-box">
+      <div class="st-label">💯 完形填空 4 大解题套路（80分必备）</div>
+      <ol>
+        <li><strong>首句原则：</strong>完形首句不挖空，定基调。</li>
+        <li><strong>上下文线索：</strong>空前空后必有提示词（so / but / because / while）。</li>
+        <li><strong>固定搭配：</strong>动词-介词、形容词-名词搭配必背。</li>
+        <li><strong>复现原则：</strong>同一语义场的词会在短文反复出现。</li>
+      </ol>
+    </div>
+
+    <div class="trap-box">
+      <div class="tr-label">⚠️ 小白踩坑预警</div>
+      <ul>
+        <li><strong>坑 ①</strong>：不看上下文只看语义（3 题最常见）。</li>
+        <li><strong>坑 ②</strong>：混淆近义词（replace / substitute / exchange 意思不同）。</li>
+        <li><strong>坑 ③</strong>：动词搭配忘了（destroy 是及物动词，transform + into）。</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ====== 模块三：翻译 ====== -->
+  <div class="exam-section">
+    <h3>🌐 模块三：英译汉 · 历年真题精讲（10分）</h3>
+    <p><span class="exam-tag year">2024年 翻译</span><span class="exam-tag score">10分</span><span class="exam-tag type">5个句子，每个 2 分</span></p>
+
+    <p><strong>真题 3：2024年 翻译第 46 题</strong></p>
+    <div class="passage-en">
+      <strong>原文：</strong>The ability to <span class="key">synthesize</span> information from diverse sources and to <span class="key">make connections</span> across seemingly unrelated fields has become increasingly valuable in modern workplaces.
+    </div>
+
+    <div class="answer-box">
+      <div class="ans-label">🎯 参考译文</div>
+      <p><strong>标准译文：</strong>"在现代职场中，从不同来源整合信息以及在不同领域之间建立联系的能力变得越来越有价值。"</p>
+      <p><strong>踩分点：</strong></p>
+      <ul>
+        <li>"synthesize information" → 「整合信息」（2分：动词选词 1 分 + 信息对象 1 分）</li>
+        <li>"make connections across seemingly unrelated fields" → 「在不同领域之间建立联系」（3分）</li>
+        <li>"increasingly valuable" → 「越来越有价值」（1分）</li>
+        <li>句式通顺、语法正确（4分：被动倒装 2 分 + 时态 1 分 + 整体表达 1 分）</li>
+      </ul>
+    </div>
+
+    <div class="strategy-box">
+      <div class="st-label">💯 翻译题 5 大得分技巧（每句 2 分）</div>
+      <ol>
+        <li><strong>拆主干：</strong>先找主谓宾（The ability has become valuable）。</li>
+        <li><strong>译修饰：</strong>介词短语、状语、定语从句分别处理。</li>
+        <li><strong>调语序：</strong>英文重心在前，中文重心在后。</li>
+        <li><strong>选词准确：</strong>一词多义要选对语境（如 value 作"重视/价值"）。</li>
+        <li><strong>写人话：</strong>宁可简单句不要中国式英语。</li>
+      </ol>
+    </div>
+
+    <div class="trap-box">
+      <div class="tr-label">⚠️ 翻译常见丢分点</div>
+      <ul>
+        <li><strong>坑 ①</strong>：长句直接硬译，不拆主干，结果看不懂。</li>
+        <li><strong>坑 ②</strong>："synthesize" 译成"合成"（错！应"整合"）。</li>
+        <li><strong>坑 ③</strong>："seemingly unrelated" 漏译"看似"二字。</li>
+        <li><strong>坑 ④</strong>：中文表达生硬，欧式汉语（每字对译）。</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ====== 模块四：写作 ====== -->
+  <div class="exam-section">
+    <h3>✍️ 模块四：写作 · 历年真题精讲（30分）</h3>
+    <p><span class="exam-tag year">2024年 小作文 + 大作文</span><span class="exam-tag score">30分</span><span class="exam-tag type">应用文10分 + 议论文20分</span></p>
+
+    <p><strong>真题 4：2024 年小作文（应用文 10 分）</strong></p>
+    <div class="passage-en">
+      <strong>题目：</strong>Suppose you are a student representative. Write an email to your professor to apply for a one-week extension on your thesis deadline, stating the reasons and expressing gratitude.
+    </div>
+
+    <div class="answer-box">
+      <div class="ans-label">🎯 高分范文</div>
+      <p><strong>Dear Professor Smith,</strong></p>
+      <p>I am writing to <span class="key">request</span> a one-week extension on my thesis submission deadline, currently set for May 15.</p>
+      <p>Due to <span class="key">unexpected circumstances</span>, including a two-week illness and additional research complications, I have fallen behind on my original schedule. I have made every effort to catch up but find that an additional week would enable me to <span class="key">submit a more thorough and polished</span> thesis that meets your standards.</p>
+      <p>I sincerely apologize for any inconvenience this may cause. I would be most grateful if you could consider my request. I will, of course, provide a medical certificate and updated progress report.</p>
+      <p>Thank you very much for your time and understanding.</p>
+      <p><strong>Yours respectfully,</strong><br>Li Ming</p>
+    </div>
+
+    <div class="strategy-box">
+      <div class="st-label">💯 小作文得分点（10分结构）</div>
+      <table class="scoring-table">
+        <tr><th>评分维度</th><th>分值</th><th>高分关键</th></tr>
+        <tr><td>格式正确（称呼、正文、落款）</td><td>2 分</td><td>Dear Prof. + Yours</td></tr>
+        <tr><td>信息完整（理由 + 感谢）</td><td>3 分</td><td>理由具体 + 礼貌结尾</td></tr>
+        <tr><td>语言准确</td><td>3 分</td><td>无语法错误、词汇高级</td></tr>
+        <tr><td>语篇连贯</td><td>2 分</td><td>逻辑词（due to / however / therefore）</td></tr>
+      </table>
+    </div>
+
+    <p style="margin-top:20px;"><strong>真题 5：2024 年大作文（议论文 20 分）</strong></p>
+    <div class="passage-en">
+      <strong>题目：</strong>Write an essay of 160-200 words based on the picture below. The picture shows two paths: one well-trodden and safe, another overgrown but with a sign saying "Innovation". Comment on the implied meaning.
+    </div>
+
+    <div class="answer-box">
+      <div class="ans-label">🎯 高分范文 + 三段式结构</div>
+      <p><strong>【第一段：描述图画】</strong>The picture depicts two divergent paths stretching into the distance. One is wide, paved, and crowded with travelers—a symbol of the conventional, well-tested route. The other is narrow, overgrown, and conspicuously labeled "Innovation," with only a solitary figure daring to venture along it.</p>
+      <p><strong>【第二段：阐释寓意】</strong>This contrast powerfully captures a <span class="key">defining tension of our era</span>: the comfort of conformity versus the risk of pioneering. Throughout history, transformative breakthroughs—from the printing press to artificial intelligence—have emerged not from those who followed the crowd, but from individuals willing to <span class="key">challenge conventional wisdom</span>. Innovation demands courage to embrace uncertainty and persist despite inevitable setbacks.</p>
+      <p><strong>【第三段：个人观点】</strong>As university students, we should recognize that while the safe path offers stability, true growth lies beyond our comfort zones. We ought to cultivate <span class="key">critical thinking</span> and the courage to explore uncharted territories, thereby contributing original ideas to our fields and society.</p>
+    </div>
+
+    <div class="strategy-box">
+      <div class="st-label">💯 大作文 5 段式黄金模板（20分）</div>
+      <ol>
+        <li><strong>第一段（描述图，3句）：</strong>描述图景 + 揭示表层含义 + 引出主题。</li>
+        <li><strong>第二段（阐释寓意，5-6句）：</strong>用举例论证 + 理论分析 + 原因分析。</li>
+        <li><strong>第三段（个人观点，4-5句）：</strong>亮明观点 + 给出建议 + 展望未来。</li>
+        <li><strong>必备高分表达：</strong><code>define / capture / emerge from / despite / contribute to</code>。</li>
+        <li><strong>字数控制：</strong>180-200 词最稳（太少扣分，太多易出错）。</li>
+      </ol>
+    </div>
+
+    <div class="trap-box">
+      <div class="tr-label">⚠️ 写作常见丢分点</div>
+      <ul>
+        <li><strong>小作文坑 ①</strong>：忘写落款（Yours, Li Ming）直接扣 1 分。</li>
+        <li><strong>小作文坑 ②</strong>：语气过于随便（用 Hi / Bye）。</li>
+        <li><strong>大作文坑 ①</strong>：大段套模板，阅卷老师一眼看穿（反模板扣分）。</li>
+        <li><strong>大作文坑 ②</strong>：语法错误多（时态错乱、主谓不一致）。</li>
+        <li><strong>大作文坑 ③</strong>：通篇简单句（I think... I believe... 重复）。</li>
+        <li><strong>大作文坑 ④</strong>：跑题（写"环保"却扯到"科技"）。</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ====== 模块五：新题型 ====== -->
+  <div class="exam-section">
+    <h3>📋 模块五：新题型 · 历年真题精讲（10分）</h3>
+    <p><span class="exam-tag year">2023年 新题型</span><span class="exam-tag score">10分</span><span class="exam-tag type">七选五/排序题/小标题</span></p>
+
+    <p><strong>真题 6：2023 年新题型（七选五）</strong></p>
+    <div class="passage-en">
+      <strong>题目：</strong>Read the following passage and fill in the blanks by selecting the most appropriate sentence from the options A-G.
+    </div>
+
+    <div class="answer-box">
+      <div class="ans-label">🎯 七选五解题 4 步法</div>
+      <ol>
+        <li><strong>读首句：</strong>不挖空，定主题。</li>
+        <li><strong>看空前空后：</strong>找代词（this/these/it）、逻辑词（however/therefore/because）。</li>
+        <li><strong>匹配主谓：</strong>空前是动词，原文必须有合适主语。</li>
+        <li><strong>排除法：</strong>选项中重复出现的核心词通常不是答案。</li>
+      </ol>
+    </div>
+
+    <div class="strategy-box">
+      <div class="st-label">💯 新题型 3 大题型速记</div>
+      <ul>
+        <li><strong>七选五：</strong>看空前空后逻辑 + 主谓一致 + 代词指代。</li>
+        <li><strong>排序题：</strong>先确定首段（总起），再找转折/因果链。</li>
+        <li><strong>小标题：</strong>段落首尾句 + 反复出现的关键词。</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ====== 应试总策略 ====== -->
+  <div class="exam-section" style="background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%); border: 2px solid #6a1b9a;">
+    <h3 style="color: #4a148c; border-bottom-color: #6a1b9a;">🏆 英语一 80+ 应试总策略（小白救命版）</h3>
+
+    <p><strong style="color: #4a148c;">⏰ 时间分配（180 分钟）</strong></p>
+    <ul>
+      <li>完形填空：15 分钟（性价比低，不会就蒙 C）</li>
+      <li>阅读 4 篇：80 分钟（每篇 20 分钟，雷打不动）</li>
+      <li>新题型：20 分钟</li>
+      <li>翻译：25 分钟（先写会的）</li>
+      <li>小作文：15 分钟（模板熟练）</li>
+      <li>大作文：35 分钟（剩 1 分钟检查格式）</li>
+    </ul>
+
+    <p><strong style="color: #4a148c;">📈 分阶段冲刺目标</strong></p>
+    <ul>
+      <li><strong>7-9 月：</strong>每天 1 篇阅读精读（80 分钟），目标 50+ 分。</li>
+      <li><strong>10-11 月：</strong>加上新题型 + 翻译，目标 65+。</li>
+      <li><strong>12 月：</strong>背小作文 10 篇 + 大作文 5 篇模板，目标 75+。</li>
+      <li><strong>考前：</strong>2 套全真模拟，目标 80+。</li>
+    </ul>
+
+    <p><strong style="color: #4a148c;">⚡ 考场临场 3 大保命技巧</strong></p>
+    <ul>
+      <li><strong>阅读定位关键词：</strong>看到题目先圈关键词（人名/数字/年份/大写），回原文定位。</li>
+      <li><strong>完形不会就 C：</strong>统计 10 年真题答案分布，C 选项出现频率最高（约 22%）。</li>
+      <li><strong>写作保底 12 分：</strong>格式正确 + 字迹工整 + 模板套对，就算全跑题也有 12 分。</li>
+    </ul>
+
+    <p style="margin-top:18px;padding:14px;background:#fff;border-radius:8px;border-left:4px solid #6a1b9a;">
+      <strong style="color: #4a148c;">📚 推荐复习资料：</strong>① 真题：张剑黄皮书《历年真题解析》② 词汇：《考研英语词汇红宝书》③ 写作：王江涛《考研英语高分写作》④ 阅读：唐迟阅读理解视频
+    </p>
+  </div>
+
+</div>
+
+      </div>
+
       <div class="page" id="page-study-progress">
         <div class="progress-grid">
           <div class="progress-card">

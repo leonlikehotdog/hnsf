@@ -1,0 +1,106 @@
+<section class="chapter-card" id="ch05">
+    <div class="ch-header">
+        <div class="ch-title">第五章：多元函数微分学 <span class="ch-score">| 8分</span></div>
+        <div class="ch-stars star-high">★★★★</div>
+    </div>
+    <div class="ch-content">
+        <p><span class="section-tag tag-core">🎯 核心考点</span></p>
+        <ul>
+            <li>偏导数计算、全微分</li>
+            <li>无条件极值（多元函数极值判定）</li>
+        </ul>
+        <div class="must-card">
+            <div class="must-label">📖 必背：求偏导法则</div>
+            <p><strong>对 x 求偏导</strong>：将 y 视为常数，对 x 求导</p>
+            <p><strong>对 y 求偏导</strong>：将 x 视为常数，对 y 求导</p>
+            <div class="formula-box">∂z/∂x = f<sub>x</sub>(x,y) &nbsp;&nbsp; ∂z/∂y = f<sub>y</sub>(x,y)</div>
+        </div>
+        <div class="example-card">
+            <div class="example-label">📝 例题</div>
+            <div class="example-question">求 z = x²y + xy² 的偏导 ∂z/∂x 和 ∂z/∂y</div>
+            <div class="example-hint">对 x 求偏导时把 y 当常数：∂z/∂x = <strong>2xy + y²</strong>；对 y 求偏导时把 x 当常数：∂z/∂y = <strong>x² + 2xy</strong></div>
+        </div>
+    <!-- ====== 小白核心概念扫盲：偏导/全微分/可微 ====== -->
+    <div class="must-card">
+        <div class="must-label">📖 小白扫盲：偏导数 · 全微分 · 可微性（一图分清）</div>
+        <p><span class="section-tag tag-core">🎯 三者关系：偏导存在 → 偏导连续 ⟹ 可微 ⟹ 连续且偏导存在</span></p>
+        <table>
+            <thead><tr><th>概念</th><th>定义</th><th>判定方法</th><th>常见误解</th></tr></thead>
+            <tbody>
+                <tr>
+                    <td><strong>偏导数</strong><br>\(\dfrac{\partial f}{\partial x}\)</td>
+                    <td>固定 \(y\)，对 \(x\) 的导数</td>
+                    <td>用定义：\(\lim_{h\to0} \dfrac{f(x+h,y)-f(x,y)}{h}\)</td>
+                    <td>「偏导存在」≠「可微」（如 \(f(x,y)=\dfrac{xy}{x^2+y^2}\) 补充定义在 0 处）</td>
+                </tr>
+                <tr>
+                    <td><strong>全微分</strong><br>\(\mathrm{d}f\)</td>
+                    <td>\(\dfrac{\partial f}{\partial x}\mathrm{d}x + \dfrac{\partial f}{\partial y}\mathrm{d}y\)</td>
+                    <td>可微时全微分才存在；全微分形式 = 各偏导乘对应微分之和</td>
+                    <td>「写出全微分」≠「可微」— 写全微分的表达式不要求可微，但全微分概念意义上的"存在"要求可微</td>
+                </tr>
+                <tr>
+                    <td><strong>可微性</strong></td>
+                    <td>\(f(x,y)-f(0,0)=f_x(0,0)x+f_y(0,0)y+o(\sqrt{x^2+y^2})\)</td>
+                    <td>① 偏导连续 ⟹ 可微（充分条件）<br>② 直接用可微定义验证增量能否线性逼近</td>
+                    <td>「偏导存在」≠「可微」；「偏导连续」⟹ 可微（但可微 ≠ 偏导连续）</td>
+                </tr>
+            </tbody>
+        </table>
+        <p><span class="section-tag tag-warn">⚠️ 一元到二元的直观差异</span></p>
+        <ul>
+            <li>一元：可导 ⟺ 可微（等价）</li>
+            <li>二元：偏导存在 <strong>不</strong> ⟺ 可微（偏导存在是必要条件，不是充分条件）</li>
+            <li><strong>记忆方法：</strong>「二元的可微 = 一元的可导 × 2，但要求比一元苛刻得多」</li>
+        </ul>
+        <p><span class="section-tag tag-tip">🧠 判定流程</span></p>
+        <p>问：二元函数在 \((0,0)\) 处是否可微？<br>
+        <strong>步骤 ①：</strong>检查连续性 — 不连续一定不可微<br>
+        <strong>步骤 ②：</strong>求两个偏导 — 偏导不存在一定不可微（但存在也不一定可微）<br>
+        <strong>步骤 ③：</strong>计算 \(\lim_{(x,y)\to(0,0)} \dfrac{f(x,y)-f(0,0)-f_x(0,0)x-f_y(0,0)y}{\sqrt{x^2+y^2}}\) — 若为 0 则可微</p>
+    </div>
+    <!-- ====== 历年真题与考点分析 ====== -->
+<div class="part-divider pexam" id="exam-ch05">
+  <div class="pd-num">📝</div>
+  <div class="pd-text">
+    <div class="pd-name">历年真题 · 出题人考察点 · 得分点</div>
+    <div class="pd-desc">本模块整合本章高频真题，按「考什么 → 怎么答 → 易错点」拆解</div>
+  </div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 真题 1 | 2019 数一 | 解答题 · 10分</div>
+  <div class="example-question">设 \(z=f(xy, x+y)\)，求 \(\dfrac{\partial^{2}z}{\partial x\partial y}\)。</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>① 多元复合函数链式法则；② 二阶偏导计算；③ 偏导符号记法 \(f_1,f_2\)</p>
+  <p><span class="section-tag tag-tip">🧭 详细解析（小白逐步版）</span></p>
+  <p>记 \(u=xy, v=x+y\)，\(z=f(u,v)\)。\(\dfrac{\partial z}{\partial x}=yf_1\prime+f_2\prime\)，\(\dfrac{\partial^{2}z}{\partial x\partial y}=f_1\prime+y(xf_{11}\prime\prime+f_{12}\prime\prime)+(xf_{21}\prime\prime+f_{22}\prime\prime)\)，化简得 \(f_1\prime+xyf_{11}\prime\prime+(x+y)f_{12}\prime\prime+f_{22}\prime\prime\)。</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 一阶偏导 (4分)；② 二阶偏导展开 (5分)；③ 整理 (1分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>⚠️ 漏掉项；⚠️ \(f_{12}\prime\prime=f_{21}\prime\prime\) 前提是连续；⚠️ 链式法则路径错</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点会在本章<strong>其他例题</strong>反复出现。建议：做完本题后回头重做一遍本章前面的练习题，强化「识别信号 → 套公式」的肌肉记忆。</p>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 真题 2 | 2021 数一 | 解答题 · 12分</div>
+  <div class="example-question">求 \(f(x,y)=x^{3}-y^{3}+3x^{2}+3y^{2}-9x-27y\) 的极值。</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>① 多元函数极值的必要条件；② 二元函数无界；③ 边界考虑</p>
+  <p><span class="section-tag tag-tip">🧭 详细解析（小白逐步版）</span></p>
+  <p>令 \(\dfrac{\partial f}{\partial x}=3x^2+6x-9=0\)，得 \(x=1,-3\)；\(\dfrac{\partial f}{\partial y}=-3y^2+6y-27=0\) 无实数解？重算 \(-3y^2+6y-27=-3(y-1)^2-24 &lt; 0\)，恒负，无驻点。故 \(f\) 无极值点。</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 求偏导 (4分)；② 解驻点 (3分)；③ 判定无极值 (5分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>⚠️ 二元判别式不适用无界函数；⚠️ 没考虑边界</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点会在本章<strong>其他例题</strong>反复出现。建议：做完本题后回头重做一遍本章前面的练习题，强化「识别信号 → 套公式」的肌肉记忆。</p>
+</div>
+<div class="must-card">
+  <div class="must-label">🎯 本章应试策略总结（80 分必备）</div>
+  <p><strong>1. 答题时间分配：</strong>选择题 2~3 分钟/题，填空题 3 分钟/题，解答题 8~12 分钟/题。</p>
+  <p><strong>2. 答题顺序：</strong>先做 5 分钟内能拿分的题，再回头啃难的。</p>
+  <p><strong>3. 关键拿分动作：</strong>写对公式 + 写出关键步骤 + 给出最终答案。每一步都对应一个得分点。</p>
+  <p><strong>4. 复盘方法：</strong>做完真题后对照「得分点」清单逐项打分，缺哪一步就回去补哪一步。</p>
+</div>
+    </div>
+</section>

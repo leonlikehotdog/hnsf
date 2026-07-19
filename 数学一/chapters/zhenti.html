@@ -1,0 +1,238 @@
+<!--
+    考研数学一 · 近5年真题精练模块
+    由 js/zhenti.js 注入动态内容。
+    本文件只放静态结构与样式钩子，避免重复逻辑。
+-->
+<section class="chapter-card" id="zhenti">
+    <div class="ch-header zhenti-header">
+        <div class="ch-title">🎯 近5年真题精练 <span class="ch-score">| 2021-2025</span></div>
+        <div class="ch-stars star-high">⭐⭐⭐⭐⭐ 真题实战</div>
+    </div>
+
+    <div class="ch-content zhenti-content">
+
+        <!-- ============ 模块介绍 ============ -->
+        <div class="zhenti-intro">
+            <p><span class="section-tag tag-core">🎯 模块说明</span></p>
+            <p>本模块汇集 <strong>2021-2025 年全国硕士研究生招生考试数学一真题</strong>的精选题目（每年 8 道，共 40 道），覆盖<strong>高等数学、线性代数、概率论与数理统计</strong>三大板块。每道题都附带：</p>
+            <ul>
+                <li>📝 <strong>原题完整内容</strong>（含 LaTeX 公式渲染）</li>
+                <li>🎯 <strong>考察点</strong>（从出题人角度分析这道题在考什么）</li>
+                <li>📚 <strong>必备知识点</strong>（每条知识点关联到对应章节，可一键跳转）</li>
+                <li>🧭 <strong>详细解题步骤</strong>（分步呈现思路）</li>
+                <li>⚠️ <strong>常见错误</strong>（防止掉进出题人陷阱）</li>
+                <li>📊 <strong>掌握度追踪</strong>（类似章节练习，可记录每次复习的掌握程度）</li>
+            </ul>
+            <div class="tag-float t-tip">
+                <div class="tf-title">💡 使用建议</div>
+                <div class="tf-body">
+                    ① 先做模考模式感受真实考场节奏；<br>
+                    ② 用考点分类查漏补缺；<br>
+                    ③ 用错题本反复巩固薄弱点；<br>
+                    ④ 用统计面板看自己的成长曲线。
+                </div>
+            </div>
+        </div>
+
+        <!-- ============ 数据总览卡片 ============ -->
+        <div class="zhenti-overview" id="zhentiOverview">
+            <!-- 由 JS 动态生成 -->
+        </div>
+
+        <!-- ============ Tab 切换 ============ -->
+        <div class="zhenti-tabs">
+            <button class="zhenti-tab active" data-tab="all">📅 历年真题</button>
+            <button class="zhenti-tab" data-tab="kpoint">🎯 考点分类</button>
+            <button class="zhenti-tab" data-tab="wrongbook">📕 错题本</button>
+            <button class="zhenti-tab" data-tab="mock">⏱ 模考模式</button>
+            <button class="zhenti-tab" data-tab="stats">📊 学习统计</button>
+        </div>
+
+        <!-- ============ 筛选栏（仅在「历年真题」和「考点分类」时显示） ============ -->
+        <div class="zhenti-filters" id="zhentiFilters">
+            <div class="filter-row">
+                <div class="filter-group">
+                    <label class="filter-label">📅 年份</label>
+                    <div class="filter-pills" id="filterYear">
+                        <button class="filter-pill active" data-year="all">全部</button>
+                        <button class="filter-pill" data-year="2025">2025</button>
+                        <button class="filter-pill" data-year="2024">2024</button>
+                        <button class="filter-pill" data-year="2023">2023</button>
+                        <button class="filter-pill" data-year="2022">2022</button>
+                        <button class="filter-pill" data-year="2021">2021</button>
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">📚 板块</label>
+                    <div class="filter-pills" id="filterPart">
+                        <button class="filter-pill active" data-part="all">全部</button>
+                        <button class="filter-pill" data-part="高数">高数</button>
+                        <button class="filter-pill" data-part="线代">线代</button>
+                        <button class="filter-pill" data-part="概率">概率</button>
+                    </div>
+                </div>
+            </div>
+            <div class="filter-row">
+                <div class="filter-group">
+                    <label class="filter-label">📝 题型</label>
+                    <div class="filter-pills" id="filterType">
+                        <button class="filter-pill active" data-type="all">全部</button>
+                        <button class="filter-pill" data-type="选择题">选择题</button>
+                        <button class="filter-pill" data-type="填空题">填空题</button>
+                        <button class="filter-pill" data-type="解答题">解答题</button>
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">🌟 难度</label>
+                    <div class="filter-pills" id="filterDifficulty">
+                        <button class="filter-pill active" data-difficulty="all">全部</button>
+                        <button class="filter-pill" data-difficulty="1">★ 入门</button>
+                        <button class="filter-pill" data-difficulty="2">★★ 基础</button>
+                        <button class="filter-pill" data-difficulty="3">★★★ 中等</button>
+                        <button class="filter-pill" data-difficulty="4">★★★★ 较难</button>
+                        <button class="filter-pill" data-difficulty="5">★★★★★ 压轴</button>
+                    </div>
+                </div>
+            </div>
+            <div class="filter-row">
+                <div class="filter-group filter-group-search">
+                    <label class="filter-label">🔍 搜索（题号 / 考点 / 知识点）</label>
+                    <input type="text" id="zhentiSearch" class="filter-input" placeholder="例如：极限、洛必达、二重积分、ch03...">
+                </div>
+            </div>
+        </div>
+
+        <!-- ============ 内容区 ============ -->
+        <div class="zhenti-content-area" id="zhentiContentArea">
+            <!-- 由 JS 根据当前 tab 渲染 -->
+            <div class="zhenti-loading">
+                <div class="spinner"></div>
+                <p>正在加载真题...</p>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ============ 模考模式弹窗 ============ -->
+<div class="zhenti-modal" id="mockModal" hidden>
+    <div class="zhenti-modal-content">
+        <div class="zhenti-modal-header">
+            <div class="zhenti-modal-title">⏱ 真题模考模式</div>
+            <button class="zhenti-modal-close" id="mockClose">✕</button>
+        </div>
+
+        <!-- 模考设置（开始前） -->
+        <div class="mock-setup" id="mockSetup">
+            <p class="mock-desc">从 5 年真题中随机抽取 <strong>5 道题</strong>，限时 <strong>120 分钟</strong>，模拟真实考场节奏。</p>
+
+            <div class="mock-config-row">
+                <label>📅 年份范围</label>
+                <select id="mockYearRange">
+                    <option value="2021-2025">2021-2025 全部</option>
+                    <option value="2024-2025">近 2 年</option>
+                    <option value="2023-2025">近 3 年</option>
+                    <option value="2022-2025">近 4 年</option>
+                </select>
+            </div>
+            <div class="mock-config-row">
+                <label>📚 板块</label>
+                <select id="mockPart">
+                    <option value="all">三大板块综合</option>
+                    <option value="高数">仅高数</option>
+                    <option value="线代">仅线代</option>
+                    <option value="概率">仅概率</option>
+                </select>
+            </div>
+            <div class="mock-config-row">
+                <label>📝 题数</label>
+                <select id="mockCount">
+                    <option value="3">3 道（30 分钟模拟）</option>
+                    <option value="5" selected>5 道（标准模拟）</option>
+                    <option value="8">8 道（强化模拟）</option>
+                </select>
+            </div>
+            <div class="mock-config-row">
+                <label>⏱ 时长</label>
+                <select id="mockTime">
+                    <option value="60">60 分钟</option>
+                    <option value="120" selected>120 分钟</option>
+                    <option value="180">180 分钟（考试标准）</option>
+                </select>
+            </div>
+
+            <button class="mock-start-btn" id="mockStartBtn">🚀 开始模考</button>
+
+            <div class="mock-tip">
+                💡 模考模式下，你将看不到答案与解析。提交后会显示成绩报告。
+            </div>
+        </div>
+
+        <!-- 模考进行中 -->
+        <div class="mock-running" id="mockRunning" hidden>
+            <div class="mock-running-head">
+                <div class="mock-progress-info">
+                    <span id="mockCurrentNum">1</span> / <span id="mockTotalNum">5</span>
+                </div>
+                <div class="mock-timer" id="mockTimer">120:00</div>
+                <button class="mock-submit-btn" id="mockSubmitBtn">📝 提前交卷</button>
+            </div>
+
+            <div class="mock-question-area" id="mockQuestionArea">
+                <!-- 题目由 JS 注入 -->
+            </div>
+
+            <div class="mock-nav">
+                <button class="mock-nav-btn" id="mockPrevBtn">← 上一题</button>
+                <div class="mock-question-dots" id="mockQuestionDots"></div>
+                <button class="mock-nav-btn" id="mockNextBtn">下一题 →</button>
+            </div>
+        </div>
+
+        <!-- 模考结果 -->
+        <div class="mock-result" id="mockResult" hidden>
+            <div class="mock-result-head">
+                <div class="mock-result-title">📊 模考成绩报告</div>
+            </div>
+
+            <div class="mock-result-stats" id="mockResultStats">
+                <!-- 渲染成绩统计 -->
+            </div>
+
+            <div class="mock-result-detail" id="mockResultDetail">
+                <!-- 详细答题情况 -->
+            </div>
+
+            <div class="mock-result-actions">
+                <button class="mock-action-btn primary" id="mockRestartBtn">🔄 再来一次</button>
+                <button class="mock-action-btn" id="mockBackBtn">← 返回真题库</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ============ 题目详情弹窗（查看完整解析） ============ -->
+<div class="zhenti-modal" id="questionModal" hidden>
+    <div class="zhenti-modal-content zhenti-modal-large">
+        <div class="zhenti-modal-header">
+            <div class="zhenti-modal-title" id="questionModalTitle">题目详情</div>
+            <button class="zhenti-modal-close" id="questionModalClose">✕</button>
+        </div>
+        <div class="zhenti-modal-body" id="questionModalBody">
+            <!-- 题目内容由 JS 注入 -->
+        </div>
+    </div>
+</div>
+
+<!-- ============ 错题本答案弹窗（精简版） ============ -->
+<div class="zhenti-modal" id="answerModal" hidden>
+    <div class="zhenti-modal-content zhenti-modal-medium">
+        <div class="zhenti-modal-header">
+            <div class="zhenti-modal-title" id="answerModalTitle">📝 答案与解析</div>
+            <button class="zhenti-modal-close" id="answerModalClose">✕</button>
+        </div>
+        <div class="zhenti-modal-body" id="answerModalBody">
+            <!-- 由 JS 注入 -->
+        </div>
+    </div>
+</div>

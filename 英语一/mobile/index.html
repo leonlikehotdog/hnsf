@@ -446,7 +446,266 @@
     </div>
 
     <!-- Page 3: 进度 -->
-    <div id="page-progress" class="tab-page">
+    
+<!-- ========== 移动版：真题页面 ========== -->
+<div id="page-exam" class="tab-page">
+<style>
+  #page-exam {
+    padding: 16px;
+    overflow-y: auto;
+  }
+  .exam-m-hero {
+    background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+    padding: 16px;
+    border-radius: 10px;
+    margin-bottom: 16px;
+    border-left: 4px solid #2e7d32;
+  }
+  .exam-m-hero h2 { color: #1b5e20; font-size: 18px; margin-bottom: 6px; }
+  .exam-m-hero p { color: #2e7d32; font-size: 13px; line-height: 1.6; }
+  .exam-m-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 14px;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+  }
+  .exam-m-card h3 {
+    color: #1b5e20;
+    font-size: 15px;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #c8e6c9;
+  }
+  .exam-m-tag {
+    display: inline-block;
+    background: #fff3e0;
+    color: #e65100;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-right: 4px;
+    font-weight: 600;
+  }
+  .exam-m-passage {
+    font-family: Georgia, serif;
+    line-height: 1.8;
+    background: #fafafa;
+    padding: 12px;
+    border-radius: 6px;
+    margin: 8px 0;
+    font-size: 14px;
+    border-left: 3px solid #2e7d32;
+  }
+  .exam-m-passage .key { background: #fff9c4; padding: 0 2px; }
+  .exam-m-options { list-style: none; padding-left: 0; }
+  .exam-m-options li {
+    padding: 8px 10px;
+    margin: 4px 0;
+    background: #f5f5f5;
+    border-radius: 4px;
+    font-size: 13px;
+  }
+  .exam-m-answer {
+    background: #e8f5e9;
+    border-left: 3px solid #2e7d32;
+    padding: 10px 12px;
+    border-radius: 4px;
+    margin-top: 10px;
+    font-size: 13px;
+    line-height: 1.7;
+  }
+  .exam-m-strategy {
+    background: #fff8e1;
+    border-left: 3px solid #f57c00;
+    padding: 10px 12px;
+    border-radius: 4px;
+    margin-top: 10px;
+    font-size: 13px;
+  }
+  .exam-m-warn {
+    background: #ffebee;
+    border-left: 3px solid #c62828;
+    padding: 10px 12px;
+    border-radius: 4px;
+    margin-top: 10px;
+    font-size: 13px;
+  }
+  .exam-m-focus {
+    display: inline-block;
+    background: #1b5e20;
+    color: #fff;
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+  }
+  .exam-m-highlight { color: #c62828; font-weight: 700; }
+</style>
+
+<div class="exam-m-hero">
+  <h2>📚 历年真题精讲</h2>
+  <p>阅读40+ 完形10+ 翻译10+ 写作30 = 80+ 稳了。每天精读 1 篇。</p>
+</div>
+
+<!-- 阅读 -->
+<div class="exam-m-card">
+  <h3>📖 阅读理解（40分）</h3>
+  <span class="exam-m-tag">2024 Text 1</span><span class="exam-m-tag">10分</span>
+  <span class="exam-m-focus">🎯 出题人考察点</span>
+  <p>细节题、主旨题、推断题、词义题、例证题（4篇×5题×2分）。</p>
+
+  <p><strong>真题（节选）：</strong></p>
+  <div class="exam-m-passage">
+    The <span class="key">concept of "intellectual property"</span> has a long history, dating back to the Venetian Republic's 1474 patent statute. Yet it was not until the 19th century that the modern patent system took shape in the United States and Europe. In the contemporary digital age, intellectual property faces <span class="key">unprecedented challenges</span> from artificial intelligence, open-source movements, and global information flows.
+  </div>
+  <p><strong>问题：</strong>What can be inferred from the first paragraph?</p>
+  <ul class="exam-m-options">
+    <li>A. Intellectual property is a recent invention.</li>
+    <li>B. The US patent system predates European systems.</li>
+    <li>C. Modern IP faces new challenges in the digital era. <span class="exam-m-highlight">✅ 答案</span></li>
+    <li>D. AI has solved IP disputes globally.</li>
+  </ul>
+
+  <div class="exam-m-answer">
+    <strong>🎯 解析：</strong>① A 错：long history ≠ recent invention。② B 错："took shape in US and Europe" 无先后。③ C 对：unprecedented challenges 直接对应 new challenges in digital era。④ D 错：faces challenges ≠ solved disputes。
+    <br><strong>得分点：</strong>定位关键词 0.5分 + 识别同义改写 1分 + 排除绝对化 0.5分（满分2分）
+  </div>
+  <div class="exam-m-warn">
+    <strong>⚠️ 踩坑：</strong>被 A "recent invention" 字面意思误导；混淆 took shape 时间。
+  </div>
+</div>
+
+<!-- 完形 -->
+<div class="exam-m-card">
+  <h3>📝 完形填空（10分）</h3>
+  <span class="exam-m-tag">2023 完形</span><span class="exam-m-tag">20题×0.5分</span>
+  <span class="exam-m-focus">🎯 出题人考察点</span>
+  <p>实词辨析（动词/名词/形容词）+ 虚词（介词/连词）+ 固定搭配。</p>
+
+  <div class="exam-m-passage">
+    Researchers have long debated whether AI will (1) ____ human jobs. Some predict a(n) (2) ____ future where automation eliminates routine work, while others argue new technologies historically (3) ____ more jobs than they destroy.
+    <br><br>
+    (1) A. replace B. enhance C. complement D. challenge<br>
+    (2) A. bleak B. bright C. steady D. unprecedented<br>
+    (3) A. destroy B. transform C. create D. require
+  </div>
+  <div class="exam-m-answer">
+    <strong>答案：A A C</strong><br>
+    (1) replace：AI 替代人类工作<br>
+    (2) bleak：与"乐观"形成对比（while 暗示）<br>
+    (3) create：固定搭配 create more jobs than they destroy
+  </div>
+  <div class="exam-m-strategy">
+    <strong>💯 4 大套路：</strong>① 首句原则 ② 上下文线索（so/but/because）③ 固定搭配 ④ 复现原则。
+  </div>
+</div>
+
+<!-- 翻译 -->
+<div class="exam-m-card">
+  <h3>🌐 英译汉（10分）</h3>
+  <span class="exam-m-tag">2024 翻译</span><span class="exam-m-tag">5句×2分</span>
+  <span class="exam-m-focus">🎯 出题人考察点</span>
+  <p>长难句拆分、词汇精准选择、中文语序调整。</p>
+
+  <div class="exam-m-passage">
+    <strong>原文：</strong>The ability to <span class="key">synthesize</span> information from diverse sources and to <span class="key">make connections</span> across seemingly unrelated fields has become increasingly valuable in modern workplaces.
+  </div>
+  <div class="exam-m-answer">
+    <strong>标准译文：</strong>在现代职场中，从不同来源整合信息以及在不同领域之间建立联系的能力变得越来越有价值。<br>
+    <strong>踩分点：</strong>① synthesize → 整合（不是"合成"）② make connections → 建立联系 ③ increasingly → 越来越 ④ 整体通顺（4分）
+  </div>
+  <div class="exam-m-strategy">
+    <strong>💯 5 大得分技巧：</strong>① 拆主干 ② 译修饰 ③ 调语序 ④ 选词准确 ⑤ 写人话。
+  </div>
+  <div class="exam-m-warn">
+    <strong>⚠️ 丢分重灾区：</strong>synthesize 译成"合成"（应"整合"）；seemingly 漏译"看似"。
+  </div>
+</div>
+
+<!-- 小作文 -->
+<div class="exam-m-card">
+  <h3>✍️ 小作文 · 应用文（10分）</h3>
+  <span class="exam-m-tag">2024 小作文</span><span class="exam-m-tag">10分</span>
+  <span class="exam-m-focus">🎯 出题人考察点</span>
+  <p>格式（2分）+ 内容（3分）+ 语言（3分）+ 连贯（2分）。</p>
+
+  <p><strong>真题：</strong>作为学生代表，写邮件向教授申请论文延期 1 周，说明理由并表达感谢。</p>
+  <div class="exam-m-passage">
+    <strong>Dear Professor Smith,</strong><br><br>
+    I am writing to <span class="key">request</span> a one-week extension on my thesis submission deadline.<br><br>
+    Due to <span class="key">unexpected circumstances</span> including a two-week illness, I have fallen behind on my schedule. An additional week would enable me to submit a more thorough thesis.<br><br>
+    I sincerely apologize for any inconvenience. I will provide a medical certificate and updated progress report.<br><br>
+    Thank you very much for your time and understanding.<br><br>
+    <strong>Yours respectfully,</strong><br>Li Ming
+  </div>
+  <div class="exam-m-answer">
+    <strong>高分要点：</strong>格式正确（Dear + Yours）2分；内容完整（理由+道歉+感谢）3分；语言准确（request / unexpected circumstances）3分；语篇连贯（Due to / however）2分。
+  </div>
+</div>
+
+<!-- 大作文 -->
+<div class="exam-m-card">
+  <h3>📝 大作文 · 议论文（20分）</h3>
+  <span class="exam-m-tag">2024 大作文</span><span class="exam-m-tag">20分</span>
+  <span class="exam-m-focus">🎯 出题人考察点</span>
+  <p>图画描述（5分）+ 寓意阐释（7分）+ 个人观点（8分）。</p>
+
+  <p><strong>真题：</strong>图画显示两条路：一条平坦拥挤，一条荆棘但标着"创新"。评论寓意。</p>
+  <div class="exam-m-passage">
+    <strong>【第一段·描述图】</strong>The picture depicts two divergent paths. One is wide and crowded—a symbol of the conventional route. The other is narrow, overgrown, and labeled <span class="key">"Innovation"</span>, with only a solitary figure daring to venture along it.<br><br>
+    <strong>【第二段·阐释】</strong>This captures a <span class="key">defining tension</span>: comfort of conformity vs. risk of pioneering. Throughout history, breakthroughs—from printing press to AI—have emerged from those willing to <span class="key">challenge conventional wisdom</span>.<br><br>
+    <strong>【第三段·观点】</strong>As university students, we should recognize that true growth lies beyond comfort zones. We ought to cultivate <span class="key">critical thinking</span> and courage to explore uncharted territories.
+  </div>
+  <div class="exam-m-strategy">
+    <strong>💯 5 段式黄金模板：</strong>① 描述图景 3 句 ② 揭示寓意引主题 ③ 举例 + 理论分析 ④ 个人观点 ⑤ 展望未来。<br>
+    <strong>必备高分词：</strong>define / capture / emerge from / despite / contribute to。
+  </div>
+  <div class="exam-m-warn">
+    <strong>⚠️ 常见丢分：</strong>① 大段套模板被识破（反模板扣分）② 时态错乱 ③ 通篇简单句 ④ 跑题。
+  </div>
+</div>
+
+<!-- 新题型 -->
+<div class="exam-m-card">
+  <h3>📋 新题型（10分）</h3>
+  <span class="exam-m-tag">2023 新题型</span><span class="exam-m-tag">10分</span>
+  <span class="exam-m-focus">🎯 出题人考察点</span>
+  <p>七选五、排序题、小标题。</p>
+  <div class="exam-m-strategy">
+    <strong>💯 七选五 4 步法：</strong>① 读首句定主题 ② 看空前空后（this/these/it/however/because）③ 主谓一致 ④ 排除重复选项。<br>
+    <strong>排序题：</strong>先定首段，再找转折/因果链。<br>
+    <strong>小标题：</strong>段落首尾句 + 关键词。
+  </div>
+</div>
+
+<!-- 总策略 -->
+<div class="exam-m-card" style="background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%); border: 2px solid #6a1b9a;">
+  <h3 style="color: #4a148c; border-bottom-color: #6a1b9a;">🏆 80+ 应试总策略</h3>
+  <p><strong>⏰ 时间（180分钟）：</strong></p>
+  <ul style="padding-left:20px;font-size:13px;line-height:1.8;">
+    <li>完形 15min（不会蒙 C）</li>
+    <li>阅读 4 篇 80min（每篇 20min）</li>
+    <li>新题型 20min</li>
+    <li>翻译 25min</li>
+    <li>小作文 15min</li>
+    <li>大作文 35min</li>
+  </ul>
+  <p style="margin-top:10px;"><strong>📈 分阶段目标：</strong></p>
+  <ul style="padding-left:20px;font-size:13px;line-height:1.8;">
+    <li>7-9月：每天1篇阅读，目标 50+</li>
+    <li>10-11月：加新题型+翻译，目标 65+</li>
+    <li>12月：背模板，目标 75+</li>
+    <li>考前：2套模拟，目标 80+</li>
+  </ul>
+  <div class="exam-m-warn" style="margin-top:10px;">
+    <strong>⚡ 考场 3 大保命：</strong>① 阅读圈关键词回原文定位 ② 完形不会就蒙 C（出现频率 22%）③ 写作保底 12 分（格式+字迹+模板）。
+  </div>
+</div>
+
+</div>
+
+<div id="page-progress" class="tab-page">
       <div class="progress-rings">
         <div class="ring-wrapper">
           <div class="ring" id="wordRing" style="background: conic-gradient(#e0e0e0 0deg 360deg);">
@@ -483,6 +742,10 @@
     <button class="tab-btn" data-tab="page-sentences" onclick="switchTab('page-sentences')">
       <span class="tab-icon">📝</span>
       <span class="tab-label">长难句</span>
+    </button>
+    <button class="tab-btn" data-tab="page-exam" onclick="switchTab('page-exam')">
+      <span class="tab-icon">📝</span>
+      <span class="tab-label">真题</span>
     </button>
     <button class="tab-btn" data-tab="page-progress" onclick="switchTab('page-progress')">
       <span class="tab-icon">📊</span>

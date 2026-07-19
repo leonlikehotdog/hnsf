@@ -1,0 +1,67 @@
+<section class="chapter-card" id="ch18">
+    <div class="ch-header">
+        <div class="ch-title">第十八章：随机变量的数字特征 <span class="ch-score">| 6分</span></div>
+        <div class="ch-stars star-high">★★★★</div>
+    </div>
+    <div class="ch-content">
+        <p><span class="section-tag tag-core">🎯 核心考点</span></p>
+        <ul>
+            <li>期望、方差、协方差、相关系数的计算</li>
+        </ul>
+        <div class="must-card">
+            <div class="must-label">📖 必背：期望和方差的性质</div>
+            <p><strong>期望性质</strong>：</p>
+            <ul>
+                <li>E(C) = C</li>
+                <li>E(aX + b) = aE(X) + b</li>
+                <li>E(X ± Y) = E(X) ± E(Y)</li>
+                <li>X,Y 独立时 E(XY) = E(X)E(Y)</li>
+            </ul>
+            <p style="margin-top:6px;"><strong>方差性质</strong>：</p>
+            <ul>
+                <li>D(C) = 0</li>
+                <li>D(aX + b) = a²D(X)</li>
+                <li>D(X) = E(X²) - [E(X)]²</li>
+                <li>X,Y 独立时 D(X ± Y) = D(X) + D(Y)</li>
+            </ul>
+        </div>
+        <div class="example-card">
+            <div class="example-label">📝 例题</div>
+            <div class="example-question">设随机变量 X 的分布律为 P(X=0)=0.2，P(X=1)=0.3，P(X=2)=0.5，求 E(X) 和 D(X)</div>
+            <div class="example-hint">
+                E(X) = 0×0.2 + 1×0.3 + 2×0.5 = 0 + 0.3 + 1.0 = <strong>1.3</strong><br>
+                E(X²) = 0²×0.2 + 1²×0.3 + 2²×0.5 = 0 + 0.3 + 2.0 = 2.3<br>
+                D(X) = E(X²) - [E(X)]² = 2.3 - 1.69 = <strong>0.61</strong>
+            </div>
+        </div>
+    <!-- ====== 历年真题与考点分析 ====== -->
+<div class="part-divider pexam" id="exam-ch18">
+  <div class="pd-num">📝</div>
+  <div class="pd-text">
+    <div class="pd-name">历年真题 · 出题人考察点 · 得分点</div>
+    <div class="pd-desc">本模块整合本章高频真题，按「考什么 → 怎么答 → 易错点」拆解</div>
+  </div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 真题 1 | 2021 数一 | 解答题 · 10分</div>
+  <div class="example-question">设 \(X\) 服从参数为 1 的指数分布，\(Y=X^{2}\)，求 \(EY\) 和 \(\text{Cov}(X,Y)\)。</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>① 指数分布；② Gamma 函数；③ 协方差计算</p>
+  <p><span class="section-tag tag-tip">🧭 详细解析（小白逐步版）</span></p>
+  <p>\(X\sim E(1)\)，\(f(x)=e^{-x},x&gt;0\)。\(EY=E(X^2)=\int_0^\infty x^2 e^{-x}\,dx=2!=2\)。\(E(XY)=E(X^3)=3!=6\)。\(\text{Cov}(X,Y)=E(XY)-E(X)E(Y)=6-1\cdot 2=4\)。</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 写出 X 分布 (2分)；② EY (3分)；③ EXY (3分)；④ 协方差 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>⚠️ \(\int x^n e^{-x}dx=n!\) 记错；⚠️ Cov 公式记反</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点会在本章<strong>其他例题</strong>反复出现。建议：做完本题后回头重做一遍本章前面的练习题，强化「识别信号 → 套公式」的肌肉记忆。</p>
+</div>
+<div class="must-card">
+  <div class="must-label">🎯 本章应试策略总结（80 分必备）</div>
+  <p><strong>1. 答题时间分配：</strong>选择题 2~3 分钟/题，填空题 3 分钟/题，解答题 8~12 分钟/题。</p>
+  <p><strong>2. 答题顺序：</strong>先做 5 分钟内能拿分的题，再回头啃难的。</p>
+  <p><strong>3. 关键拿分动作：</strong>写对公式 + 写出关键步骤 + 给出最终答案。每一步都对应一个得分点。</p>
+  <p><strong>4. 复盘方法：</strong>做完真题后对照「得分点」清单逐项打分，缺哪一步就回去补哪一步。</p>
+</div>
+    </div>
+</section>
