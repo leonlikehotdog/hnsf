@@ -1370,10 +1370,99 @@
                     <ul>
                         <li>AC − B² > 0 且 A > 0 → 极小值</li>
                         <li>AC − B² > 0 且 A < 0 → 极大值</li>
-                        <li>AC − B² < 0 → 不是极值</li>
+                        <li>AC − B² &lt; 0 → 不是极值</li>
+                        <li><strong>AC − B² = 0 → 判别式失效，必须额外分析</strong>（沿特殊路径 / Taylor / 定义法）</li>
                     </ul>
                 </li>
             </ol>
+        </div>
+
+        <!-- ============ AC-B² 的来历与配方推导 ============ -->
+        <div class="story-card">
+            <div class="story-label">🎓 AC − B² 是谁创造的？为什么偏偏是它？</div>
+            <p><span class="story-emoji">👨‍🏫</span><strong>发明人：Ludwig Otto Hesse（路德维希·奥托·黑塞）</strong></p>
+            <p>19 世纪德国数学家（1811–1874），哥尼斯堡大学教授。他系统研究了多元函数的<strong>二阶偏导数矩阵</strong>，后人把它命名为 <strong>Hessian 矩阵</strong>。对于二元函数 f(x, y)：</p>
+            <div class="formula-box" style="background:#fff;border:1px dashed #5b6fde;font-size:17px;">
+                H = \(\begin{pmatrix} f_{xx} &amp; f_{xy} \\ f_{yx} &amp; f_{yy} \end{pmatrix} = \begin{pmatrix} A &amp; B \\ B &amp; C \end{pmatrix}\)，其行列式 \(\det(H) = AC - B^2\)
+            </div>
+            <p>所以"<strong>AC − B²</strong>"就是 <strong>Hessian 矩阵的行列式</strong>，也叫"<strong>黑塞判别式</strong>"（Hessian Discriminant）。</p>
+
+            <p><span class="story-emoji">🧪</span><strong>为什么偏偏是它？（配方推导）</strong></p>
+            <p>在驻点 (x₀, y₀) 处用泰勒展开（ch01 学过的工具），f 近似为：</p>
+            <div class="formula-box" style="background:#fff;border:1px dashed #5b6fde;">
+                f(x₀+h, y₀+k) ≈ f(x₀, y₀) + \(\tfrac{1}{2}\big[\underbrace{Ah^2 + 2Bhk + Ck^2}_{\text{关键二次型}Q(h,k)}\big]\)
+            </div>
+            <p>驻点处一阶偏导 = 0 → 一阶项消失 → 留下的就是<strong>二次型 Q</strong>。Q 决定驻点是山谷/山顶/马鞍。</p>
+            <p><strong>把 Q 对 h 配方</strong>（关键一步！）：</p>
+            <div class="formula-box" style="background:#fff;border:1px dashed #c0392b;font-size:17px;">
+                Q(h,k) = A\(\!\left(h + \dfrac{Bk}{A}\right)^{\!2}\) + \(\dfrac{AC - B^2}{A}\,k^2\)
+            </div>
+            <p>配方后冒出<strong>两个平方项</strong>，符号各管各的：</p>
+            <ul>
+                <li><strong>第一项</strong> A(h+Bk/A)² —— 平方，符号由 <strong>A</strong> 决定</li>
+                <li><strong>第二项</strong> (AC-B²)/A · k² —— 平方，符号由 <strong>AC − B²</strong> 决定（k² 永远 ≥ 0）</li>
+            </ul>
+            <p><strong>两类符号的"配合"决定了地形：</strong></p>
+            <table style="width:100%;font-size:13px;border-collapse:collapse;margin:8px 0;background:#fff;">
+                <thead style="background:#eaf2fb;">
+                    <tr><th style="padding:8px;border:1px solid #cbd5e0;">AC − B²</th><th style="padding:8px;border:1px solid #cbd5e0;">A</th><th style="padding:8px;border:1px solid #cbd5e0;">Q 的符号</th><th style="padding:8px;border:1px solid #cbd5e0;">几何形状</th><th style="padding:8px;border:1px solid #cbd5e0;">结论</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td style="padding:6px;border:1px solid #cbd5e0;text-align:center;color:#1e8449;font-weight:700;">&gt; 0</td><td style="padding:6px;border:1px solid #cbd5e0;text-align:center;color:#1e8449;font-weight:700;">&gt; 0</td><td style="padding:6px;border:1px solid #cbd5e0;">两项均 ≥ 0 → Q ≥ 0</td><td style="padding:6px;border:1px solid #cbd5e0;">🕳️ 山谷</td><td style="padding:6px;border:1px solid #cbd5e0;"><strong>极小值</strong></td></tr>
+                    <tr><td style="padding:6px;border:1px solid #cbd5e0;text-align:center;color:#1e8449;font-weight:700;">&gt; 0</td><td style="padding:6px;border:1px solid #cbd5e0;text-align:center;color:#c0392b;font-weight:700;">&lt; 0</td><td style="padding:6px;border:1px solid #cbd5e0;">两项均 ≤ 0 → Q ≤ 0</td><td style="padding:6px;border:1px solid #cbd5e0;">⛰️ 山顶</td><td style="padding:6px;border:1px solid #cbd5e0;"><strong>极大值</strong></td></tr>
+                    <tr><td style="padding:6px;border:1px solid #cbd5e0;text-align:center;color:#c0392b;font-weight:700;">&lt; 0</td><td style="padding:6px;border:1px solid #cbd5e0;text-align:center;">任意</td><td style="padding:6px;border:1px solid #cbd5e0;">两项异号 → Q 可正可负</td><td style="padding:6px;border:1px solid #cbd5e0;">🐴 马鞍</td><td style="padding:6px;border:1px solid #cbd5e0;"><strong>不是极值</strong></td></tr>
+                    <tr><td style="padding:6px;border:1px solid #cbd5e0;text-align:center;color:#d68910;font-weight:700;">= 0</td><td style="padding:6px;border:1px solid #cbd5e0;text-align:center;">任意</td><td style="padding:6px;border:1px solid #cbd5e0;">配方失效</td><td style="padding:6px;border:1px solid #cbd5e0;">❓ 退化</td><td style="padding:6px;border:1px solid #cbd5e0;color:#c0392b;"><strong>判别式失效</strong>，要额外分析</td></tr>
+                </tbody>
+            </table>
+
+            <p><span class="story-emoji">🔗</span><strong>推广到 n 元（了解即可）</strong></p>
+            <p>n 元函数的 Hessian 是 n×n 对称矩阵，<strong>Sylvester 判据</strong>给出：</p>
+            <ul>
+                <li>顺序主子式全 &gt; 0 → 正定 → 极小</li>
+                <li>顺序主子式符号交替 → 负定 → 极大</li>
+                <li>有主子式 ≤ 0 → 不定号 → 鞍点</li>
+            </ul>
+            <p>二元情形下，2 个顺序主子式是 <strong>A 和 AC−B²</strong>，正好退化成我们这个判别式。<strong>AC−B² 其实是 Sylvester 判据在 n=2 时的特例。</strong></p>
+
+            <p><span class="story-emoji">🎯</span><strong>口诀速记</strong></p>
+            <p style="background:#fff8e1;padding:10px;border-left:3px solid #f39c12;font-style:italic;">
+                "<strong>驻点处展二次型，配方分两半；<br>
+                一半看 A 决定上下，另一半看 AC−B² 决定方向；<br>
+                同号是极值，异号是马鞍，等于零要换判。</strong>"
+            </p>
+        </div>
+
+        <!-- 公式卡片 · 配方公式（右侧导航自动收录） -->
+        <div class="tag-float t-formula">
+            <div class="tf-title">AC − B² 配方公式（核心公式卡）</div>
+            <div class="tf-body">
+                在驻点 (x₀, y₀) 处展开 f：\(f \approx f_0 + \tfrac{1}{2}(Ah^2 + 2Bhk + Ck^2)\)<br>
+                对 h 配方：\(Q(h,k) = A\!\left(h + \dfrac{Bk}{A}\right)^{\!2} + \dfrac{AC-B^2}{A}\,k^2\)<br>
+                <strong>结论</strong>：两个平方项 → 符号组合决定地形。<br>
+                记法：<strong>"下标对下标，配方看两端"</strong>
+            </div>
+        </div>
+
+        <!-- 防粗心 · 2022 真题坑（右侧导航自动收录） -->
+        <div class="tag-float t-warn">
+            <div class="tf-title">AC − B² 的 2 个真题坑（2022 必背）</div>
+            <div class="tf-body">
+                <ul>
+                    <li><strong>坑 1：AC − B² = 0 不是"不是极值"！</strong><br>2022 数三 (0,0) 处 AC−B² = 0 → 判别式失效。<br>小白直接判"不是极值" → 丢 1~2 分。<br><strong>正确做法</strong>：沿 y=0 等路径分析（f(x,0)=x⁵ 有正有负 → 确认不是极值）。</li>
+                    <li><strong>坑 2：AC − B² &lt; 0 不是"极值"！</strong><br>2022 数二 (-e⁻¹, (2k+1)π) 处 AC−B² = -e⁻² &lt; 0 → <strong>鞍点，不是极值</strong>。<br>小白易混"AC−B² 为负 = 极大值" → 错！<br><strong>AC−B² 符号本身不能单独决定</strong>，要看和 A 的组合。</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 解法总结 · 三类情形（右侧导航自动收录） -->
+        <div class="tag-float t-summary">
+            <div class="tf-title">4 类驻点判别（小白救命卡）</div>
+            <div class="tf-body">
+                ① <strong>山谷</strong>：AC−B² &gt; 0 + A &gt; 0 → 极小值，记得代回去求 f 值；<br>
+                ② <strong>山顶</strong>：AC−B² &gt; 0 + A &lt; 0 → 极大值；<br>
+                ③ <strong>马鞍</strong>：AC−B² &lt; 0 → 不是极值（一个方向上山，另一个下山）；<br>
+                ④ <strong>退化</strong>：AC−B² = 0 → 判别式失效，<strong>必须额外分析</strong>（沿特殊路径 / Taylor 展开 / 定义法）。
+            </div>
         </div>
 
         <div class="example-card">
@@ -1414,7 +1503,7 @@
   <p>① 构造辅助函数 (5分)；② 验证端点函数值相等 (3分)；③ 应用罗尔定理 (3分)；④ 结论 (1分)</p>
   <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
   <p>⚠️ 辅助函数构造错误是最常见丢分点；⚠️ 没验证端点条件；⚠️ 罗尔定理的三个条件缺一不可</p>
-  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p><span class="section-tag cosy=cos(kπ)-summary">🔗 知识点桥接</span></p>
   <p>本题考点会在本章<strong>其他例题</strong>反复出现。建议：做完本题后回头重做一遍本章前面的练习题，强化「识别信号 → 套公式」的肌肉记忆。</p>
 </div>
 
@@ -1437,6 +1526,129 @@
   <p>令 \(f_x=0\)：<strong>\(x=-e^{\cos y}\)</strong>（因为 \(e^{\cos y}>0\)，x 必为负数）</p>
   <p>令 \(f_y=0\)：<strong>\(-x e^{\cos y}\sin y=0\)</strong>，因为 \(e^{\cos y}>0\)，必有 \(\sin y=0\)</p>
   <p>所以 <strong>\(y=k\pi\)</strong>，于是 \(\cos y = \cos(k\pi)=(-1)^k\)。</p>
+
+  <!-- 🎨 可视化辅助：sin 和 cos 在 kπ 处的取值图 -->
+  <div class="story-card timeline-svg-wrap" style="background:linear-gradient(135deg,#fafbff 0%,#f0f4ff 100%);border-left:4px solid #5b6fde;">
+    <div class="story-label">🎨 sin/cos 在 y = kπ 处的取值图（小白速记卡）</div>
+    <svg viewBox="0 0 1200 420" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;">
+      <defs>
+        <linearGradient id="sinGrad" x1="0" x2="1" y1="0" y2="0">
+          <stop offset="0%" stop-color="#e74c3c" stop-opacity="0.5"/>
+          <stop offset="100%" stop-color="#c0392b" stop-opacity="1"/>
+        </linearGradient>
+        <linearGradient id="cosGrad" x1="0" x2="1" y1="0" y2="0">
+          <stop offset="0%" stop-color="#3498db" stop-opacity="0.5"/>
+          <stop offset="100%" stop-color="#2874a6" stop-opacity="1"/>
+        </linearGradient>
+      </defs>
+
+      <!-- 背景网格 -->
+      <rect x="60" y="20" width="1100" height="180" fill="#fff" rx="6"/>
+      <rect x="60" y="220" width="1100" height="180" fill="#fff" rx="6"/>
+
+      <!-- ========== 上半部分：sin x 波形 ========== -->
+      <text x="80" y="45" font-size="14" fill="#c0392b" font-weight="700">sin y 在 y = kπ 处恒为 0（红×号标记）</text>
+
+      <!-- x 轴 -->
+      <line x1="100" y1="120" x2="1140" y2="120" stroke="#333" stroke-width="1.5"/>
+      <line x1="100" y1="20"  x2="100"   y2="220" stroke="#333" stroke-width="1.5"/>
+
+      <!-- 刻度标签 -->
+      <g font-family="-apple-system,sans-serif" font-size="11" fill="#555" text-anchor="middle">
+        <text x="120"  y="140">-2π</text>
+        <text x="240"  y="140">-3π/2</text>
+        <text x="360"  y="140">-π</text>
+        <text x="480"  y="140">-π/2</text>
+        <text x="600"  y="140">0</text>
+        <text x="720"  y="140">π/2</text>
+        <text x="840"  y="140">π</text>
+        <text x="960"  y="140">3π/2</text>
+        <text x="1080" y="140">2π</text>
+      </g>
+
+      <!-- sin 波形（用 path 画） -->
+      <path d="M 120,120 Q 180,40 240,120 T 360,120 T 480,120 T 600,120 T 720,120 T 840,120 T 960,120 T 1080,120"
+            stroke="url(#sinGrad)" stroke-width="3" fill="none"/>
+
+      <!-- sin 零点标红× -->
+      <g stroke="#c0392b" stroke-width="2.5" fill="none">
+        <line x1="120"  y1="115" x2="120"  y2="125"/><line x1="115"  y1="120" x2="125"  y2="120"/>
+        <line x1="360"  y1="115" x2="360"  y2="125"/><line x1="355"  y1="120" x2="365"  y2="120"/>
+        <line x1="600"  y1="115" x2="600"  y2="125"/><line x1="595"  y1="120" x2="605"  y2="120"/>
+        <line x1="840"  y1="115" x2="840"  y2="125"/><line x1="835"  y1="120" x2="845"  y2="120"/>
+        <line x1="1080" y1="115" x2="1080" y2="125"/><line x1="1075" y1="120" x2="1085" y2="120"/>
+      </g>
+
+      <!-- sin 零点标签 -->
+      <g font-family="-apple-system,sans-serif" font-size="11" fill="#c0392b" font-weight="700" text-anchor="middle">
+        <text x="120"  y="105">0</text>
+        <text x="360"  y="105">0</text>
+        <text x="600"  y="105">0 ← y=0</text>
+        <text x="840"  y="105">0</text>
+        <text x="1080" y="105">0</text>
+      </g>
+
+      <!-- ========== 下半部分：cos x 波形 ========== -->
+      <text x="80" y="245" font-size="14" fill="#2874a6" font-weight="700">cos y 在 y = kπ 处取 ±1 交替（蓝圆点标记）</text>
+
+      <!-- x 轴 -->
+      <line x1="100" y1="320" x2="1140" y2="320" stroke="#333" stroke-width="1.5"/>
+      <line x1="100" y1="220" x2="100"   y2="420" stroke="#333" stroke-width="1.5"/>
+
+      <!-- y=1 虚线 -->
+      <line x1="100" y1="240" x2="1140" y2="240" stroke="#2874a6" stroke-width="1" stroke-dasharray="4 4" opacity="0.5"/>
+      <text x="108" y="237" font-size="11" fill="#2874a6">+1</text>
+      <!-- y=-1 虚线 -->
+      <line x1="100" y1="400" x2="1140" y2="400" stroke="#2874a6" stroke-width="1" stroke-dasharray="4 4" opacity="0.5"/>
+      <text x="108" y="397" font-size="11" fill="#2874a6">−1</text>
+
+      <!-- 刻度标签 -->
+      <g font-family="-apple-system,sans-serif" font-size="11" fill="#555" text-anchor="middle">
+        <text x="120"  y="340">-2π</text>
+        <text x="360"  y="340">-π</text>
+        <text x="600"  y="340">0</text>
+        <text x="840"  y="340">π</text>
+        <text x="1080" y="340">2π</text>
+      </g>
+
+      <!-- cos 波形（从 240 开始，再降到 400，再上来） -->
+      <path d="M 120,240 Q 240,240 360,400 Q 480,400 600,240 Q 720,240 840,400 Q 960,400 1080,240"
+            stroke="url(#cosGrad)" stroke-width="3" fill="none"/>
+
+      <!-- cos 在 kπ 处的取值点（蓝实心圆 + 数值） -->
+      <g>
+        <!-- y=-2π: cos=1 -->
+        <circle cx="120"  cy="240" r="6" fill="#2874a6" stroke="#fff" stroke-width="2"/>
+        <text x="120"  y="225" font-size="13" fill="#2874a6" font-weight="700" text-anchor="middle">+1</text>
+
+        <!-- y=-π: cos=-1 -->
+        <circle cx="360"  cy="400" r="6" fill="#2874a6" stroke="#fff" stroke-width="2"/>
+        <text x="360"  y="418" font-size="13" fill="#2874a6" font-weight="700" text-anchor="middle">−1</text>
+
+        <!-- y=0: cos=1 -->
+        <circle cx="600"  cy="240" r="6" fill="#2874a6" stroke="#fff" stroke-width="2"/>
+        <text x="600"  y="225" font-size="13" fill="#2874a6" font-weight="700" text-anchor="middle">+1 ← k=偶</text>
+
+        <!-- y=π: cos=-1 -->
+        <circle cx="840"  cy="400" r="6" fill="#2874a6" stroke="#fff" stroke-width="2"/>
+        <text x="840"  y="418" font-size="13" fill="#2874a6" font-weight="700" text-anchor="middle">−1 ← k=奇</text>
+
+        <!-- y=2π: cos=1 -->
+        <circle cx="1080" cy="240" r="6" fill="#2874a6" stroke="#fff" stroke-width="2"/>
+        <text x="1080" y="225" font-size="13" fill="#2874a6" font-weight="700" text-anchor="middle">+1</text>
+      </g>
+
+      <!-- 分类箭头说明 -->
+      <g font-family="-apple-system,sans-serif" font-size="12" fill="#16a085" font-weight="700">
+        <text x="600"  y="278" text-anchor="middle">↑ k 偶数 → cos y = +1 → 驻点 (-e, 2kπ)</text>
+        <text x="840"  y="378" text-anchor="middle">↑ k 奇数 → cos y = −1 → 驻点 (-e⁻¹, (2k+1)π)</text>
+      </g>
+    </svg>
+    <p style="text-align:center;font-size:13px;color:#666;margin-top:8px;">
+      <strong>速记口诀：</strong>"<span style="color:#c0392b">sin 撞零</span>，<span style="color:#2874a6">cos 翻 ±1</span>" —— k 每走过 1，cos 就翻一次号。
+    </p>
+  </div>
+
   <p>把 \(y=k\pi\) 代回第一个等式：\(x=-e^{(-1)^k}\)。分类讨论：</p>
   <ul>
     <li><strong>k 是偶数</strong>（\(y=0,\pm 2\pi,\pm 4\pi,\dots\)）：\(\cos y=1\)，\(x=-e\)，驻点 \((-e, 2k\pi)\)</li>
