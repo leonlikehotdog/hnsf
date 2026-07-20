@@ -23,6 +23,569 @@
             </div>
         </div>
 
+        <!-- ====== Part 0：诞生背景 · 这一章里的数学家们在忙什么 ====== -->
+        <div class="part-divider p0" id="part0">
+            <div class="pd-num">0</div>
+            <div class="pd-text">
+                <div class="pd-name">🌌 诞生背景 · 数学家们在忙什么</div>
+                <div class="pd-desc">这一章的每个公式都不是凭空冒出来的——它们都是被生活/物理问题"逼"出来的。</div>
+            </div>
+        </div>
+
+        <div class="story-card">
+            <div class="story-label">🎬 为什么这一章是整个考研数学的"地基"</div>
+            <p>如果你只背公式不学历史，公式会忘；如果你先知道<strong>每个公式是为了解决什么生活/物理问题才被发明</strong>的，公式会自己"长"在你脑子里。</p>
+            <p>下面这张图横跨了 <strong>2200 年</strong>，从公元前 300 年阿基米德掰圆饼开始，到 1872 年魏尔斯特拉斯讲堂上掏出"怪物函数"，<strong>9 位数学家</strong>接力把这一章的所有知识点一点点憋出来。</p>
+            <p><span class="story-emoji">🧐</span>看这张时间轴，建议你重点关注每个圆点旁边那个<strong>问号</strong>——它在问你："这件事，是为了解决<em>什么</em>问题？"看完下方的故事卡再回头看，公式就不再是符号。</p>
+        </div>
+
+        <div class="story-card timeline-svg-wrap">
+            <div class="story-label">⏳ 2200 年数学接力赛 · ch01 主要工具的诞生年份</div>
+            <svg viewBox="0 0 1320 560" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="tlGrad" x1="0" x2="1" y1="0" y2="0">
+                        <stop offset="0%" stop-color="#e67e22" stop-opacity="0.4"/>
+                        <stop offset="50%" stop-color="#d35400" stop-opacity="1"/>
+                        <stop offset="100%" stop-color="#922b21" stop-opacity="1"/>
+                    </linearGradient>
+                    <filter id="softShadow" x="-50%" y="-50%" width="200%" height="200%">
+                        <feGaussianBlur in="SourceAlpha" stdDeviation="2"/>
+                        <feOffset dx="0" dy="1"/>
+                        <feComponentTransfer><feFuncA type="linear" slope="0.3"/></feComponentTransfer>
+                        <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+                    </filter>
+                </defs>
+
+                <!-- 背景 -->
+                <rect x="20" y="20" width="1280" height="520" fill="#fffdf7" rx="12"/>
+
+                <!-- 顶部标题 -->
+                <text x="660" y="55" text-anchor="middle" font-size="15" fill="#7a3e0a" font-weight="600">每个圆点 = 一个被现实问题"逼"出来的发明；不同颜色 = 不同问题分类</text>
+
+                <!-- 分类色块底色（图例区） -->
+                <g opacity="0.18">
+                    <rect x="30"   y="80" width="290" height="50" fill="#e74c3c" rx="6"/>
+                    <rect x="320"  y="80" width="320" height="50" fill="#27ae60" rx="6"/>
+                    <rect x="640"  y="80" width="240" height="50" fill="#8e44ad" rx="6"/>
+                    <rect x="880"  y="80" width="160" height="50" fill="#f39c12" rx="6"/>
+                    <rect x="1040" y="80" width="260" height="50" fill="#c0392b" rx="6"/>
+                </g>
+
+                <!-- 分类图例文字 -->
+                <g font-size="12" font-weight="700" text-anchor="middle">
+                    <text x="175"  y="110" fill="#922b21">🔴 古代极限 / 积分</text>
+                    <text x="480"  y="110" fill="#1e8449">🟢 函数的诞生 (17世纪)</text>
+                    <text x="760"  y="110" fill="#6c3483">🟣 重要极限公式</text>
+                    <text x="960"  y="110" fill="#9c640c">🟡 计算技巧</text>
+                    <text x="1170" y="110" fill="#922b21">🔴 严格化 (19世纪)</text>
+                </g>
+
+                <!-- 装饰问号：让用户知道这些节点背后各有一个"为什么" -->
+                <g font-family="Georgia, serif" font-size="22" fill="#922b21" font-weight="700" opacity="0.85">
+                    <text x="80"   y="180" text-anchor="middle">?</text>
+                    <text x="200"  y="180" text-anchor="middle">?</text>
+                    <text x="340"  y="180" text-anchor="middle">?</text>
+                    <text x="500"  y="180" text-anchor="middle">?</text>
+                    <text x="680"  y="180" text-anchor="middle">?</text>
+                    <text x="860"  y="180" text-anchor="middle">?</text>
+                    <text x="1020" y="180" text-anchor="middle">?</text>
+                    <text x="1180" y="180" text-anchor="middle">?</text>
+                </g>
+
+                <!-- 时间轴主体 -->
+                <line x1="60" y1="310" x2="1260" y2="310" stroke="url(#tlGrad)" stroke-width="6" stroke-linecap="round"/>
+
+                <!-- 时间刻度大点 -->
+                <g fill="#a04000">
+                    <circle cx="60"   cy="310" r="3"/>
+                    <circle cx="180"  cy="310" r="3"/>
+                    <circle cx="300"  cy="310" r="3"/>
+                    <circle cx="420"  cy="310" r="3"/>
+                    <circle cx="540"  cy="310" r="3"/>
+                    <circle cx="660"  cy="310" r="3"/>
+                    <circle cx="780"  cy="310" r="3"/>
+                    <circle cx="900"  cy="310" r="3"/>
+                    <circle cx="1020" cy="310" r="3"/>
+                    <circle cx="1140" cy="310" r="3"/>
+                    <circle cx="1260" cy="310" r="3"/>
+                </g>
+
+                <!-- 时间轴下方年份 -->
+                <g font-family="-apple-system, sans-serif" font-size="11" fill="#7a3e0a" text-anchor="middle">
+                    <text x="60"   y="345">BC 300</text>
+                    <text x="180"  y="345">AD 1</text>
+                    <text x="300"  y="345">200</text>
+                    <text x="420"  y="345">800</text>
+                    <text x="540"  y="345">1300</text>
+                    <text x="660"  y="345">1500</text>
+                    <text x="780"  y="345">1650</text>
+                    <text x="900"  y="345">1700</text>
+                    <text x="1020" y="345">1750</text>
+                    <text x="1140" y="345">1820</text>
+                    <text x="1260" y="345">1900</text>
+                </g>
+
+                <!-- 节点上方标签：人物姓名 + 年份 -->
+                <!-- 1. 阿基米德 -240 -->
+                <g transform="translate(80,310)">
+                    <circle r="15" fill="#e74c3c" stroke="#fff" stroke-width="3" filter="url(#softShadow)"/>
+                    <text x="0" y="5" text-anchor="middle" font-size="14" fill="#fff" font-weight="700">1</text>
+                    <text x="0" y="-30" text-anchor="middle" font-size="13" fill="#922b21" font-weight="700">阿基米德</text>
+                    <text x="0" y="-15" text-anchor="middle" font-size="10" fill="#922b21">-240 割圆术</text>
+                </g>
+
+                <!-- 2. 刘徽 263 -->
+                <g transform="translate(200,310)">
+                    <circle r="15" fill="#e74c3c" stroke="#fff" stroke-width="3" filter="url(#softShadow)"/>
+                    <text x="0" y="5" text-anchor="middle" font-size="14" fill="#fff" font-weight="700">2</text>
+                    <text x="0" y="-30" text-anchor="middle" font-size="13" fill="#922b21" font-weight="700">刘  徽</text>
+                    <text x="0" y="-15" text-anchor="middle" font-size="10" fill="#922b21">263 割圆术</text>
+                </g>
+
+                <!-- 3. 笛卡尔 1637 -->
+                <g transform="translate(340,310)">
+                    <circle r="15" fill="#2980b9" stroke="#fff" stroke-width="3" filter="url(#softShadow)"/>
+                    <text x="0" y="5" text-anchor="middle" font-size="14" fill="#fff" font-weight="700">3</text>
+                    <text x="0" y="-30" text-anchor="middle" font-size="13" fill="#1a5276" font-weight="700">笛卡尔</text>
+                    <text x="0" y="-15" text-anchor="middle" font-size="10" fill="#1a5276">1637《方法论》</text>
+                </g>
+
+                <!-- 4. 牛顿 1666 -->
+                <g transform="translate(500,310)">
+                    <circle r="15" fill="#27ae60" stroke="#fff" stroke-width="3" filter="url(#softShadow)"/>
+                    <text x="0" y="5" text-anchor="middle" font-size="14" fill="#fff" font-weight="700">4</text>
+                    <text x="0" y="-30" text-anchor="middle" font-size="13" fill="#1e8449" font-weight="700">牛  顿</text>
+                    <text x="0" y="-15" text-anchor="middle" font-size="10" fill="#1e8449">1666 流数术</text>
+                </g>
+
+                <!-- 5. 莱布尼茨 1676 -->
+                <g transform="translate(680,310)">
+                    <circle r="15" fill="#27ae60" stroke="#fff" stroke-width="3" filter="url(#softShadow)"/>
+                    <text x="0" y="5" text-anchor="middle" font-size="14" fill="#fff" font-weight="700">5</text>
+                    <text x="0" y="-30" text-anchor="middle" font-size="13" fill="#1e8449" font-weight="700">莱布尼茨</text>
+                    <text x="0" y="-15" text-anchor="middle" font-size="10" fill="#1e8449">1676 dx/dy</text>
+                </g>
+
+                <!-- 6. 雅各布·伯努利 1683 -->
+                <g transform="translate(860,310)">
+                    <circle r="15" fill="#8e44ad" stroke="#fff" stroke-width="3" filter="url(#softShadow)"/>
+                    <text x="0" y="5" text-anchor="middle" font-size="14" fill="#fff" font-weight="700">6</text>
+                    <text x="0" y="-30" text-anchor="middle" font-size="13" fill="#6c3483" font-weight="700">雅各布·伯努利</text>
+                    <text x="0" y="-15" text-anchor="middle" font-size="10" fill="#6c3483">1683 复利问题</text>
+                </g>
+
+                <!-- 7. 洛必达 1696 -->
+                <g transform="translate(1020,310)">
+                    <circle r="15" fill="#8e44ad" stroke="#fff" stroke-width="3" filter="url(#softShadow)"/>
+                    <text x="0" y="5" text-anchor="middle" font-size="14" fill="#fff" font-weight="700">7</text>
+                    <text x="0" y="-30" text-anchor="middle" font-size="13" fill="#6c3483" font-weight="700">洛必达侯爵</text>
+                    <text x="0" y="-15" text-anchor="middle" font-size="10" fill="#6c3483">1696 侯爵</text>
+                </g>
+
+                <!-- 8. 欧拉 1748 -->
+                <g transform="translate(1180,310)">
+                    <circle r="15" fill="#f39c12" stroke="#fff" stroke-width="3" filter="url(#softShadow)"/>
+                    <text x="0" y="5" text-anchor="middle" font-size="14" fill="#fff" font-weight="700">8</text>
+                    <text x="0" y="-30" text-anchor="middle" font-size="13" fill="#9c640c" font-weight="700">欧  拉</text>
+                    <text x="0" y="-15" text-anchor="middle" font-size="10" fill="#9c640c">1748 无穷分析</text>
+                </g>
+
+                <!-- 由于 8 个节点的间距宽裕了，下面这 3 个节点放到下方一行 -->
+                <!-- 9. 拉格朗日 1788 -->
+                <g transform="translate(420,470)">
+                    <circle r="15" fill="#16a085" stroke="#fff" stroke-width="3" filter="url(#softShadow)"/>
+                    <text x="0" y="5" text-anchor="middle" font-size="14" fill="#fff" font-weight="700">9</text>
+                    <text x="0" y="20" text-anchor="middle" font-size="13" fill="#0e6655" font-weight="700">拉格朗日</text>
+                    <text x="0" y="35" text-anchor="middle" font-size="10" fill="#0e6655">1788 中值定理</text>
+                </g>
+                <!-- 10. 柯西 1821 -->
+                <g transform="translate(660,470)">
+                    <circle r="15" fill="#c0392b" stroke="#fff" stroke-width="3" filter="url(#softShadow)"/>
+                    <text x="0" y="5" text-anchor="middle" font-size="14" fill="#fff" font-weight="700">10</text>
+                    <text x="0" y="20" text-anchor="middle" font-size="13" fill="#922b21" font-weight="700">柯  西</text>
+                    <text x="0" y="35" text-anchor="middle" font-size="10" fill="#922b21">1821 极限严格化</text>
+                </g>
+                <!-- 11. 魏尔斯特拉斯 1872 -->
+                <g transform="translate(900,470)">
+                    <circle r="15" fill="#2c3e50" stroke="#fff" stroke-width="3" filter="url(#softShadow)"/>
+                    <text x="0" y="5" text-anchor="middle" font-size="14" fill="#fff" font-weight="700">11</text>
+                    <text x="0" y="20" text-anchor="middle" font-size="13" fill="#1a242f" font-weight="700">魏尔斯特拉斯</text>
+                    <text x="0" y="35" text-anchor="middle" font-size="10" fill="#1a242f">1872 怪物函数</text>
+                </g>
+
+                <!-- 顶部小箭头指向问号 -->
+                <text x="660" y="160" text-anchor="middle" font-size="11" fill="#922b21" font-weight="600">↑ 每个"问号"对应下面一个被现实逼出来的物理/工程问题</text>
+
+                <!-- 底部提示 -->
+                <text x="660" y="525" text-anchor="middle" font-size="12" fill="#7a3e0a" font-weight="600">📌 同一时间轴上不同的颜色 = 不同的"问题分类"，下方的 10 张故事卡按颜色对应看。</text>
+            </svg>
+        </div>
+
+        <div class="story-grid">
+
+            <!-- === 卡片 1：函数 === -->
+            <div class="story-card">
+                <div class="story-label">📖 函数 Function</div>
+                <div class="story-title"><span class="story-year">1637</span> 笛卡尔：曲线 = 方程</div>
+                <p><span class="story-emoji">🎯</span><strong>它是为了解决什么问题？</strong></p>
+                <p>在伽利略把望远镜瞄向木星之前，所有人都觉得"天上"和"地上"是两套规矩。但伽利略发现：炮弹飞出去的轨迹、水流喷出的弧线，其实和天上的行星轨道一样，<strong>都是曲线</strong>。</p>
+                <p>问题是当时只有两种数学：一种是欧几里得的<strong>几何</strong>（画图），一种是阿拉伯传来的<strong>代数</strong>（算数字）。几何画不出复杂曲线，代数算不出曲线到底长啥样。</p>
+                <p><span class="story-emoji">💡</span><strong>笛卡尔的"破局"：</strong>1637 年他出版《方法论》副册《几何学》，第一次说 <em>"曲线 = 方程"</em>。一个方程给你一个曲线，反过来一条曲线背后藏着一个方程。比如 \(y=x^2\) 就是抛物线，\(x^2+y^2=1\) 就是圆。</p>
+                <div class="story-quote">"我能用几个符号描述任何一条曲线 — 这比画一千张图都有用。"  —— 笛卡尔</div>
+                <p><span class="story-emoji">📱</span><strong>今天有什么用？</strong>你手机导航上画的那条蓝色路线，背后就是一个函数；天气预报把温度、气压、湿度都当成函数的"输入"。不掌握函数，你连看懂手机屏幕都难。</p>
+            </div>
+
+            <!-- === 卡片 2：极限 === -->
+            <div class="story-card">
+                <div class="story-label">📖 极限 Limit</div>
+                <div class="story-title"><span class="story-year">1666</span> 牛顿：被两个问题逼出来的发明</div>
+                <p><span class="story-emoji">🎯</span><strong>它是为了解决什么问题？</strong></p>
+                <p>1665 年伦敦大瘟疫，牛顿跑回乡下老家躲疫。看着院子里的苹果树，他被两件事折磨了一年：</p>
+                <p>① <strong>瞬时速度</strong>：炮弹当时的速度是多少？你想"那一秒跑过的距离 ÷ 1秒"，可炮弹速度每秒都在变，你根本不知道"那一秒跑了多少"。</p>
+                <p>② <strong>曲边面积</strong>：一片树叶有多大？你想用矩形公式，可树叶边缘是弯的，套不了。</p>
+                <p><span class="story-emoji">💡</span><strong>牛顿的"作弊"：</strong>不去算"那一秒跑了多少"，而是算"过去 0.1 秒、0.01 秒、0.001 秒……跑了多少"——看它越来越<em>像</em>哪个数。这个"越来越像"的过程，就是<strong>极限</strong>。</p>
+                <div class="story-quote">"我不会算瞬时 — 但我知道，当时间足够短的时候，它会'撞'上一个数。"  —— 牛顿（1666 年手稿）</div>
+                <p><span class="story-emoji">📱</span><strong>今天有什么用？</strong>你手机地图告诉你"还有 287 米到达目的地"，背后就是把路程切成无数小段、做极限、近似算出来的。</p>
+                <p><span class="story-emoji">⚠️</span><strong>冷知识：</strong>牛顿的极限概念不严格（用"无限小"这种含糊词），直到 1821 年 <strong>柯西</strong> 发明 ε-δ 语言才把"无限接近"定义死。现在考研卷子上的极限题，默认是用柯西那一套。</p>
+            </div>
+
+        </div>
+
+        <div class="story-grid">
+
+            <!-- === 卡片 3：连续 === -->
+            <div class="story-card">
+                <div class="story-label">📖 连续 Continuity</div>
+                <div class="story-title"><span class="story-year">1872</span> 魏尔斯特拉斯的怪物函数</div>
+                <p><span class="story-emoji">🎯</span><strong>它是为了解决什么问题？</strong></p>
+                <p>谁都觉得"连续"就是"画得出来没有断"。可 1872 年 <strong>魏尔斯特拉斯</strong> 在柏林大学课堂上掏出一个函数：</p>
+                <div class="story-quote">f(x) = sin(x) + sin(πx)/2 + sin(π²x)/4 + sin(π³x)/8 + ...</div>
+                <p>这个函数<strong>处处连续</strong>（没有断开的点），但<strong>处处不可导</strong>（任何一点都没有切线，像一连串无穷小的锯齿叠在一起）。</p>
+                <p>数学家全疯了："这不可能！"但确实存在。从此"连续"和"可导"被严格区分开 —— <strong>眼睛觉得光滑的东西，数学上不一定可导。</strong></p>
+                <p><span class="story-emoji">📱</span><strong>今天有什么用？</strong>物理里"信号连续"和"信号光滑"是两回事。例如你话筒录入的声波是连续的，但中间可能被噪声"咬"了一小口（不可导） —— 工程师要把它滤掉。</p>
+            </div>
+
+            <!-- === 卡片 4：等价无穷小 === -->
+            <div class="story-card">
+                <div class="story-label">📖 等价无穷小</div>
+                <div class="story-title"><span class="story-year">1748</span> 欧拉的"狡猾捷径"</div>
+                <p><span class="story-emoji">🎯</span><strong>它是为了解决什么问题？</strong></p>
+                <p>欧拉每天要处理几千个天文学计算（他帮俄国彼得堡科学院算木星、土星轨道）。每个式子又臭又长。</p>
+                <p>他注意到：当一个变量非常非常小时，<strong>二阶以上的项几乎对结果没影响</strong>。比如 \( \sqrt{1+x} \) 当 x 很小时，≈ 1 + x/2，扔掉小数点后面第 5 位之后的所有，误差可以忽略。</p>
+                <div class="story-quote">"无比细小的数，可以彼此替换而不改变答案的'主要面貌'。"  —— 欧拉《无穷小分析引论》1748</div>
+                <p><span class="story-emoji">📱</span><strong>今天有什么用？</strong>航天器导航里，月球引力对地球卫星的扰动属于"无穷小"，可以直接换成"没有月球"的近似算，省 90% 计算量。你考研里看到 \( \sin x \sim x \) 之类公式，本质就是这个。</p>
+            </div>
+
+            <!-- === 卡片 5：洛必达法则 === -->
+            <div class="story-card">
+                <div class="story-label">📖 洛必达法则 L'Hôpital</div>
+                <div class="story-title"><span class="story-year">1696</span> 一段"花钱买数学"的八卦</div>
+                <p><span class="story-emoji">🎯</span><strong>它是为了解决什么问题？</strong></p>
+                <p>0 除以 0、∞ 除以 ∞ 这些"卡在中间不知道等于几"的式子（叫<strong>未定式</strong>），是 17 世纪数学家的恶梦。每个式子都要手写一长串变形才能算。</p>
+                <p><span class="story-emoji">💡</span><strong>全欧洲最骚的操作：</strong>法国有一位<strong>洛必达侯爵 (Marquis de l'Hôpital)</strong>，特别爱数学，但他自己算不动。他直接<strong>花钱雇</strong>瑞士数学家 <strong>约翰·伯努利</strong> 当私教，把伯努利每节课的内容整理出版 —— 这本书叫《分析无穷小》(Analyse des Infiniment Petits, 1696)。</p>
+                <p>书上第一次系统写了"分子分母分别求导再相除"的规则 —— 这就是今天的<strong>洛必达法则</strong>。虽然真正发明者是伯努利，但<strong>书是侯爵出的</strong>，所以世界只记住了侯爵的名字。</p>
+                <div class="story-quote">"把课卖给贵族，包出版还能留名 — 还有比这更划算的买卖吗？"  —— 数学史八卦（伯努利 1704 年吐槽）</div>
+                <p><span class="story-emoji">📱</span><strong>今天有什么用？</strong>0/0、∞/∞ 这种"分子分母同时消失"的式子，洛必达一按，直接变成"分子求导 ÷ 分母求导"，题就解了。考研每年必考。</p>
+            </div>
+
+        </div>
+
+        <div class="story-grid">
+
+            <!-- === 卡片 6：sin x / x = 1 === -->
+            <div class="story-card">
+                <div class="story-label">📖 极限 ① sin x / x = 1</div>
+                <div class="story-title"><span class="story-year">-240</span> 阿基米德掰圆饼的发现</div>
+                <p><span class="story-emoji">🎯</span><strong>它是为了解决什么问题？</strong></p>
+                <p>2500 年前阿基米德接到国王的挑战："能不能用直尺和圆规画一个跟圆一样面积的方块？"（这就是后来困扰人类 2000 年的"化圆为方"问题）。</p>
+                <p>他想到了一个"笨办法"：<strong>把圆切成无数条小扇形，拼成长方形</strong>。如果圆周长 2πr，切成 n 条，每条小扇形的弧 ≈ 弦。当 n 巨大时，<strong>弧长 ≈ 弦长</strong>，即 sin x / x ≈ 1。</p>
+                <p>他用 96 边形算出了 π 介于 3.1408 和 3.1429 之间 —— 这是人类第一次把 π 算到小数点后两位。</p>
+                <div class="story-quote">"当一条弧越来越短，它看起来就像一条弦。"  —— 阿基米德《论球和圆柱》</div>
+                <p><span class="story-emoji">📱</span><strong>今天有什么用？</strong>GPS 测量两点间的"实际弧线距离"时，会调用 sin x/x ≈ 1 的近似 —— 因为地球两点间距离远小于地球半径。"弯曲的不弯曲，误差可忽略。"</p>
+            </div>
+
+            <!-- === 卡片 7：(1+1/n)^n = e === -->
+            <div class="story-card">
+                <div class="story-label">📖 极限 ② (1 + 1/n)<sup>n</sup> = e</div>
+                <div class="story-title"><span class="story-year">1683</span> 雅各布·伯努利的"复利问题"</div>
+                <p><span class="story-emoji">🎯</span><strong>它是为了解决什么问题？</strong></p>
+                <p>雅各布·伯努利 (Jacob Bernoulli) 是个银行家的儿子，他最爱琢磨：<strong>如果借 1 块钱，年利率 100%，结算越频繁，最后会变成多少？</strong></p>
+
+                <p><span class="story-emoji">🧱</span><strong>理解复利公式的"地基"：先从最朴素的算法开始</strong></p>
+
+                <p>假设你借了 <strong>1 元钱</strong>给银行，约定<strong>年利率 100%</strong>（即 1 元的 100% = 1 元利息）。但现实中银行<strong>不会 1 年才跟你结算一次</strong>，而是更频繁地"结算利上加利"。每次结算时：</p>
+
+                <p><strong>核心操作只有一步：把你的本息和 × (1 + 本次利率)</strong></p>
+
+                <p>我们用三个例子一步步演示：</p>
+
+                <p><span class="story-emoji">📘</span><strong>例 1（年结算 1 次）：</strong></p>
+                <p>整年才结算一次：第 1 次（年终）拿到的钱 = 1 × (1 + 100%) = <strong>2 元</strong>。</p>
+                <p>写成"底数 × 基数"的形式：<code>(1 + 1)<sup>1</sup> = 1 × 2 = 2</code></p>
+
+                <p><span class="story-emoji">📗</span><strong>例 2（年结算 2 次，即"半年一结"）：</strong></p>
+                <p>每次利率从"100%"变成"100%/2 = 50%"。但关键在于：</p>
+                <p>第 1 次结算（半年末）：1 × (1 + 50%) = <strong>1.5 元</strong>（你口袋里多出的 0.5 元也立刻入账）</p>
+                <p>第 2 次结算（一年末）：1.5 × (1 + 50%) = 1.5 × 1.5 = <strong>2.25 元</strong></p>
+                <p>注意！第 2 次的本金已经变成 1.5（多出 0.5 元利息），这就是"利上加利（复利）"的精髓。</p>
+                <p>写成"连乘"形式：<code>1 × (1 + 1/2) × (1 + 1/2) = (1 + 1/2)<sup>2</sup> = 2.25</code></p>
+
+                <p><span class="story-emoji">📙</span><strong>例 3（年结算 n 次，即"1/n 年一结"）：</strong></p>
+                <p>每次利率变成"100%/n = 1/n"。整个 1 年要被结算 n 次。</p>
+                <p>每次结算钱都会"乘以 (1 + 1/n)"，一共乘了 n 次：</p>
+                <div class="formula-box" style="background:#fff;border:1px dashed #8e44ad;font-size:17px;text-align:center;color:#6c3483;">
+                1 × (1 + 1/n) × (1 + 1/n) × ... × (1 + 1/n) &nbsp; = &nbsp; <span style="color:#c0392b;font-size:20px;">(1 + 1/n)<sup>n</sup></span>
+                <div style="font-size:12px;color:#555;margin-top:6px;">共 n 个 (1+1/n) 相乘</div>
+                </div>
+
+                <p><strong>这就是"为什么 (1 + 1/n)<sup>n</sup> 是复利公式"</strong>：它不是凭空发明的，而是把"重复结算 n 次、每次乘以 (1+1/n)"这件事<em>用数学家发明的简写</em>记下来。</p>
+
+                <p><strong>读法口诀</strong>：<em>(1 + 1/n)<sup>n</sup></em> 读作 <strong>"1 块钱借出去，每年结算 n 次（每次利率 1/n），连续结算 n 次"</strong>。</p>
+
+                <p><span class="story-emoji">🔁</span><strong>现在回头看上面的表格：</strong></p>
+                <table style="width:100%;font-size:13px;border-collapse:collapse;margin:8px 0;">
+                    <tr style="background:#fff3e0;">
+                        <td style="padding:5px 10px;border:1px solid #e0c1a0;">每年结算</td>
+                        <td style="padding:5px 10px;border:1px solid #e0c1a0;font-weight:700;">(1+1)<sup>1</sup> = 2</td>
+                    </tr>
+                    <tr>
+                        <td style="padding:5px 10px;border:1px solid #e0c1a0;">每半年结算</td>
+                        <td style="padding:5px 10px;border:1px solid #e0c1a0;">(1 + 1/2)<sup>2</sup> = 2.25</td>
+                    </tr>
+                    <tr style="background:#fff3e0;">
+                        <td style="padding:5px 10px;border:1px solid #e0c1a0;">每月结算</td>
+                        <td style="padding:5px 10px;border:1px solid #e0c1a0;">≈ 2.61</td>
+                    </tr>
+                    <tr>
+                        <td style="padding:5px 10px;border:1px solid #e0c1a0;">每日结算</td>
+                        <td style="padding:5px 10px;border:1px solid #e0c1a0;">≈ 2.71</td>
+                    </tr>
+                    <tr style="background:#fff3e0;">
+                        <td style="padding:5px 10px;border:1px solid #e0c1a0;"><strong>连续结算（极限）</strong></td>
+                        <td style="padding:5px 10px;border:1px solid #e0c1a0;"><strong>≈ 2.71828 = e</strong></td>
+                    </tr>
+                </table>
+                <p>伯努利发现：再频繁，最终也涨不过 <strong>2.71828...</strong> 这个数。后来给它取名叫 <strong>e</strong>（exponential 的开头），意思是"指数增长的极限速度"。</p>
+                <div class="story-quote">"本金不变 — 但只要有时间，复利就会把人逼疯。"  —— 伯努利日记</div>
+                <p><span class="story-emoji">📱</span><strong>今天有什么用？</strong>银行理财、放射性元素衰变、细菌繁殖、动物种群增长 —— <strong>所有"越变越多"的自然现象，背后都是 e</strong>。你手机里的电池损耗曲线也是 e 的亲戚。</p>
+
+                <p><span class="story-emoji">🔍</span><strong>复利公式的完整推导（详细版）：</strong></p>
+                <p>假设一年结算 <em>m</em> 次，每次结算时利率是 (100%/m) = (1/m)：</p>
+                <div class="formula-box" style="background:#fff;border:1px dashed #8e44ad;font-size:16px;">年末本息和 = (1 + <sup>1</sup>⁄<sub>m</sub>)<sup>m</sup></div>
+                <p><strong>三个特殊 m 值对应的结果：</strong></p>
+                <ul style="padding-left:20px;margin:6px 0;">
+                    <li>m = 1：<code>(1 + 1)<sup>1</sup> = 2</code>（年结算一次）</li>
+                    <li>m = 12：<code>(1 + 1/12)<sup>12</sup> ≈ 2.613</code>（月结算）</li>
+                    <li>m = 365：<code>(1 + 1/365)<sup>365</sup> ≈ 2.7145</code>（日结算）</li>
+                    <li>m = 8760：<code>≈ 2.7181</code>（小时结算）</li>
+                    <li>m → ∞：极限 = <strong>2.71828...</strong> 这就是 e</li>
+                </ul>
+                <p><strong>所以 e 不是被定义出来的，而是被<em>"逼"出来</em>的。</strong>当你反复"试图让钱生得更快"时，<em>e 是碰到的天花板</em>。</p>
+
+                <p><span class="story-emoji">📈</span><strong>(1 + 1/n)<sup>n</sup> 随 n 增大的"爬升曲线"</strong></p>
+
+                <svg viewBox="0 0 600 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;background:#fff;border-radius:6px;border:1px solid #d6e4f0;">
+                    <!-- 坐标轴 -->
+                    <line x1="60"  y1="240" x2="560" y2="240" stroke="#34495e" stroke-width="2"/>
+                    <line x1="60"  y1="240" x2="60"  y2="30"  stroke="#34495e" stroke-width="2"/>
+                    <text x="555" y="258" text-anchor="end" font-size="11" fill="#34495e">n →</text>
+                    <text x="50"  y="40"  text-anchor="end" font-size="11" fill="#34495e">y</text>
+
+                    <!-- y 轴刻度 -->
+                    <g stroke="#aab" stroke-width="0.8" opacity="0.4">
+                        <line x1="60" y1="240" x2="560" y2="240"/>
+                        <line x1="60" y1="206" x2="560" y2="206"/>
+                        <line x1="60" y1="172" x2="560" y2="172"/>
+                        <line x1="60" y1="138" x2="560" y2="138"/>
+                        <line x1="60" y1="104" x2="560" y2="104"/>
+                        <line x1="60" y1="70"  x2="560" y2="70"/>
+                    </g>
+                    <g font-size="10" fill="#555" text-anchor="end">
+                        <text x="55" y="244">2.0</text>
+                        <text x="55" y="210">2.2</text>
+                        <text x="55" y="176">2.4</text>
+                        <text x="55" y="142">2.6</text>
+                        <text x="55" y="108">2.70</text>
+                        <text x="55" y="74">2.718 = e</text>
+                    </g>
+
+                    <!-- 水平虚线 y = e ≈ 2.71828 -->
+                    <line x1="60" y1="70" x2="560" y2="70" stroke="#922b21" stroke-width="1.5" stroke-dasharray="4,4"/>
+                    <text x="555" y="65" text-anchor="end" font-size="11" fill="#922b21" font-weight="700">e = 2.71828...</text>
+
+                    <!-- (1 + 1/n)^n 的爬升曲线（用 14 个点近似） -->
+                    <!-- 坐标映射：y 显示 = 240 - (v - 2) × 425 -->
+                    <!-- v=2 -> y=240; v=2.2 -> y=205; v=2.4 -> y=170; v=2.6 -> y=135; v=2.7 -> y=106; v=2.72 -> y=94 -->
+                    <path d="M 60,240
+                             L 80,206.6
+                             L 100,182.0
+                             L 125,155.6
+                             L 150,135.0
+                             L 180,118.4
+                             L 210,108.0
+                             L 245,101.0
+                             L 285,96.6
+                             L 330,93.7
+                             L 380,91.8
+                             L 440,90.5
+                             L 510,89.6
+                             L 560,89.0"
+                          stroke="#8e44ad" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+                    <!-- 关键点标注 -->
+                    <circle cx="80"  cy="206.6" r="4" fill="#8e44ad"/>
+                    <text x="80" y="200" text-anchor="middle" font-size="10" fill="#922b21" font-weight="700">n=2: 2.25</text>
+
+                    <circle cx="150" cy="135.0" r="4" fill="#8e44ad"/>
+                    <text x="150" y="129" text-anchor="middle" font-size="10" fill="#922b21" font-weight="700">n=10: ≈2.59</text>
+
+                    <circle cx="210" cy="108.0" r="4" fill="#8e44ad"/>
+                    <text x="210" y="102" text-anchor="middle" font-size="10" fill="#922b21" font-weight="700">n=100: ≈2.705</text>
+
+                    <circle cx="330" cy="93.7" r="4" fill="#8e44ad"/>
+                    <text x="330" y="50" text-anchor="middle" font-size="10" fill="#922b21" font-weight="700">n=1000: ≈2.7169</text>
+
+                    <!-- x 轴下方年份注释 -->
+                    <text x="80"  y="260" text-anchor="middle" font-size="9" fill="#555">n=2</text>
+                    <text x="150" y="260" text-anchor="middle" font-size="9" fill="#555">n=10</text>
+                    <text x="210" y="260" text-anchor="middle" font-size="9" fill="#555">n=100</text>
+                    <text x="330" y="260" text-anchor="middle" font-size="9" fill="#555">n=1000</text>
+                    <text x="560" y="260" text-anchor="end" font-size="9" fill="#555">n→∞</text>
+
+                    <!-- 标题 -->
+                    <text x="300" y="22" text-anchor="middle" font-size="13" fill="#6c3483" font-weight="700">(1 + 1/n)<sup>n</sup> 随 n 增大"越来越接近 e，但永远够不到"</text>
+                </svg>
+
+                <p><strong>看图说话：</strong></p>
+                <ul style="padding-left:20px;margin:6px 0;">
+                    <li>曲线<strong>永远往上爬</strong>（单调递增）</li>
+                    <li>但爬得<strong>越来越慢</strong>，<strong>永远到不了</strong>那条虚线 y=e</li>
+                    <li>n=10 时已经是 2.59，n=100 时已经 2.705，<strong>n=1000 之后基本贴在 2.718 上</strong>，肉眼几乎分不出在不在动</li>
+                    <li>这告诉我们 e <strong>永远是一个"理想但永远够不到的上限"</strong>，你越想接近它，越要付出超指数级增长的计算量</li>
+                </ul>
+
+                <p><span class="story-emoji">💡</span><strong>e 这个数的 3 个惊人"等价定义"（同一个数字 e，竟然由 3 种不同途径得到）：</strong></p>
+                <table style="width:100%;font-size:13px;border-collapse:collapse;margin:8px 0;background:#fff;">
+                    <thead style="background:#fef3e2;">
+                        <tr>
+                            <th style="padding:8px;border:1px solid #e0c1a0;text-align:left;">定义方式</th>
+                            <th style="padding:8px;border:1px solid #e0c1a0;text-align:left;">公式</th>
+                            <th style="padding:8px;border:1px solid #e0c1a0;text-align:left;">直观</th>
+                            <th style="padding:8px;border:1px solid #e0c1a0;text-align:left;">提出者</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding:8px;border:1px solid #e0c1a0;"><strong>复利上限</strong></td>
+                            <td style="padding:8px;border:1px solid #e0c1a0;"><code>lim (1+1/n)<sup>n</sup></code></td>
+                            <td style="padding:8px;border:1px solid #e0c1a0;">结算越频繁越接近 2.718</td>
+                            <td style="padding:8px;border:1px solid #e0c1a0;">雅各布·伯努利 1683</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:8px;border:1px solid #e0c1a0;"><strong>倒数积分</strong></td>
+                            <td style="padding:8px;border:1px solid #e0c1a0;"><code>∫<sub>1</sub><sup>e</sup> (1/x) dx = 1</code></td>
+                            <td style="padding:8px;border:1px solid #e0c1a0;">1/x 从 1 到 e 的面积 = 1</td>
+                            <td style="padding:8px;border:1px solid #e0c1a0;">约翰·伯努利 1697</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:8px;border:1px solid #e0c1a0;"><strong>泰勒级数和</strong></td>
+                            <td style="padding:8px;border:1px solid #e0c1a0;"><code>e = 1 + 1 + 1/2! + 1/3! + 1/4! + ...</code></td>
+                            <td style="padding:8px;border:1px solid #e0c1a0;">无穷个分数相加恰好是 2.71828...</td>
+                            <td style="padding:8px;border:1px solid #e0c1a0;">欧拉 1748</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p><strong>三种方式得到同一个数 2.71828...</strong>，这是数学上的"巧合"：复利问题、对数积分、级数求和 — 这三件看似无关的事，最终"撞"在了同一个常数上。这就是 e 的魔力。</p>
+
+                <p><span class="story-emoji">🧠</span><strong>为什么 ln 和 e 总是成对出现？</strong></p>
+                <p>ln 就是"以 e 为底的对数"。如果你找一个数字，让它"自乘多少次"才能得到 x，那答案就是 ln x。例如：</p>
+                <ul style="padding-left:20px;margin:6px 0;">
+                    <li>ln 1 = 0（任何东西的 0 次方 = 1）</li>
+                    <li>ln e = 1（e 的 1 次方 = e）</li>
+                    <li>ln e² = 2（e 的 2 次方 = e²）</li>
+                    <li>ln 10 ≈ 2.3026（e 自乘 2.3 次 ≈ 10）</li>
+                </ul>
+                <p><strong>为什么选 e 做底，不选 10？</strong>因为 e 是"自然增长"的速度标准 —— 任何"自乘增长"的系统（细菌、利息、放射性衰变）都跟 e 直接挂钩。如果用 10 作底，每次都要换算。如果你嫌换算麻烦，学对数时刻选 e 作底 —— 自然对数 = ln —— 在微积分里<strong>几乎不用换算</strong>，所以最"省力"。</p>
+
+                <p><span class="story-emoji">📱</span><strong>工程师视角的 e：为什么所有"指数增长"都用 e<sup>t</sup>？</strong></p>
+                <p>如果你想表达"某种东西在 t 时刻增长了 k 倍"，最自然的写法是 <code>y = y₀·e<sup>kt</sup></code> 而不是 <code>y = y₀·10<sup>t</sup></code>。原因：</p>
+                <p style="text-align:center;"><strong>y 的瞬时增长率 = k · y</strong>（即"长出来的速度 ↔ 已经有的数量"成正比）</p>
+                <p>这是<strong>自然界几乎所有指数现象的共同规律</strong>：</p>
+                <ul style="padding-left:20px;margin:6px 0;">
+                    <li>🦠 细菌繁殖：每分钟变 2 倍 → 写为 <code>e<sup>ln 2 · t</sup></code></li>
+                    <li>📉 放射性衰变：半衰期 T → 写为 <code>e<sup>-ln 2 · t/T</sup></code></li>
+                    <li>📈 复利：年利率 r → 写为 <code>e<sup>rt</sup></code></li>
+                    <li>🌡️ 牛顿冷却定律：温差随时间 → <code>T(t) = T_env + (T₀ - T_env)·e<sup>-kt</sup></code></li>
+                </ul>
+                <p>选 e 作底的根本原因：<strong>它的导数等于自己</strong>。<code>d/dt (e<sup>t</sup>) = e<sup>t</sup></code> —— 在所有指数函数里<strong>只有 e 满足这个神奇的恒等式</strong>，所以计算起来最"省力"。这就是为什么欧拉说的"e<sup>x</sup> 的导数就是 e<sup>x</sup>"成为整个微积分里的"复利率守恒定律"。</p>
+
+                <div class="example-hint" style="background:#fff3e0;border-left:4px solid #e67e22;margin-top:10px;">
+                    <strong>📌 考研用得到的核心结论：</strong>当你看到 <code>1^∞</code> 型极限 = <code>e<sup>某数</sup></code> 时，这个"某数"其实就是 <strong>ln A</strong> 在某点的值。所以 ch01 第一张故事卡里说的"e 是复利速度"，和这里"e 的导数等于自己"是<strong>同一件事的两个面</strong> —— 它们都来自同一个 1683 年伯努利的复利实验。
+                </div>
+            </div>
+
+        </div>
+
+        <div class="story-grid">
+
+            <!-- === 卡片 8：拉格朗日 === -->
+            <div class="story-card">
+                <div class="story-label">📖 拉格朗日中值定理</div>
+                <div class="story-title"><span class="story-year">1788</span> 拉格朗日：「平均速度的那一瞬」</div>
+                <p><span class="story-emoji">🎯</span><strong>它是为了解决什么问题？</strong></p>
+                <p>你开车 100 公里用 2 小时，平均速度 50 km/h。可你的车一定有时快有时慢 —— <strong>有没有哪个瞬间，你的车速表恰好指 50 km/h？</strong></p>
+                <p>1797 年意大利人 <strong>拉格朗日 (Joseph-Louis Lagrange)</strong> 用纯代数（不靠画图）证明：<strong>一定有，而且至少有一个。</strong></p>
+                <div class="formula-box" style="background:#fff;border:1px dashed #e67e22;">f(b) − f(a) = f'(ξ) · (b − a)，其中 ξ 在 (a, b) 之间</div>
+                <p><span class="story-emoji">💡</span><strong>为什么这个公式牛？</strong>左边是"总变化量"（距离），右边是"瞬间变化率 × 时间区间"。它说的是：<strong>总变化可以由某一个瞬间的瞬时变化率代表。</strong></p>
+                <div class="story-quote">"几何图形可以骗人 — 我要的是不动一笔也能推理。"  —— 拉格朗日（与欧拉的世纪辩论）</div>
+                <p><span class="story-emoji">📱</span><strong>今天有什么用？</strong>经济学里叫<strong>"边际 = 平均"</strong>：你存款 10 年从 1 万涨到 2 万，<strong>总有一年你的利息恰好等于平均水平</strong>。算法工程师用它证明"局部最优 ≈ 全局最优"，让 AI 跑得动。</p>
+            </div>
+
+            <!-- === 卡片 9：单调有界 === -->
+            <div class="story-card">
+                <div class="story-label">📖 单调有界原理</div>
+                <div class="story-title"><span class="story-year">1872</span> 魏尔斯特拉斯：「数列有底」</div>
+                <p><span class="story-emoji">🎯</span><strong>它是为了解决什么问题？</strong></p>
+                <p>你随便写一个递推数列：\(x_{n+1} = f(x_n)\)。它最终会停在一个数上吗？直观觉得"应该会"，但<strong>严格的数学证明要去哪里找？</strong></p>
+                <p>魏尔斯特拉斯给出<strong>两条就够了：</strong></p>
+                <p>① <strong>单调</strong>（永远往一个方向走，不会反复横跳）</p>
+                <p>② <strong>有界</strong>（被一条线拦住，飞不出去）</p>
+                <p>满足这两条 —— 极限<strong>必然存在</strong>。这就是<strong>单调有界原理</strong>。</p>
+                <div class="story-quote">"数列像登山客：要么一直往上爬（单调），要么被挡在某条线以下（有界）。两者满足，必能登顶。"  —— 魏尔斯特拉斯讲堂</div>
+                <p><span class="story-emoji">📱</span><strong>今天有什么用？</strong>计算机科学的"不动点定理"也是它的人话版：俄罗斯套娃无限套下去，最终会停在某个位置（例如迭代算法收敛）。机器学习里"模型训练不再改善"就是它。</p>
+            </div>
+
+        </div>
+
+        <div class="story-grid">
+
+            <!-- === 卡片 10：定积分定义 === -->
+            <div class="story-card">
+                <div class="story-label">📖 定积分定义求数列极限</div>
+                <div class="story-title"><span class="story-year">263</span> 刘徽的割圆术</div>
+                <p><span class="story-emoji">🎯</span><strong>它是为了解决什么问题？</strong></p>
+                <p>圆没有"直边"，没法套矩形面积公式。可人人都想知道：<strong>地球周长到底多少？池塘水面多大？</strong></p>
+                <p>公元 263 年，三国魏晋数学家 <strong>刘徽</strong> 写了一本《九章算术注》，里面发明了"割圆术"：把圆切成 6 边形、12 边形、24 边形……直到 3072 边形。每切一次，边数翻一倍，面积越来越接近圆。</p>
+                <p>这就是<strong>定积分思想</strong>的最早应用，欧洲晚了 1500 年才独立发明。</p>
+                <div class="story-quote">"割之又割，以至不可割，则与圆合体而无所失矣。"  —— 刘徽《九章算术注》</div>
+                <p><span class="story-emoji">📱</span><strong>今天有什么用？</strong>所有<strong>"曲边图形"</strong>的面积（地球表面、河流断面、香水瓶），所有"液体流速 × 时间 = 总量"的计算，都源自这个思想。今天你考研卷子上"lim 求和 = 定积分"的题型，正是它的<strong>反向应用</strong>：反推"无限求和"等于多少。</p>
+            </div>
+
+            <!-- === 总结卡：这一章到底在解决啥 === -->
+            <div class="story-card" style="background:linear-gradient(180deg, #fef9e7 0%, #fcf3cf 100%); border-left-color:#b7950b;">
+                <div class="story-label">🎁 这一章的"灵魂主线"</div>
+                <div class="story-title">一句话讲完所有故事的共同主线</div>
+                <p><span class="story-emoji">🧵</span>这一章所有公式，归根结底就为了解决<strong>两类"古老难题"</strong>：</p>
+                <p><strong>难题 A —— 怎么算"瞬时"？</strong></p>
+                <p>炮弹当时速度多快？曲线那一点斜率多少？→ 发明了<strong>极限</strong>，又衍生出<strong>导数</strong>。</p>
+                <p><strong>难题 B —— 怎么算"曲边"？</strong></p>
+                <p>圆面积多大？水滴落到曲线的"总路程"多少？→ 发明了<strong>积分</strong>，又回到<strong>极限</strong>。</p>
+                <p>所以<strong>整本考研数学 ≈ 极限的一万种用法</strong>。第一章学的是"地基"，后面每一章都是在不同场景里应用这个地基。</p>
+                <p><span class="story-emoji">💪</span>学完第一张时间轴和这 10 张故事卡，你应该已经知道"为什么学"了 —— 不是为了应付考试，是因为这 10 个公式真的解决了人类 <strong>2300 年</strong>的痛点。</p>
+            </div>
+
+        </div>
+
         <!-- ====== Part 1：入门与速查 ====== -->
         <div class="part-divider p1" id="part1">
             <div class="pd-num">1</div>

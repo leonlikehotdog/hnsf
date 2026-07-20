@@ -4,6 +4,263 @@
         <div class="ch-stars star-high">⭐⭐⭐⭐⭐</div>
     </div>
     <div class="ch-content">
+
+        <!-- ====== Part 0：诞生背景 · 「积分」为啥要从导数"反过来"？ ====== -->
+        <div class="part-divider p0" id="part0">
+            <div class="pd-num">0</div>
+            <div class="pd-text">
+                <div class="pd-name">🌌 诞生背景 · 积分是导数的"亲子关系"</div>
+                <div class="pd-desc">这一章的故事，是从古希腊"算面积"的死磕开始的，最后由牛顿和莱布尼茨用一个公式统一了 2300 年的争吵。</div>
+            </div>
+        </div>
+
+        <div class="story-card">
+            <div class="story-label">🎬 ch02 学的导数 vs ch03 要学的积分</div>
+            <p>ch02 我们学的是<strong>"正着来"</strong>：知道函数 → 求它"瞬时变化率"。</p>
+            <p>ch03 要学的<strong>积分</strong>是<strong>"反着来"</strong>：知道瞬时变化率 → 反推出"原来长了多少"。</p>
+            <p>比如：</p>
+            <p>📍 ch02 → 一辆车正在以 60 km/h 跑（瞬时速度），问"这一秒速度多少"？</p>
+            <p>📍 ch03 → 一辆车<em>一直</em>以 60 km/h 跑，问"过去 1 小时跑了多少 km"？</p>
+            <p>看起来是同一件事的两种看法，但<strong>数学上要"反着算"绝对没那么简单</strong> —— 这就是本章要解决的核心问题：</p>
+            <p style="text-align:center;font-size:18px;font-weight:700;color:#922b21;">导数 = 微分；积分 = 求"原"  ——  互为逆运算</p>
+        </div>
+
+        <div class="story-card timeline-svg-wrap">
+            <div class="story-label">⏳ 2300 年积分史 · 面积问题从未消退</div>
+            <svg viewBox="0 0 1200 360" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="tlGrad3" x1="0" x2="1" y1="0" y2="0">
+                        <stop offset="0%" stop-color="#8e44ad" stop-opacity="0.4"/>
+                        <stop offset="50%" stop-color="#6c3483" stop-opacity="1"/>
+                        <stop offset="100%" stop-color="#3b1c4a" stop-opacity="1"/>
+                    </linearGradient>
+                </defs>
+                <rect x="40" y="40" width="1120" height="280" fill="#faf4ff" rx="8"/>
+                <line x1="80" y1="200" x2="1140" y2="200" stroke="url(#tlGrad3)" stroke-width="6" stroke-linecap="round"/>
+
+                <g stroke="#5b2c6f" stroke-width="1" opacity="0.3">
+                    <line x1="80"   y1="200" x2="80"   y2="215"/>
+                    <line x1="180"  y1="200" x2="180"  y2="215"/>
+                    <line x1="280"  y1="200" x2="280"  y2="215"/>
+                    <line x1="380"  y1="200" x2="380"  y2="215"/>
+                    <line x1="480"  y1="200" x2="480"  y2="215"/>
+                    <line x1="580"  y1="200" x2="580"  y2="215"/>
+                    <line x1="680"  y1="200" x2="680"  y2="215"/>
+                    <line x1="780"  y1="200" x2="780"  y2="215"/>
+                    <line x1="880"  y1="200" x2="880"  y2="215"/>
+                    <line x1="980"  y1="200" x2="980"  y2="215"/>
+                    <line x1="1080" y1="200" x2="1080" y2="215"/>
+                </g>
+                <g font-family="-apple-system, sans-serif" font-size="11" fill="#5b2c6f" text-anchor="middle">
+                    <text x="80"  y="232">BC 250</text>
+                    <text x="180" y="232">AD 1</text>
+                    <text x="280" y="232">263</text>
+                    <text x="380" y="232">500</text>
+                    <text x="480" y="232">800</text>
+                    <text x="580" y="232">1100</text>
+                    <text x="680" y="232">1300</text>
+                    <text x="780" y="232">1500</text>
+                    <text x="880" y="232">1629</text>
+                    <text x="980" y="232">1670</text>
+                    <text x="1080" y="232">1854</text>
+                </g>
+
+                <!-- 节点 -->
+                <!-- 1. 阿基米德 -250 抛物线面积 -->
+                <g transform="translate(120,200)">
+                    <circle r="13" fill="#c0392b" stroke="#fff" stroke-width="3"/>
+                    <text x="0" y="4" text-anchor="middle" font-size="13" fill="#fff" font-weight="700">1</text>
+                    <text x="0" y="-25" text-anchor="middle" font-size="12" fill="#922b21" font-weight="700">阿基米德</text>
+                    <text x="0" y="-12" text-anchor="middle" font-size="10" fill="#922b21">-250 抛物线面积</text>
+                    <text x="0" y="38" text-anchor="middle" font-size="10" fill="#555">4/3 · 底·高</text>
+                </g>
+                <!-- 2. 刘徽 263 -->
+                <g transform="translate(285,200)">
+                    <circle r="11" fill="#2980b9" stroke="#fff" stroke-width="3"/>
+                    <text x="0" y="4" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">2</text>
+                    <text x="38" y="-5" font-size="10" fill="#1a5276">263 刘徽 圆面积</text>
+                </g>
+                <!-- 3. 祖冲之 480 -->
+                <g transform="translate(440,200)">
+                    <circle r="11" fill="#16a085" stroke="#fff" stroke-width="3"/>
+                    <text x="0" y="4" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">3</text>
+                    <text x="38" y="-5" font-size="10" fill="#0e6655">480 祖冲之 π</text>
+                </g>
+                <!-- 4. 卡瓦列里 1629 -->
+                <g transform="translate(890,200)">
+                    <circle r="13" fill="#8e44ad" stroke="#fff" stroke-width="3"/>
+                    <text x="0" y="4" text-anchor="middle" font-size="13" fill="#fff" font-weight="700">4</text>
+                    <text x="0" y="-25" text-anchor="middle" font-size="12" fill="#6c3483" font-weight="700">卡瓦列里</text>
+                    <text x="0" y="-12" text-anchor="middle" font-size="10" fill="#6c3483">1629 不可分量</text>
+                    <text x="0" y="38" text-anchor="middle" font-size="10" fill="#555">"无穷小片段加总"</text>
+                </g>
+                <!-- 5. 牛顿 1670 -->
+                <g transform="translate(960,200)">
+                    <circle r="14" fill="#c0392b" stroke="#fff" stroke-width="3"/>
+                    <text x="0" y="4" text-anchor="middle" font-size="13" fill="#fff" font-weight="700">5</text>
+                    <text x="38" y="-26" font-size="12" fill="#922b21" font-weight="700">牛  顿</text>
+                    <text x="38" y="-12" font-size="10" fill="#922b21">1670 流数逆运算</text>
+                    <text x="38" y="6" font-size="10" fill="#555">"积分 = 反流数"</text>
+                </g>
+                <!-- 6. 莱布尼茨 1675 -->
+                <g transform="translate(1010,200)">
+                    <circle r="14" fill="#c0392b" stroke="#fff" stroke-width="3"/>
+                    <text x="0" y="4" text-anchor="middle" font-size="13" fill="#fff" font-weight="700">6</text>
+                    <text x="50" y="-26" font-size="12" fill="#922b21" font-weight="700">莱布尼茨</text>
+                    <text x="50" y="-12" font-size="10" fill="#922b21">1675 发明 ∫ 符号</text>
+                    <text x="0" y="40" text-anchor="middle" font-size="10" fill="#555">"长 S = Sum"</text>
+                </g>
+                <!-- 7. 黎曼 1854 -->
+                <g transform="translate(1130,200)">
+                    <circle r="13" fill="#34495e" stroke="#fff" stroke-width="3"/>
+                    <text x="0" y="4" text-anchor="middle" font-size="13" fill="#fff" font-weight="700">7</text>
+                    <text x="0" y="-25" text-anchor="middle" font-size="12" fill="#1a242f" font-weight="700">黎  曼</text>
+                    <text x="0" y="-12" text-anchor="middle" font-size="10" fill="#1a242f">1854 严格定义</text>
+                    <text x="0" y="38" text-anchor="middle" font-size="10" fill="#555">任意切分的极限</text>
+                </g>
+
+                <g font-family="Georgia, serif" font-size="20" fill="#922b21" font-weight="700" opacity="0.85">
+                    <text x="120" y="65" text-anchor="middle">?</text>
+                    <text x="285" y="65" text-anchor="middle">?</text>
+                    <text x="890" y="65" text-anchor="middle">?</text>
+                    <text x="1010" y="65" text-anchor="middle">?</text>
+                    <text x="1130" y="65" text-anchor="middle">?</text>
+                </g>
+                <text x="600" y="50" text-anchor="middle" font-size="12" fill="#5b2c6f" font-weight="600">↑ 每个问号对应本章一个被现实逼出来的"算面积"问题</text>
+
+                <g opacity="0.4">
+                    <text x="200" y="100" font-size="11" fill="#c0392b">🔴 古代：算圆/抛物线面积</text>
+                    <text x="950" y="100" font-size="11" fill="#8e44ad">🟣 17世纪：微积分基本定理</text>
+                    <text x="1110" y="100" font-size="11" fill="#34495e">⚫ 19世纪：严格化</text>
+                </g>
+                <text x="600" y="330" text-anchor="middle" font-size="12" fill="#5b2c6f">📌 核心突破：1670 年代牛顿和莱布尼茨互相不知道，都独立发现"积分是导数的反运算"。这一个想法解决了人类 1900 年。</text>
+            </svg>
+        </div>
+
+        <div class="story-grid">
+
+            <!-- === 卡片 1：阿基米德 === -->
+            <div class="story-card">
+                <div class="story-label">📖 阿基米德抛物线面积</div>
+                <div class="story-title"><span class="story-year">-250</span> 阿基米德："我算出了曲边形的面积！"</div>
+                <p><span class="story-emoji">🎯</span><strong>它是为了解决什么问题？</strong></p>
+                <p>古希腊人不会算"曲边图形的面积"。比如抛物线和一条直线围成的形状，套不上矩形公式。</p>
+                <p>公元前 250 年，西西里岛的<strong>阿基米德</strong>冥思苦想出一个"穷竭法"：</p>
+                <p>把抛物线内部切成无数个三角形 → 求和 → 正好等于 <strong>4/3 × 底 × 高</strong>，精确的常数比。</p>
+                <div class="story-quote">"我敢打赌：曲边形面积也能精确算出来 — 这就是数学的力量。"  —— 阿基米德</div>
+                <p>这就是<strong>最早的积分</strong>。比牛顿莱布尼茨早 <strong>2000 年</strong>。方法对的，只是没发明"极限"那套代数符号。</p>
+                <p><span class="story-emoji">⚠️</span><strong>小八卦：</strong>罗马军队攻破叙拉古城时，一个士兵冲进阿基米德家要抓他。阿基米德正埋头画几何图形，头也不抬说"别踩我的圆"。士兵一怒之下拔剑把他杀了。</p>
+                <p><span class="story-emoji">📱</span><strong>今天有什么用？</strong>你手机里所有的"圆角矩形按钮"面积、设计师画的所有弧线字体的外框、桥梁弧形部分的面积 —— 全部都靠阿基米德这招算。</p>
+            </div>
+
+            <!-- === 卡片 2：卡瓦列里 === -->
+            <div class="story-card">
+                <div class="story-label">📖 卡瓦列里不可分量原理</div>
+                <div class="story-title"><span class="story-year">1629</span> 卡瓦列里："把图形切成无数细线"</div>
+                <p><span class="story-emoji">🎯</span><strong>它是为了解决什么问题？</strong></p>
+                <p>阿基米德死后 1900 年，没有人能写出通用的"曲边形面积 = 多少"的公式。</p>
+                <p>1629 年意大利修道士 <strong>卡瓦列里 (Bonaventura Cavalieri)</strong> 提出<strong>不可分量原理 (Indivisibles)</strong>：</p>
+                <p>"任何平面图形，都可以想成<em>无数条平行线</em>堆出来的。把这些线<em>都加在一起</em>，就是它的面积。"</p>
+                <p>这是<strong>第一次用"连续累加"的思路代替"穷举细分"</strong>。听起来理所当然，但在 1629 年这是一个超大革命 —— 当时大家还在信奉"只有有限的数能加总"。</p>
+                <div class="story-quote">"把一根 1 米长的线切成无穷多份 — 它们加在一起还是 1 米。这不是悖论，这是真理。"  —— 卡瓦列里</div>
+                <p><span class="story-emoji">📱</span><strong>今天有什么用？</strong>核磁共振 (MRI) 扫描就是用"切片 → 累加"的思路，把一张 3D 人体模型从无数 2D 切片拼回来。这就是卡瓦列里的"不可分量"。</p>
+            </div>
+
+            <!-- === 卡片 3：牛顿-莱布尼茨公式 === -->
+            <div class="story-card">
+                <div class="story-label">📖 牛顿-莱布尼茨公式</div>
+                <div class="story-title"><span class="story-year">1670</span> 两个不认识的数学家，独立发明了同一件事</div>
+                <p><span class="story-emoji">🎯</span><strong>它是为了解决什么问题？</strong></p>
+                <p>1660 年代末，<strong>两件事</strong>让微积分行得通了：</p>
+                <p>① 算瞬时速度（导数）—— 我们在 ch02 学过</p>
+                <p>② 算曲线面积（积分）—— 一直没人搞定</p>
+                <p>1669 年 <strong>牛顿</strong>（在剑桥大学）发现：<strong>算瞬时速度的"反"操作，正好就是算面积</strong>！也就是：</p>
+                <div class="story-quote" style="background:#fff;border:1px dashed #922b21;">如果 f 的导数是 F（瞬时变化率 = F），那么 F 累积起来就是 f → 这俩互为"父子"</div>
+                <p>几乎是同一时间，莱布尼茨也独立发现同一件事。并且他在 <strong>1675 年 10 月 29 日</strong>的笔记本里第一次写下了 <strong>∫ 这个符号</strong>。他选了一个"拉长的 S"，代表拉丁文 Summa（总和）。</p>
+                <p><strong>从此"算面积"不再是难题</strong>：你只要找到 f 函数的<em>原函数</em> F(x)，那 ∫ f dx = F(b) - F(a)，一步出答案 —— 因为导数 + 积分互为逆运算。</p>
+                <div class="story-quote">"微积分基本定理：积分是导数的逆运算 — 2000 年的死磕到此为止。"  —— 牛顿《流数法》1671</div>
+                <p><span class="story-emoji">📱</span><strong>今天有什么用？</strong>你手机电量从 100% 掉到 20%，手机能估计还要多久充满 —— 因为它每秒在用"瞬时电流对时间的积分"算剩余电量。物理里几乎所有"瞬时量 → 总量"的转换都是这个公式。</p>
+            </div>
+
+        </div>
+
+        <div class="story-grid">
+
+            <!-- === 卡片 4：凑微分法 === -->
+            <div class="story-card">
+                <div class="story-label">📖 凑微分法</div>
+                <div class="story-title"><span class="story-year">1670s</span> 一个"看到函数和它的导数凑一起就化简"的窍门</div>
+                <p><span class="story-emoji">🎯</span><strong>它是为了解决什么问题？</strong></p>
+                <p>牛顿发现了"积分 = 导数的逆运算"。但接下来一个新问题：</p>
+                <p><strong>很多函数没有原函数公式</strong>。比如 \(\int e^{x^2} dx\)，永远写不出"基本函数"形式。</p>
+                <p>数学家们灵机一动：<em>如果被积函数本身就是某个"复合函数"的导数，那直接令 u = 内层，化成简单积分即可</em>。</p>
+                <div class="story-quote">∫ 2x · e^(x²) dx → 看到 2x 就是 x² 的导数 → 令 u = x² → 原式 = ∫ e^u du = e^(x²) + C</div>
+                <p>这是<strong>凑微分法</strong>的灵魂：<em>原函数隐藏在"复合函数"的结构里</em>。你只需要把它揪出来。</p>
+                <div class="story-quote">"积分就像开锁 — 你要找到那个对的钥匙 (u)。"  —— 现代微积分老师口头禅</div>
+                <p><span class="story-emoji">📱</span><strong>今天有什么用？</strong>机器学习里的"激活函数"导数求解、概率论里的"分布函数积分"、经济学里的"边际积分" —— 全部都是这个套路的现代版本。</p>
+            </div>
+
+            <!-- === 卡片 5：分部积分法 === -->
+            <div class="story-card">
+                <div class="story-label">📖 分部积分法</div>
+                <div class="story-title"><span class="story-year">1690s</span> 莱布尼茨：「乘起来的积分，要拆开算」</div>
+                <p><span class="story-emoji">🎯</span><strong>它是为了解决什么问题？</strong></p>
+                <p>凑微分只能解"复合函数"型的积分。但有些被积函数是<strong>两个函数相乘</strong>（比如 x · sin x, x · ln x）—— 凑微分无能为力。</p>
+                <p>1690 年代，<strong>莱布尼茨</strong>推导出一个公式：</p>
+                <div class="story-quote" style="background:#fff;border:1px dashed #16a085;">∫ u dv = uv - ∫ v du</div>
+                <p>意思是：<em>把 uv 的积分转化为 u·v 减去 v·du 的积分</em>。通常选"反对幂三指"中靠前的作 u —— 这样 u' 求导会变简单（指数 → 二次方 → ... → 0）。</p>
+                <p>举个例子：∫ x · e^x dx</p>
+                <ul style="margin:8px 0;padding-left:20px;">
+                    <li>取 u = x, dv = e^x dx</li>
+                    <li>则 du = dx, v = e^x</li>
+                    <li>原式 = x · e^x - ∫ e^x dx = x · e^x - e^x + C = e^x(x - 1) + C</li>
+                </ul>
+                <div class="story-quote">"反对幂三指 — 一个 5 字口诀解决 80% 的分部积分题。"  —— 莱布尼茨</div>
+                <p><span class="story-emoji">📱</span><strong>今天有什么用？</strong>工程里"电流 × 电压 = 功率，但功率对时间的积分 = 能量" —— 这种"乘积的积分"在物理里满地都是，分部积分就是它的统一钥匙。</p>
+            </div>
+
+            <!-- === 卡片 6：反常积分 === -->
+            <div class="story-card">
+                <div class="story-label">📖 反常积分（广义积分）</div>
+                <div class="story-title"><span class="story-year">1821</span> 柯西：「无穷大也可以积分！」</div>
+                <p><span class="story-emoji">🎯</span><strong>它是为了解决什么问题？</strong></p>
+                <p>正常积分只能算有限区间内的有限函数。但物理里大量现象是<strong>"无穷"</strong>的：</p>
+                <p>• 一根无限长的导线，磁场是多少？</p>
+                <p>• 一个无限大的电阻，电流是多少？</p>
+                <p>• 从有文明到永远的宇宙，总能量是多少？</p>
+                <p>1821 年，<strong>柯西 (Cauchy)</strong> 第一个敢在积分上限里写 +∞：</p>
+                <div class="story-quote" style="background:#fff;border:1px dashed #34495e;">∫₁^+∞ 1/x² dx = lim (M→+∞) ∫₁^M 1/x² dx = lim (1 - 1/M) = 1 ✓</div>
+                <p>但有些无穷积分 <strong>不收敛</strong>：</p>
+                <div class="story-quote">∫₁^+∞ 1/x dx = lim (M→+∞) ln M = +∞ ✗ 发散</div>
+                <p>所以有了判断判别式 ∫₁^+∞ 1/x^p dx：<strong>p > 1 收敛，p ≤ 1 发散</strong>。</p>
+                <div class="story-quote">"有限可以积，无穷也可以积 — 只要它'收敛'。"  —— 柯西《分析教程》1821</div>
+                <p><span class="story-emoji">📱</span><strong>今天有什么用？</strong>概率论里"随机变量取遍全宇宙会得到什么概率"就是反常积分 —— 这就是你在 ch15-ch19 学概率的前提。</p>
+            </div>
+
+        </div>
+
+        <!-- 总结卡 -->
+        <div class="story-grid">
+
+            <div class="story-card" style="background:linear-gradient(180deg, #f3e5f5 0%, #e1bee7 100%); border-left-color:#6a1b9a;">
+                <div class="story-label">🎁 这一章的"灵魂主线"</div>
+                <div class="story-title">一句话讲完 ch03 所有故事的共同主线</div>
+                <p><span class="story-emoji">🧵</span>这一章所有公式，归根结底就为了解决<strong>一个 2000 年的死磕：怎么算"曲边形的面积"</strong>。</p>
+                <p><strong>积分的核心 = 把"无穷多个无穷小片段"加起来的极限。</strong></p>
+                <p>它有以下几种"伪装"：</p>
+                <p>📍 <strong>几何上的伪装</strong>：曲边梯形面积、旋转体体积、弧长</p>
+                <p>📍 <strong>物理上的伪装</strong>：做功 = 力 × 位移的积分、功率 × 时间 = 能量</p>
+                <p>📍 <strong>概率上的伪装</strong>：分布函数的积分 = 概率（ch15-ch19 会用到）</p>
+                <p>📍 <strong>经济上的伪装</strong>：现金流的总现值 = 利率 × 时间的积分</p>
+                <p><span class="story-emoji">💪</span>学完 ch03 + ch02 你的"微积分工具箱"已经<strong>有刃有背</strong>了：</p>
+                <p>• ch01 → 学了"极限"是基础工具</p>
+                <p>• ch02 → 学了"导数"是各种变化率的代名词</p>
+                <p>• ch03 → 学了"积分"是导数的逆运算（也就是"累积")</p>
+                <p>接下来 ch04（向量）、ch05/ch06（多元）只是把它们推广到更高维的版本。骨架没变。</p>
+            </div>
+
+        </div>
+
         <p><span class="section-tag tag-core">🎯 核心考点</span></p>
         <ul>
             <li>不定积分计算（凑微分法、换元法、分部积分法）</li>

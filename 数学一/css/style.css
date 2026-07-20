@@ -366,6 +366,79 @@ a { text-decoration: none; color: inherit; }
     font-family: "Times New Roman", "Cambria Math", serif;
 }
 
+/* ========== Story card（诞生背景 · 数学家八卦） ========== */
+.story-card {
+    background: linear-gradient(180deg, #fff7ed 0%, #fef3e2 100%);
+    border-left: 4px solid #e67e22;
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 14px 0;
+    box-shadow: 0 1px 0 rgba(230, 126, 34, 0.08);
+}
+.story-card .story-label {
+    font-weight: 700;
+    color: #b75d10;
+    font-size: 15px;
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+}
+.story-card .story-title {
+    font-weight: 700;
+    color: #6e3b08;
+    font-size: 16px;
+    margin: 10px 0 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.story-card .story-title .story-year {
+    background: #e67e22;
+    color: #fff;
+    border-radius: 12px;
+    padding: 2px 10px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+.story-card p {
+    font-size: 14px;
+    line-height: 1.95;
+    color: #4a3018;
+    margin: 6px 0;
+}
+.story-card .story-quote {
+    background: rgba(255, 255, 255, 0.7);
+    border-left: 3px solid #d68910;
+    padding: 8px 12px;
+    margin: 8px 0;
+    font-style: italic;
+    font-size: 13.5px;
+    color: #6e3b08;
+    border-radius: 0 6px 6px 0;
+}
+.story-card .story-emoji {
+    font-size: 22px;
+    margin-right: 4px;
+}
+.story-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 10px;
+    margin: 10px 0;
+}
+.story-grid .story-card {
+    margin: 0;
+}
+.story-card.timeline-svg-wrap {
+    background: #fffdf8;
+    padding: 12px;
+}
+.story-card.timeline-svg-wrap svg {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
 /* ========== Inline math/code chips ========== */
 /* 统一内联公式（如 <code>x_n e^{x_{n+1}} = e^{x_n} − 1</code>）的样式，
    让它与 .formula-box 视觉协调：浅色衬底 + 暖色强调 + 衬线字。 */
@@ -1287,8 +1360,10 @@ code sub, code sup {
     margin-top: 16px;
 }
 .ch-formulas[hidden], .practice-mode ~ .ch-formulas { display: none; }
-.formulas-mode ~ .ch-content > .ch-formulas { display: block; }
-.formulas-mode ~ .ch-content > .ch-hints { display: none; }
+/* 修复：原选择器 `.formulas-mode ~ .ch-content > .ch-formulas` 是兄弟选择器，不会匹配自身后代
+   改为：ch-content 同时拥有 formulas-mode 类时，才显示 .ch-formulas */
+.ch-content.formulas-mode > .ch-formulas { display: block; }
+.ch-content:not(.formulas-mode):not(.practice-mode) > .ch-formulas { display: none; }
 
 .formulas-header {
     background: linear-gradient(135deg, #fff8e1 0%, #fef7e0 100%);

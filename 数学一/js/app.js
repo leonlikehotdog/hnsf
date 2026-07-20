@@ -380,6 +380,8 @@
         formulasArea.className = 'ch-formulas';
         formulasArea.innerHTML = renderFormulasHTML(chapterId);
         chContent.appendChild(formulasArea);
+        // 立即触发渲染（不等用户点击 tab，避免公式区可见时显示原始 LaTeX）
+        renderMathWhenReady(formulasArea);
 
         // tab 切换逻辑
         tabs.querySelectorAll('.ch-tab').forEach(function(btn) {
@@ -788,9 +790,33 @@
     var MATH_DETECT = /\\\(|\\\[|\$\$|\$/;
 
     function renderMath(target) {
-        if (typeof katex === 'undefined') return;
+        if (typeof target === 'undefined' || !target) return;
+        if (typeof katex === 'undefined' || typeof katex.renderToString !== 'function') return;
+
         // 先合并 target 内相邻的 text node（解决 \[\n...\n\] 被拆成 3 个 text node 的问题）
         if (typeof target.normalize === 'function') target.normalize();
+
+        // 优先尝试 auto-render 的 renderMathInElement（更稳健，处理了所有边界情况）
+        if (typeof renderMathInElement === 'function') {
+            try {
+                renderMathInElement(target, {
+                    delimiters: [
+                        { left: '\\(', right: '\\)', display: false },
+                        { left: '\\[', right: '\\]', display: true },
+                        { left: '$$',   right: '$$',   display: true },
+                        { left: '$',    right: '$',    display: false }
+                    ],
+                    throwOnError: false,
+                    strict: false,
+                    trust: false
+                });
+                return;
+            } catch (e) {
+                console.warn('[renderMath] renderMathInElement 失败，回退到手动渲染:', e);
+            }
+        }
+
+        // 回退：手动 TreeWalker 渲染
         var walker = document.createTreeWalker(target, NodeFilter.SHOW_TEXT, {
             acceptNode: function(node) {
                 // 只跳过 <script> 和 <style> 里的文本；<code> 里的公式也要渲染

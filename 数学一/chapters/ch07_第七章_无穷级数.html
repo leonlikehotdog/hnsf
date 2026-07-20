@@ -4,6 +4,232 @@
         <div class="ch-stars star-low">⭐ <span class="drop-label">⚠️ 建议战略性放弃</span></div>
     </div>
     <div class="ch-content">
+
+        <!-- ====== Part 0：诞生背景 · 关于"无穷级数是否收敛"的世纪论战 ====== -->
+        <div class="part-divider p0" id="part0">
+            <div class="pd-num">0</div>
+            <div class="pd-text">
+                <div class="pd-name">🌌 诞生背景 · 一个把家族差点毁了的问题</div>
+                <div class="pd-desc">调和级数 1+1/2+1/3+1/4+... 是否 = ∞？三位伯努利 + 一个欧拉，用 100 年才搞定。</div>
+            </div>
+        </div>
+
+        <div class="story-card">
+            <div class="story-label">🎬 为什么这一章"建议战略性放弃"我也要讲它的诞生背景？</div>
+            <p>虽然本章不打算详细算，但你<strong>在 ch01 的 1^∞ 极限、ch02 的泰勒展开、ch03 的反常积分</strong>里全都会反复用到本章的"级数收敛"思想。</p>
+            <p>更要命的是：<strong>你中学时学的"无限循环小数 0.9999... = 1"，就是一个无穷级数</strong>。</p>
+            <p>本章背后的故事是数学史上最著名的<strong>家族内战</strong> —— <em>3 位伯努利家族成员</em> + <em>欧拉</em>，为了"调和级数 1 + 1/2 + 1/3 + 1/4 + ... 是不是无穷大"吵了一百年。吵出了整个分析学。</p>
+        </div>
+
+        <div class="story-card timeline-svg-wrap">
+            <div class="story-label">⏳ 200 年级数论战 · 把"无穷多个数加起来"这件事弄清楚</div>
+            <svg viewBox="0 0 1200 360" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="tlGrad7" x1="0" x2="1" y1="0" y2="0">
+                        <stop offset="0%" stop-color="#d35400" stop-opacity="0.4"/>
+                        <stop offset="50%" stop-color="#a04000" stop-opacity="1"/>
+                        <stop offset="100%" stop-color="#6e2c00" stop-opacity="1"/>
+                    </linearGradient>
+                </defs>
+                <rect x="40" y="40" width="1120" height="280" fill="#fef9f4" rx="8"/>
+                <line x1="80" y1="200" x2="1140" y2="200" stroke="url(#tlGrad7)" stroke-width="6" stroke-linecap="round"/>
+
+                <g stroke="#6e2c00" stroke-width="1" opacity="0.3">
+                    <line x1="100" y1="200" x2="100" y2="215"/>
+                    <line x1="200" y1="200" x2="200" y2="215"/>
+                    <line x1="300" y1="200" x2="300" y2="215"/>
+                    <line x1="400" y1="200" x2="400" y2="215"/>
+                    <line x1="500" y1="200" x2="500" y2="215"/>
+                    <line x1="600" y1="200" x2="600" y2="215"/>
+                    <line x1="700" y1="200" x2="700" y2="215"/>
+                    <line x1="800" y1="200" x2="800" y2="215"/>
+                    <line x1="900" y1="200" x2="900" y2="215"/>
+                    <line x1="1000" y1="200" x2="1000" y2="215"/>
+                    <line x1="1100" y1="200" x2="1100" y2="215"/>
+                </g>
+                <g font-family="-apple-system, sans-serif" font-size="11" fill="#6e2c00" text-anchor="middle">
+                    <text x="100"  y="232">1500</text>
+                    <text x="200"  y="232">1550</text>
+                    <text x="300"  y="232">1600</text>
+                    <text x="400"  y="232">1650</text>
+                    <text x="500"  y="232">1670</text>
+                    <text x="600"  y="232">1690</text>
+                    <text x="700"  y="232">1740</text>
+                    <text x="800"  y="232">1770</text>
+                    <text x="900"  y="232">1810</text>
+                    <text x="1000" y="232">1830</text>
+                    <text x="1100" y="232">1870</text>
+                </g>
+
+                <!-- 节点 -->
+                <!-- 1. 雅各布·伯努利 1689 调和级数 -->
+                <g transform="translate(540,200)">
+                    <circle r="14" fill="#c0392b" stroke="#fff" stroke-width="3"/>
+                    <text x="0" y="4" text-anchor="middle" font-size="13" fill="#fff" font-weight="700">1</text>
+                    <text x="0" y="-26" text-anchor="middle" font-size="12" fill="#922b21" font-weight="700">雅各布·伯努利</text>
+                    <text x="0" y="-12" text-anchor="middle" font-size="10" fill="#922b21">1689 提出调和级数</text>
+                    <text x="0" y="40" text-anchor="middle" font-size="10" fill="#555">"1+1/2+1/3+... = ∞"</text>
+                </g>
+                <!-- 2. 约翰·伯努利 1689 反驳哥哥 -->
+                <g transform="translate(600,200)">
+                    <circle r="13" fill="#e67e22" stroke="#fff" stroke-width="3"/>
+                    <text x="0" y="4" text-anchor="middle" font-size="13" fill="#fff" font-weight="700">2</text>
+                    <text x="38" y="-5" font-size="11" fill="#b75d10" font-weight="700">约翰·伯努利(弟弟)</text>
+                    <text x="38" y="9" font-size="10" fill="#b75d10">1689 坚定反驳</text>
+                </g>
+                <!-- 3. 欧拉 1740 e^x级数展开 -->
+                <g transform="translate(720,200)">
+                    <circle r="14" fill="#2980b9" stroke="#fff" stroke-width="3"/>
+                    <text x="0" y="4" text-anchor="middle" font-size="13" fill="#fff" font-weight="700">3</text>
+                    <text x="0" y="-26" text-anchor="middle" font-size="12" fill="#1a5276" font-weight="700">欧  拉</text>
+                    <text x="0" y="-12" text-anchor="middle" font-size="10" fill="#1a5276">1740 e^x = ∑xⁿ/n!</text>
+                    <text x="0" y="40" text-anchor="middle" font-size="10" fill="#555">"和的极限 = 极限的和"</text>
+                </g>
+                <!-- 4. 傅里叶 1820 任意函数 -->
+                <g transform="translate(910,200)">
+                    <circle r="13" fill="#16a085" stroke="#fff" stroke-width="3"/>
+                    <text x="0" y="4" text-anchor="middle" font-size="13" fill="#fff" font-weight="700">4</text>
+                    <text x="0" y="-25" text-anchor="middle" font-size="12" fill="#0e6655" font-weight="700">傅里叶</text>
+                    <text x="0" y="-12" text-anchor="middle" font-size="10" fill="#0e6655">1822 任意函数=三角级数</text>
+                    <text x="0" y="38" text-anchor="middle" font-size="10" fill="#555">"我震惊了整个巴黎"</text>
+                </g>
+                <!-- 5. 柯西 1821 严格化 -->
+                <g transform="translate(1020,200)">
+                    <circle r="13" fill="#34495e" stroke="#fff" stroke-width="3"/>
+                    <text x="0" y="4" text-anchor="middle" font-size="13" fill="#fff" font-weight="700">5</text>
+                    <text x="0" y="-25" text-anchor="middle" font-size="12" fill="#1a242f" font-weight="700">柯  西</text>
+                    <text x="0" y="-12" text-anchor="middle" font-size="10" fill="#1a242f">1821 严格化的收敛判别</text>
+                    <text x="0" y="38" text-anchor="middle" font-size="10" fill="#555">"部分和有极限 = 收敛"</text>
+                </g>
+
+                <g font-family="Georgia, serif" font-size="20" fill="#922b21" font-weight="700" opacity="0.85">
+                    <text x="540" y="65" text-anchor="middle">?</text>
+                    <text x="720" y="65" text-anchor="middle">?</text>
+                    <text x="910" y="65" text-anchor="middle">?</text>
+                    <text x="1020" y="65" text-anchor="middle">?</text>
+                </g>
+                <text x="600" y="50" text-anchor="middle" font-size="12" fill="#6e2c00" font-weight="600">↑ 4 个问号，对应本章 4 个"为了让无穷多个数加起来不发疯"的物理学/天文学问题</text>
+
+                <g opacity="0.4">
+                    <text x="200" y="100" font-size="11" fill="#c0392b">🔴 17世纪末：发现"有些无穷级数≠有限数"</text>
+                    <text x="600" y="100" font-size="11" fill="#2980b9">🔵 18世纪：发现很多级数都"算得出来"</text>
+                    <text x="900" y="100" font-size="11" fill="#16a085">🟢 19世纪初：傅里叶把级数用到工程上</text>
+                    <text x="1050" y="100" font-size="11" fill="#34495e">⚫ 19世纪中：柯西给出严格定义</text>
+                </g>
+                <text x="600" y="330" text-anchor="middle" font-size="12" fill="#6e2c00">📌 整个故事围绕着一个"看似简单"的问题：无穷个 1, 1/2, 1/3, 1/4... 加起来到底等几？</text>
+            </svg>
+        </div>
+
+        <div class="story-grid">
+
+            <!-- === 卡片 1：调和级数的争论 === -->
+            <div class="story-card">
+                <div class="story-label">📖 调和级数 1+1/2+1/3+...</div>
+                <div class="story-title"><span class="story-year">1689</span> 兄弟反目：一个差点毁了伯努利家族的问题</div>
+                <p><span class="story-emoji">🎯</span><strong>它是为了解决什么问题？</strong></p>
+                <p>雅各布·伯努利在 1689 年研究<em>"无穷多个分数加起来等多少"</em>。他注意到：</p>
+                <p>1 + 1/2 + 1/4 + 1/8 + 1/16 + ... = 2（等比级数收敛）✓</p>
+                <p>1 + 1/2 + 1/3 + 1/4 + 1/5 + ... = ？？？（调和级数，几乎每个中学课本都说它发散到 +∞）</p>
+                <p>雅各布宣称：<strong>调和级数 = ∞</strong>。他的弟弟约翰却死活不同意。两人见面就吵，写信就吵，吵到不见面为止。</p>
+                <div class="story-quote">"哥哥的死证明他在所有事情上都是错的 — 但在数学上他错得最离谱。"  —— 约翰·伯努利 1705 年（弟弟）</div>
+                <p>事实上：<strong>雅各布是对的</strong>。调和级数确实发散。但要严格证明，需要"夹逼"思想 —— 这要等 100 年才被欧拉和柯西完成。</p>
+                <p><span class="story-emoji">📱</span><strong>今天有什么用？</strong>今天每个编译器里都有"无穷级数收敛判别"代码。你的电脑能算 π = 3.14159265358979...，就是用莱布尼茨级数 π/4 = 1 - 1/3 + 1/5 - 1/7 + 1/9 - ... —— 调和级数的近亲。</p>
+            </div>
+
+            <!-- === 卡片 2：等比级数 === -->
+            <div class="story-card">
+                <div class="story-label">📖 等比级数</div>
+                <div class="story-title"><span class="story-year">-300</span> 欧几里得：「比 = 每个数都是前一个 r 倍」</div>
+                <p><span class="story-emoji">🎯</span><strong>它是为了解决什么问题？</strong></p>
+                <p>古希腊人发现：有一种求和特别简单 —— 每个数都是前一个数 r 倍的级数。例如 1 + 1/2 + 1/4 + 1/8 + ... = 2。</p>
+                <p>欧几里得在《几何原本》给出这个结果：只要 |r| < 1，<strong>等比级数收敛</strong>，且和 = a / (1 − r)。</p>
+                <div class="story-quote">"1 + r + r² + r³ + ... = 1 / (1 − r)，只要 r 小于 1。"  —— 欧几里得《几何原本》</div>
+                <p><span class="story-emoji">📱</span><strong>今天有什么用？</strong>这个公式每天都在你身边：</p>
+                <p>① <strong>银行存款</strong>：每年利率 5%，无穷年后你的本息和 → 本金 / (1-0.05) ≈ 20 倍本金</p>
+                <p>② <strong>音乐流媒体</strong>：声波是 1 + 0.5 + 0.25 + ... 这种高频振动</p>
+                <p>③ <strong>药物残留</strong>：每天服一片药，每片残留 80%，无穷天后体内总量 = 5 片</p>
+            </div>
+
+            <!-- === 卡片 3：泰勒级数 === -->
+            <div class="story-card">
+                <div class="story-label">📖 泰勒级数（进阶）</div>
+                <div class="story-title"><span class="story-year">1748</span> 欧拉：「e^x 就是个加法题」</div>
+                <p><span class="story-emoji">🎯</span><strong>它是为了解决什么问题？</strong></p>
+                <p>上一章 ch02 我们学过泰勒公式 —— 在 x=0 附近把 f(x) 展开成 x 的多项式。欧拉发现一个惊天事实：</p>
+                <p><strong>有些函数 = 自己的无穷级数</strong>。</p>
+                <div class="story-quote" style="background:#fff;border:1px dashed #2980b9;font-size:15px;line-height:1.8;">
+                e^x = 1 + x + x²/2! + x³/3! + x⁴/4! + ...<br>
+                sin x = x − x³/3! + x⁵/5! − x⁷/7! + ...<br>
+                ln(1+x) = x − x²/2 + x³/3 − x⁴/4 + ...<br>
+                1/(1−x) = 1 + x + x² + x³ + ...
+                </div>
+                <p>欧拉写的《无穷分析引论》(Introductio in Analysin Infinitorum, 1748) 第一次系统给出这些 —— 他还第一次严格<strong>证明了它们为什么收敛</strong>。</p>
+                <div class="story-quote">"e^x 是一个无穷多项的加法 — 这就是指数增长的真正面貌。"  —— 欧拉</div>
+                <p><span class="story-emoji">📱</span><strong>今天有什么用？</strong>没有泰勒级数，就没有现代工程：</p>
+                <p>① <strong>GPS</strong>：4 颗卫星定你位置，要解 4 元方程组，每一步都在用泰勒级数</p>
+                <p>② <strong>手机屏幕</strong>：HDR 渲染、"图像降噪"算法都是泰勒展开</p>
+                <p>③ <strong>AI 反向传播</strong>：梯度 = 损失函数的泰勒展开一阶系数</p>
+            </div>
+
+        </div>
+
+        <div class="story-grid">
+
+            <!-- === 卡片 4：傅里叶级数 === -->
+            <div class="story-card">
+                <div class="story-label">📖 傅里叶级数（应用级）</div>
+                <div class="story-title"><span class="story-year">1807</span> 傅里叶：「我能用 sin/cos 拼出任何函数」</div>
+                <p><span class="story-emoji">🎯</span><strong>它是为了解决什么问题？</strong></p>
+                <p>1804 年，拿破仑悬赏：<strong>"热在固体里怎么传？"</strong>。一个数学老师 <strong>傅里叶 (Joseph Fourier)</strong> 发现：</p>
+                <p>"任何'在区间内画得出的形状'，都可以拆成无数 sin 和 cos 函数相<strong>加</strong>。"</p>
+                <p>他把这种"加"叫<strong>傅里叶级数</strong>：</p>
+                <div class="story-quote" style="background:#fff;border:1px dashed #16a085;">f(x) = a₀ + Σ[aₙ·cos(nx) + bₙ·sin(nx)]</div>
+                <p>1807 年他在巴黎科学院报告，<strong>所有人都觉得他疯了</strong>。拉格朗日当场拍桌子："这绝不可能 —— 怎么可能是有限个三角函数的和！"</p>
+                <p>后来他的论文被拒，发表后被人嘲笑为"连收敛性都没证明"。但 15 年后（1822）他的《热的解析理论》终于出版，<strong>工程师们用它计算了桥梁、热交换器、声波</strong>，从此改变了世界。</p>
+                <div class="story-quote">"我震惊了整个巴黎 — 但工程师们不在乎对错，他们在乎好不好用。"  —— 傅里叶 1811</div>
+                <p><span class="story-emoji">📱</span><strong>今天有什么用？</strong>傅里叶级数在 3 个地方统治世界：</p>
+                <p>① <strong>mp3 / 视频压缩</strong>：把声波 / 像素拆成 sin + cos，扔掉小系数，省 95% 体积</p>
+                <p>② <strong>心脏起搏器</strong>：心电图分析本质就是傅里叶级数</p>
+                <p>③ <strong>5G 信号</strong>：手机的 OFDM 调制 = 傅里叶级数的工程化身</p>
+            </div>
+
+            <!-- === 卡片 5：交错级数 / 莱布尼茨判别 === -->
+            <div class="story-card">
+                <div class="story-label">📖 交错级数 / 莱布尼茨判别</div>
+                <div class="story-title"><span class="story-year">1675</span> 一个"看正负号一替一换"的判断法</div>
+                <p><span class="story-emoji">🎯</span><strong>它是为了解决什么问题？</strong></p>
+                <p>有些级数是"一正一负一正一负"的（比如 1 - 1/3 + 1/5 - 1/7 + ...），这种<strong>交错级数</strong>可能收敛到 π 之类很酷的东西。</p>
+                <p><strong>莱布尼茨判别法</strong>的精髓 5 个字：<em>单调递减到 0</em>。只要"绝对值越来越小"，正负相间地加，总会停在一个数上。</p>
+                <div class="story-quote" style="background:#fff;border:1px dashed #34495e;">∑(−1)ⁿ⁻¹ aₙ 收敛条件：aₙ 单调递减且 → 0</div>
+                <p><strong>直观解释：</strong>如果每一项都在变小，正负相间的"拉扯"越来越小，最终会"靠岸"停在一个数。</p>
+                <div class="story-quote">"正负拉扯就像拔河 — 越拔越稳，最后停在中间。"  —— 莱布尼茨</div>
+                <p><span class="story-emoji">📱</span><strong>今天有什么用？</strong>电力工程里的"交流电波形"分析就是交错级数 —— 正半周和负半周正负交替，要算总能量时就是交错级数的应用。</p>
+            </div>
+
+        </div>
+
+        <!-- 总结卡 -->
+        <div class="story-grid">
+
+            <div class="story-card" style="background:linear-gradient(180deg, #fbe9e7 0%, #ffccbc 100%); border-left-color:#bf360c;">
+                <div class="story-label">🎁 这一章的"灵魂主线"</div>
+                <div class="story-title">一句话讲完 ch07 所有故事的共同主线</div>
+                <p><span class="story-emoji">🧵</span>这一章所有内容，归根结底就为了<strong>回答一个问题：</strong></p>
+                <p style="text-align:center;font-size:16px;font-weight:700;color:#bf360c;">"无穷多个数，加起来到底等几？"</p>
+                <p>它有以下几种"伪装"：</p>
+                <p>📍 <strong>几何上的伪装</strong>：无穷长的等比级数 = 收敛到一个数</p>
+                <p>📍 <strong>物理学上的伪装</strong>：傅里叶级数 = 把任何波形拆成 sin/cos</p>
+                <p>📍 <strong>函数上的伪装</strong>：泰勒级数 = 用多项式逼近难算的函数</p>
+                <p>📍 <strong>经济学上的伪装</strong>：年金累加 = 等比级数</p>
+                <p><span class="story-emoji">💪</span>对考研数学来说，本章<strong>战略性放弃</strong>，但<strong>你已经在 ch01/ch02/ch03 间接学会了</strong>：</p>
+                <p>• ch01：极限 → 决定级数是否收敛</p>
+                <p>• ch02：泰勒展开 → 函数的级数表示</p>
+                <p>• ch03：反常积分 → 判定 p-级数（你在 ch07 就会背这个）</p>
+                <p>所以 ch07 看似独立，其实就是前三章的<em>主战场</em>。</p>
+            </div>
+
+        </div>
+
         <p><span class="section-tag tag-warn">投入产出比低，建议战略性放弃</span></p>
         <div class="must-card">
             <div class="must-label">📖 基本概念速览</div>

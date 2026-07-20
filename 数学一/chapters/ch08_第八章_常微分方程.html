@@ -4,6 +4,243 @@
         <div class="ch-stars star-high">★★★</div>
     </div>
     <div class="ch-content">
+
+        <!-- ====== Part 0：诞生背景 · 微分方程：物理学家和数学家的"共同语言" ====== -->
+        <div class="part-divider p0" id="part0">
+            <div class="pd-num">0</div>
+            <div class="pd-text">
+                <div class="pd-name">🌌 诞生背景 · 一个数学公式就够描述整个宇宙？</div>
+                <div class="pd-desc">从牛顿算炮弹到天气预报，从人口预测到 AI 神经网络 —— 几乎所有"会变化的事物"都被一个微分方程管着。</div>
+            </div>
+        </div>
+
+        <div class="story-card">
+            <div class="story-label">🎬 什么是微分方程？你能在 30 秒内意会</div>
+            <p>你学了<strong>导数</strong>（ch02）：知道 y 就能算 y'</p>
+            <p>你学了<strong>积分</strong>（ch03）：知道 y' 就能反推 y</p>
+                <p>但物理学家扔给你一个问题：</p>
+                <p style="text-align:center;font-size:16px;font-weight:700;color:#922b21;">"<em>我不知道 y，但我知道 y 和 y' 的<strong>关系</strong>。你能反推 y 是什么吗？</em>"</p>
+                <p>这就是<strong>微分方程</strong>：把"函数 + 它的导数"混在一起的方程。世界是个变化的世界，所以世界几乎所有规律都是微分方程。</p>
+            </div>
+
+        <div class="story-card timeline-svg-wrap">
+            <div class="story-label">⏳ 350 年常微分方程史 · 让宇宙"会算"</div>
+            <svg viewBox="0 0 1200 360" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="tlGrad8" x1="0" x2="1" y1="0" y2="0">
+                        <stop offset="0%" stop-color="#2980b9" stop-opacity="0.4"/>
+                        <stop offset="50%" stop-color="#1a5276" stop-opacity="1"/>
+                        <stop offset="100%" stop-color="#0e2c4f" stop-opacity="1"/>
+                    </linearGradient>
+                </defs>
+                <rect x="40" y="40" width="1120" height="280" fill="#f0f6fc" rx="8"/>
+                <line x1="80" y1="200" x2="1140" y2="200" stroke="url(#tlGrad8)" stroke-width="6" stroke-linecap="round"/>
+
+                <g stroke="#1a5276" stroke-width="1" opacity="0.3">
+                    <line x1="100" y1="200" x2="100" y2="215"/>
+                    <line x1="200" y1="200" x2="200" y2="215"/>
+                    <line x1="300" y1="200" x2="300" y2="215"/>
+                    <line x1="400" y1="200" x2="400" y2="215"/>
+                    <line x1="500" y1="200" x2="500" y2="215"/>
+                    <line x1="600" y1="200" x2="600" y2="215"/>
+                    <line x1="700" y1="200" x2="700" y2="215"/>
+                    <line x1="800" y1="200" x2="800" y2="215"/>
+                    <line x1="900" y1="200" x2="900" y2="215"/>
+                    <line x1="1000" y1="200" x2="1000" y2="215"/>
+                    <line x1="1100" y1="200" x2="1100" y2="215"/>
+                </g>
+                <g font-family="-apple-system, sans-serif" font-size="11" fill="#1a5276" text-anchor="middle">
+                    <text x="100"  y="232">1670</text>
+                    <text x="200"  y="232">1690</text>
+                    <text x="300"  y="232">1720</text>
+                    <text x="400"  y="232">1740</text>
+                    <text x="500"  y="232">1760</text>
+                    <text x="600"  y="232">1800</text>
+                    <text x="700"  y="232">1820</text>
+                    <text x="800"  y="232">1850</text>
+                    <text x="900" y="232">1900</text>
+                    <text x="1000" y="232">1950</text>
+                    <text x="1100" y="232">2020</text>
+                </g>
+
+                <!-- 节点 -->
+                <!-- 1. 牛顿 1671 落体运动 -->
+                <g transform="translate(140,200)">
+                    <circle r="14" fill="#c0392b" stroke="#fff" stroke-width="3"/>
+                    <text x="0" y="4" text-anchor="middle" font-size="13" fill="#fff" font-weight="700">1</text>
+                    <text x="0" y="-26" text-anchor="middle" font-size="12" fill="#922b21" font-weight="700">牛  顿</text>
+                    <text x="0" y="-12" text-anchor="middle" font-size="10" fill="#922b21">1671 F = ma</text>
+                    <text x="0" y="40" text-anchor="middle" font-size="10" fill="#555">"加速度来自力"</text>
+                </g>
+                <!-- 2. 雅各布·伯努利 1690 人口增长 -->
+                <g transform="translate(250,200)">
+                    <circle r="13" fill="#16a085" stroke="#fff" stroke-width="3"/>
+                    <text x="0" y="4" text-anchor="middle" font-size="13" fill="#fff" font-weight="700">2</text>
+                    <text x="0" y="-25" text-anchor="middle" font-size="12" fill="#0e6655" font-weight="700">雅各布·伯努利</text>
+                    <text x="0" y="-12" text-anchor="middle" font-size="10" fill="#0e6655">1690 人口增长</text>
+                    <text x="0" y="38" text-anchor="middle" font-size="10" fill="#555">"马尔萨斯学他"</text>
+                </g>
+                <!-- 3. 欧拉 1740 振动方程 -->
+                <g transform="translate(450,200)">
+                    <circle r="13" fill="#2980b9" stroke="#fff" stroke-width="3"/>
+                    <text x="0" y="4" text-anchor="middle" font-size="13" fill="#fff" font-weight="700">3</text>
+                    <text x="0" y="-25" text-anchor="middle" font-size="12" fill="#1a5276" font-weight="700">欧  拉</text>
+                    <text x="0" y="-12" text-anchor="middle" font-size="10" fill="#1a5276">1740 弹簧振动</text>
+                    <text x="0" y="38" text-anchor="middle" font-size="10" fill="#555">"y'' = -ω² y"</text>
+                </g>
+                <!-- 4. 拉普拉斯 1800 天体力学 -->
+                <g transform="translate(720,200)">
+                    <circle r="13" fill="#8e44ad" stroke="#fff" stroke-width="3"/>
+                    <text x="0" y="4" text-anchor="middle" font-size="13" fill="#fff" font-weight="700">4</text>
+                    <text x="0" y="-25" text-anchor="middle" font-size="12" fill="#6c3483" font-weight="700">拉普拉斯</text>
+                    <text x="0" y="-12" text-anchor="middle" font-size="10" fill="#6c3483">1800 天体力学</text>
+                    <text x="0" y="38" text-anchor="middle" font-size="10" fill="#555">"我能用方程预测星系"</text>
+                </g>
+                <!-- 5. 李雅普诺夫 1892 稳定性 -->
+                <g transform="translate(890,200)">
+                    <circle r="13" fill="#34495e" stroke="#fff" stroke-width="3"/>
+                    <text x="0" y="4" text-anchor="middle" font-size="13" fill="#fff" font-weight="700">5</text>
+                    <text x="0" y="-25" text-anchor="middle" font-size="12" fill="#1a242f" font-weight="700">李雅普诺夫</text>
+                    <text x="0" y="-12" text-anchor="middle" font-size="10" fill="#1a242f">1892 稳定性理论</text>
+                    <text x="0" y="38" text-anchor="middle" font-size="10" fill="#555">"平衡点会不会跌"</text>
+                </g>
+                <!-- 6. 现代控制 / AI 2020s -->
+                <g transform="translate(1130,200)">
+                    <circle r="13" fill="#e67e22" stroke="#fff" stroke-width="3"/>
+                    <text x="0" y="4" text-anchor="middle" font-size="13" fill="#fff" font-weight="700">6</text>
+                    <text x="0" y="-25" text-anchor="middle" font-size="12" fill="#b75d10" font-weight="700">现在</text>
+                    <text x="0" y="-12" text-anchor="middle" font-size="10" fill="#b75d10">2020 AI 神经网络</text>
+                    <text x="0" y="38" text-anchor="middle" font-size="10" fill="#555">"连反向传播都用 ODE"</text>
+                </g>
+
+                <g font-family="Georgia, serif" font-size="20" fill="#922b21" font-weight="700" opacity="0.85">
+                    <text x="140" y="65" text-anchor="middle">?</text>
+                    <text x="250" y="65" text-anchor="middle">?</text>
+                    <text x="450" y="65" text-anchor="middle">?</text>
+                    <text x="720" y="65" text-anchor="middle">?</text>
+                    <text x="890" y="65" text-anchor="middle">?</text>
+                    <text x="1130" y="65" text-anchor="middle">?</text>
+                </g>
+                <text x="600" y="50" text-anchor="middle" font-size="12" fill="#1a5276" font-weight="600">↑ 每个问号对应一个"会变化的东西"——从炮弹到星系，从弹簧到 AI 模型</text>
+
+                <g opacity="0.4">
+                    <text x="200" y="100" font-size="11" fill="#c0392b">🔴 17世纪：物理定律全写成微分方程</text>
+                    <text x="700" y="100" font-size="11" fill="#8e44ad">🟣 19世纪初：拉普拉斯发明天体力学</text>
+                    <text x="950" y="100" font-size="11" fill="#34495e">⚫ 19世纪末：李雅普诺夫定义"稳定性"</text>
+                    <text x="1100" y="100" font-size="11" fill="#e67e22">🟠 21世纪：AI 神经 ODE</text>
+                </g>
+                <text x="600" y="330" text-anchor="middle" font-size="12" fill="#1a5276">📌 微分方程就是"自然界的语言"。物理学家、工程师、生物学家、经济学家，全用这一套。</text>
+            </svg>
+        </div>
+
+        <div class="story-grid">
+
+            <!-- === 卡片 1：牛顿 F=ma === -->
+            <div class="story-card">
+                <div class="story-label">📖 牛顿第二定律 F = ma</div>
+                <div class="story-title"><span class="story-year">1687</span> 牛顿："给我力，我能算一切"</div>
+                <p><span class="story-emoji">🎯</span><strong>它是为了解决什么问题？</strong></p>
+                <p>1665 年伦敦大瘟疫，牛顿躲到乡下。看着苹果落地，他在想一个只有 1 岁的孩子才能问的"笨"问题：</p>
+                <p><em>"为什么苹果往下掉而不往上飞？"</em></p>
+                <p>其实更复杂：苹果从树上掉下来，下落速度越来越快 —— <strong>这是"加速度"</strong>。加速度来自<strong>力</strong>。这条链子就是：</p>
+                <div class="story-quote" style="background:#fff;border:1px dashed #c0392b;font-size:18px;text-align:center;color:#c0392b;">
+                F = m · a  ↔  F = m · a''  ↔  m·d²x/dt² = F
+                </div>
+                <p>1687 年牛顿在《自然哲学的数学原理》(Principia) 中把这个方程写出来，并用它解释了<strong>行星运动、潮汐、苹果落地</strong>三大看似无关的现象。</p>
+                <div class="story-quote">"我不用假设 — 我用方程式能告诉你月球为什么绕地球转、苹果为什么落。"  —— 牛顿《原理》1687</div>
+                <p><span class="story-emoji">📱</span><strong>今天有什么用？</strong></p>
+                <p>① <strong>手机计步</strong>：加速度传感器每秒钟测三轴的 a 变化，用 F = ma 反推你走了多少步</p>
+                <p>② <strong>游戏人物移动</strong>：跳跃曲线 = 二次积分 m·d²y/dt² = -mg</p>
+                <p>③ <strong>SpaceX 火箭回收</strong>：实时求解 6 自由度的牛顿方程，让火箭精确落地</p>
+            </div>
+
+            <!-- === 卡片 2：人口增长 === -->
+            <div class="story-card">
+                <div class="story-label">📖 指数增长 dy/dt = ky</div>
+                <div class="story-title"><span class="story-year">1690</span> 雅各布·伯努利："人口 = e 的人间化身"</div>
+                <p><span class="story-emoji">🎯</span><strong>它是为了解决什么问题？</strong></p>
+                <p>1690 年巴黎在闹瘟疫，法国主教问数学家：<strong>"巴黎人口会无限制增长吗？"</strong></p>
+                <p>雅各布·伯努利的回答是：<strong>会（在没有资源限制的情况下）</strong>。他写下：</p>
+                <div class="story-quote" style="background:#fff;border:1px dashed #16a085;font-size:18px;text-align:center;color:#16a085;">dy/dt = k·y   →   y(t) = y₀·e^(kt)</div>
+                <p>这就是<strong>指数增长方程</strong> —— 跟你在 ch01 看到的复利问题是一回事（连续利滚利 + 指数增长 = 同一件事）。</p>
+                <div class="story-quote">"如果人口不设上限，100 年后人类都要把地球挤爆。"  —— 雅各布（有点夸张，但意思到了）</div>
+                <p><span class="story-emoji">📱</span><strong>今天有什么用？</strong></p>
+                <p>① <strong>疫情预测</strong>：每天感染人数的指数增长期，用这个微分方程拟合</p>
+                <p>② <strong>放射性碳-14 测年</strong>：m(t) = m₀·e^(-λt)，λ 是衰变常数</p>
+                <p>③ <strong>贷款复利</strong>：你信用卡欠款按月结，一年后你欠的就是本金 × e^(年利率)</p>
+            </div>
+
+            <!-- === 卡片 3：弹簧振动 === -->
+            <div class="story-card">
+                <div class="story-label">📖 弹簧振动 y'' = -ω²y</div>
+                <div class="story-title"><span class="story-year">1740</span> 欧拉："吊灯的摆动是 sin 函数"</div>
+                <p><span class="story-emoji">🎯</span><strong>它是为了解决什么问题？</strong></p>
+                <p>伽利略年轻时，注意到礼拜堂里的吊灯总是左右晃一下又回来。他敏锐地提出：<strong>摆动周期只跟"绳长 + 重力加速度"有关，跟"摆幅多大"无关</strong>（这就是"等时性"）。</p>
+                <p>170 年后，欧拉把这个直觉变成方程：</p>
+                <div class="story-quote" style="background:#fff;border:1px dashed #2980b9;font-size:18px;text-align:center;color:#2980b9;">m·y'' + k·y = 0   →   y = C·cos(√(k/m)·t + φ)</div>
+                <p>解完后的形式竟然是个<strong>三角函数</strong>。这解释了为什么"单摆永远以同样的频率摆" —— 即便把它晃得很厉害，周期还是几乎不变（小幅时）。</p>
+                <div class="story-quote">"几乎所有的'周期性'自然界，都是这个方程的近亲。"  —— 欧拉</div>
+                <p><span class="story-emoji">📱</span><strong>今天有什么用？</strong></p>
+                <p>① <strong>机械手表</strong>：里面的摆轮 = 弹簧振动方程 y'' = -ω²y</p>
+                <p>② <strong>电子电路</strong>：LC 振荡电路 = 数学形式一样的方程</p>
+                <p>③ <strong>地震预警</strong>：建筑物振动分析 = 高阶版弹簧方程</p>
+            </div>
+
+        </div>
+
+        <div class="story-grid">
+
+            <!-- === 卡片 4：一阶线性微分方程 === -->
+            <div class="story-card">
+                <div class="story-label">📖 一阶线性微分方程</div>
+                <div class="story-title"><span class="story-year">1700s</span> 莱布尼茨：「加法扰动也能解」</div>
+                <p><span class="story-emoji">🎯</span><strong>它是为了解决什么问题？</strong></p>
+                <p>最朴素的微分方程：y' + P(x)y = Q(x)。这是"y 的增长率 = 某个外力 Q - 某个内部阻力 P·y"。</p>
+                <p>莱布尼茨给出一个"长但万能"的解法：</p>
+                <div class="story-quote" style="background:#fff;border:1px dashed #16a085;">y = e^(−∫P dx) · [∫Q·e^(∫P dx) dx + C]</div>
+                <p>本质上是<strong>两步法</strong>：① 乘上一个"积分因子"让左边凑成 (y·I)' 形式；② 直接积分。</p>
+                <div class="story-quote">"这个公式像瑞士军刀 — 看上去复杂，但任何一阶线性方程都能用它拆。"  —— 莱布尼茨</div>
+                <p><span class="story-emoji">📱</span><strong>今天有什么用？</strong></p>
+                <p>① <strong>RLC 电路</strong>：电流随时间的变化 = 经典一阶线性方程</p>
+                <p>② <strong>人口增长 + 食物限制</strong>：y' = a·y − b·y² 看起来非线，但 +− 可以分开算</p>
+            </div>
+
+            <!-- === 卡片 5：特征方程法 === -->
+            <div class="story-card">
+                <div class="story-label">📖 二阶常系数 + 特征方程</div>
+                <div class="story-title"><span class="story-year">1740</span> 欧拉的"代数替代微分"绝技</div>
+                <p><span class="story-emoji">🎯</span><strong>它是为了解决什么问题？</strong></p>
+                <p>想解 y'' + p·y' + q·y = 0 这种二阶方程。但求导操作太麻烦。</p>
+                <p>欧拉的绝招：<strong>假设解就是 e^(rx)</strong>。代进去，求导 → e^(rx) 自动求导就是 r·e^(rx)。</p>
+                <div class="story-quote" style="background:#fff;border:1px dashed #34495e;">代入得：e^(rx) · (r² + p·r + q) = 0 → 特征方程：r² + p·r + q = 0</div>
+                <p>微分方程竟然变成了<em>代数方程</em> ！这就是<strong>特征方程法</strong>。然后根据根的 3 种情况（两实根 / 重根 / 共轭复根），写出 3 种不同的解。</p>
+                <div class="story-quote">"把'微分'替换成'代数' — 这才是最深的数学把戏。"  —— 欧拉</div>
+                <p><span class="story-emoji">📱</span><strong>今天有什么用？</strong>几乎所有"会晃的东西"（桥梁、机械臂、芯片减震器）都靠这个方程做稳定性分析。</p>
+            </div>
+
+        </div>
+
+        <!-- 总结卡 -->
+        <div class="story-grid">
+
+            <div class="story-card" style="background:linear-gradient(180deg, #e3f2fd 0%, #bbdefb 100%); border-left-color:#0d47a1;">
+                <div class="story-label">🎁 这一章的"灵魂主线"</div>
+                <div class="story-title">一句话讲完 ch08 所有故事的共同主线</div>
+                <p><span class="story-emoji">🧵</span>这一章所有公式，归根结底就为了<strong>回答一个问题：</strong></p>
+                <p style="text-align:center;font-size:16px;font-weight:700;color:#0d47a1;">"一个会变化的世界，怎么用数学方程描述？"</p>
+                <p>它有以下几种"伪装"：</p>
+                <p>📍 <strong>物理上的伪装</strong>：F = ma、振动方程、人口指数增长、放射性衰变</p>
+                <p>📍 <strong>工程上的伪装</strong>：RLC 电路、流体动力学、建筑抗震</p>
+                <p>📍 <strong>AI 上的伪装</strong>：神经 ODE（把神经网络每一层当成 ODE 的一个步骤）</p>
+                <p><span class="story-emoji">💪</span>学完 ch08，你应该意识到：</p>
+                <p>• ch01 学的"极限" → 决定解的存在性</p>
+                <p>• ch02 学的"导数" → 写方程的形式</p>
+                <p>• ch03 学的"积分" → 解方程的标准武器</p>
+                <p>因此 ch08 是 ch01~ch03 的"实战场"，三个工具联手把世界算明白。</p>
+            </div>
+
+        </div>
+
         <p><span class="section-tag tag-core">🎯 核心考点</span></p>
         <ul>
             <li>一阶线性微分方程</li>

@@ -4,6 +4,220 @@
         <div class="ch-stars star-low">⭐</div>
     </div>
     <div class="ch-content">
+
+        <!-- ====== Part 0：诞生背景 · 哈密顿为四元数"打架"的那天 ====== -->
+        <div class="part-divider p0" id="part0">
+            <div class="pd-num">0</div>
+            <div class="pd-text">
+                <div class="pd-name">🌌 诞生背景 · 把"方向"变成数学的那一天</div>
+                <div class="pd-desc">19 世纪一群数学家为了"在三维空间里怎么算角度"打了一架，结果打出了"向量"。</div>
+            </div>
+        </div>
+
+        <div class="story-card">
+            <div class="story-label">🎬 为什么"向量"这么重要？因为它把"方向"变成数</div>
+            <p>前面 ch01~ch03 你学的所有函数都是<strong>"一维"的</strong>——y = f(x)，一个 x 控制一个 y。但现实是三维的：飞机要往 x、y、z 三个方向各飞多远？</p>
+            <p>你当然可以写三个式子分开算。但更聪明的方法是<strong>把"方向 + 大小"打包成一个东西</strong>，这个东西叫<strong>向量</strong>。</p>
+            <p>本章的诞生背景就是 19 世纪一群数学家为了<strong>"三维空间中怎么算两个方向的夹角"</strong>这件事打了一架的故事。</p>
+        </div>
+
+        <div class="story-card timeline-svg-wrap">
+            <div class="story-label">⏳ 200 年向量+几何史 · 从"方位"到"四元数"</div>
+            <svg viewBox="0 0 1200 360" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="tlGrad4" x1="0" x2="1" y1="0" y2="0">
+                        <stop offset="0%" stop-color="#16a085" stop-opacity="0.4"/>
+                        <stop offset="50%" stop-color="#0e6655" stop-opacity="1"/>
+                        <stop offset="100%" stop-color="#0b3d30" stop-opacity="1"/>
+                    </linearGradient>
+                </defs>
+                <rect x="40" y="40" width="1120" height="280" fill="#f0faf7" rx="8"/>
+                <line x1="80" y1="200" x2="1140" y2="200" stroke="url(#tlGrad4)" stroke-width="6" stroke-linecap="round"/>
+
+                <g stroke="#0b5345" stroke-width="1" opacity="0.3">
+                    <line x1="100" y1="200" x2="100" y2="215"/>
+                    <line x1="200" y1="200" x2="200" y2="215"/>
+                    <line x1="300" y1="200" x2="300" y2="215"/>
+                    <line x1="400" y1="200" x2="400" y2="215"/>
+                    <line x1="500" y1="200" x2="500" y2="215"/>
+                    <line x1="600" y1="200" x2="600" y2="215"/>
+                    <line x1="700" y1="200" x2="700" y2="215"/>
+                    <line x1="800" y1="200" x2="800" y2="215"/>
+                    <line x1="900" y1="200" x2="900" y2="215"/>
+                    <line x1="1000" y1="200" x2="1000" y2="215"/>
+                    <line x1="1100" y1="200" x2="1100" y2="215"/>
+                </g>
+                <g font-family="-apple-system, sans-serif" font-size="11" fill="#0b5345" text-anchor="middle">
+                    <text x="100"  y="232">1637</text>
+                    <text x="200"  y="232">1700</text>
+                    <text x="300"  y="232">1750</text>
+                    <text x="400"  y="232">1800</text>
+                    <text x="500"  y="232">1830</text>
+                    <text x="600"  y="232">1843</text>
+                    <text x="700"  y="232">1860</text>
+                    <text x="800"  y="232">1880</text>
+                    <text x="900" y="232">1900</text>
+                    <text x="1000" y="232">1950</text>
+                    <text x="1100" y="232">2000</text>
+                </g>
+
+                <!-- 节点 -->
+                <!-- 1. 笛卡尔 1637 坐标系 -->
+                <g transform="translate(120,200)">
+                    <circle r="14" fill="#2980b9" stroke="#fff" stroke-width="3"/>
+                    <text x="0" y="4" text-anchor="middle" font-size="13" fill="#fff" font-weight="700">1</text>
+                    <text x="0" y="-26" text-anchor="middle" font-size="12" fill="#1a5276" font-weight="700">笛卡尔</text>
+                    <text x="0" y="-12" text-anchor="middle" font-size="10" fill="#1a5276">1637 坐标系</text>
+                    <text x="0" y="40" text-anchor="middle" font-size="10" fill="#555">"用 (x,y) 描述一切"</text>
+                </g>
+                <!-- 2. 欧拉 1750 方向余弦 -->
+                <g transform="translate(420,200)">
+                    <circle r="13" fill="#16a085" stroke="#fff" stroke-width="3"/>
+                    <text x="0" y="4" text-anchor="middle" font-size="13" fill="#fff" font-weight="700">2</text>
+                    <text x="0" y="-25" text-anchor="middle" font-size="12" fill="#0e6655" font-weight="700">欧  拉</text>
+                    <text x="0" y="-12" text-anchor="middle" font-size="10" fill="#0e6655">1750 方向余弦</text>
+                    <text x="0" y="38" text-anchor="middle" font-size="10" fill="#555">"用 cos α, cos β, cos γ 描述方向"</text>
+                </g>
+                <!-- 3. 哈密顿 1843 四元数 -->
+                <g transform="translate(620,200)">
+                    <circle r="15" fill="#c0392b" stroke="#fff" stroke-width="3"/>
+                    <text x="0" y="4" text-anchor="middle" font-size="14" fill="#fff" font-weight="700">3</text>
+                    <text x="0" y="-28" text-anchor="middle" font-size="13" fill="#922b21" font-weight="700">哈密顿</text>
+                    <text x="0" y="-12" text-anchor="middle" font-size="10" fill="#922b21">1843.10.16 四元数</text>
+                    <text x="0" y="42" text-anchor="middle" font-size="10" fill="#555">"在桥上找到 i² = j² = k² = ijk = -1"</text>
+                </g>
+                <!-- 4. 麦克斯韦 1860 电磁学 -->
+                <g transform="translate(800,200)">
+                    <circle r="13" fill="#8e44ad" stroke="#fff" stroke-width="3"/>
+                    <text x="0" y="4" text-anchor="middle" font-size="13" fill="#fff" font-weight="700">4</text>
+                    <text x="0" y="-25" text-anchor="middle" font-size="12" fill="#6c3483" font-weight="700">麦克斯韦</text>
+                    <text x="0" y="-12" text-anchor="middle" font-size="10" fill="#6c3483">1862 麦克斯韦方程组</text>
+                    <text x="0" y="38" text-anchor="middle" font-size="10" fill="#555">"电磁力 = 向量"</text>
+                </g>
+                <!-- 5. 吉布斯 1881 向量分析 -->
+                <g transform="translate(950,200)">
+                    <circle r="13" fill="#34495e" stroke="#fff" stroke-width="3"/>
+                    <text x="0" y="4" text-anchor="middle" font-size="13" fill="#fff" font-weight="700">5</text>
+                    <text x="0" y="-25" text-anchor="middle" font-size="12" fill="#1a242f" font-weight="700">吉布斯/亥维赛</text>
+                    <text x="0" y="-12" text-anchor="middle" font-size="10" fill="#1a242f">1881 点积+叉积诞生</text>
+                    <text x="0" y="38" text-anchor="middle" font-size="10" fill="#555">"今日的·和×"</text>
+                </g>
+                <!-- 6. 现代 AI 2020 -->
+                <g transform="translate(1130,200)">
+                    <circle r="13" fill="#e67e22" stroke="#fff" stroke-width="3"/>
+                    <text x="0" y="4" text-anchor="middle" font-size="13" fill="#fff" font-weight="700">6</text>
+                    <text x="0" y="-25" text-anchor="middle" font-size="12" fill="#b75d10" font-weight="700">现在</text>
+                    <text x="0" y="-12" text-anchor="middle" font-size="10" fill="#b75d10">2020 向量 = AI 标尺</text>
+                    <text x="0" y="38" text-anchor="middle" font-size="10" fill="#555">"相似度 = 余弦"</text>
+                </g>
+
+                <g font-family="Georgia, serif" font-size="20" fill="#922b21" font-weight="700" opacity="0.85">
+                    <text x="120" y="65" text-anchor="middle">?</text>
+                    <text x="620" y="65" text-anchor="middle">?</text>
+                    <text x="800" y="65" text-anchor="middle">?</text>
+                    <text x="1130" y="65" text-anchor="middle">?</text>
+                </g>
+                <text x="600" y="50" text-anchor="middle" font-size="12" fill="#0b5345" font-weight="600">↑ 每个问号对应一个"怎么在三维里算"的具体问题</text>
+
+                <g opacity="0.4">
+                    <text x="250" y="100" font-size="11" fill="#2980b9">🔵 17世纪：坐标系</text>
+                    <text x="600" y="100" font-size="11" fill="#c0392b">🔴 19世纪：四元数之争</text>
+                    <text x="950" y="100" font-size="11" fill="#8e44ad">🟣 19世纪末：点积+叉积诞生</text>
+                    <text x="1100" y="100" font-size="11" fill="#e67e22">🟠 21世纪：向量 = AI</text>
+                </g>
+                <text x="600" y="330" text-anchor="middle" font-size="12" fill="#0b5345">📌 1843 年 10 月 16 日，是数学史上最神奇的日子之一——哈密顿在都柏林一座桥上刻下了四元数公式。</text>
+            </svg>
+        </div>
+
+        <div class="story-grid">
+
+            <!-- === 卡片 1：笛卡尔坐标系 === -->
+            <div class="story-card">
+                <div class="story-label">📖 坐标系</div>
+                <div class="story-title"><span class="story-year">1637</span> 笛卡尔："平面 = 一张地址表"</div>
+                <p><span class="story-emoji">🎯</span><strong>它是为了解决什么问题？</strong></p>
+                <p>几何和代数原本分家：几何靠画图、代数靠算数字。笛卡尔在《方法论》附《几何学》中做了<strong>一生最牛的一件事</strong>：把平面上的每个点用一个 (x, y) 编号。</p>
+                <p>从此"巴黎火车站第 x 条横道、第 y 条竖道"就能描述一个具体位置。</p>
+                <p>后来费马加一维：从二维到三维 (x, y, z)。你今天生活里所有"定位" —— 手机 GPS、网购买家地址、机场登机口 — 全是笛卡尔的功劳。</p>
+                <div class="story-quote">"几何不再是画图 — 它变成了一张巨大的地址表。"  —— 笛卡尔</div>
+                <p><span class="story-emoji">📱</span><strong>今天有什么用？</strong></p>
+                <p>① <strong>手机地图</strong>：GPS = 找到你的 (纬度, 经度)，本质就是坐标系</p>
+                <p>② <strong>游戏 3D 渲染</strong>：每个模型顶点都有 (x, y, z) 坐标</p>
+                <p>③ <strong>无人机</strong>：实时用陀螺仪 + 加速度计算出自己的三维位置</p>
+            </div>
+
+            <!-- === 卡片 2：哈密顿四元数 === -->
+            <div class="story-card">
+                <div class="story-label">📖 四元数 / 向量</div>
+                <div class="story-title"><span class="story-year">1843.10.16</span> 哈密顿：「在桥上顿悟的那一刻」</div>
+                <p><span class="story-emoji">🎯</span><strong>它是为了解决什么问题？</strong></p>
+                <p>1830 年代数学家在死磕一个看上去简单的问题：<strong>"三维旋转"怎么用代数表达？</strong></p>
+                <p>二维旋转很容易：(x, y) 转 θ 度后变成 (x cos θ − y sin θ, x sin θ + y cos θ)。但三维怎么转？</p>
+                <p>爱尔兰数学家 <strong>威廉·卢云·哈密顿 (William Rowan Hamilton)</strong> 想了 10 年，最后意识到：<em>三维旋转本身是个"四元"的东西</em>。</p>
+                <p><strong>1843 年 10 月 16 日下午</strong>，他跟妻子散步经过<strong>都柏林柏尔穆（Brougham）桥</strong>，脑子突然"咔嚓"一声通了。他当场掏出小刀，在桥的石头上刻下：</p>
+                <div class="story-quote" style="background:#fff;border:1px dashed #c0392b;font-size:18px;text-align:center;color:#c0392b;font-weight:700;">i² = j² = k² = ijk = −1</div>
+                <p>这就是<strong>四元数 (Quaternion)</strong> 的发现。一个数包含 4 个部分：1 + a·i + b·j + c·k。<strong>这就是"向量 + 实数"打包成一个东西</strong>的早期形态。</p>
+                <div class="story-quote">"那一刻我从桥上找到了 10 年的答案 — 我恨不得把它刻成纪念碑。"  —— 哈密顿给儿子写的信 1843</div>
+                <p><span class="story-emoji">⚠️</span><strong>八卦：</strong>那座桥 1958 年被拆，但都柏林市为了纪念这个发现，把那座桥命名为"<strong>Hamilton Bridge</strong>"。每年都有数学家去那桥朝圣。</p>
+                <p><span class="story-emoji">📱</span><strong>今天有什么用？</strong>你手机里玩游戏的"3D 旋转"、NASA 卫星的姿态控制、iPhone 的"方向传感器"，底层都是四元数。</p>
+            </div>
+
+            <!-- === 卡片 3：点积与叉积 === -->
+            <div class="story-card">
+                <div class="story-label">📖 点积 a·b、叉积 a×b</div>
+                <div class="story-title"><span class="story-year">1881</span> 吉布斯/亥维赛：「打架吵出来的两种乘法」</div>
+                <p><span class="story-emoji">🎯</span><strong>它是为了解决什么问题？</strong></p>
+                <p>四元数很强大但形式复杂：1 + a·i + b·j + c·k 写起来太累。</p>
+                <p>1881 年，<strong>吉布斯 (J. Willard Gibbs)</strong> 和 <strong>亥维赛 (Oliver Heaviside)</strong> 同时把它拆成两部分：</p>
+                <p>📍 <strong>点积 (·)</strong>：结果是个<strong>标量</strong>，代表两个方向的"对齐程度"。<br>📍 <strong>叉积 (×)</strong>：结果是个<strong>向量</strong>，垂直于原本两个方向，方向由"右手定则"决定。</p>
+                <div class="story-quote">"打架最难的不是技术 — 是说服别人你的版本好用。"  —— 亥维赛 1893 (争吵了 5 年后终于发表成书)</div>
+                <p><span class="story-emoji">📱</span><strong>今天有什么用？</strong></p>
+                <p>① <strong>点积 = 内积</strong> = 余弦相似度 → AI 里"两个商品描述像不像"的核心算法</p>
+                <p>② <strong>叉积 = 三角形面积 / 法向</strong> → 计算机图形学判定多边形朝向、3D 引擎渲染</p>
+                <p>③ <strong>麦克斯韦电磁方程</strong>：电场 × 磁场 = 力的方向（电动机原理）</p>
+            </div>
+
+        </div>
+
+        <div class="story-grid">
+
+            <!-- === 卡片 4：向量 = 21 世纪 AI 通用语 === -->
+            <div class="story-card">
+                <div class="story-label">📖 向量空间（数学 vs AI）</div>
+                <div class="story-title"><span class="story-year">2017</span> "Attention is all you need" — Transformer 论文发布</div>
+                <p><span class="story-emoji">🎯</span><strong>它是为了解决什么问题？</strong></p>
+                <p>当你把"一段文字""一张图片""一段语音"全变成<strong>一组数字（向量）</strong>，然后让 AI 在高维空间里比较它们、向它们要答案 —— 这是 2017 年后 AI 的整个游戏规则。</p>
+                <p>例如：</p>
+                <p>"<em>国王 - 男人 + 女人 = 女王</em>" 这件事，竟然能用一个<strong>三维向量减法</strong>实现（这事最早由 Word2Vec 在 2013 年发现）。</p>
+                <div class="story-quote">"国王 - 男人 + 女人 ≈ 女王 — 这个等式让硅谷疯狂。"  —— Mikolov (Google) 2013</div>
+                <p><span class="story-emoji">📱</span><strong>今天有什么用？</strong></p>
+                <p>① <strong>ChatGPT</strong>：每个 token 是一个 4096 维的向量，AI 就是把这些向量来回相乘、相加</p>
+                <p>② <strong>人脸识别</strong>：你的脸被映射为 512 维向量，跟库里的照片算相似度</p>
+                <p>③ <strong>推荐系统</strong>：B 站 / 淘宝 / 抖音的"相似商品"全靠向量点积算</p>
+            </div>
+
+        </div>
+
+        <!-- 总结卡 -->
+        <div class="story-grid">
+
+            <div class="story-card" style="background:linear-gradient(180deg, #e8f5e9 0%, #c8e6c9 100%); border-left-color:#2e7d32;">
+                <div class="story-label">🎁 这一章的"灵魂主线"</div>
+                <div class="story-title">一句话讲完 ch04 所有故事的共同主线</div>
+                <p><span class="story-emoji">🧵</span>这一章所有内容，归根结底就是<strong>把"方向"变成数学</strong>。</p>
+                <p>它有以下几种"伪装"：</p>
+                <p>📍 <strong>几何上的伪装</strong>：三维空间中的点、直线、平面</p>
+                <p>📍 <strong>物理上的伪装</strong>：力、速度、电场、磁场</p>
+                <p>📍 <strong>AI 上的伪装</strong>：每个词 / 每张图 = 一个高维向量</p>
+                <p><span class="story-emoji">💪</span>学完 ch04 你会发现：</p>
+                <p>• 笛卡尔坐标系 → 给"位置"一个编号</p>
+                <p>• 哈密顿四元数 → 把"旋转"打包</p>
+                <p>• 点积 / 叉积 → 在三维里算</p>
+                <p>• 向量嵌入 → AI 时代的全部"魔法"</p>
+            </div>
+
+        </div>
+
         <p><span class="section-tag tag-core">🎯 了解即可，低频考点</span></p>
         <div class="must-card">
             <div class="must-label">📖 基本公式</div>
