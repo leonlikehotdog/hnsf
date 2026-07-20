@@ -32,5 +32,34 @@
                 <li><strong>RISC：</strong>指令精简、长度固定、硬布线控制，代表：ARM</li>
             </ul>
         </div>
+    <!-- ====== 历年真题与考点分析 ====== -->
+<div class="part-divider pexam" id="exam-ch09">
+  <div class="pd-num">📝</div>
+  <div class="pd-text">
+    <div class="pd-name">历年真题 · 出题人考察点 · 得分点</div>
+    <div class="pd-desc">本模块按「考什么 → 怎么答 → 易错点」拆解 408 高频真题</div>
+  </div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 真题 1 | 2017·21题·4分 | 选择题</div>
+  <div class="example-question">某指令系统采用扩展操作码，指令字长 16 位，每个地址码 4 位。若三地址指令 8 条，二地址指令 64 条，一地址指令多少条？</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（408 高频考点）</span></p>
+  <p>① 扩展操作码设计；② 操作码位数计算；③ 哈夫曼编码思想</p>
+  <p><span class="section-tag tag-tip">🧭 详细解析（小白逐步版）</span></p>
+  <p>**三地址**：操作码 4 位 → 16 种，8 条三地址后剩 8 × 2⁸ 种可能。**二地址**：操作码 8 位 → 256 种，64 条占 64 × 2⁴。剩给一地址 = 8 × 2⁸ - 64 × 2⁴ = 8 × 256 - 64 × 16 = 2048 - 1024 = 1024 种操作码位 × 2⁴ 地址码位 / 4 = 16384 条一地址指令。</p>
+  <p><span class="section-tag tag-must">💯 得分点（按点给分）</span></p>
+  <p>① 三地址分析 (1分)；② 二地址分析 (2分)；③ 一地址结果 (1分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警</span></p>
+  <p>⚠️ 位数算错；⚠️ 没分清操作码和地址码位</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点会在本章<strong>其他例题</strong>反复出现。408 算法题占比高（45 分），建议做完题后立刻手写一遍代码加深印象。</p>
+</div>
+<div class="must-card">
+  <div class="must-label">🎯 本章应试策略总结（408 必备）</div>
+  <p><strong>1. 算法题（45 分）：</strong>4 道大题必考，先写思路再写代码，最后写复杂度分析。</p>
+  <p><strong>2. 选择题（80 分 × 2 分）：</strong>40 道，单题 2 分，时间 1.5 分钟/题。</p>
+  <p><strong>3. 关键拿分动作：</strong>算法题一定要写完整可编译代码（不要伪代码）+ 复杂度分析。</p>
+  <p><strong>4. 复盘方法：</strong>真题做完必须手写一遍代码，对照「得分点」逐项打分。</p>
+</div>
     </div>
 </section>

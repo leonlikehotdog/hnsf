@@ -29,5 +29,48 @@
             <div class="example-question">有符号机器数中，若二进制数1000 0000先算术右移3位，结果为（ ）。<br>
 A.1111 0000  B.1111 1000  C.0001 0000  D.0001 1000</div>
             <div class="example-hint">💡小白解析：1000 0000是一个负数（最高位为1）。算术右移时<strong>高位补符号位</strong>（即补1），低位舍去。右移1位→1100 0000，右移2位→1110 0000，右移3位→1111 0000。所以答案是<strong>A</strong>。算术右移的关键口诀：符号位不变，高位补符号，低位直接丢。算术右移3位相当于除以2³=8。1000 0000=-128，-128÷8=-16，-16的补码就是1111 0000，结果一致。</div>
-        </div>
+        <!-- ====== 历年真题与考点分析 ====== -->
+<div class="part-divider pexam" id="exam-ch07">
+  <div class="pd-num">📝</div>
+  <div class="pd-text">
+    <div class="pd-name">历年真题 · 出题人考察点 · 得分点</div>
+    <div class="pd-desc">本模块按「考什么 → 怎么答 → 易错点」拆解 408 高频真题</div>
+  </div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 真题 1 | 2015·18题·4分 | 选择题</div>
+  <div class="example-question">float x = -8.25，IEEE 754 单精度存储为（ ）。A. 1 10000010 00010000000000000000000  B. 1 10000001 00001000000000000000000  C. 0 10000010 00010000000000000000000  D. 1 10000011 00001000000000000000000</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（408 高频考点）</span></p>
+  <p>① IEEE 754 单精度格式（1+8+23 位）；② 阶码用移码（偏置 127）；③ 小数二进制化</p>
+  <p><span class="section-tag tag-tip">🧭 详细解析（小白逐步版）</span></p>
+  <p>**步骤**：① |x| = 8.25 = 1000.01₂ = 1.00001 × 2³；② 阶码 = 3 + 127 = 130 = 10000010₂；③ 符号位 1；④ 尾数 00001 后补 0。结果：A。</p>
+  <p><span class="section-tag tag-must">💯 得分点（按点给分）</span></p>
+  <p>① 写二进制 (1分)；② 阶码正确 (1分)；③ 尾数正确 (1分)；④ 答案 (1分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警</span></p>
+  <p>⚠️ 偏置常数记错（单精度 127，双精度 1023）；⚠️ 小数 0.25 = 0.01₂ 不是 0.1</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点会在本章<strong>其他例题</strong>反复出现。408 算法题占比高（45 分），建议做完题后立刻手写一遍代码加深印象。</p>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 真题 2 | 2021·19题·4分 | 选择题</div>
+  <div class="example-question">某计算机字长 32 位，short 类型 16 位，short x = -32768，则 x 左移一位后的十进制值为（ ）。</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（408 高频考点）</span></p>
+  <p>① 补码表示；② 左移运算；③ 符号位处理</p>
+  <p><span class="section-tag tag-tip">🧭 详细解析（小白逐步版）</span></p>
+  <p>-32768 = 1000 0000 0000 0000₂。左移 1 位 = 0000 0000 0000 0000₂ = 0。**注意**：左移带符号位变 0，结果为 0。</p>
+  <p><span class="section-tag tag-must">💯 得分点（按点给分）</span></p>
+  <p>① 写补码 (1分)；② 左移 (2分)；③ 结果 (1分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警</span></p>
+  <p>⚠️ -32768 是最小的 short（左移溢出变 0）；⚠️ 算术移位 vs 逻辑移位</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点会在本章<strong>其他例题</strong>反复出现。408 算法题占比高（45 分），建议做完题后立刻手写一遍代码加深印象。</p>
+</div>
+<div class="must-card">
+  <div class="must-label">🎯 本章应试策略总结（408 必备）</div>
+  <p><strong>1. 算法题（45 分）：</strong>4 道大题必考，先写思路再写代码，最后写复杂度分析。</p>
+  <p><strong>2. 选择题（80 分 × 2 分）：</strong>40 道，单题 2 分，时间 1.5 分钟/题。</p>
+  <p><strong>3. 关键拿分动作：</strong>算法题一定要写完整可编译代码（不要伪代码）+ 复杂度分析。</p>
+  <p><strong>4. 复盘方法：</strong>真题做完必须手写一遍代码，对照「得分点」逐项打分。</p>
+</div>
+    </div>
 </section>

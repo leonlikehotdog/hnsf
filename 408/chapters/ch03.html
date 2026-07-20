@@ -35,5 +35,48 @@
             <div class="example-question">一棵二叉树中序遍历序列为 b,c,d,e,f,a,g；层次遍历序列为 a,b,g,c,d,e,f。其后序遍历序列为（ ）。<br>A.c,e,d,f,b,g,a  B.c,e,f,d,b,g,a  C.e,f,d,c,b,g,a  D.e,g,f,d,b,c,a</div>
             <div class="example-hint">💡小白解析：层次遍历第一个为根a；中序中a左侧b,c,d,e,f是左子树，右侧g是右子树。继续用层次序确定每层：第2层有b,g，左侧第一个b是左子树根，g是右子树根。逐步还原整棵树后，后序遍历为"左-右-根"：先遍历左子树全部(得到e,f,d,c,b)，再遍历右子树g，最后根a得到e,f,d,c,b,g,a。选C。</div>
         </div>
+    <!-- ====== 历年真题与考点分析 ====== -->
+<div class="part-divider pexam" id="exam-ch03">
+  <div class="pd-num">📝</div>
+  <div class="pd-text">
+    <div class="pd-name">历年真题 · 出题人考察点 · 得分点</div>
+    <div class="pd-desc">本模块按「考什么 → 怎么答 → 易错点」拆解 408 高频真题</div>
+  </div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 真题 1 | 2017·41题·8分 | 算法设计题</div>
+  <div class="example-question">二叉树 T 采用二叉链表存储，设计算法求 T 的高度（层数）。</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（408 高频考点）</span></p>
+  <p>① 递归 vs 遍历；② 二叉链表结构；③ 时间空间复杂度</p>
+  <p><span class="section-tag tag-tip">🧭 详细解析（小白逐步版）</span></p>
+  <p>**递归思路**：`height(T) = 0`（空）；否则 `= max(height(L), height(R)) + 1`。**非递归**：层序遍历（BFS），每层结束时 +1。</p>
+  <p><span class="section-tag tag-must">💯 得分点（按点给分）</span></p>
+  <p>① 算法思想 (3分)；② 递归代码 (4分)；③ 复杂度 (1分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警</span></p>
+  <p>⚠️ 边界（空树返回 0 还是 -1？）未明确；⚠️ 忘判 NULL</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点会在本章<strong>其他例题</strong>反复出现。408 算法题占比高（45 分），建议做完题后立刻手写一遍代码加深印象。</p>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 真题 2 | 2019·41题·10分 | 算法设计题</div>
+  <div class="example-question">二叉树 T 用二叉链表存储，设计算法将 T 中所有结点左右子树交换。</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（408 高频考点）</span></p>
+  <p>① 递归遍历；② 指针操作；③ 后序遍历变体</p>
+  <p><span class="section-tag tag-tip">🧭 详细解析（小白逐步版）</span></p>
+  <p>**递归**：`swap(T)` 若 T 空返回；否则交换 T->lchild 与 T->rchild，递归 swap 两子树。**本质**：后序遍历框架。</p>
+  <p><span class="section-tag tag-must">💯 得分点（按点给分）</span></p>
+  <p>① 算法思想 (3分)；② 完整代码 (5分)；③ 复杂度 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警</span></p>
+  <p>⚠️ 交换前没保存原指针；⚠️ 递归终止条件错</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点会在本章<strong>其他例题</strong>反复出现。408 算法题占比高（45 分），建议做完题后立刻手写一遍代码加深印象。</p>
+</div>
+<div class="must-card">
+  <div class="must-label">🎯 本章应试策略总结（408 必备）</div>
+  <p><strong>1. 算法题（45 分）：</strong>4 道大题必考，先写思路再写代码，最后写复杂度分析。</p>
+  <p><strong>2. 选择题（80 分 × 2 分）：</strong>40 道，单题 2 分，时间 1.5 分钟/题。</p>
+  <p><strong>3. 关键拿分动作：</strong>算法题一定要写完整可编译代码（不要伪代码）+ 复杂度分析。</p>
+  <p><strong>4. 复盘方法：</strong>真题做完必须手写一遍代码，对照「得分点」逐项打分。</p>
+</div>
     </div>
 </section>

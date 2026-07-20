@@ -36,5 +36,48 @@
             <div class="example-question">直接插入排序升序排列，以下序列比较次数最少的是（ ）。<br>A.30,27,56,41,80,95,69<br>B.31,43,26,55,63,99,77<br>C.61,84,51,23,34,91,40<br>D.93,32,48,81,50,21,72</div>
             <div class="example-hint">💡小白解析：直接插入排序每插入一个元素，若序列已有序则只需比较1次；若完全逆序则要比较n次。因此原始序列有序度越高，比较次数越少。判断有序度就是看"有多少对相邻元素是升序的"。B选项逆序对最少，有序度最高，比较次数最少。选B。这类题考的不是运行代码，而是一眼看出序列"是否大体排好了"。</div>
         </div>
+    <!-- ====== 历年真题与考点分析 ====== -->
+<div class="part-divider pexam" id="exam-ch05">
+  <div class="pd-num">📝</div>
+  <div class="pd-text">
+    <div class="pd-name">历年真题 · 出题人考察点 · 得分点</div>
+    <div class="pd-desc">本模块按「考什么 → 怎么答 → 易错点」拆解 408 高频真题</div>
+  </div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 真题 1 | 2014·41题·10分 | 算法设计题</div>
+  <div class="example-question">设计算法在顺序表 L 中删除所有值为 x 的元素，要求时间 O(n)、空间 O(1)。</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（408 高频考点）</span></p>
+  <p>① 双指针技巧；② 顺序表原地修改；③ 时间复杂度</p>
+  <p><span class="section-tag tag-tip">🧭 详细解析（小白逐步版）</span></p>
+  <p>**双指针法**：`i` 遍历，`k` 记录保留位置。当 L[i] != x 时，L[k++] = L[i]。最后修改 L.length = k。**注意**：原数组就地修改，不需要额外空间。</p>
+  <p><span class="section-tag tag-must">💯 得分点（按点给分）</span></p>
+  <p>① 思想 (3分)；② 代码 (5分)；③ 复杂度 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警</span></p>
+  <p>⚠️ 用额外数组破坏 O(1)；⚠️ 忘更新 length；⚠️ 多删时漏</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点会在本章<strong>其他例题</strong>反复出现。408 算法题占比高（45 分），建议做完题后立刻手写一遍代码加深印象。</p>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 真题 2 | 2017·42题·13分 | 算法设计题</div>
+  <div class="example-question">设计算法判断二叉树 T 是否为二叉排序树（BST）。</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（408 高频考点）</span></p>
+  <p>① BST 性质；② 中序遍历；③ 边界处理（INT_MIN/MAX）</p>
+  <p><span class="section-tag tag-tip">🧭 详细解析（小白逐步版）</span></p>
+  <p>**中序遍历 + 检查递增**：BST 中序遍历必递增。用 prev 记录前一节点，当前节点 < prev 则不是 BST。**递归方法**：`isBST(T, min, max)`，若空返回 true；否则检查 T->data 在 (min,max) 内，递归检查左右子树。</p>
+  <p><span class="section-tag tag-must">💯 得分点（按点给分）</span></p>
+  <p>① 思想 (4分)；② 代码 (7分)；③ 复杂度 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警</span></p>
+  <p>⚠️ 只判左右孩子大小（错！要判整棵子树）；⚠️ 边界 int 溢出</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点会在本章<strong>其他例题</strong>反复出现。408 算法题占比高（45 分），建议做完题后立刻手写一遍代码加深印象。</p>
+</div>
+<div class="must-card">
+  <div class="must-label">🎯 本章应试策略总结（408 必备）</div>
+  <p><strong>1. 算法题（45 分）：</strong>4 道大题必考，先写思路再写代码，最后写复杂度分析。</p>
+  <p><strong>2. 选择题（80 分 × 2 分）：</strong>40 道，单题 2 分，时间 1.5 分钟/题。</p>
+  <p><strong>3. 关键拿分动作：</strong>算法题一定要写完整可编译代码（不要伪代码）+ 复杂度分析。</p>
+  <p><strong>4. 复盘方法：</strong>真题做完必须手写一遍代码，对照「得分点」逐项打分。</p>
+</div>
     </div>
 </section>

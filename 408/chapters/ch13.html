@@ -36,5 +36,34 @@
             <div class="example-hint">💡小白解析：模拟页面置换过程。初始3个物理块都为空：<br>
 ①1缺页→[1]<br>②2缺页→[1,2]<br>③3缺页→[1,2,3]<br>④4缺页→[2,3,4]（淘汰1）<br>⑤1缺页→[3,4,1]（淘汰2）<br>⑥2缺页→[4,1,2]（淘汰3）<br>⑦5缺页→[1,2,5]（淘汰4）<br>⑧1命中→[1,2,5]<br>⑨2命中→[1,2,5]<br>⑩3缺页→[2,5,3]（淘汰1）<br>⑪4缺页→[5,3,4]（淘汰2）<br>⑫5命中→[5,3,4]<br>缺页次数=9次，缺页率=9/12=75%。FIFO就是"先进先出"，淘汰在内存中停留最久的页面。FIFO有一个反直觉的特性叫Belady异常——增加物理块反而可能增加缺页次数，考选择题时要注意。</div>
         </div>
+    <!-- ====== 历年真题与考点分析 ====== -->
+<div class="part-divider pexam" id="exam-ch13">
+  <div class="pd-num">📝</div>
+  <div class="pd-text">
+    <div class="pd-name">历年真题 · 出题人考察点 · 得分点</div>
+    <div class="pd-desc">本模块按「考什么 → 怎么答 → 易错点」拆解 408 高频真题</div>
+  </div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 真题 1 | 2017·25题·4分 | 选择题</div>
+  <div class="example-question">某页式存储管理，页大小 4KB，逻辑地址 2500H 对应的页号和页内偏移是？</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（408 高频考点）</span></p>
+  <p>① 页式地址划分；② 页大小与位数关系；③ 地址转换</p>
+  <p><span class="section-tag tag-tip">🧭 详细解析（小白逐步版）</span></p>
+  <p>4KB = 2¹²，offset=12 位。2500H = 0010 0101 0000 0000₂ = 9472。页号 = 9472 / 4096 = 2，offset = 9472 mod 4096 = 1280。</p>
+  <p><span class="section-tag tag-must">💯 得分点（按点给分）</span></p>
+  <p>① 页面大小 (1分)；② 页号 (1分)；③ offset (1分)；④ 结果 (1分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警</span></p>
+  <p>⚠️ 16 进制转 2 进制位错；⚠️ 除法/取模</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点会在本章<strong>其他例题</strong>反复出现。408 算法题占比高（45 分），建议做完题后立刻手写一遍代码加深印象。</p>
+</div>
+<div class="must-card">
+  <div class="must-label">🎯 本章应试策略总结（408 必备）</div>
+  <p><strong>1. 算法题（45 分）：</strong>4 道大题必考，先写思路再写代码，最后写复杂度分析。</p>
+  <p><strong>2. 选择题（80 分 × 2 分）：</strong>40 道，单题 2 分，时间 1.5 分钟/题。</p>
+  <p><strong>3. 关键拿分动作：</strong>算法题一定要写完整可编译代码（不要伪代码）+ 复杂度分析。</p>
+  <p><strong>4. 复盘方法：</strong>真题做完必须手写一遍代码，对照「得分点」逐项打分。</p>
+</div>
     </div>
 </section>

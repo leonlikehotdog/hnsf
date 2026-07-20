@@ -1,0 +1,109 @@
+<!--
+    考研 408 · 近 5 年真题精选（2021-2024）刷题模块
+    数据从 zhenti_data.js 加载（window.ZHENTI_DATA 与 ZHENTI_CHAPTER_INDEX）
+    UI 由 js/zhenti.js 注入
+-->
+<section class="chapter-card" id="zhenti">
+    <div class="ch-header zhenti-header">
+        <div class="ch-title">🎯 近 5 年真题精选 <span class="ch-score">| 2021-2024</span></div>
+        <div class="ch-stars star-high">⭐⭐⭐⭐⭐ 真题实战</div>
+    </div>
+
+    <div class="ch-content zhenti-content">
+
+        <!-- ============ 模块介绍 ============ -->
+        <div class="zhenti-intro">
+            <p><span class="section-tag tag-core">🎯 模块说明</span></p>
+            <p>本模块汇集 <strong>2021-2024 年计算机学科专业基础综合（408）真题精选</strong>，覆盖<strong>数据结构、计算机组成原理、操作系统、计算机网络</strong>四大板块。每道题都附带：</p>
+            <ul>
+                <li>📝 <strong>原题 + 选项 + 答案</strong>（真题原文）</li>
+                <li>🎯 <strong>考察点</strong>（出题人意图）</li>
+                <li>📚 <strong>对应章节</strong>（关联到 408 项目 ch01-ch20 复习笔记，可一键跳转）</li>
+                <li>🧭 <strong>解题套路</strong>（思路框架，不照搬标准答案）</li>
+                <li>🏷️ <strong>章节映射</strong>（后期会在各章节笔记末尾插入「本章真题精选」指向本题）</li>
+            </ul>
+            <div class="tag-float t-tip">
+                <div class="tf-title">💡 408 真题使用建议</div>
+                <div class="tf-body">
+                    ① 选择题 80 道分布在四大板块，其中 1-11 数据结构 / 12-22 计组 / 23-32 OS / 33-40 计网；<br>
+                    ② 大题 41-47 共 70 分，每题题型与分值相对固定；<br>
+                    ③ 真题至少做 2 轮：第一轮按年份模拟，第二轮按章节查漏补缺；<br>
+                    ④ 章节映射：每题 <code>chapter</code> 字段关联 ch01-ch20，可直接点击跳转到对应笔记。
+                </div>
+            </div>
+        </div>
+
+        <!-- ============ 数据总览卡片 ============ -->
+        <div class="zhenti-overview" id="zhentiOverview"></div>
+
+        <!-- ============ Tab 切换 ============ -->
+        <div class="zhenti-tabs">
+            <button class="zhenti-tab active" data-tab="all">📅 历年真题</button>
+            <button class="zhenti-tab" data-tab="chapter">📚 按章节</button>
+            <button class="zhenti-tab" data-tab="part">🔧 按板块</button>
+            <button class="zhenti-tab" data-tab="type">📝 按题型</button>
+        </div>
+
+        <!-- ============ 筛选栏 ============ -->
+        <div class="zhenti-filters" id="zhentiFilters">
+            <div class="filter-row">
+                <div class="filter-group">
+                    <label class="filter-label">📅 年份</label>
+                    <div class="filter-pills" id="filterYear">
+                        <button class="filter-pill active" data-year="all">全部</button>
+                        <button class="filter-pill" data-year="2024">2024</button>
+                        <button class="filter-pill" data-year="2023">2023</button>
+                        <button class="filter-pill" data-year="2022">2022</button>
+                        <button class="filter-pill" data-year="2021">2021</button>
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">📚 板块</label>
+                    <div class="filter-pills" id="filterPart">
+                        <button class="filter-pill active" data-part="all">全部</button>
+                        <button class="filter-pill" data-part="数据结构">数据结构</button>
+                        <button class="filter-pill" data-part="计组">计组</button>
+                        <button class="filter-pill" data-part="操作系统">操作系统</button>
+                        <button class="filter-pill" data-part="计网">计网</button>
+                    </div>
+                </div>
+            </div>
+            <div class="filter-row">
+                <div class="filter-group">
+                    <label class="filter-label">📝 题型</label>
+                    <div class="filter-pills" id="filterType">
+                        <button class="filter-pill active" data-type="all">全部</button>
+                        <button class="filter-pill" data-type="选择题">选择题</button>
+                        <button class="filter-pill" data-type="大题">大题</button>
+                    </div>
+                </div>
+                <div class="filter-group filter-group-search">
+                    <label class="filter-label">🔍 搜索（题干 / 知识点 / 章节）</label>
+                    <input type="text" id="zhentiSearch" class="filter-input" placeholder="例如：链表、哈夫曼、TLB、ch03...">
+                </div>
+            </div>
+        </div>
+
+        <!-- ============ 题目列表区 ============ -->
+        <div class="zhenti-content-area" id="zhentiContentArea">
+            <div class="zhenti-loading">
+                <div class="spinner"></div>
+                <p>正在加载真题...</p>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ============ 题目详情弹窗（查看完整解析） ============ -->
+<div class="zhenti-modal" id="questionModal" hidden>
+    <div class="zhenti-modal-content zhenti-modal-large">
+        <div class="zhenti-modal-header">
+            <div class="zhenti-modal-title" id="questionModalTitle">题目详情</div>
+            <button class="zhenti-modal-close" id="questionModalClose">✕</button>
+        </div>
+        <div class="zhenti-modal-body" id="questionModalBody">
+            <!-- 由 JS 注入 -->
+        </div>
+    </div>
+</div>

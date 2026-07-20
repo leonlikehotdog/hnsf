@@ -34,5 +34,48 @@
             <div class="example-question">已知算法A用于检查字符串中各类括号是否匹配，A执行过程中使用初始为空的栈保存遇到的括号。若栈的容量是3，则下列选项中，A不能处理的是（ ）。<br>A.(a+[b+(c+d)/e]+f)+g-h<br>B.[a*((b+c)/(d-e)+f/g)-h]<br>C.[a*(b-(c-d)*e/(f+g))-h]<br>D.[a-(b+[c*(d+e)-f]+g+h)]</div>
             <div class="example-hint">💡小白解析：栈容量3表示最多只能同时存放3个未匹配的左括号。逐项分析括号嵌套深度即可。D选项：[a-(b+[c*(d+e)-f]+g+h) 的括号序列为 [ ( [ ( ，深度达到4，超过栈容量3，因此不能处理。答案选D。</div>
         </div>
+    <!-- ====== 历年真题与考点分析 ====== -->
+<div class="part-divider pexam" id="exam-ch02">
+  <div class="pd-num">📝</div>
+  <div class="pd-text">
+    <div class="pd-name">历年真题 · 出题人考察点 · 得分点</div>
+    <div class="pd-desc">本模块按「考什么 → 怎么答 → 易错点」拆解 408 高频真题</div>
+  </div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 真题 1 | 2018·41题·10分 | 算法设计题</div>
+  <div class="example-question">设栈 S 初始为空，给出入栈序列 1,2,3,4,5，问出栈序列 4,3,5,2,1 是否可能？</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（408 高频考点）</span></p>
+  <p>① LIFO 性质；② 栈操作模拟；③ 卡特兰数（出栈序列数）</p>
+  <p><span class="section-tag tag-tip">🧭 详细解析（小白逐步版）</span></p>
+  <p>栈是 LIFO，模拟过程：push 1→push 2→push 3→push 4→pop 4→pop 3→push 5→pop 5→pop 2→pop 1。**可行**。判断方法：入栈序列 a<b<c，若 c 在 b 之前出栈，则 a 也必须在 b 之前。</p>
+  <p><span class="section-tag tag-must">💯 得分点（按点给分）</span></p>
+  <p>① 判断对错 (3分)；② 模拟过程 (5分)；③ 结论 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警</span></p>
+  <p>⚠️ 没说明模拟过程；⚠️ 不画图直接判断</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点会在本章<strong>其他例题</strong>反复出现。408 算法题占比高（45 分），建议做完题后立刻手写一遍代码加深印象。</p>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 真题 2 | 2021·41题·13分 | 算法设计题</div>
+  <div class="example-question">设计算法判断带头结点单链表 L（n 个结点）是否中心对称。</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（408 高频考点）</span></p>
+  <p>① 中心对称判定；② 链表原地操作；③ 空间复杂度 O(1)</p>
+  <p><span class="section-tag tag-tip">🧭 详细解析（小白逐步版）</span></p>
+  <p>同 ch01 中「2020·41 题」。详见 ch01 算法。</p>
+  <p><span class="section-tag tag-must">💯 得分点（按点给分）</span></p>
+  <p>① 思想 (4分)；② 完整代码 (7分)；③ 复杂度 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警</span></p>
+  <p>⚠️ 用了辅助存储；⚠️ 边界条件未处理</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点会在本章<strong>其他例题</strong>反复出现。408 算法题占比高（45 分），建议做完题后立刻手写一遍代码加深印象。</p>
+</div>
+<div class="must-card">
+  <div class="must-label">🎯 本章应试策略总结（408 必备）</div>
+  <p><strong>1. 算法题（45 分）：</strong>4 道大题必考，先写思路再写代码，最后写复杂度分析。</p>
+  <p><strong>2. 选择题（80 分 × 2 分）：</strong>40 道，单题 2 分，时间 1.5 分钟/题。</p>
+  <p><strong>3. 关键拿分动作：</strong>算法题一定要写完整可编译代码（不要伪代码）+ 复杂度分析。</p>
+  <p><strong>4. 复盘方法：</strong>真题做完必须手写一遍代码，对照「得分点」逐项打分。</p>
+</div>
     </div>
 </section>

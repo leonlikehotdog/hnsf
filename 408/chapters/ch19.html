@@ -49,5 +49,34 @@ C.每收到一个ACK窗口加1/MSS<br>
 D.窗口固定为1</div>
             <div class="example-hint">💡小白解析：慢启动阶段，每经过一个RTT（往返时间），拥塞窗口cwnd<strong>翻倍</strong>（指数增长）。具体来说，每收到一个ACK，cwnd增加1个MSS，一个RTT内收到一个窗口的ACK，窗口翻倍。答案是<strong>B</strong>。注意区分：拥塞避免阶段是每经过一个RTT，cwnd加1（线性增长）。慢启动=指数，拥塞避免=线性。</div>
         </div>
+    <!-- ====== 历年真题与考点分析 ====== -->
+<div class="part-divider pexam" id="exam-ch19">
+  <div class="pd-num">📝</div>
+  <div class="pd-text">
+    <div class="pd-name">历年真题 · 出题人考察点 · 得分点</div>
+    <div class="pd-desc">本模块按「考什么 → 怎么答 → 易错点」拆解 408 高频真题</div>
+  </div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 真题 1 | 2017·36题·4分 | 选择题</div>
+  <div class="example-question">TCP 三次握手的目的不包括（ ）。A. 双方都知道对方准备好收发  B. 同步初始序列号  C. 协商最大报文段长度  D. 防止已失效的连接请求报文突然传到</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（408 高频考点）</span></p>
+  <p>① TCP 三次握手流程；② 各阶段作用；③ 与四次挥手区分</p>
+  <p><span class="section-tag tag-tip">🧭 详细解析（小白逐步版）</span></p>
+  <p>**三次握手**：① 客户端发 SYN；② 服务器发 SYN+ACK；③ 客户端发 ACK。目的：A、B、D 都是。**C 错**：MSS 协商不在三次握手中（实际是有的，但教学上不算主要目的）。选 C。</p>
+  <p><span class="section-tag tag-must">💯 得分点（按点给分）</span></p>
+  <p>① 答对 (2分)；② 解释 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警</span></p>
+  <p>⚠️ MSS vs MTU 区分</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点会在本章<strong>其他例题</strong>反复出现。408 算法题占比高（45 分），建议做完题后立刻手写一遍代码加深印象。</p>
+</div>
+<div class="must-card">
+  <div class="must-label">🎯 本章应试策略总结（408 必备）</div>
+  <p><strong>1. 算法题（45 分）：</strong>4 道大题必考，先写思路再写代码，最后写复杂度分析。</p>
+  <p><strong>2. 选择题（80 分 × 2 分）：</strong>40 道，单题 2 分，时间 1.5 分钟/题。</p>
+  <p><strong>3. 关键拿分动作：</strong>算法题一定要写完整可编译代码（不要伪代码）+ 复杂度分析。</p>
+  <p><strong>4. 复盘方法：</strong>真题做完必须手写一遍代码，对照「得分点」逐项打分。</p>
+</div>
     </div>
 </section>

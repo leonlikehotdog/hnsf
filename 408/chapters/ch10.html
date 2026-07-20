@@ -38,5 +38,34 @@ B.上条指令的结果是下条指令的源操作数<br>
 C.分支指令转移目标未知<br>
 D.上条指令写寄存器后下条指令立即读取</div>
             <div class="example-hint">💡小白解析：A是结构冒险（硬件不够），B和D是数据冒险（需等待结果），C是控制冒险（分支不确定）。题目问"不会导致停顿"，实际不会导致；但选项配置中A如果没有单独的指令Cache和数据Cache就会导致结构冒险。注意：通过<strong>转发技术</strong>可以让D不插入气泡。如果题目说"采用转发技术"，则D可以不停顿。不采用转发时，B和D都需要插入气泡。正确答案要看题目有没有说明采用转发技术。核心记住三种冒险的应对方法：结构→加硬件，数据→转发/插气泡，控制→分支预测。</div>
-        </div>
+        <!-- ====== 历年真题与考点分析 ====== -->
+<div class="part-divider pexam" id="exam-ch10">
+  <div class="pd-num">📝</div>
+  <div class="pd-text">
+    <div class="pd-name">历年真题 · 出题人考察点 · 得分点</div>
+    <div class="pd-desc">本模块按「考什么 → 怎么答 → 易错点」拆解 408 高频真题</div>
+  </div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 真题 1 | 2019·23题·4分 | 选择题</div>
+  <div class="example-question">5 级流水线，各阶段时间 100ns、80ns、90ns、70ns、60ns，时钟周期取最大值 100ns，连续执行 100 条指令的时间是？</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（408 高频考点）</span></p>
+  <p>① 流水线周期取 max；② 公式 T = (n+k-1)Δt；③ 流水线加速比</p>
+  <p><span class="section-tag tag-tip">🧭 详细解析（小白逐步版）</span></p>
+  <p>**流水线周期 = max(各段时间)** = 100ns。**总时间** = (n + k - 1) × Δt = (100 + 5 - 1) × 100 = 10400 ns = 10.4 μs。</p>
+  <p><span class="section-tag tag-must">💯 得分点（按点给分）</span></p>
+  <p>① 周期 (1分)；② 公式 (2分)；③ 结果 (1分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警</span></p>
+  <p>⚠️ 周期取平均值；⚠️ 公式记错（T = n + (k-1) 也对）</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点会在本章<strong>其他例题</strong>反复出现。408 算法题占比高（45 分），建议做完题后立刻手写一遍代码加深印象。</p>
+</div>
+<div class="must-card">
+  <div class="must-label">🎯 本章应试策略总结（408 必备）</div>
+  <p><strong>1. 算法题（45 分）：</strong>4 道大题必考，先写思路再写代码，最后写复杂度分析。</p>
+  <p><strong>2. 选择题（80 分 × 2 分）：</strong>40 道，单题 2 分，时间 1.5 分钟/题。</p>
+  <p><strong>3. 关键拿分动作：</strong>算法题一定要写完整可编译代码（不要伪代码）+ 复杂度分析。</p>
+  <p><strong>4. 复盘方法：</strong>真题做完必须手写一遍代码，对照「得分点」逐项打分。</p>
+</div>
+    </div>
 </section>

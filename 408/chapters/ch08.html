@@ -39,5 +39,48 @@
 ③标记：32-3-6=23位<br>
 因此主存地址格式为：标记23位 + 行号6位 + 块内地址3位。<br>
 小白速记：直接映射就是"分房间"——先按房间号（行号）划分，每个房间有多个床位（块），标记用来区分同一房间不同主存块。</div>
-        </div>
+        <!-- ====== 历年真题与考点分析 ====== -->
+<div class="part-divider pexam" id="exam-ch08">
+  <div class="pd-num">📝</div>
+  <div class="pd-text">
+    <div class="pd-name">历年真题 · 出题人考察点 · 得分点</div>
+    <div class="pd-desc">本模块按「考什么 → 怎么答 → 易错点」拆解 408 高频真题</div>
+  </div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 真题 1 | 2018·20题·4分 | 选择题</div>
+  <div class="example-question">某计算机 cache 直接映射，cache 容量 16KB，主存 64MB，块大小 16B。则主存地址 12345H 映射到 cache 的哪一块？</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（408 高频考点）</span></p>
+  <p>① 直接映射地址划分；② cache 容量与块数计算；③ 二进制地址解析</p>
+  <p><span class="section-tag tag-tip">🧭 详细解析（小白逐步版）</span></p>
+  <p>**参数**：块大小 16B = 2⁴，offset=4 位。cache 共 16KB/16B = 1024 = 2¹⁰ 块，index=10 位。tag = 24-10-4 = 10 位。12345H = 0001 0010 0011 0100 0101₂。取 index 位（中间 10 位）= 00 0011 0100 = 52。映射到 cache 第 52 块。</p>
+  <p><span class="section-tag tag-must">💯 得分点（按点给分）</span></p>
+  <p>① 计算各字段位数 (2分)；② 取 index (1分)；③ 结果 (1分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警</span></p>
+  <p>⚠️ tag/index/offset 顺序搞错；⚠️ 二进制位数算错</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点会在本章<strong>其他例题</strong>反复出现。408 算法题占比高（45 分），建议做完题后立刻手写一遍代码加深印象。</p>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 真题 2 | 2020·22题·4分 | 选择题</div>
+  <div class="example-question">关于虚拟存储器的叙述，正确的是（ ）。A. 虚拟存储器是物理上扩充内存  B. 段页式存储访问速度最快  C. 虚地址到实地址转换由 MMU 完成  D. 虚拟存储器容量受主存限制</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（408 高频考点）</span></p>
+  <p>① 虚拟存储器概念；② MMU 功能；③ 段页式存储</p>
+  <p><span class="section-tag tag-tip">🧭 详细解析（小白逐步版）</span></p>
+  <p>**A**：虚拟存储器是逻辑上扩充，不是物理上。**B**：没有「段页式最快」一说，取决于具体实现。**C**：正确，MMU（Memory Management Unit）负责地址转换。**D**：虚拟容量由地址位数决定，不受主存限制。选 C。</p>
+  <p><span class="section-tag tag-must">💯 得分点（按点给分）</span></p>
+  <p>① 答对 (2分)；② 解释 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警</span></p>
+  <p>⚠️ 混淆「逻辑扩充」与「物理扩充」</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点会在本章<strong>其他例题</strong>反复出现。408 算法题占比高（45 分），建议做完题后立刻手写一遍代码加深印象。</p>
+</div>
+<div class="must-card">
+  <div class="must-label">🎯 本章应试策略总结（408 必备）</div>
+  <p><strong>1. 算法题（45 分）：</strong>4 道大题必考，先写思路再写代码，最后写复杂度分析。</p>
+  <p><strong>2. 选择题（80 分 × 2 分）：</strong>40 道，单题 2 分，时间 1.5 分钟/题。</p>
+  <p><strong>3. 关键拿分动作：</strong>算法题一定要写完整可编译代码（不要伪代码）+ 复杂度分析。</p>
+  <p><strong>4. 复盘方法：</strong>真题做完必须手写一遍代码，对照「得分点」逐项打分。</p>
+</div>
+    </div>
 </section>

@@ -47,5 +47,34 @@ D.传输层的流量控制</div>
 A.255.255.255.0  B.255.255.0.0  C.255.0.0.0  D.255.255.255.255</div>
             <div class="example-hint">💡小白解析：/24表示前24位是网络号，后8位是主机号。子网掩码就是前24位为1，后8位为0：11111111.11111111.11111111.00000000 = 255.255.255.0。答案是<strong>A</strong>。速算：/24 = 255.255.255.0；/16 = 255.255.0.0；/8 = 255.0.0.0。</div>
         </div>
+    <!-- ====== 历年真题与考点分析 ====== -->
+<div class="part-divider pexam" id="exam-ch17">
+  <div class="pd-num">📝</div>
+  <div class="pd-text">
+    <div class="pd-name">历年真题 · 出题人考察点 · 得分点</div>
+    <div class="pd-desc">本模块按「考什么 → 怎么答 → 易错点」拆解 408 高频真题</div>
+  </div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 真题 1 | 2018·34题·4分 | 选择题</div>
+  <div class="example-question">CSMA/CD 协议中，检测到冲突后发送 jamming signal 的目的是？</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（408 高频考点）</span></p>
+  <p>① CSMA/CD 原理；② jamming signal 作用；③ 二进制指数退避</p>
+  <p><span class="section-tag tag-tip">🧭 详细解析（小白逐步版）</span></p>
+  <p>**Jamming signal**：32 或 48 比特特定序列，让所有其他站点都能检测到冲突，停止发送，避免继续浪费信道。</p>
+  <p><span class="section-tag tag-must">💯 得分点（按点给分）</span></p>
+  <p>① 答对 (2分)；② 解释 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警</span></p>
+  <p>⚠️ 误以为是通知发送方</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点会在本章<strong>其他例题</strong>反复出现。408 算法题占比高（45 分），建议做完题后立刻手写一遍代码加深印象。</p>
+</div>
+<div class="must-card">
+  <div class="must-label">🎯 本章应试策略总结（408 必备）</div>
+  <p><strong>1. 算法题（45 分）：</strong>4 道大题必考，先写思路再写代码，最后写复杂度分析。</p>
+  <p><strong>2. 选择题（80 分 × 2 分）：</strong>40 道，单题 2 分，时间 1.5 分钟/题。</p>
+  <p><strong>3. 关键拿分动作：</strong>算法题一定要写完整可编译代码（不要伪代码）+ 复杂度分析。</p>
+  <p><strong>4. 复盘方法：</strong>真题做完必须手写一遍代码，对照「得分点」逐项打分。</p>
+</div>
     </div>
 </section>

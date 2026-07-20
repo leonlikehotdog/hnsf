@@ -14,6 +14,9 @@ $RECYCLE.BIN/
 .AppleDouble
 .LSOverride
 ._*
+
+# Trae IDE
+.trae/
 .fseventsd
 .Spotlight-V100
 .Trashes
@@ -43,3 +46,11 @@ package-lock.json
 
 # Vercel 部署元数据（保留 vercel.json，去掉运行缓存）
 .vercel/cache/
+
+# ============ 调试 / 临时产物（不入库） ============
+test_pattern.png
+ch02_fixed.png
+ch02_overview.png
+ch02_row_*.png
+ch02_table*.png
+served_*.html

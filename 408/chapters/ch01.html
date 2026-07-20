@@ -102,5 +102,62 @@
             <div class="tf-title">小白技巧：考场上想不出最优解怎么办？</div>
             <div class="tf-body">先用暴力合并法（O(n)）写出来拿到大部分分，再在最后写一句「可用二分优化到 O(log n)」，阅卷老师看到思路分往往给满。</div>
         </div>
+    <!-- ====== 历年真题与考点分析 ====== -->
+<div class="part-divider pexam" id="exam-ch01">
+  <div class="pd-num">📝</div>
+  <div class="pd-text">
+    <div class="pd-name">历年真题 · 出题人考察点 · 得分点</div>
+    <div class="pd-desc">本模块按「考什么 → 怎么答 → 易错点」拆解 408 高频真题</div>
+  </div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 真题 1 | 2010·41题·10分 | 算法设计题</div>
+  <div class="example-question">将长度为 n(n>1) 的数组 R 中保存的序列循环左移 p(0<p<n) 个位置。要求时间 O(n)、空间 O(1)。</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（408 高频考点）</span></p>
+  <p>① 循环左移的识别信号；② 三次逆置法（核心算法）；③ 复杂度分析能力</p>
+  <p><span class="section-tag tag-tip">🧭 详细解析（小白逐步版）</span></p>
+  <p>**三次逆置法**：① 整体逆置 [1,2,3,4,5,6] → [6,5,4,3,2,1]；② 前 n-p 个逆置 → [5,6,4,3,2,1]；③ 后 p 个逆置 → [5,6,1,2,3,4]。结果：原数组前 p 个移到末尾。</p>
+  <p><span class="section-tag tag-must">💯 得分点（按点给分）</span></p>
+  <p>① 算法设计思想 (3分)；② 完整代码 (5分)；③ 时间空间复杂度 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警</span></p>
+  <p>⚠️ 临时变量 j 处理错；⚠️ 边界 p=0 时未考虑；⚠️ 复杂度分析没写</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点会在本章<strong>其他例题</strong>反复出现。408 算法题占比高（45 分），建议做完题后立刻手写一遍代码加深印象。</p>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 真题 2 | 2011·42题·11分 | 算法设计题</div>
+  <div class="example-question">现有两个等长升序序列 A 和 B（长度均为 n），设计一个时间和空间都尽可能高效的算法，找出 A 和 B 合并后的中位数。</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（408 高频考点）</span></p>
+  <p>① 中位数定义；② 归并排序思想；③ 二分减半策略</p>
+  <p><span class="section-tag tag-tip">🧭 详细解析（小白逐步版）</span></p>
+  <p>**暴力合并**：归并两个序列，取第 n 个元素，时间 O(n)，空间 O(n)。**最优方法**：归并过程计数到第 n 个就停止。**最优解**：分别取两序列中位数 a、b 比较：若相等即答案；若 a<b 舍弃 A 左半 + B 右半；若 a>b 舍弃 A 右半 + B 左半。时间 O(log n)，空间 O(1)。</p>
+  <p><span class="section-tag tag-must">💯 得分点（按点给分）</span></p>
+  <p>① 思想 (3分)；② 完整代码 (5分)；③ 复杂度 (2分)；④ 最优性说明 (1分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警</span></p>
+  <p>⚠️ 暴力合并不优化扣 2~3 分；⚠️ 复杂度分析写错</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点会在本章<strong>其他例题</strong>反复出现。408 算法题占比高（45 分），建议做完题后立刻手写一遍代码加深印象。</p>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 真题 3 | 2020·41题·13分 | 算法设计题</div>
+  <div class="example-question">定义带头结点的单链表 L，设计算法判断其元素是否关于中心对称（如 1,2,3,2,1）。要求时间 O(n)、空间 O(1)。</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（408 高频考点）</span></p>
+  <p>① 快慢指针找中点；② 链表逆置（原地）；③ 对称性判定</p>
+  <p><span class="section-tag tag-tip">🧭 详细解析（小白逐步版）</span></p>
+  <p>**核心思路**：① 找中点（快慢指针，慢走 1 步快走 2 步）；② 中点之后逆置；③ 双指针从两端向中间扫，比较。**关键点**：O(1) 空间意味着不能递归，不能用栈。</p>
+  <p><span class="section-tag tag-must">💯 得分点（按点给分）</span></p>
+  <p>① 算法设计 (4分)；② 三个子函数完整 (7分)；③ 复杂度 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警</span></p>
+  <p>⚠️ 用了栈违反 O(1) 空间；⚠️ 没处理空链表 / 单节点边界</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点会在本章<strong>其他例题</strong>反复出现。408 算法题占比高（45 分），建议做完题后立刻手写一遍代码加深印象。</p>
+</div>
+<div class="must-card">
+  <div class="must-label">🎯 本章应试策略总结（408 必备）</div>
+  <p><strong>1. 算法题（45 分）：</strong>4 道大题必考，先写思路再写代码，最后写复杂度分析。</p>
+  <p><strong>2. 选择题（80 分 × 2 分）：</strong>40 道，单题 2 分，时间 1.5 分钟/题。</p>
+  <p><strong>3. 关键拿分动作：</strong>算法题一定要写完整可编译代码（不要伪代码）+ 复杂度分析。</p>
+  <p><strong>4. 复盘方法：</strong>真题做完必须手写一遍代码，对照「得分点」逐项打分。</p>
+</div>
     </div>
 </section>

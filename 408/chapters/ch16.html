@@ -38,5 +38,34 @@ A.表示层  B.会话层  C.应用层  D.传输层</div>
             <div class="example-question">在TCP/IP模型中，应用层数据经过传输层、网络层、数据链路层后，最终被封装成（ ）。<br>
 A.报文段  B.数据报  C.帧  D.比特流</div>
             <div class="example-hint">💡小白解析：数据封装从上到下依次是：应用层数据→传输层加TCP/UDP头得到<strong>报文段</strong>→网络层加IP头得到<strong>数据报</strong>→数据链路层加MAC头尾得到<strong>帧</strong>→物理层变成<strong>比特流</strong>。题目问"经过传输层、网络层、数据链路层后"，最终是数据链路层的输出——<strong>帧</strong>。选C。</div>
-        </div>
+        <!-- ====== 历年真题与考点分析 ====== -->
+<div class="part-divider pexam" id="exam-ch16">
+  <div class="pd-num">📝</div>
+  <div class="pd-text">
+    <div class="pd-name">历年真题 · 出题人考察点 · 得分点</div>
+    <div class="pd-desc">本模块按「考什么 → 怎么答 → 易错点」拆解 408 高频真题</div>
+  </div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 真题 1 | 2020·33题·4分 | 选择题</div>
+  <div class="example-question">OSI 七层模型中，提供端到端可靠传输的是（ ）。A. 网络层  B. 传输层  C. 会话层  D. 表示层</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（408 高频考点）</span></p>
+  <p>① OSI 七层；② 各层功能；③ TCP vs IP</p>
+  <p><span class="section-tag tag-tip">🧭 详细解析（小白逐步版）</span></p>
+  <p>**传输层**（TCP）提供端到端可靠传输。**网络层**（IP）提供无连接不可靠服务。选 B。</p>
+  <p><span class="section-tag tag-must">💯 得分点（按点给分）</span></p>
+  <p>① 答对 (2分)；② 解释 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警</span></p>
+  <p>⚠️ TCP 协议位置（传输层）；⚠️ 可靠传输只 TCP 提供</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点会在本章<strong>其他例题</strong>反复出现。408 算法题占比高（45 分），建议做完题后立刻手写一遍代码加深印象。</p>
+</div>
+<div class="must-card">
+  <div class="must-label">🎯 本章应试策略总结（408 必备）</div>
+  <p><strong>1. 算法题（45 分）：</strong>4 道大题必考，先写思路再写代码，最后写复杂度分析。</p>
+  <p><strong>2. 选择题（80 分 × 2 分）：</strong>40 道，单题 2 分，时间 1.5 分钟/题。</p>
+  <p><strong>3. 关键拿分动作：</strong>算法题一定要写完整可编译代码（不要伪代码）+ 复杂度分析。</p>
+  <p><strong>4. 复盘方法：</strong>真题做完必须手写一遍代码，对照「得分点」逐项打分。</p>
+</div>
+    </div>
 </section>

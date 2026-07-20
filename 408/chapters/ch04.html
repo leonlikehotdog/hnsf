@@ -28,5 +28,48 @@
                 <li><strong>Kruskal：</strong>每次选权值最小的边，若不形成回路就加入。适用于边稀疏图。</li>
             </ul>
         </div>
+    <!-- ====== 历年真题与考点分析 ====== -->
+<div class="part-divider pexam" id="exam-ch04">
+  <div class="pd-num">📝</div>
+  <div class="pd-text">
+    <div class="pd-name">历年真题 · 出题人考察点 · 得分点</div>
+    <div class="pd-desc">本模块按「考什么 → 怎么答 → 易错点」拆解 408 高频真题</div>
+  </div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 真题 1 | 2015·41题·8分 | 算法设计题</div>
+  <div class="example-question">用邻接表存储的有向图 G，设计算法判断是否存在顶点 v 到顶点 u 的简单路径。</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（408 高频考点）</span></p>
+  <p>① 图的遍历；② DFS 实现；③ 邻接表访问</p>
+  <p><span class="section-tag tag-tip">🧭 详细解析（小白逐步版）</span></p>
+  <p>**DFS**：从 v 开始深度优先遍历，访问到 u 即返回 true。时间 O(V+E)。**BFS**：类似。**注意**：题目要求简单路径（不重复），DFS 默认就是这个。</p>
+  <p><span class="section-tag tag-must">💯 得分点（按点给分）</span></p>
+  <p>① 思想 (3分)；② 代码 (4分)；③ 复杂度 (1分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警</span></p>
+  <p>⚠️ 没判环（递归可能死循环）；⚠️ 邻接表访问方式错</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点会在本章<strong>其他例题</strong>反复出现。408 算法题占比高（45 分），建议做完题后立刻手写一遍代码加深印象。</p>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 真题 2 | 2018·42题·10分 | 应用题</div>
+  <div class="example-question">已知无向图 G 的邻接矩阵，求 G 中从顶点 0 到顶点 4 的最短路径长度（要求手算）。</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（408 高频考点）</span></p>
+  <p>① 最短路径算法；② Dijkstra 步骤；③ 邻接矩阵读取</p>
+  <p><span class="section-tag tag-tip">🧭 详细解析（小白逐步版）</span></p>
+  <p>**Dijkstra**：每次选当前未访问最短距离点，更新邻居距离。**Floyd**：三维 DP[k][i][j] = min(D[i][j], D[i][k]+D[k][j])。408 常考手算 Dijkstra。</p>
+  <p><span class="section-tag tag-must">💯 得分点（按点给分）</span></p>
+  <p>① 初始化 (2分)；② 第一轮迭代 (3分)；③ 第二轮 (3分)；④ 最终 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警</span></p>
+  <p>⚠️ 选错当前最短点；⚠️ 更新时漏顶点</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点会在本章<strong>其他例题</strong>反复出现。408 算法题占比高（45 分），建议做完题后立刻手写一遍代码加深印象。</p>
+</div>
+<div class="must-card">
+  <div class="must-label">🎯 本章应试策略总结（408 必备）</div>
+  <p><strong>1. 算法题（45 分）：</strong>4 道大题必考，先写思路再写代码，最后写复杂度分析。</p>
+  <p><strong>2. 选择题（80 分 × 2 分）：</strong>40 道，单题 2 分，时间 1.5 分钟/题。</p>
+  <p><strong>3. 关键拿分动作：</strong>算法题一定要写完整可编译代码（不要伪代码）+ 复杂度分析。</p>
+  <p><strong>4. 复盘方法：</strong>真题做完必须手写一遍代码，对照「得分点」逐项打分。</p>
+</div>
     </div>
 </section>

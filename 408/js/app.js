@@ -32,6 +32,9 @@
         { id: 'ch20', title: '应用层', part: '计网', score: '4分' }
     ];
 
+    // 真题刷题模块（特殊入口）
+    const ZHENTI_MODULE = { id: 'zhenti', title: '🎯 近5年真题刷题', part: '真题', score: '精选' };
+
     const PART_NAMES = {
         '数据结构': '数据结构（约45分）',
         '计组': '计算机组成原理（约45分）',
@@ -50,6 +53,11 @@
     function buildSidebar() {
         let parts = ['数据结构', '计组', '操作系统', '计网'];
         let html = '';
+
+        // 顶部：真题刷题特殊入口（高亮）
+        html += '<div class="nav-part nav-part-zhenti">🔥 真题实战</div>';
+        html += '<a href="#" data-target="zhenti" class="nav-zhenti-link"><span class="ch-num">★</span>🎯 近5年真题刷题</a>';
+
         parts.forEach(function(p) {
             html += '<div class="nav-part">' + PART_NAMES[p] + '</div>';
             CHAPTERS.forEach(function(ch) {
@@ -72,13 +80,37 @@
         sidebarNav.querySelectorAll('a').forEach(function(link) {
             link.classList.toggle('active', link.getAttribute('data-target') === chapterId);
         });
-        if (loadedChapters[chapterId]) {
+        if (chapterId === 'zhenti') {
+            loadZhenti();
+        } else if (loadedChapters[chapterId]) {
             renderChapter(chapterId);
         } else {
             loadChapter(chapterId);
         }
         window.location.hash = chapterId;
         window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function loadZhenti() {
+        isLoading = true;
+        contentWrap.innerHTML = '<div class="chapter-loading"><div class="spinner"></div><p>正在加载真题模块...</p></div>';
+        var url = 'chapters/zhenti.html';
+        fetch(url)
+            .then(function(resp) {
+                if (!resp.ok) throw new Error('HTTP ' + resp.status);
+                return resp.text();
+            })
+            .then(function(html) {
+                isLoading = false;
+                contentWrap.innerHTML = html;
+                setTimeout(function() {
+                    if (window.initZhentiModule) window.initZhentiModule();
+                }, 50);
+            })
+            .catch(function() {
+                isLoading = false;
+                contentWrap.innerHTML = '<div style="text-align:center;padding:60px;">加载真题失败</div>';
+            });
     }
 
     function loadChapter(chapterId) {
@@ -130,7 +162,32 @@
             + (prevId ? '<button onclick="window.__navigateTo(\'' + prevId + '\')">← 上一章</button>' : '<div></div>')
             + (nextId ? '<button onclick="window.__navigateTo(\'' + nextId + '\')">下一章 →</button>' : '<div></div>')
             + '</div>';
-        contentWrap.innerHTML = html + navHtml;
+
+        // 本章相关真题精选
+        var zhentiCount = 0;
+        if (window.ZHENTI_CHAPTER_INDEX && window.ZHENTI_CHAPTER_INDEX[chapterId]) {
+            zhentiCount = window.ZHENTI_CHAPTER_INDEX[chapterId].length;
+        }
+        var zhentiHtml = '';
+        if (zhentiCount > 0) {
+            zhentiHtml = '<div class="zhenti-chapter-banner" data-zhenti-chap="' + chapterId + '">'
+                + '<span class="zb-icon">🎯</span>'
+                + '<span class="zb-text"><strong>' + zhentiCount + ' 道近 4 年真题</strong> 考察本章知识点</span>'
+                + '<button class="zb-btn">📝 去刷本章真题</button>'
+                + '</div>';
+        }
+
+        contentWrap.innerHTML = html + zhentiHtml + navHtml;
+
+        // 绑定「本章真题精选」跳转
+        if (zhentiCount > 0) {
+            var zb = contentWrap.querySelector('.zhenti-chapter-banner');
+            if (zb) {
+                zb.querySelector('.zb-btn').addEventListener('click', function() {
+                    window.__navigateTo('zhenti');
+                });
+            }
+        }
     }
 
     function preloadNext(chapterId) {

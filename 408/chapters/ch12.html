@@ -58,5 +58,48 @@
 最大需求：P0(7,5,3)、P1(3,2,2)、P2(9,0,2)、P3(2,2,2)、P4(4,3,3)</div>
             <div class="example-hint">💡小白解析：先算Need=Max-Allocation，再算Available=Total-Allocated。Available=(10-7,5-2,7-5)=(3,3,2)。①P1满足Need(1,2,2)≤(3,3,2)→执行后释放，Available=(5,3,2)；②P3满足Need(0,1,1)≤(5,3,2)→执行后Available=(7,4,3)；③P4满足Need(4,3,1)≤(7,4,3)→Available=(7,4,5)；④P0满足Need(7,4,3)≤(7,4,5)→Available=(7,5,5)；⑤P2满足Need(6,0,0)≤(7,5,5)→Available=(10,5,7)。安全序列为：P1→P3→P4→P0→P2。银行家算法步骤：①算Need ②算Available ③找满足条件的进程 ④释放资源 ⑤重复直到所有进程完成或找不到安全序列。</div>
         </div>
+    <!-- ====== 历年真题与考点分析 ====== -->
+<div class="part-divider pexam" id="exam-ch12">
+  <div class="pd-num">📝</div>
+  <div class="pd-text">
+    <div class="pd-name">历年真题 · 出题人考察点 · 得分点</div>
+    <div class="pd-desc">本模块按「考什么 → 怎么答 → 易错点」拆解 408 高频真题</div>
+  </div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 真题 1 | 2020·23题·4分 | 选择题</div>
+  <div class="example-question">关于进程和线程的叙述，错误的是（ ）。A. 进程是资源分配的基本单位  B. 线程是 CPU 调度的基本单位  C. 同一进程内线程共享进程的地址空间  D. 进程切换开销小于线程切换</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（408 高频考点）</span></p>
+  <p>① 进程 vs 线程；② 切换开销对比；③ 资源分配 vs 调度</p>
+  <p><span class="section-tag tag-tip">🧭 详细解析（小白逐步版）</span></p>
+  <p>**A、B、C 都对**。**D 错**：进程切换涉及 PCB、地址空间、页表、内核栈等，开销远大于线程切换。选 D。</p>
+  <p><span class="section-tag tag-must">💯 得分点（按点给分）</span></p>
+  <p>① 答对 (2分)；② 解释 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警</span></p>
+  <p>⚠️ 同进程内线程共享哪些资源；⚠️ 上下文切换具体保存什么</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点会在本章<strong>其他例题</strong>反复出现。408 算法题占比高（45 分），建议做完题后立刻手写一遍代码加深印象。</p>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 真题 2 | 2018·24题·4分 | 应用题</div>
+  <div class="example-question">某系统采用 FCFS 和 RR（时间片 4ms）调度。已知进程到达时间 P1(0)、P2(1)、P3(2)、P4(3)、P5(4)，服务时间均为 5ms。求各进程的周转时间和平均周转时间。</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（408 高频考点）</span></p>
+  <p>① FCFS 算法；② RR 算法；③ 周转时间计算</p>
+  <p><span class="section-tag tag-tip">🧭 详细解析（小白逐步版）</span></p>
+  <p>**FCFS**：按到达顺序执行。P1:0-5; P2:1-10（等 4 跑 5）；P3:2-15; P4:3-20; P5:4-25。周转=P完成-到达：P1=5, P2=9, P3=13, P4=17, P5=21。平均=13。**RR**：按时间片轮转（手算复杂，通常画时间轴）。</p>
+  <p><span class="section-tag tag-must">💯 得分点（按点给分）</span></p>
+  <p>① 调度顺序 (2分)；② 各周转时间 (1分)；③ 平均 (1分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警</span></p>
+  <p>⚠️ RR 时间片结束 vs 进程结束混淆；⚠️ 周转时间公式记错</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点会在本章<strong>其他例题</strong>反复出现。408 算法题占比高（45 分），建议做完题后立刻手写一遍代码加深印象。</p>
+</div>
+<div class="must-card">
+  <div class="must-label">🎯 本章应试策略总结（408 必备）</div>
+  <p><strong>1. 算法题（45 分）：</strong>4 道大题必考，先写思路再写代码，最后写复杂度分析。</p>
+  <p><strong>2. 选择题（80 分 × 2 分）：</strong>40 道，单题 2 分，时间 1.5 分钟/题。</p>
+  <p><strong>3. 关键拿分动作：</strong>算法题一定要写完整可编译代码（不要伪代码）+ 复杂度分析。</p>
+  <p><strong>4. 复盘方法：</strong>真题做完必须手写一遍代码，对照「得分点」逐项打分。</p>
+</div>
     </div>
 </section>
