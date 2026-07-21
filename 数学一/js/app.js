@@ -811,6 +811,8 @@
         try {
             localStorage.setItem(noteKey(chapterId, problemIndex), content);
             localStorage.setItem(noteSavedAtKey(chapterId, problemIndex), new Date().toISOString());
+            // 异步同步到云端（不阻塞 UI）
+            syncNoteToCloud(chapterId, problemIndex, content);
             return true;
         } catch (e) {
             console.warn('保存笔记失败：', e);
@@ -821,8 +823,86 @@
         try {
             localStorage.removeItem(noteKey(chapterId, problemIndex));
             localStorage.removeItem(noteSavedAtKey(chapterId, problemIndex));
+            // 异步删除云端笔记
+            deleteNoteFromCloud(chapterId, problemIndex);
             return true;
         } catch (e) { return false; }
+    }
+
+    // ===== 笔记云端同步（Supabase）=====
+    // 保存笔记到云端（upsert：有则更新，无则插入）
+    async function syncNoteToCloud(chapterId, problemIndex, content) {
+        if (!db) return;
+        try {
+            await db.from('problem_notes').upsert({
+                chapter_id: chapterId,
+                problem_index: problemIndex,
+                content: content,
+                saved_at: new Date().toISOString()
+            }, { onConflict: 'chapter_id, problem_index' });
+        } catch (e) { /* 静默失败，localStorage 已有数据，不打扰用户 */ }
+    }
+
+    // 从云端删除笔记
+    async function deleteNoteFromCloud(chapterId, problemIndex) {
+        if (!db) return;
+        try {
+            await db.from('problem_notes').delete()
+                .eq('chapter_id', chapterId)
+                .eq('problem_index', problemIndex);
+        } catch (e) { /* 静默失败 */ }
+    }
+
+    // 全量拉取云端笔记到 localStorage（开机时调用）
+    async function syncNotesFromCloud() {
+        if (!db) return;
+        try {
+            var res = await db.from('problem_notes').select('*');
+            if (!res.error && res.data && res.data.length > 0) {
+                res.data.forEach(function(r) {
+                    var localKey = noteKey(r.chapter_id, r.problem_index);
+                    var savedAtKey = noteSavedAtKey(r.chapter_id, r.problem_index);
+                    var localSavedAt = localStorage.getItem(savedAtKey);
+                    // 云端保存时间更新，则覆盖本地
+                    if (!localSavedAt || new Date(r.saved_at) > new Date(localSavedAt)) {
+                        localStorage.setItem(localKey, r.content || '');
+                        localStorage.setItem(savedAtKey, r.saved_at || new Date().toISOString());
+                    }
+                });
+            }
+        } catch (e) { /* 静默失败，继续用本地数据 */ }
+    }
+
+    // 将 localStorage 里的旧笔记一次推到云端（仅首次运行）
+    async function migrateLocalNotesToCloud() {
+        if (!db) return;
+        var migrationKey = 'notes_migration_done_v1';
+        if (localStorage.getItem(migrationKey)) return;
+        try {
+            var notes = [];
+            for (var i = 0; i < localStorage.length; i++) {
+                var key = localStorage.key(i);
+                if (key && key.indexOf('note:') === 0 && key.indexOf(':savedAt') === -1) {
+                    var parts = key.split(':');
+                    if (parts.length === 3) {
+                        var ch = parts[1];
+                        var pi = parseInt(parts[2], 10);
+                        var content = localStorage.getItem(key);
+                        var savedAt = localStorage.getItem(key + ':savedAt') || new Date().toISOString();
+                        if (content) notes.push({ chapter_id: ch, problem_index: pi, content: content, saved_at: savedAt });
+                    }
+                }
+            }
+            if (notes.length === 0) { localStorage.setItem(migrationKey, '1'); return; }
+            // 逐条 upsert
+            for (var j = 0; j < notes.length; j++) {
+                await db.from('problem_notes').upsert(notes[j], { onConflict: 'chapter_id, problem_index' });
+            }
+            localStorage.setItem(migrationKey, '1');
+            console.log('🔄 笔记迁移完成：' + notes.length + ' 条本地笔记已同步到云端');
+        } catch (e) {
+            console.warn('笔记迁移未完成（下次会重试）:', e);
+        }
     }
 
     // 全局弹窗（只渲染一次）
@@ -1718,6 +1798,10 @@
 
         // 启动番茄钟
         initPomodoro();
+
+        // 从云端恢复笔记（换端口/换电脑后确保笔记不丢）
+        syncNotesFromCloud();
+        migrateLocalNotesToCloud();
 
         // 从 hash 恢复章节，默认加载第一章
         var hash = window.location.hash.replace('#', '');
