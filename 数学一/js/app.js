@@ -102,7 +102,7 @@
                 html += '<a href="#" data-target="' + ch.id + '"><span class="ch-num">' + ch.id.replace('ch', '') + '</span>' + ch.title + starHtml + '</a>';
             });
         });
-        sidebarNav.innerHTML = html;
+        if (sidebarNav) sidebarNav.innerHTML = html;
 
         // 绑定点击事件
         sidebarNav.querySelectorAll('a').forEach(function(link) {
@@ -395,6 +395,8 @@
                     chContent.classList.add('practice-mode');
                     renderMathWhenReady(practiceArea);
                     initAllMasteryWidgets(practiceArea);
+                    initAllNotesWidgets(practiceArea);
+                    ensureNotesModal();
                 } else if (mode === 'formulas') {
                     chContent.classList.add('formulas-mode');
                     renderMathWhenReady(formulasArea);
@@ -422,10 +424,12 @@
                 + '</ol></details>';
             var toggleHtml = buildMasteryToggleHTML(chapterId, i);
             var panelHtml = buildMasteryPanelHTML(chapterId, i);
+            var notesHtml = buildNotesButtonHTML(chapterId, i);
             return '<div class="problem-card">'
                 + '<div class="pc-head">'
                 + '<div class="pc-num">' + (i + 1) + '</div>'
                 + '<div class="pc-type">' + p.type + ' · ' + stars + '</div>'
+                + notesHtml
                 + toggleHtml
                 + '</div>'
                 + '<div class="pc-question">' + p.question + '</div>'
@@ -782,6 +786,210 @@
         });
     }
 
+    // ===== 我的笔记（每题隔壁弹窗，localStorage 持久化）=====
+    function buildNotesButtonHTML(chapterId, problemIndex) {
+        return '<button type="button" class="pc-notes-toggle" '
+            + 'data-role="notes-toggle" '
+            + 'data-chapter="' + chapterId + '" data-pindex="' + problemIndex + '" '
+            + 'title="点击记录本题思考过程（自动保存到浏览器）">'
+            + '<span class="pc-notes-icon">📝</span>'
+            + '<span class="pc-notes-text" data-role="notes-status">无笔记</span>'
+            + '</button>';
+    }
+
+    function noteKey(chapterId, problemIndex) {
+        return 'note:' + chapterId + ':' + problemIndex;
+    }
+    function noteSavedAtKey(chapterId, problemIndex) {
+        return 'note:' + chapterId + ':' + problemIndex + ':savedAt';
+    }
+    function loadNote(chapterId, problemIndex) {
+        try { return localStorage.getItem(noteKey(chapterId, problemIndex)) || ''; }
+        catch (e) { return ''; }
+    }
+    function saveNote(chapterId, problemIndex, content) {
+        try {
+            localStorage.setItem(noteKey(chapterId, problemIndex), content);
+            localStorage.setItem(noteSavedAtKey(chapterId, problemIndex), new Date().toISOString());
+            return true;
+        } catch (e) {
+            console.warn('保存笔记失败：', e);
+            return false;
+        }
+    }
+    function clearNote(chapterId, problemIndex) {
+        try {
+            localStorage.removeItem(noteKey(chapterId, problemIndex));
+            localStorage.removeItem(noteSavedAtKey(chapterId, problemIndex));
+            return true;
+        } catch (e) { return false; }
+    }
+
+    // 全局弹窗（只渲染一次）
+    function ensureNotesModal() {
+        if (document.getElementById('pcNotesModal')) return;
+        var modalHtml = '<div class="pc-notes-modal" id="pcNotesModal" hidden>'
+            + '<div class="pc-notes-modal-overlay" data-role="close-overlay"></div>'
+            + '<div class="pc-notes-modal-card" role="dialog" aria-modal="true">'
+            +   '<div class="pc-notes-modal-header">'
+            +     '<span class="pc-notes-modal-title">📝 记录思考过程 · <span data-role="modal-pnum"></span></span>'
+            +     '<button type="button" class="pc-notes-modal-close" data-role="close" title="关闭">×</button>'
+            +   '</div>'
+            +   '<div class="pc-notes-modal-body">'
+            +     '<div class="pc-notes-prompt">📌 建议记录：① 第一眼看到题目怎么想的？② 卡在哪一步？③ 看了答案后哪个地方"原来如此"？④ 下次再遇到类似题怎么做？</div>'
+            +     '<textarea class="pc-notes-textarea" data-role="textarea" placeholder="在这里记录你的思考过程、卡壳点、记忆口诀..."></textarea>'
+            +     '<div class="pc-notes-meta">字数: <strong data-role="char-count">0</strong> · 上次保存: <span data-role="last-saved">未保存</span></div>'
+            +   '</div>'
+            +   '<div class="pc-notes-modal-footer">'
+            +     '<button type="button" class="pc-notes-btn-clear" data-role="clear">🗑 清空</button>'
+            +     '<button type="button" class="pc-notes-btn-cancel" data-role="close">取消</button>'
+            +     '<button type="button" class="pc-notes-btn-save" data-role="save">💾 保存</button>'
+            +   '</div>'
+            + '</div>'
+            + '</div>';
+        var wrap = document.createElement('div');
+        wrap.innerHTML = modalHtml;
+        document.body.appendChild(wrap.firstChild);
+        bindNotesModalEvents();
+    }
+
+    function bindNotesModalEvents() {
+        var modal = document.getElementById('pcNotesModal');
+        if (!modal || modal.dataset.bound === '1') return;
+        modal.dataset.bound = '1';
+
+        // 关闭按钮 / 遮罩
+        modal.querySelectorAll('[data-role="close"], [data-role="close-overlay"]').forEach(function(el) {
+            el.addEventListener('click', closeNotesModal);
+        });
+
+        // 保存
+        modal.querySelector('[data-role="save"]').addEventListener('click', function() {
+            var textarea = modal.querySelector('[data-role="textarea"]');
+            var content = textarea.value;
+            if (saveNote(_notesCurChapter, _notesCurProblem, content)) {
+                updateNotesButton(_notesCurChapter, _notesCurProblem);
+                var lastSaved = modal.querySelector('[data-role="last-saved"]');
+                lastSaved.textContent = new Date().toLocaleString('zh-CN');
+                flashSaveTip('✅ 已保存到浏览器');
+                closeNotesModal();
+            } else {
+                flashSaveTip('❌ 保存失败（可能浏览器存储已满）');
+            }
+        });
+
+        // 清空
+        modal.querySelector('[data-role="clear"]').addEventListener('click', function() {
+            if (!confirm('确定清空这道题的笔记吗？')) return;
+            clearNote(_notesCurChapter, _notesCurProblem);
+            var textarea = modal.querySelector('[data-role="textarea"]');
+            textarea.value = '';
+            updateNotesButton(_notesCurChapter, _notesCurProblem);
+            updateCharCount();
+            var lastSaved = modal.querySelector('[data-role="last-saved"]');
+            lastSaved.textContent = '未保存';
+            flashSaveTip('🗑 已清空');
+        });
+
+        // 实时字数
+        modal.querySelector('[data-role="textarea"]').addEventListener('input', updateCharCount);
+
+        // ESC 关闭
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && !modal.hidden) closeNotesModal();
+        });
+    }
+
+    var _notesCurChapter = null;
+    var _notesCurProblem = null;
+
+    function updateCharCount() {
+        var modal = document.getElementById('pcNotesModal');
+        if (!modal) return;
+        var textarea = modal.querySelector('[data-role="textarea"]');
+        var counter = modal.querySelector('[data-role="char-count"]');
+        if (textarea && counter) counter.textContent = textarea.value.length;
+    }
+
+    function openNotesModal(chapterId, problemIndex) {
+        ensureNotesModal();
+        var modal = document.getElementById('pcNotesModal');
+        if (!modal) return;
+        _notesCurChapter = chapterId;
+        _notesCurProblem = problemIndex;
+
+        var content = loadNote(chapterId, problemIndex);
+        var textarea = modal.querySelector('[data-role="textarea"]');
+        var pnum = modal.querySelector('[data-role="modal-pnum"]');
+        var lastSaved = modal.querySelector('[data-role="last-saved"]');
+        var charCount = modal.querySelector('[data-role="char-count"]');
+
+        textarea.value = content;
+        pnum.textContent = '第 ' + (problemIndex + 1) + ' 题';
+        charCount.textContent = content.length;
+
+        var savedAt = localStorage.getItem(noteSavedAtKey(chapterId, problemIndex));
+        if (savedAt) {
+            lastSaved.textContent = new Date(savedAt).toLocaleString('zh-CN');
+        } else {
+            lastSaved.textContent = '未保存';
+        }
+
+        modal.hidden = false;
+        // 锁定 body 滚动
+        document.body.style.overflow = 'hidden';
+        setTimeout(function() { textarea.focus(); }, 100);
+    }
+
+    function closeNotesModal() {
+        var modal = document.getElementById('pcNotesModal');
+        if (modal) {
+            modal.hidden = true;
+            document.body.style.overflow = '';
+        }
+    }
+
+    function flashSaveTip(msg) {
+        var tip = document.createElement('div');
+        tip.className = 'pc-notes-tip';
+        tip.textContent = msg;
+        document.body.appendChild(tip);
+        setTimeout(function() { tip.classList.add('pc-notes-tip-show'); }, 10);
+        setTimeout(function() {
+            tip.classList.remove('pc-notes-tip-show');
+            setTimeout(function() { tip.remove(); }, 300);
+        }, 1800);
+    }
+
+    function updateNotesButton(chapterId, problemIndex) {
+        var btn = document.querySelector('.pc-notes-toggle[data-chapter="' + chapterId + '"][data-pindex="' + problemIndex + '"]');
+        if (!btn) return;
+        var content = loadNote(chapterId, problemIndex);
+        var statusEl = btn.querySelector('[data-role="notes-status"]');
+        if (content && content.length > 0) {
+            statusEl.textContent = '有笔记 ✓';
+            btn.classList.add('has-notes');
+        } else {
+            statusEl.textContent = '无笔记';
+            btn.classList.remove('has-notes');
+        }
+    }
+
+    function initAllNotesWidgets(area) {
+        if (!area) return;
+        var toggles = area.querySelectorAll('.pc-notes-toggle');
+        toggles.forEach(function(btn) {
+            var ch = btn.getAttribute('data-chapter');
+            var pi = parseInt(btn.getAttribute('data-pindex'), 10);
+            // 更新状态
+            updateNotesButton(ch, pi);
+            // 点击打开
+            btn.addEventListener('click', function() {
+                openNotesModal(ch, pi);
+            });
+        });
+    }
+
     // ===== KaTeX 数学公式渲染（直接调 katex.render，避免 auto-render 时序坑）=====
     // 关键：用 [\s\S] 跨行匹配 display mode（\[...\]、$$...$$），解决公式被换行拆成多 text node 时渲染失败的问题
     var MATH_PATTERN = /\\\(([\s\S]+?)\\\)|\\\[([\s\S]+?)\\\]|\$\$([\s\S]+?)\$\$|\$([^\$]+?)\$/g;
@@ -991,17 +1199,19 @@
     }
 
     // ===== Back to top =====
-    window.addEventListener('scroll', function() {
-        if (window.scrollY > 400) {
-            backToTop.classList.add('show');
-        } else {
-            backToTop.classList.remove('show');
-        }
-    }, { passive: true });
+    if (backToTop) {
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 400) {
+                backToTop.classList.add('show');
+            } else {
+                backToTop.classList.remove('show');
+            }
+        }, { passive: true });
 
-    backToTop.addEventListener('click', function() {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
+        backToTop.addEventListener('click', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
 
     // ===== 暴露导航函数给全局（用于按钮点击） =====
     window.__navigateTo = function(chapterId) {

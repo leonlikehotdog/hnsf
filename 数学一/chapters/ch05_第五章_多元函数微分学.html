@@ -4,21 +4,300 @@
         <div class="ch-stars star-high">★★★★</div>
     </div>
     <div class="ch-content">
-        <p><span class="section-tag tag-core">🎯 核心考点</span></p>
-        <ul>
-            <li>偏导数计算、全微分</li>
-            <li>无条件极值（多元函数极值判定）</li>
-        </ul>
-        <div class="must-card">
-            <div class="must-label">📖 必背：求偏导法则</div>
-            <p><strong>对 x 求偏导</strong>：将 y 视为常数，对 x 求导</p>
-            <p><strong>对 y 求偏导</strong>：将 x 视为常数，对 y 求导</p>
-            <div class="formula-box">∂z/∂x = f<sub>x</sub>(x,y) &nbsp;&nbsp; ∂z/∂y = f<sub>y</sub>(x,y)</div>
+
+        <!-- ====== Part 0：诞生背景 · 偏导数的诞生：从 1D 到 N-D 的 200 年 ====== -->
+        <div class="part-divider p0" id="part0">
+            <div class="pd-num">0</div>
+            <div class="pd-text">
+                <div class="pd-name">🌌 诞生背景 · 偏导数是怎么"长出"更多维度的？</div>
+                <div class="pd-desc">ch02 我们学了"一维"的导数；本章 ch05 要把"一维"扩展成"任意维"——偏导数、全微分、可微性、Hessian、AC−B² 判别。</div>
+            </div>
         </div>
+
+        <div class="story-card">
+            <div class="story-label">🎬 一句话回顾 ch02 + 预告 ch05</div>
+            <p>ch02 我们学了"一维的导数"——f'(x) 告诉你函数<strong>沿 x 方向</strong>怎么变。但现实世界从来不是一维的：</p>
+            <p><strong>温度场 / 电磁场 / 流体速度场 / 股票组合 / 神经网络梯度 / GPS 三维坐标</strong> —— 这些都是"输入多个变量，输出一个值"的多维函数。</p>
+            <p>本章 ch05 要解决的核心问题：<strong>"多维世界里，每一维的变化率怎么算？怎么合成？怎么判断极值？"</strong></p>
+            <p>三个答案就是本章三大块：</p>
+            <ul>
+                <li>🥇 <strong>偏导数</strong>（每维单独算）—— 欧拉 1734</li>
+                <li>🥈 <strong>全微分</strong>（多维一起算）—— 柯西 1820</li>
+                <li>🥉 <strong>极值判别 AC−B²</strong>（多维找最值）—— 黑塞 1850</li>
+            </ul>
+        </div>
+
+        <div class="story-card timeline-svg-wrap">
+            <div class="story-label">⏳ 200 年多元微积分编年史 · ch05 主要工具的诞生年份</div>
+            <svg viewBox="0 0 1200 400" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;">
+                <defs>
+                    <linearGradient id="tlGradCh05" x1="0" x2="1" y1="0" y2="0">
+                        <stop offset="0%" stop-color="#8e44ad" stop-opacity="0.4"/>
+                        <stop offset="50%" stop-color="#6c3483" stop-opacity="1"/>
+                        <stop offset="100%" stop-color="#4a1f5e" stop-opacity="1"/>
+                    </linearGradient>
+                </defs>
+                <rect x="40" y="40" width="1120" height="320" fill="#faf4ff" rx="8"/>
+                <line x1="80" y1="220" x2="1140" y2="220" stroke="url(#tlGradCh05)" stroke-width="6" stroke-linecap="round"/>
+
+                <!-- 刻度 -->
+                <g stroke="#5b2c6f" stroke-width="1" opacity="0.3">
+                    <line x1="100" y1="220" x2="100" y2="235"/>
+                    <line x1="220" y1="220" x2="220" y2="235"/>
+                    <line x1="340" y1="220" x2="340" y2="235"/>
+                    <line x1="460" y1="220" x2="460" y2="235"/>
+                    <line x1="580" y1="220" x2="580" y2="235"/>
+                    <line x1="700" y1="220" x2="700" y2="235"/>
+                    <line x1="820" y1="220" x2="820" y2="235"/>
+                    <line x1="940" y1="220" x2="940" y2="235"/>
+                    <line x1="1060" y1="220" x2="1060" y2="235"/>
+                </g>
+                <g font-family="-apple-system, sans-serif" font-size="11" fill="#5b2c6f" text-anchor="middle">
+                    <text x="100"  y="252">1700</text>
+                    <text x="220"  y="252">1720</text>
+                    <text x="340"  y="252">1740</text>
+                    <text x="460"  y="252">1760</text>
+                    <text x="580"  y="252">1780</text>
+                    <text x="700"  y="252">1800</text>
+                    <text x="820"  y="252">1820</text>
+                    <text x="940"  y="252">1840</text>
+                    <text x="1060" y="252">1860</text>
+                </g>
+
+                <!-- 节点 1：欧拉 1734 偏导 -->
+                <g transform="translate(208,220)">
+                    <circle r="14" fill="#e67e22" stroke="#fff" stroke-width="3"/>
+                    <text x="0" y="4" text-anchor="middle" font-size="13" fill="#fff" font-weight="700">1</text>
+                    <text x="0" y="-30" text-anchor="middle" font-size="13" fill="#922b21" font-weight="700">欧拉</text>
+                    <text x="0" y="-15" text-anchor="middle" font-size="10" fill="#922b21">1734 偏导</text>
+                    <text x="0" y="40" text-anchor="middle" font-size="10" fill="#555">"我把导数推广到任意维"</text>
+                </g>
+
+                <!-- 节点 2：达朗贝尔 1744 -->
+                <g transform="translate(268,220)">
+                    <circle r="11" fill="#8e44ad" stroke="#fff" stroke-width="3"/>
+                    <text x="0" y="4" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">2</text>
+                    <text x="35" y="-3" font-size="10" fill="#6c3483">1744 d'Alembert</text>
+                    <text x="35" y="11" font-size="10" fill="#6c3483">偏导</text>
+                </g>
+
+                <!-- 节点 3：拉格朗日 1755 拉格朗日乘数法 -->
+                <g transform="translate(345,220)">
+                    <circle r="14" fill="#16a085" stroke="#fff" stroke-width="3"/>
+                    <text x="0" y="4" text-anchor="middle" font-size="13" fill="#fff" font-weight="700">3</text>
+                    <text x="0" y="-30" text-anchor="middle" font-size="13" fill="#0e6655" font-weight="700">拉格朗日</text>
+                    <text x="0" y="-15" text-anchor="middle" font-size="10" fill="#0e6655">1755 乘数法</text>
+                    <text x="0" y="40" text-anchor="middle" font-size="10" fill="#555">"约束极值怎么求？乘 λ！"</text>
+                </g>
+
+                <!-- 节点 4：勒让德 1786 "partial" 命名 -->
+                <g transform="translate(610,220)">
+                    <circle r="12" fill="#3498db" stroke="#fff" stroke-width="3"/>
+                    <text x="0" y="4" text-anchor="middle" font-size="12" fill="#fff" font-weight="700">4</text>
+                    <text x="0" y="-30" text-anchor="middle" font-size="13" fill="#2874a6" font-weight="700">勒让德</text>
+                    <text x="0" y="-15" text-anchor="middle" font-size="10" fill="#2874a6">1786 命名</text>
+                    <text x="0" y="40" text-anchor="middle" font-size="10" fill="#555">"我管它叫'偏' (partial)"</text>
+                </g>
+
+                <!-- 节点 5：柯西 1820 形式化偏导+全微分 -->
+                <g transform="translate(820,220)">
+                    <circle r="14" fill="#c0392b" stroke="#fff" stroke-width="3"/>
+                    <text x="0" y="4" text-anchor="middle" font-size="13" fill="#fff" font-weight="700">5</text>
+                    <text x="0" y="-30" text-anchor="middle" font-size="13" fill="#922b21" font-weight="700">柯西</text>
+                    <text x="0" y="-15" text-anchor="middle" font-size="10" fill="#922b21">1820 全微分</text>
+                    <text x="0" y="40" text-anchor="middle" font-size="10" fill="#555">"df = (∂f/∂x)dx + (∂f/∂y)dy"</text>
+                </g>
+
+                <!-- 节点 6：雅可比 1841 Jacobi 矩阵 -->
+                <g transform="translate(940,220)">
+                    <circle r="12" fill="#e74c3c" stroke="#fff" stroke-width="3"/>
+                    <text x="0" y="4" text-anchor="middle" font-size="12" fill="#fff" font-weight="700">6</text>
+                    <text x="0" y="-30" text-anchor="middle" font-size="12" fill="#922b21" font-weight="700">雅可比</text>
+                    <text x="0" y="-15" text-anchor="middle" font-size="10" fill="#922b21">1841 矩阵</text>
+                    <text x="0" y="40" text-anchor="middle" font-size="10" fill="#555">"多维链式法则的统一工具"</text>
+                </g>
+
+                <!-- 节点 7：黑塞 1850 Hessian -->
+                <g transform="translate(1020,220)">
+                    <circle r="14" fill="#f39c12" stroke="#fff" stroke-width="3"/>
+                    <text x="0" y="4" text-anchor="middle" font-size="13" fill="#fff" font-weight="700">7</text>
+                    <text x="0" y="-30" text-anchor="middle" font-size="13" fill="#9c640c" font-weight="700">黑塞</text>
+                    <text x="0" y="-15" text-anchor="middle" font-size="10" fill="#9c640c">1850 判别</text>
+                    <text x="0" y="40" text-anchor="middle" font-size="10" fill="#555">"AC−B² 判极值"</text>
+                </g>
+            </svg>
+            <p style="text-align:center;font-size:13px;color:#6c3483;margin-top:8px;">
+                <strong>速记：</strong>"欧拉提概念 → 拉格朗日搞乘数法 → 勒让德起名 → 柯西定形式 → 雅可比铺矩阵 → 黑塞封判别"
+            </p>
+        </div>
+
+        <div class="story-card">
+            <div class="story-label">🌍 一元到二元的"维度跃迁"：为什么多元微积分更"难"？</div>
+            <p>从 ch02 的一元导数 f'(x)，到本章的偏导数 ∂f/∂x，<strong>看上去只多了一个 ∂ 符号</strong>，但背后难度飙升：</p>
+            <table style="width:100%;font-size:13px;border-collapse:collapse;margin:8px 0;background:#fff;">
+                <thead style="background:#eaf2fb;">
+                    <tr><th style="padding:8px;border:1px solid #cbd5e0;">维度</th><th style="padding:8px;border:1px solid #cbd5e0;">求导数</th><th style="padding:8px;border:1px solid #cbd5e0;">求极值</th><th style="padding:8px;border:1px solid #cbd5e0;">难度</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td style="padding:6px;border:1px solid #cbd5e0;text-align:center;">1 维</td><td style="padding:6px;border:1px solid #cbd5e0;">f'(x) 一个就够</td><td style="padding:6px;border:1px solid #cbd5e0;">f'(x)=0 一个方程</td><td style="padding:6px;border:1px solid #cbd5e0;">⭐</td></tr>
+                    <tr><td style="padding:6px;border:1px solid #cbd5e0;text-align:center;">2 维</td><td style="padding:6px;border:1px solid #cbd5e0;">∂f/∂x + ∂f/∂y 两个</td><td style="padding:6px;border:1px solid #cbd5e0;">联立两个方程 + AC−B² 判别</td><td style="padding:6px;border:1px solid #cbd5e0;">⭐⭐⭐</td></tr>
+                    <tr><td style="padding:6px;border:1px solid #cbd5e0;text-align:center;">n 维</td><td style="padding:6px;border:1px solid #cbd5e0;">n 个偏导 + 链式法则</td><td style="padding:6px;border:1px solid #cbd5e0;">Hessian 矩阵 + Sylvester 判据</td><td style="padding:6px;border:1px solid #cbd5e0;">⭐⭐⭐⭐⭐</td></tr>
+                </tbody>
+            </table>
+            <p><span class="story-emoji">🧠</span><strong>为什么"维度 +1"难度 ×3？</strong></p>
+            <ul>
+                <li><strong>每多一维</strong>，偏导数就多 1 个 → 方程组规模涨</li>
+                <li><strong>每多一维</strong>，极值判定从"导数=0"变成"判别矩阵" → AC−B² 之类的判别法</li>
+                <li><strong>每多一维</strong>，可微性条件从"导数连续"变成"所有方向极限都吻合" → 一元能导就能微，多元不行！</li>
+            </ul>
+            <p><span class="story-emoji">🎯</span><strong>本章核心要诀：</strong></p>
+            <p style="background:#fff8e1;padding:10px;border-left:3px solid #f39c12;font-style:italic;">
+                "<strong>降维思想：</strong>面对 f(x,y) 不知道怎么办？—— <strong>把一个变量当成常数</strong>，就退化成 ch02 的一元函数！<br>
+                例：对 y 求偏导时把 x 当常数 → 整个问题就变成 ch02 那种"一个变量"的微积分 → 所有一元工具都能用。"
+            </p>
+        </div>
+
+        <p><span class="section-tag tag-core">🎯 核心考点（小白路线图）</span></p>
+        <ul>
+            <li>🧮 <strong>偏导数</strong>：每维单独算（"按住其他变量，对一个变量求导"）</li>
+            <li>📐 <strong>全微分</strong>：多维一起算（"把所有变化打包成一个 df"）</li>
+            <li>🔗 <strong>链式法则</strong>：复合函数求导（"路径分叉"）</li>
+            <li>🕵️ <strong>隐函数</strong>：F(x,y)=0 求 dy/dx（"等高线斜率"）</li>
+            <li>⛰️ <strong>无条件极值</strong>：求 AC−B² 判别（"找山顶/山谷"）</li>
+            <li>🔒 <strong>条件极值</strong>：拉格朗日乘数法（"带锁链的山顶"）</li>
+        </ul>
+
+        <!-- ========== 偏导数的"坡度"直觉 ========== -->
+        <div class="story-card" style="background:linear-gradient(135deg,#fafbff 0%,#f0f4ff 100%);border-left:4px solid #5b6fde;">
+            <div class="story-label">🏔️ 一句话直觉：偏导数 = 山坡的"坡度"</div>
+            <p>把多元函数 <strong>z = f(x, y)</strong> 想象成<strong>一座山的海拔</strong>：</p>
+            <ul>
+                <li><strong>x 方向</strong> = "东边" → 偏导 <strong>∂f/∂x</strong> = <strong>面朝东的坡度</strong></li>
+                <li><strong>y 方向</strong> = "北边" → 偏导 <strong>∂f/∂y</strong> = <strong>面朝北的坡度</strong></li>
+                <li><strong>山顶 / 山谷</strong> = 两个方向的坡度都是 0 → <strong>极值点</strong></li>
+            </ul>
+            <p>⛰️ 生活例子：你去爬山，手机 GPS 显示当前海拔 z = f(x, y)。你想知道"如果往东走 1 米，海拔会变多少？"——答：∂z/∂x 米。"往北走 1 米呢？"——答：∂z/∂y 米。</p>
+            <p style="background:#fff8e1;padding:10px;border-left:3px solid #f39c12;">
+                🎯 <strong>小白速记：</strong>"<strong>按住别的变量 → 对一个变量求导 → 这就是偏导数。</strong>" 这一句话就是偏导的全部！
+            </p>
+        </div>
+
+        <!-- ========== 必背：求偏导法则（多例子 + 类比）========== -->
+        <div class="must-card">
+            <div class="must-label">📖 必背：求偏导法则（3 个递进例子）</div>
+            <p><strong>核心口诀：</strong>"<strong>求谁把谁当主元，其他变量全部当常数。</strong>"</p>
+            <p>这条口诀 + ch02 的一元求导公式 → 你已经会求所有偏导！</p>
+
+            <p><span class="section-tag tag-core">🌰 例 1：多项式（最简单）</span></p>
+            <p>求 z = x²y + xy² 的偏导</p>
+            <div class="formula-box">
+                ∂z/∂x = 2xy + y² &nbsp;&nbsp;（y 当常数，对 x 求导：x²→2x，xy²→y²）<br>
+                ∂z/∂y = x² + 2xy &nbsp;&nbsp;（x 当常数，对 y 求导：x²y→x²，xy²→2xy）
+            </div>
+
+            <p><span class="section-tag tag-core">🌰 例 2：带三角/指数（链式）</span></p>
+            <p>求 z = e^(xy)·sin(x+y) 的偏导</p>
+            <div class="formula-box">
+                ∂z/∂x = <strong>ye^(xy)</strong>·sin(x+y) + e^(xy)·<strong>cos(x+y)</strong>（乘积法则 + 链式）<br>
+                = e^(xy)·[y·sin(x+y) + cos(x+y)]<br>
+                ∂z/∂y = <strong>x·e^(xy)</strong>·sin(x+y) + e^(xy)·<strong>cos(x+y)</strong><br>
+                = e^(xy)·[x·sin(x+y) + cos(x+y)]
+            </div>
+            <p style="font-size:12px;color:#666;">🔍 <strong>易错：</strong>别忘了 e^(xy) 对 x 求导要乘 y（链式），cos(x+y) 内部求导是 1（不是 2x）。</p>
+
+            <p><span class="section-tag tag-core">🌰 例 3：抽象函数（链式法则登场）</span></p>
+            <p>设 z = f(xy, x+y)，求 ∂z/∂x, ∂z/∂y（<strong>这是 2019 真题 1 的简化版</strong>）</p>
+            <p>记 u = xy, v = x+y。z 通过 u, v 间接依赖 x, y。</p>
+            <div class="formula-box">
+                ∂z/∂x = (∂f/∂u)·(∂u/∂x) + (∂f/∂v)·(∂v/∂x) = <strong>y·f'<sub>1</sub> + f'<sub>2</sub></strong><br>
+                ∂z/∂y = (∂f/∂u)·(∂u/∂y) + (∂f/∂v)·(∂v/∂y) = <strong>x·f'<sub>1</sub> + f'<sub>2</sub></strong>
+            </div>
+            <p style="font-size:12px;color:#666;">📝 <strong>记号：</strong>f'<sub>1</sub> = ∂f/∂u，f'<sub>2</sub> = ∂f/∂v。f'<sub>1</sub> 还是 (u,v) 的函数 → <strong>还要再套一次链式</strong>（这就是二阶偏导的来源）。</p>
+        </div>
+
+        <!-- ========== 降维思想（核心心法）========== -->
+        <div class="story-card" style="background:linear-gradient(135deg,#fff8e1 0%,#fffaeb 100%);border-left:4px solid #f39c12;">
+            <div class="story-label">🧠 核心心法：降维思想（小白救命稻草）</div>
+            <p>面对 f(x, y, z, ...) 不知道怎么求导？—— <strong>把其他变量全当成常数，剩下的问题就是 ch02 的一元微积分！</strong></p>
+            <p>这就是"降维"：<strong>把 N 维问题降成 1 维</strong>，然后用 ch02 学的所有工具（链式、乘积、商、复合函数）逐个击破。</p>
+            <table style="width:100%;font-size:13px;border-collapse:collapse;margin:8px 0;background:#fff;">
+                <thead style="background:#fef5d0;">
+                    <tr><th style="padding:8px;border:1px solid #e8d8a0;">N 维函数</th><th style="padding:8px;border:1px solid #e8d8a0;">降维手法</th><th style="padding:8px;border:1px solid #e8d8a0;">变 1 维后用什么</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td style="padding:6px;border:1px solid #e8d8a0;text-align:center;">∂f/∂x</td><td style="padding:6px;border:1px solid #e8d8a0;">y, z 全当常数</td><td style="padding:6px;border:1px solid #e8d8a0;">ch02 一切工具</td></tr>
+                    <tr><td style="padding:6px;border:1px solid #e8d8a0;text-align:center;">∂f/∂y</td><td style="padding:6px;border:1px solid #e8d8a0;">x, z 全当常数</td><td style="padding:6px;border:1px solid #e8d8a0;">ch02 一切工具</td></tr>
+                    <tr><td style="padding:6px;border:1px solid #e8d8a0;text-align:center;">∂²f/∂x²</td><td style="padding:6px;border:1px solid #e8d8a0;">对 ∂f/∂x 再按 x 降维</td><td style="padding:6px;border:1px solid #e8d8a0;">ch02 二阶导</td></tr>
+                    <tr><td style="padding:6px;border:1px solid #e8d8a0;text-align:center;">∂²f/∂x∂y</td><td style="padding:6px;border:1px solid #e8d8a0;">先对 x 降维，再对 y 降维</td><td style="padding:6px;border:1px solid #e8d8a0;">ch02 链式法则</td></tr>
+                </tbody>
+            </table>
+            <p style="background:#fff8e1;padding:10px;border-left:3px solid #f39c12;font-style:italic;">
+                "<strong>降维思想：</strong>再复杂的多变量问题，本质就是'按住一个 → 算一个'的循环。所有多元考点，<strong>90% 都是 ch02 的工具在多元场景下的重复使用</strong>。"
+            </p>
+        </div>
+
+        <!-- ========== 链式法则的"路径图" ========== -->
+        <div class="story-card" style="background:linear-gradient(135deg,#e8f5e9 0%,#f1f8e9 100%);border-left:4px solid #16a085;">
+            <div class="story-label">🔗 链式法则："路径图" 心法</div>
+            <p>复合函数求导是小白最懵的地方——变量太多、关系太乱。教你一招：<strong>画"路径图"</strong>，每条路径 = 一次偏导 × 偏导。</p>
+
+            <p><span class="section-tag tag-tip">🌰 例题：z = f(u, v), u = g(x, y), v = h(x, y)，求 ∂z/∂x</span></p>
+            <p>画出"路径图"：</p>
+            <div class="formula-box" style="text-align:center;font-size:16px;line-height:1.8;">
+                <strong>z</strong><br>
+                ↑ &nbsp;&nbsp; ↑<br>
+                f<sub>1</sub>&nbsp;&nbsp; f<sub>2</sub> &nbsp;&nbsp;（每条箭头 = 一次偏导）<br>
+                ↑ &nbsp;&nbsp; ↑<br>
+                <strong>u</strong> &nbsp;&nbsp; <strong>v</strong><br>
+                ↑ &nbsp;&nbsp; ↑<br>
+                ∂u/∂x &nbsp; ∂v/∂x &nbsp;&nbsp;（这些"中转"也可能是 x, y 的函数）<br>
+                ↑ &nbsp;&nbsp; ↑<br>
+                <strong>x</strong> &nbsp;&nbsp; <strong>y</strong>
+            </div>
+            <p><strong>规则：</strong>从 z 出发，沿每条路径走到 x，<strong>把每条路径上的偏导全部乘起来</strong>，最后<strong>所有路径相加</strong>。</p>
+            <div class="formula-box">
+                ∂z/∂x = f<sub>1</sub>·(∂u/∂x) + f<sub>2</sub>·(∂v/∂x) &nbsp;&nbsp;（2 条路径相加）<br>
+                ∂z/∂y = f<sub>1</sub>·(∂u/∂y) + f<sub>2</sub>·(∂v/∂y)
+            </div>
+            <p style="font-size:12px;color:#666;">⚠️ <strong>小白易错：</strong>① 漏掉某条路径（漏一项 = 错）；② 把 f<sub>1</sub>, f<sub>2</sub> 当成常数（它们还是 u, v 的函数，<strong>求二阶偏导时还要再套一次链式</strong>）。</p>
+        </div>
+
+        <!-- ========== 例题：3 个递进例子 ========== -->
         <div class="example-card">
-            <div class="example-label">📝 例题</div>
+            <div class="example-label">📝 例题 1（基础）· z = x²y + xy² 求偏导</div>
             <div class="example-question">求 z = x²y + xy² 的偏导 ∂z/∂x 和 ∂z/∂y</div>
-            <div class="example-hint">对 x 求偏导时把 y 当常数：∂z/∂x = <strong>2xy + y²</strong>；对 y 求偏导时把 x 当常数：∂z/∂y = <strong>x² + 2xy</strong></div>
+            <p><span class="section-tag tag-core">🎯 考点：</span>多项式偏导（"按一个变量、其余当常数"）</p>
+            <p><span class="section-tag tag-tip">🧭 解析：</span></p>
+            <p><strong>∂z/∂x</strong>：把 y 当常数，对 x 求导：x² → 2x, xy² → y² → <strong>2xy + y²</strong></p>
+            <p><strong>∂z/∂y</strong>：把 x 当常数，对 y 求导：x²y → x², xy² → 2xy → <strong>x² + 2xy</strong></p>
+        </div>
+
+        <div class="example-card">
+            <div class="example-label">📝 例题 2（链式）· z = e^(xy) 求偏导</div>
+            <div class="example-question">求 z = e^(xy) 的 ∂z/∂x 和 ∂z/∂y</div>
+            <p><span class="section-tag tag-core">🎯 考点：</span>链式法则（最易错的复合函数）</p>
+            <p><span class="section-tag tag-tip">🧭 解析：</span></p>
+            <p>设 u = xy。z = e^u。</p>
+            <p>∂z/∂x = (dz/du)·(du/dx) = <strong>e^(xy) · y</strong> = y·e^(xy)</p>
+            <p>∂z/∂y = (dz/du)·(du/dy) = <strong>e^(xy) · x</strong> = x·e^(xy)</p>
+            <p style="background:#fff8e1;padding:8px;border-radius:4px;">
+                💡 <strong>小白速记：</strong>看到 e^(...) / sin(...) / ln(...) 这种"函数套函数"，立刻想"链式"：<strong>外层求导 × 内层求导</strong>。
+            </p>
+        </div>
+
+        <div class="example-card">
+            <div class="example-label">📝 例题 3（隐函数）· F(x,y) = x² + y² - 1 = 0 求 dy/dx</div>
+            <div class="example-question">设 x² + y² = 1（单位圆），求 dy/dx</div>
+            <p><span class="section-tag tag-core">🎯 考点：</span>隐函数求导（不能显式解出 y 的情况）</p>
+            <p><span class="section-tag tag-tip">🧭 解析（小白逐步）：</span></p>
+            <p><strong>第 1 步：</strong>把 y 当成 x 的函数，<strong>整体对 x 求导</strong>：</p>
+            <div class="formula-box">2x + 2y·(dy/dx) = 0</div>
+            <p><strong>第 2 步：</strong>把 dy/dx 单独留在一边，其他移到另一边：</p>
+            <div class="formula-box">2y·(dy/dx) = -2x → dy/dx = <strong>-x/y</strong></div>
+            <p>🧐 <strong>几何意义：</strong>在单位圆上，dy/dx = -x/y 就是该点的<strong>切线斜率</strong>。验证：在 (1, 0) 处切线斜率 = -∞（垂直）；在 (0, 1) 处切线斜率 = 0（水平）—— 完全对！</p>
+            <p style="background:#fff8e1;padding:8px;border-radius:4px;">
+                💡 <strong>小白速记：</strong>"<strong>y 是 x 的函数</strong>" → 求导时不要把 dy/dx 当 0 → 链式法则：dy/dx 保留。→ 解出 dy/dx。
+            </p>
         </div>
     <!-- ====== 小白核心概念扫盲：偏导/全微分/可微 ====== -->
     <div class="must-card">
@@ -59,6 +338,144 @@
         <strong>步骤 ②：</strong>求两个偏导 — 偏导不存在一定不可微（但存在也不一定可微）<br>
         <strong>步骤 ③：</strong>计算 \(\lim_{(x,y)\to(0,0)} \dfrac{f(x,y)-f(0,0)-f_x(0,0)x-f_y(0,0)y}{\sqrt{x^2+y^2}}\) — 若为 0 则可微</p>
     </div>
+
+    <!-- ====== d vs ∂ 全攻略（小白救命卡）========== -->
+    <div class="story-card" style="background:linear-gradient(135deg,#fdf2f8 0%,#fce7f3 100%);border-left:4px solid #be185d;">
+        <div class="story-label">🆘 d vs ∂ 全攻略（小白救命卡）</div>
+        <p>看到公式里又 d 又 ∂ 别晕——其实只记一句话：<strong>"d 整体动，∂ 一边看"</strong>。</p>
+
+        <p><span class="section-tag tag-core">📊 d vs ∂ 对比（4 维分类）</span></p>
+        <table style="width:100%;font-size:13px;border-collapse:collapse;margin:8px 0;background:#fff;">
+            <thead style="background:#fbcfe8;">
+                <tr><th style="padding:8px;border:1px solid #f9a8d4;">你在算什么</th><th style="padding:8px;border:1px solid #f9a8d4;">用 ∂ 还是 d？</th><th style="padding:8px;border:1px solid #f9a8d4;">例子</th></tr>
+            </thead>
+            <tbody>
+                <tr><td style="padding:6px;border:1px solid #f9a8d4;"><strong>f 对 x 的变化率</strong>（其他变量冻结）</td><td style="padding:6px;border:1px solid #f9a8d4;text-align:center;">∂ <span style="color:#c026d3">（片面）</span></td><td style="padding:6px;border:1px solid #f9a8d4;">∂f/∂x, ∂f/∂y, ∂²f/∂x²</td></tr>
+                <tr><td style="padding:6px;border:1px solid #f9a8d4;"><strong>f 的总变化</strong>（所有变量都动）</td><td style="padding:6px;border:1px solid #f9a8d4;text-align:center;">d <span style="color:#0e6655">（整体）</span></td><td style="padding:6px;border:1px solid #f9a8d4;">df = (∂f/∂x)dx + (∂f/∂y)dy</td></tr>
+                <tr><td style="padding:6px;border:1px solid #f9a8d4;"><strong>u 对 x 的变化率</strong>（u 是 x, y 的函数）</td><td style="padding:6px;border:1px solid #f9a8d4;text-align:center;">∂ <span style="color:#c026d3">（片面）</span></td><td style="padding:6px;border:1px solid #f9a8d4;">∂u/∂x, ∂u/∂y</td></tr>
+                <tr><td style="padding:6px;border:1px solid #f9a8d4;"><strong>u 的总变化</strong></td><td style="padding:6px;border:1px solid #f9a8d4;text-align:center;">d <span style="color:#0e6655">（整体）</span></td><td style="padding:6px;border:1px solid #f9a8d4;">du = (∂u/∂x)dx + (∂u/∂y)dy</td></tr>
+            </tbody>
+        </table>
+        <p>💡 <strong>小白速记：</strong>∂ 算"局部变化率"（按一个变量）；d 算"实际变化量"（所有变量都动）。</p>
+    </div>
+
+    <!-- ====== 总微分 + 开车类比 ========== -->
+    <div class="story-card" style="background:linear-gradient(135deg,#ecfeff 0%,#cffafe 100%);border-left:4px solid #0891b2;">
+        <div class="story-label">🚗 (∂z/∂x)·dx 的物理意义：开车类比</div>
+        <p><strong>核心公式：</strong>dz = (∂z/∂x)·dx + (∂z/∂y)·dy = 2x·dx + 2y·dy</p>
+        <p>这一项 <strong>(∂z/∂x)·dx</strong> 什么意思？—— <strong>开车类比</strong>一目了然：</p>
+
+        <p><span class="section-tag tag-tip">🚗 "速度 × 时间 = 路程" 类比</span></p>
+        <table style="width:100%;font-size:13px;border-collapse:collapse;margin:8px 0;background:#fff;">
+            <thead style="background:#cffafe;">
+                <tr><th style="padding:8px;border:1px solid #67e8f9;">开车</th><th style="padding:8px;border:1px solid #67e8f9;">数学</th><th style="padding:8px;border:1px solid #67e8f9;">含义</th></tr>
+            </thead>
+            <tbody>
+                <tr><td style="padding:6px;border:1px solid #67e8f9;">速度 60 km/h</td><td style="padding:6px;border:1px solid #67e8f9;">∂z/∂x = 2x</td><td style="padding:6px;border:1px solid #67e8f9;">"x 变 1 单位时 z 变多少"（<strong>变化率</strong>）</td></tr>
+                <tr><td style="padding:6px;border:1px solid #67e8f9;">开了 0.5 小时</td><td style="padding:6px;border:1px solid #67e8f9;">dx = 0.5</td><td style="padding:6px;border:1px solid #67e8f9;">"x 实际变了多少"（<strong>实际变化</strong>）</td></tr>
+                <tr><td style="padding:6px;border:1px solid #67e8f9;">60 × 0.5 = 30 km</td><td style="padding:6px;border:1px solid #67e8f9;">(∂z/∂x)·dx</td><td style="padding:6px;border:1px solid #67e8f9;"><strong>"这一路对 z 变化的贡献量"</strong></td></tr>
+            </tbody>
+        </table>
+
+        <p><span class="section-tag tag-tip">🧪 用 z = x² + y² 在 (3, 4) 验证</span></p>
+        <p>假设 x 动 dx = 0.1，y 动 dy = 0.05：</p>
+        <table style="width:100%;font-size:13px;border-collapse:collapse;margin:8px 0;background:#fff;">
+            <tr><td style="padding:6px;border:1px solid #67e8f9;">路径</td><td style="padding:6px;border:1px;border:1px solid #67e8f9;">∂z/∂x · dx</td><td style="padding:6px;border:1px solid #67e8f9;">∂z/∂y · dy</td><td style="padding:6px;border:1px solid #67e8f9;">相加</td></tr>
+            <tr><td style="padding:6px;border:1px solid #67e8f9;">数值</td><td style="padding:6px;border:1px solid #67e8f9;">2·3·0.1 = <strong>0.6</strong></td><td style="padding:6px;border:1px solid #67e8f9;">2·4·0.05 = <strong>0.4</strong></td><td style="padding:6px;border:1px solid #67e8f9;"><strong>1.0</strong></td></tr>
+        </table>
+        <p>直接算：(3.1)² + (4.05)² - 25 = <strong>1.0125</strong> ≈ 1.0 ✓（误差 0.0125 = "曲面弯曲" 引起的）</p>
+
+        <p style="background:#fff8e1;padding:10px;border-left:3px solid #f39c12;">
+            🎯 <strong>小白结论：</strong>(∂z/∂x)·dx = "速度 × 时间" = "这一路走的路" = "对 z 变化的贡献量"。两路贡献相加 = z 的总变化。
+        </p>
+    </div>
+
+    <!-- ====== 温度场类比（解释"为什么两路相加"）========== -->
+    <div class="story-card" style="background:linear-gradient(135deg,#fef3c7 0%,#fde68a 100%);border-left:4px solid #d97706;">
+        <div class="story-label">🌡️ 温度场类比：为什么"两路相加"</div>
+        <p>问：<strong>为什么"链式 = 两路相加"</strong>？不是人为规定，而是 <strong>"f 依赖两路" + "两路又依赖 x"</strong> 的自然推论。</p>
+
+        <p><span class="section-tag tag-core">🌡️ 想象场景：你去看天气</span></p>
+        <table style="width:100%;font-size:13px;border-collapse:collapse;margin:8px 0;background:#fff;">
+            <tr><td style="padding:6px;border:1px solid #fde68a;">变量</td><td style="padding:6px;border:1px solid #fde68a;">物理含义</td><td style="padding:6px;border:1px solid #fde68a;">偏导符号</td></tr>
+            <tr><td style="padding:6px;border:1px solid #fde68a;">z = 温度</td><td style="padding:6px;border:1px solid #fde68a;">你最终要的</td><td style="padding:6px;border:1px solid #fde68a;">—</td></tr>
+            <tr><td style="padding:6px;border:1px solid #fde68a;">u = 当地气压</td><td style="padding:6px;border:1px solid #fde68a;">影响温度的"路 1"</td><td style="padding:6px;border:1px solid #fde68a;">∂f/∂u</td></tr>
+            <tr><td style="padding:6px;border:1px solid #fde68a;">v = 当地湿度</td><td style="padding:6px;border:1px solid #fde68a;">影响温度的"路 2"</td><td style="padding:6px;border:1px solid #fde68a;">∂f/∂v</td></tr>
+            <tr><td style="padding:6px;border:1px solid #fde68a;">x = 经度, y = 纬度</td><td style="padding:6px;border:1px solid #fde68a;">你走的方向</td><td style="padding:6px;border:1px solid #fde68a;">∂u/∂x, ∂v/∂x</td></tr>
+        </table>
+
+        <p><strong>问：往东走 1 公里（dx=1），温度变多少？</strong></p>
+        <div class="formula-box" style="text-align:center;line-height:1.8;">
+            <strong>温度</strong> (z)<br>
+            ↑ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ↑<br>
+            ∂f/∂u &nbsp;&nbsp;&nbsp;&nbsp; ∂f/∂v<br>
+            ↑ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ↑<br>
+            <strong>气压</strong> (u) &nbsp;&nbsp;&nbsp; <strong>湿度</strong> (v)<br>
+            ↑ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ↑<br>
+            ∂u/∂x &nbsp;&nbsp;&nbsp;&nbsp; ∂v/∂x<br>
+            ↑ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ↑<br>
+            <strong>经度</strong> (x) &nbsp;&nbsp; <strong>纬度</strong> (y)
+        </div>
+        <p><strong>总温度变化 = 路径1贡献 + 路径2贡献</strong>：</p>
+        <div class="formula-box">∂z/∂x = (∂f/∂u)·(∂u/∂x) + (∂f/∂v)·(∂v/∂x)</div>
+        <p>两路独立并行汇入 z → 各自乘起来 → 全部相加。</p>
+
+        <p style="background:#fff8e1;padding:10px;border-left:3px solid #f39c12;">
+            🎯 <strong>小白结论：</strong>"两路相加"不是人为规定，<strong>是全微分的线性性质</strong>。f 同时依赖 u 和 v → df = (∂f/∂u)du + (∂f/∂v)dv（<strong>天然两路</strong>）→ 链式 = 把 du, dv 代入 → 还是两路相加。
+        </p>
+    </div>
+
+    <!-- ====== 增量法严格证明 ========== -->
+    <div class="story-card" style="background:linear-gradient(135deg,#f0fdf4 0%,#dcfce7 100%);border-left:4px solid #16a34a;">
+        <div class="story-label">🧪 增量法证明（让"两路相加"无懈可击）</div>
+        <p>用严格的"加一项减一项"恒等式证明链式法则，<strong>每一步都是"两路分开近似再合并"</strong>。</p>
+
+        <p><span class="section-tag tag-tip">📝 证明 4 步走</span></p>
+        <p><strong>第 1 步：从 Δz 出发</strong></p>
+        <div class="formula-box">Δz = f(u+Δu, v+Δv) − f(u, v)</div>
+
+        <p><strong>第 2 步：加一项减一项</strong>（雕虫小技，但关键！）</p>
+        <div class="formula-box">= [f(u+Δu, v+Δv) − f(u, v+Δv)] &nbsp;&nbsp;<span style="color:#16a34a;">↑ 路径 1：只让 u 变</span><br>&nbsp;&nbsp;+ [f(u, v+Δv) − f(u, v)] &nbsp;&nbsp;<span style="color:#16a34a;">↑ 路径 2：只让 v 变</span></div>
+
+        <p><strong>第 3 步：每一项用偏导数定义近似</strong></p>
+        <div class="formula-box">≈ (∂f/∂u)·Δu + (∂f/∂v)·Δv</div>
+        <p style="font-size:12px;color:#666;">📝 "偏导数 = 小变化率"，对 f 在每一维上单独近似。</p>
+
+        <p><strong>第 4 步：把 Δu, Δv 用 Δx, Δy 表示</strong>（再套一次全微分）</p>
+        <div class="formula-box">Δu ≈ (∂u/∂x)Δx + (∂u/∂y)Δy<br>Δv ≈ (∂v/∂x)Δx + (∂v/∂y)Δy</div>
+
+        <p><strong>代入，按 Δx, Δy 合并：</strong></p>
+        <div class="formula-box">Δz ≈ [(∂f/∂u)(∂u/∂x) + (∂f/∂v)(∂v/∂x)]·Δx + [(∂f/∂u)(∂u/∂y) + (∂f/∂v)(∂v/∂y)]·Δy</div>
+
+        <p><strong>和 dz 的定义对比 → 系数匹配</strong>：</p>
+        <div class="formula-box">∂z/∂x = (∂f/∂u)(∂u/∂x) + (∂f/∂v)(∂v/∂x) &nbsp;&nbsp; ✓<br>∂z/∂y = (∂f/∂u)(∂u/∂y) + (∂f/∂v)(∂v/∂y) &nbsp;&nbsp; ✓</div>
+
+        <p style="background:#fff8e1;padding:10px;border-left:3px solid #f39c12;">
+            🎯 <strong>关键洞察：</strong>第 2 步的"加一项减一项"看起来是雕虫小技，<strong>但这正是"两路分别近似、最后相加"的核心</strong>。少做这一步，"链式 = 相加"就推不出来。
+        </p>
+    </div>
+
+    <!-- ====== 链式法则推导（整合所有）========== -->
+    <div class="story-card" style="background:linear-gradient(135deg,#fafbff 0%,#e0e7ff 100%);border-left:4px solid #4f46e5;">
+        <div class="story-label">🔗 一气呵成：链式法则 = 全微分代入</div>
+        <p>现在把 <strong>d vs ∂ + 全微分 + 链式</strong> 串起来看，3 步出链式：</p>
+
+        <p><strong>第 1 步：z = f(u, v) 的全微分（df 是"z 变了多少"，写成"u 这路 + v 这路"）</strong></p>
+        <div class="formula-box">dz = df = (∂f/∂u)·du + (∂f/∂v)·dv</div>
+
+        <p><strong>第 2 步：u, v 又是 x, y 的函数，把 du, dv 也写成全微分</strong></p>
+        <div class="formula-box">du = (∂u/∂x)·dx + (∂u/∂y)·dy<br>dv = (∂v/∂x)·dx + (∂v/∂y)·dy</div>
+
+        <p><strong>第 3 步：代入，按 dx, dy 整理（系数匹配）</strong></p>
+        <div class="formula-box">dz = (∂f/∂u)·[(∂u/∂x)dx + (∂u/∂y)dy] + (∂f/∂v)·[(∂v/∂x)dx + (∂v/∂y)dy]<br>　 = <strong>[(∂f/∂u)(∂u/∂x) + (∂f/∂v)(∂v/∂x)]</strong>·dx + <strong>[(∂f/∂u)(∂u/∂y) + (∂f/∂v)(∂v/∂y)]</strong>·dy</div>
+
+        <p>对比 dz = (∂z/∂x)·dx + (∂z/∂y)·dy，系数必须相等 → <strong>得到链式法则</strong>。</p>
+
+        <p style="background:#fff8e1;padding:10px;border-left:3px solid #f59e0b;">
+            🎯 <strong>小白口诀：</strong>"链式 = 全微分的嵌套代入"。df 是"两路信号汇入"（∂f/∂u + ∂f/∂v），du, dv 又是"上游两路汇入"（∂u/∂x + ∂u/∂y）→ 代进去自然变成"上游×下游 = 多路乘积相加"。
+        </p>
+    </div>
+
     <!-- ====== 历年真题与考点分析 ====== -->
 <div class="part-divider pexam" id="exam-ch05">
   <div class="pd-num">📝</div>
@@ -70,37 +487,369 @@
 <div class="example-card">
   <div class="example-label">📝 真题 1 | 2019 数一 | 解答题 · 10分</div>
   <div class="example-question">设 \(z=f(xy, x+y)\)，求 \(\dfrac{\partial^{2}z}{\partial x\partial y}\)。</div>
-  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
-  <p>① 多元复合函数链式法则；② 二阶偏导计算；③ 偏导符号记法 \(f_1,f_2\)</p>
-  <p><span class="section-tag tag-tip">🧭 详细解析（小白逐步版）</span></p>
-  <p>记 \(u=xy, v=x+y\)，\(z=f(u,v)\)。\(\dfrac{\partial z}{\partial x}=yf_1\prime+f_2\prime\)，\(\dfrac{\partial^{2}z}{\partial x\partial y}=f_1\prime+y(xf_{11}\prime\prime+f_{12}\prime\prime)+(xf_{21}\prime\prime+f_{22}\prime\prime)\)，化简得 \(f_1\prime+xyf_{11}\prime\prime+(x+y)f_{12}\prime\prime+f_{22}\prime\prime\)。</p>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（必背三件套）</span></p>
+  <p>① 多元复合函数链式法则；② <strong>二阶</strong>偏导计算（再套一次链式！）；③ 偏导符号记法 f<sub>1</sub>, f<sub>2</sub>（下标 = 对哪个中间变量求导）</p>
+
+  <p><span class="section-tag tag-tip">🧭 第一步：画"路径图"找全所有依赖关系</span></p>
+  <p>设中间变量 u = xy, v = x+y。z 通过 u, v 间接依赖 x, y。</p>
+  <div class="formula-box" style="text-align:center;font-size:15px;line-height:1.7;">
+    <strong>z</strong><br>
+    ↑ &nbsp;&nbsp; ↑<br>
+    f<sub>1</sub> &nbsp; f<sub>2</sub><br>
+    ↑ &nbsp;&nbsp; ↑<br>
+    <strong>u</strong>=xy &nbsp; <strong>v</strong>=x+y<br>
+    ↑ &nbsp;&nbsp; ↑ &nbsp;&nbsp; ↑<br>
+    y &nbsp;&nbsp; 1 &nbsp;&nbsp; 1
+  </div>
+  <p style="font-size:12px;color:#666;">📝 <strong>记号速查：</strong>f<sub>1</sub> = ∂f/∂u, f<sub>2</sub> = ∂f/∂v, f<sub>11</sub> = ∂²f/∂u², f<sub>12</sub> = ∂²f/∂u∂v, f<sub>22</sub> = ∂²f/∂v²。</p>
+
+  <p><span class="section-tag tag-tip">🧭 第二步：求一阶偏导（走路径图）</span></p>
+  <p>从 z 走到 y：路径 z→u→y + z→v→y（"路径相加"）</p>
+  <div class="formula-box">∂z/∂y = f<sub>1</sub>·(∂u/∂y) + f<sub>2</sub>·(∂v/∂y) = <strong>x·f<sub>1</sub> + f<sub>2</sub></strong></div>
+
+  <p><span class="section-tag tag-tip">🧭 第三步：求二阶偏导（再走一次路径图！）</span></p>
+  <p>∂z/∂y 还是 (u, v) 的函数（因为 f<sub>1</sub>, f<sub>2</sub> 是 u, v 的函数）→ 要 <strong>再套一次链式</strong>，对 x 求导：</p>
+  <p>从 ∂z/∂y 走到 x：<br>
+  x·f<sub>1</sub> 这一项 → 走 3 条路径：x→u→f<sub>1</sub>（用乘法法则 + 链式）<br>
+  f<sub>2</sub> 这一项 → 走 2 条路径：x→v→f<sub>2</sub>（链式）</p>
+
+  <p><strong>逐项展开：</strong></p>
+  <div class="formula-box">
+    ∂(x·f<sub>1</sub>)/∂x = <strong>1</strong>·f<sub>1</sub> + x·∂(f<sub>1</sub>)/∂x &nbsp;&nbsp;（<strong>乘法法则</strong>）<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= f<sub>1</sub> + x·(f<sub>11</sub>·(∂u/∂x) + f<sub>12</sub>·(∂v/∂x)) &nbsp;&nbsp;（<strong>f<sub>1</sub> 还要再链式</strong>）<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= f<sub>1</sub> + x·(f<sub>11</sub>·y + f<sub>12</sub>·1) = f<sub>1</sub> + xy·f<sub>11</sub> + x·f<sub>12</sub><br>
+    <br>
+    ∂(f<sub>2</sub>)/∂x = f<sub>21</sub>·(∂u/∂x) + f<sub>22</sub>·(∂v/∂x) &nbsp;&nbsp;（<strong>f<sub>2</sub> 还要再链式</strong>）<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= f<sub>21</sub>·y + f<sub>22</sub>·1 = y·f<sub>21</sub> + f<sub>22</sub>
+  </div>
+
+  <p><strong>把两段加起来：</strong></p>
+  <div class="formula-box">
+    ∂²z/∂x∂y = f<sub>1</sub> + xy·f<sub>11</sub> + x·f<sub>12</sub> + y·f<sub>21</sub> + f<sub>22</sub><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = f<sub>1</sub> + xy·f<sub>11</sub> + (x+y)·f<sub>12</sub> + f<sub>22</sub> &nbsp;&nbsp;（<strong>合并 f<sub>12</sub> 项</strong>）
+  </div>
+
+  <p style="background:#fff8e1;padding:10px;border-radius:4px;">
+    🎯 <strong>最终答案：</strong>\(\dfrac{\partial^{2}z}{\partial x\partial y} = f_1' + xy f_{11}'' + (x+y) f_{12}'' + f_{22}''\)
+  </p>
+
   <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
-  <p>① 一阶偏导 (4分)；② 二阶偏导展开 (5分)；③ 整理 (1分)</p>
-  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
-  <p>⚠️ 漏掉项；⚠️ \(f_{12}\prime\prime=f_{21}\prime\prime\) 前提是连续；⚠️ 链式法则路径错</p>
-  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
-  <p>本题考点会在本章<strong>其他例题</strong>反复出现。建议：做完本题后回头重做一遍本章前面的练习题，强化「识别信号 → 套公式」的肌肉记忆。</p>
+  <p>① 一阶偏导 (3分)；② 识别 f<sub>1</sub>, f<sub>2</sub> 仍要再链式 (3分)；③ 二阶偏导完整展开 (3分)；④ 整理合并 (1分)。</p>
+
+  <p><span class="section-tag tag-warn">⚠️ 小白三大踩坑（错一个扣 3~4 分）</span></p>
+  <p>⚠️ <strong>漏掉项：</strong>只算了 f<sub>1</sub>·x 链式展开，漏了 f<sub>1</sub> 本身（"1 × f<sub>1</sub>"）。</p>
+  <p>⚠️ <strong>二阶没再链式：</strong>把 f<sub>1</sub>, f<sub>2</sub> 当成 x, y 的函数算（其实它们是 u, v 的函数）→ 二阶偏导算错。</p>
+  <p>⚠️ <strong>路径漏一条：</strong>从 z 到 (x, y) 一共 4 条路径（z→u→x, z→v→x, z→u→y, z→v→y），漏一条就少一项。</p>
 </div>
+
 <div class="example-card">
   <div class="example-label">📝 真题 2 | 2021 数一 | 解答题 · 12分</div>
   <div class="example-question">求 \(f(x,y)=x^{3}-y^{3}+3x^{2}+3y^{2}-9x-27y\) 的极值。</div>
-  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
-  <p>① 多元函数极值的必要条件；② 二元函数无界；③ 边界考虑</p>
-  <p><span class="section-tag tag-tip">🧭 详细解析（小白逐步版）</span></p>
-  <p>令 \(\dfrac{\partial f}{\partial x}=3x^2+6x-9=0\)，得 \(x=1,-3\)；\(\dfrac{\partial f}{\partial y}=-3y^2+6y-27=0\) 无实数解？重算 \(-3y^2+6y-27=-3(y-1)^2-24 &lt; 0\)，恒负，无驻点。故 \(f\) 无极值点。</p>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（看上去是极值题，其实是"无解"题）</span></p>
+  <p>① 多元极值的<strong>必要条件</strong>（偏导 = 0）；② 配方判断二次函数有解/无解；③ 极值点的充分性判定。</p>
+
+  <p><span class="section-tag tag-tip">🧭 第一步：求一阶偏导</span></p>
+  <p>对 x 求偏导（y 当常数）：</p>
+  <div class="formula-box">∂f/∂x = 3x² + 6x - 9 = <strong>3(x-1)(x+3)</strong></div>
+  <p>对 y 求偏导（x 当常数）：</p>
+  <div class="formula-box">∂f/∂y = -3y² + 6y - 27</div>
+
+  <p><span class="section-tag tag-tip">🧭 第二步：解驻点方程组</span></p>
+  <p>从最简单的 <strong>∂f/∂y = 0</strong> 开始（一眼看出能不能解）：</p>
+  <div class="formula-box">-3y² + 6y - 27 = 0 → 配方：-3(y² - 2y + 9) = 0 → -3(y-1)² - 24 = 0</div>
+  <p>左边是 <strong>(y-1)² + 8</strong> × -3，<strong>永远 ≤ -24 &lt; 0</strong>，<strong>无实数解</strong>！</p>
+  <p>⚠️ <strong>小白易错：</strong>可能想"配方能解开吧"——但 (y-1)² ≥ 0，乘 -3 ≤ 0，<strong>再加 -24 永远 &lt; 0</strong>，所以 ∂f/∂y = 0 <strong>无实数根</strong>。</p>
+
+  <p><span class="section-tag tag-tip">🧭 第三步：得出"无极值"结论</span></p>
+  <p>驻点方程组 ∂f/∂x = 0 且 ∂f/∂y = 0 <strong>无解</strong>（∂f/∂y 永远不为 0）→ <strong>无驻点</strong> → <strong>无极值</strong>。</p>
+
+  <p style="background:#fff8e1;padding:10px;border-radius:4px;">
+    🎯 <strong>最终答案：</strong>f(x, y) 在 R² 上<strong>无驻点</strong>，<strong>无极值</strong>。
+  </p>
+
+  <p style="font-size:13px;color:#666;">🧐 <strong>补充：</strong>为什么这题是"看上去极值实际无极值"？f(x,y) 在 (3, 3) 附近一直是单调的（∂f/∂x 走过零点、∂f/∂y 一直负）—— f 在该区域 y 方向一直下降。所以"无山顶也无山谷"——<strong>真正的结论是无极值，不是无最大值</strong>。</p>
+
   <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
-  <p>① 求偏导 (4分)；② 解驻点 (3分)；③ 判定无极值 (5分)</p>
-  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
-  <p>⚠️ 二元判别式不适用无界函数；⚠️ 没考虑边界</p>
-  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
-  <p>本题考点会在本章<strong>其他例题</strong>反复出现。建议：做完本题后回头重做一遍本章前面的练习题，强化「识别信号 → 套公式」的肌肉记忆。</p>
+  <p>① 正确求偏导 (3分)；② 配方 ∂f/∂y 看出恒负 (4分)；③ 得出无驻点 + 无极值 (4分)；④ 解释清楚为什么无解 (1分)。</p>
+
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 3~4 分）</span></p>
+  <p>⚠️ <strong>配方不仔细：</strong>漏掉 (y-1)² 前的 -3 符号，错误地"解出 y = 1"。</p>
+  <p>⚠️ <strong>用错判别式：</strong>看到"求极值"就上 AC−B²，<strong>但没有驻点根本用不上判别式</strong>。</p>
+  <p>⚠️ <strong>漏掉 ∂f/∂x 的解：</strong>∂f/∂x = 0 有解 (x = 1, -3)，但 ∂f/∂y = 0 无解，<strong>联立方程组无解</strong>。</p>
 </div>
+
+<!-- ====== 2016 数二：二元隐函数求导 + 极值 ====== -->
+<div class="tag-float t-tip">
+    <div class="tf-title">看不见 z，也能找到它的山顶</div>
+    <div class="tf-body">
+        <strong>为什么要学它？</strong>普通极值题把函数直接写成 <code>z=f(x,y)</code>，这道题却把 z 藏在方程里，故意让你“看不见函数”。咱们不必硬解 z，只要按三步走：<strong>把方程记成 F=0 → 隐式求偏导找驻点 → 二阶偏导判断山顶或山谷</strong>。<br>
+        还记得 ch02 里“方程两边同时对 x 求导”吗？这里做的是同一件事，只不过现在要分别沿 x、y 两个方向各做一次。
+    </div>
+</div>
+
 <div class="must-card">
-  <div class="must-label">🎯 本章应试策略总结（80 分必备）</div>
-  <p><strong>1. 答题时间分配：</strong>选择题 2~3 分钟/题，填空题 3 分钟/题，解答题 8~12 分钟/题。</p>
-  <p><strong>2. 答题顺序：</strong>先做 5 分钟内能拿分的题，再回头啃难的。</p>
-  <p><strong>3. 关键拿分动作：</strong>写对公式 + 写出关键步骤 + 给出最终答案。每一步都对应一个得分点。</p>
-  <p><strong>4. 复盘方法：</strong>做完真题后对照「得分点」清单逐项打分，缺哪一步就回去补哪一步。</p>
+    <div class="must-label">📖 必背：二元隐函数极值题的工具箱</div>
+    <p>若方程 <strong>F(x,y,z)=0</strong>（F 是约束方程）确定了 <strong>z=z(x,y)</strong>（z 是 x、y 的函数），且 <strong>F<sub>z</sub>≠0</strong>（F 对 z 的偏导不为 0），那么：</p>
+    <div class="formula-box">
+        \(z_x=-\dfrac{F_x}{F_z}\)，&nbsp;&nbsp;\(z_y=-\dfrac{F_y}{F_z}\)
+    </div>
+    <table>
+        <thead><tr><th>符号</th><th>小白翻译</th><th>本题用途</th></tr></thead>
+        <tbody>
+            <tr><td>\(F_x,F_y,F_z\)</td><td>把 x、y、z 暂时看成三个独立按钮，只按其中一个按钮求偏导</td><td>写出隐函数的一阶偏导</td></tr>
+            <tr><td>\(z_x=z_y=0\)</td><td>沿 x、y 两个方向的坡度都为 0</td><td>寻找驻点</td></tr>
+            <tr><td>\(A=z_{xx},B=z_{xy},C=z_{yy}\)</td><td>驻点附近三个二阶偏导</td><td>用 \(AC-B^2\) 判断极值</td></tr>
+        </tbody>
+    </table>
+    <p><strong>二阶判别口诀：</strong>若 \(AC-B^2&gt;0\)，再看 A：<strong>A&lt;0 是极大值，A&gt;0 是极小值</strong>；若 \(AC-B^2&lt;0\)，则不是极值。</p>
+</div>
+
+<div class="example-card">
+    <div class="example-label">📝 真题 3 | 2016 数二 | 二元隐函数求导 + 极值</div>
+    <div class="example-question">已知 \(z=z(x,y)\) 由方程 \((x^2+y^2)z+\ln z+2(x+y+1)=0\) 所确定，求 \(z(x,y)\) 的极值。</div>
+
+    <p><span class="section-tag tag-core">🎯 先读题：为什么不能直接对 z 求普通导数？</span></p>
+    <p>因为 z 同时跟 x、y 变化，它不是只依赖一个变量的一元函数。题目还没有把 z 单独写出来，所以要把整个等式看成一根“约束绳”，x 或 y 一动，z 就必须跟着调整，保证等式仍等于 0。</p>
+
+    <p><span class="section-tag tag-tip">第一步：建立 F，并先检查公式能不能用</span></p>
+    <p>令</p>
+    <div class="formula-box">\(F(x,y,z)=(x^2+y^2)z+\ln z+2(x+y+1)\)</div>
+    <p>由于式子里有 \(\ln z\)（z 的自然对数），所以定义域要求 <strong>z&gt;0</strong>。把 x、y 固定，只对 z 求偏导：</p>
+    <div class="formula-box">
+        \(F_z=x^2+y^2+\dfrac{1}{z}&gt;0\)
+    </div>
+    <p>这里 \(x^2+y^2\ge 0\)，而 \(z&gt;0\Rightarrow 1/z&gt;0\)，所以分母 \(F_z\) 永远不为 0。也就是说，方程确实能在附近把 z 看成 x、y 的函数，隐函数求导公式可以放心使用。</p>
+
+    <p><span class="section-tag tag-tip">第二步：求两个一阶偏导，找到“平坡点”</span></p>
+    <p>先把 x、y、z 暂时看成互相独立的三个量，分别计算 F 的偏导：</p>
+    <div class="formula-box">
+        \(F_x=2xz+2\)，&nbsp;&nbsp;\(F_y=2yz+2\)，&nbsp;&nbsp;\(F_z=x^2+y^2+\dfrac1z\)
+    </div>
+    <p>因此 z 对 x、y 的偏导分别为：</p>
+    <div class="formula-box">
+        \(z_x=-\dfrac{2xz+2}{x^2+y^2+1/z}\)，&nbsp;&nbsp;
+        \(z_y=-\dfrac{2yz+2}{x^2+y^2+1/z}\)
+    </div>
+    <p>极值点像山顶或山谷：朝 x 方向看是平的，朝 y 方向看也必须是平的，所以令 \(z_x=0\)、\(z_y=0\)。由于分母已经证明不为 0，只需让两个分子等于 0：</p>
+    <div class="formula-box">
+        \(2xz+2=0\)，\(2yz+2=0\)<br>
+        \(\Rightarrow xz+1=0\)，\(yz+1=0\)<br>
+        \(\Rightarrow x=y=-\dfrac1z\)
+    </div>
+
+    <p><span class="section-tag tag-tip">第三步：代回原方程，求出驻点</span></p>
+    <p>“偏导等于 0”只给出了 x、y、z 的关系，还没给出具体坐标，所以必须代回原约束方程：</p>
+    <div class="formula-box">
+        \(x=y=-\dfrac1z\)<br>
+        \(\Rightarrow \dfrac{2}{z}+\ln z+2\left(-\dfrac2z+1\right)=0\)<br>
+        \(\Rightarrow \ln z+2-\dfrac2z=0\)
+    </div>
+    <p>设 \(\varphi(z)=\ln z+2-2/z\)（φ 是关于 z 的一元函数）。在 \(z&gt;0\) 时：</p>
+    <div class="formula-box">
+        \(\varphi'(z)=\dfrac1z+\dfrac{2}{z^2}&gt;0\)，并且 \(\varphi(1)=0\)
+    </div>
+    <p>φ 在 \(z&gt;0\) 上严格递增，所以它至多有一个零点；又因为 \(z=1\) 正好让 φ 等于 0，因此唯一解是 \(z=1\)。再由 \(x=y=-1/z\)，得到唯一驻点：</p>
+    <div class="formula-box">\((x,y)=(-1,-1)\)，对应 \(z=1\)</div>
+
+    <p><span class="section-tag tag-tip">第四步：用二阶偏导判断它是山顶还是山谷</span></p>
+    <p>在驻点处 \(z_x=z_y=0\)。对关系 \(F_x+F_z z_x=0\) 再求导时，所有带 \(z_x\)、\(z_y\) 的项都会变成 0，于是：</p>
+    <div class="formula-box">
+        \(z_{xx}=-\dfrac{F_{xx}}{F_z}\)，&nbsp;&nbsp;
+        \(z_{xy}=-\dfrac{F_{xy}}{F_z}\)，&nbsp;&nbsp;
+        \(z_{yy}=-\dfrac{F_{yy}}{F_z}\)
+    </div>
+    <p>本题有 \(F_{xx}=2z\)、\(F_{xy}=0\)、\(F_{yy}=2z\)。在 \((-1,-1,1)\) 处，\(F_z=1+1+1=3\)，因此：</p>
+    <div class="formula-box">
+        \(A=z_{xx}=-\dfrac23\)，&nbsp;&nbsp;\(B=z_{xy}=0\)，&nbsp;&nbsp;\(C=z_{yy}=-\dfrac23\)<br>
+        \(AC-B^2=\dfrac49&gt;0\)，且 \(A&lt;0\)
+    </div>
+    <p>判别式为正且 A 为负，说明曲面在这个点朝两个方向都向下弯，所以这里是<strong>极大值点</strong>。</p>
+
+    <p style="background:#fff8e1;padding:10px;border-radius:4px;">
+        🎯 <strong>最终答案：</strong>z(x,y) 在 \((x,y)=(-1,-1)\) 处取得极大值 \(z_{\max}=1\)，没有极小值。
+    </p>
+
+    <div class="example-hint"><strong>🧠 理解类比：</strong>把方程 F=0 想成三个人共同维持平衡的跷跷板。x 动一下，z 必须自动补偿；公式 \(z_x=-F_x/F_z\) 中的负号，就是“这边上去，那边要下来”。</div>
+    <div class="example-hint"><strong>🧠 记忆类比：</strong>把 z=f(x,y) 想成一座山。\(z_x=0\) 只说明东西方向是平的，\(z_y=0\) 只说明南北方向是平的；两者同时为 0，才有资格接受“山顶还是山谷”的二阶判定。</div>
+    <div class="example-hint"><strong>🎯 出题人视角：</strong>题目故意不让你解出 z，是在筛查三种能力：能否把方程改写成 F=0；能否用隐函数公式求两个偏导；能否记得“找到驻点之后还要判别”。只做到 \(z_x=z_y=0\) 只能拿过程分，不能直接宣布极大值。</div>
+</div>
+
+<div class="tag-float t-summary">
+    <div class="tf-title">一题两条路：局部判别与整体配方</div>
+    <div class="tf-body">
+        ① <strong>标准考研路线</strong>：隐式求偏导 → 解驻点 → 算 \(A,B,C\) → 用 \(AC-B^2\) 判极大值。优点是步骤标准、按点给分。<br>
+        ② <strong>一眼看穿路线</strong>：把原式配成
+        \(z[(x+1/z)^2+(y+1/z)^2]+\ln z+2-2/z=0\)。第一项不小于 0，而 \(\ln z+2-2/z\) 严格递增且在 z=1 时等于 0，所以必有 \(z\le1\)；等号只在 \((x,y,z)=(-1,-1,1)\) 成立。这说明 1 不只是局部极大值，还是<strong>全局最大值</strong>。
+    </div>
+</div>
+
+<div class="tag-float t-warn">
+    <div class="tf-title">隐函数极值题的四个坑</div>
+    <div class="tf-body">
+        <ul>
+            <li><strong>忘记定义域：</strong>看到 \(\ln z\) 必须先写 \(z&gt;0\)。</li>
+            <li><strong>把 z 当常数到底：</strong>计算 \(F_x\) 时暂时固定 z；但对原方程整体求导时，z 是 \(z(x,y)\)，会产生 \(z_x\) 或 \(z_y\)。</li>
+            <li><strong>只令分子为 0，却不查分母：</strong>必须先说明 \(F_z=x^2+y^2+1/z&gt;0\)。</li>
+            <li><strong>找到驻点就停笔：</strong>驻点只是“候选人”，还要用二阶偏导判极大、极小或非极值。</li>
+        </ul>
+    </div>
+</div>
+
+<div class="tag-float t-strategy">
+    <div class="tf-title">隐函数极值题的卷面四步</div>
+    <div class="tf-body">
+        <strong>① 建模：</strong>令 \(F(x,y,z)=0\)，写出 \(z&gt;0\) 与 \(F_z\ne0\)；<br>
+        <strong>② 一阶：</strong>写 \(z_x=-F_x/F_z\)、\(z_y=-F_y/F_z\)，再令二者为 0；<br>
+        <strong>③ 解点：</strong>把驻点条件代回原方程，解出 \((x,y,z)\)；<br>
+        <strong>④ 判型：</strong>计算 \(A=z_{xx},B=z_{xy},C=z_{yy}\)，写清 \(AC-B^2\) 与 A 的符号，最后单独写结论。<br>
+        <strong>得分节奏：</strong>公式与一阶偏导 → 驻点 → 二阶判别 → 极值结论，四段缺一不可。
+    </div>
+</div>
+
+<!-- ====== 2018 数一、二、三：铁丝分段面积最小 ====== -->
+<div class="tag-float t-tip">
+    <div class="tf-title">固定 2 米铁丝，怎样分才最省面积</div>
+    <div class="tf-body">
+        <strong>为什么要学它？</strong>现实中的预算、材料和时间通常都是固定的，难点不是“能不能做”，而是“怎么分配最划算”。这道题把 2 米铁丝当作固定预算，把三个图形的面积当作总成本，正是拉格朗日乘数法最典型的资源分配模型。<br>
+        还记得 ch02 里一元函数求最值要令导数等于 0 吗？这里也是找“导数为 0”，只是多了三个变量和一条总长度约束，所以要请 λ 帮咱们把约束拴在目标函数上。
+    </div>
+</div>
+
+<div class="must-card">
+    <div class="must-label">📖 必背：这道题进场前的工具箱</div>
+    <table>
+        <thead><tr><th>工具</th><th>公式</th><th>小白翻译</th></tr></thead>
+        <tbody>
+            <tr><td>圆</td><td>周长 \(l=2\pi r\)，面积 \(S=\pi r^2\)</td><td>先用周长求半径，再算面积</td></tr>
+            <tr><td>正方形</td><td>周长 \(l=4a\)，面积 \(S=a^2\)</td><td>边长等于周长除以 4</td></tr>
+            <tr><td>正三角形</td><td>周长 \(l=3a\)，面积 \(S=\sqrt3a^2/4\)</td><td>边长等于周长除以 3</td></tr>
+            <tr><td>拉格朗日乘数法</td><td>\(L=f+\lambda g\)，令 \(L_x=L_y=L_z=L_\lambda=0\)</td><td>λ 把“必须满足的约束”绑进“想优化的目标”</td></tr>
+        </tbody>
+    </table>
+    <p><strong>识别口诀：</strong>题目同时出现“总量固定”和“求最大或最小”，就优先想到<strong>条件极值 → 拉格朗日乘数法</strong>。</p>
+</div>
+
+<div class="example-card">
+    <div class="example-label">📝 真题 4 | 2018 数一、二、三 | 拉格朗日乘数法</div>
+    <div class="example-question">将长为 2 m 的铁丝分成三段，依次围成圆、正方形、正三角形。三个图形面积之和是否存在最小值？若存在，求出最小值。</div>
+
+    <p><span class="section-tag tag-core">🎯 先抓矛盾：不是平均分，而是看“面积增长速度”</span></p>
+    <p>三个图形虽然共用 2 m 铁丝，但相同长度围成不同图形时，面积并不相同。所以直接把铁丝平均分成三份没有依据；咱们要找的是一组长度，使得再从任意一段挪一点铁丝给另一段，都不会让总面积继续下降。</p>
+
+    <p><span class="section-tag tag-tip">第一步：设三段长度，并写出约束</span></p>
+    <p>设围成圆、正方形、正三角形的铁丝长度依次为 \(x,y,z\)（单位都是 m）。因为整根铁丝长 2 m，所以：</p>
+    <div class="formula-box">\(x+y+z=2\)，且 \(x&gt;0,\ y&gt;0,\ z&gt;0\)</div>
+    <p>这里 x、y、z 表示的是三个图形的<strong>周长</strong>，不是半径或边长，这是建模时最容易看错的地方。</p>
+
+    <p><span class="section-tag tag-tip">第二步：把三个周长翻译成三个面积</span></p>
+    <p><strong>圆：</strong>周长是 x，所以半径 \(r=x/(2\pi)\)。代入圆面积公式：</p>
+    <div class="formula-box">\(S_1=\pi\left(\dfrac{x}{2\pi}\right)^2=\dfrac{x^2}{4\pi}\)</div>
+    <p><strong>正方形：</strong>周长是 y，所以边长 \(a=y/4\)。因此：</p>
+    <div class="formula-box">\(S_2=\left(\dfrac y4\right)^2=\dfrac{y^2}{16}\)</div>
+    <p><strong>正三角形：</strong>周长是 z，所以边长 \(b=z/3\)。因此：</p>
+    <div class="formula-box">\(S_3=\dfrac{\sqrt3}{4}\left(\dfrac z3\right)^2=\dfrac{\sqrt3}{36}z^2\)</div>
+    <p>三个面积相加，得到本题要最小化的目标函数：</p>
+    <div class="formula-box">\(S(x,y,z)=\dfrac{x^2}{4\pi}+\dfrac{y^2}{16}+\dfrac{\sqrt3}{36}z^2\)</div>
+
+    <p><span class="section-tag tag-tip">第三步：构造拉格朗日函数</span></p>
+    <p>目标是让 S 最小，但 x、y、z 不能随便取，它们必须满足 \(x+y+z-2=0\)。于是把约束乘上 λ（拉格朗日乘子）并加到目标函数中：</p>
+    <div class="formula-box">
+        \(L(x,y,z,\lambda)=\dfrac{x^2}{4\pi}+\dfrac{y^2}{16}+\dfrac{\sqrt3}{36}z^2+\lambda(x+y+z-2)\)
+    </div>
+    <p>λ 不代表新的铁丝长度，它只是一个“协调员”，负责保证求极值的全过程不离开总长度为 2 的约束。</p>
+
+    <p><span class="section-tag tag-tip">第四步：四个偏导同时等于 0</span></p>
+    <p>对 x、y、z、λ 分别求偏导，得到：</p>
+    <div class="formula-box">
+        \(L_x=\dfrac{x}{2\pi}+\lambda=0\)<br>
+        \(L_y=\dfrac{y}{8}+\lambda=0\)<br>
+        \(L_z=\dfrac{\sqrt3}{18}z+\lambda=0\)<br>
+        \(L_\lambda=x+y+z-2=0\)
+    </div>
+    <p>前三式都等于同一个 \(-\lambda\)。令 \(k=-\lambda\)，就得到：</p>
+    <div class="formula-box">
+        \(\dfrac{x}{2\pi}=\dfrac{y}{8}=\dfrac{\sqrt3z}{18}=k\)<br>
+        \(\Rightarrow x=2\pi k,\quad y=8k,\quad z=6\sqrt3k\)
+    </div>
+    <p>再把它们代入总长度约束：</p>
+    <div class="formula-box">
+        \(2\pi k+8k+6\sqrt3k=2\)<br>
+        \(\Rightarrow 2k(\pi+4+3\sqrt3)=2\)<br>
+        \(\Rightarrow k=\dfrac1{\pi+4+3\sqrt3}\)
+    </div>
+    <p>因此三段铁丝应该分成：</p>
+    <div class="formula-box">
+        \(x=\dfrac{2\pi}{\pi+4+3\sqrt3}\ \text{m}\)（围圆）<br>
+        \(y=\dfrac{8}{\pi+4+3\sqrt3}\ \text{m}\)（围正方形）<br>
+        \(z=\dfrac{6\sqrt3}{\pi+4+3\sqrt3}\ \text{m}\)（围正三角形）
+    </div>
+
+    <p><span class="section-tag tag-tip">第五步：算最小值，并回答“是否存在”</span></p>
+    <p>为了不把同一个长式子写很多遍，记 \(D=\pi+4+3\sqrt3\)。把 \(x=2\pi/D\)、\(y=8/D\)、\(z=6\sqrt3/D\) 代入总面积：</p>
+    <div class="formula-box">
+        \(S=\dfrac{\pi}{D^2}+\dfrac4{D^2}+\dfrac{3\sqrt3}{D^2}\)<br>
+        \(=\dfrac{\pi+4+3\sqrt3}{D^2}=\dfrac1D\)
+    </div>
+    <p>还要说明为什么它真的是最小值，而不只是一个候选点。把三角形面积项改写为 \(\sqrt3z^2/36=z^2/(12\sqrt3)\)，由柯西不等式：</p>
+    <div class="formula-box">
+        \(S\ge\dfrac{(x+y+z)^2}{4\pi+16+12\sqrt3}\)<br>
+        \(=\dfrac4{4(\pi+4+3\sqrt3)}=\dfrac1{\pi+4+3\sqrt3}\)
+    </div>
+    <p>上面求出的 x、y、z 恰好能让等号成立，而且三段长度都大于 0，所以这个下界能够真正取到，最小值确实存在。</p>
+
+    <p style="background:#fff8e1;padding:10px;border-radius:4px;">
+        🎯 <strong>最终答案：</strong>三个图形的面积总和存在最小值；当三段长度之比为 \(x:y:z=\pi:4:3\sqrt3\) 时取得，最小值为 \(S_{\min}=\dfrac1{\pi+4+3\sqrt3}\ \text{m}^2\)。
+    </p>
+
+    <div class="example-hint"><strong>🧠 理解类比：</strong>把 2 m 铁丝想成 2 元预算，圆、正方形、正三角形是三个“花钱速度不同”的项目。最优分配不是每个项目分一样多，而是让三个项目“再多给 1 cm 所增加的面积”相同，这正是三个偏导都等于 \(-\lambda\) 的含义。</div>
+    <div class="example-hint"><strong>🧠 记忆类比：</strong>把 λ 想成拴住三段铁丝的一根总绳。x、y、z 可以互相挪长度，但总绳始终锁死在 2 m；写拉格朗日函数时，就是“目标函数 + λ×(总量−2)”。</div>
+    <div class="example-hint"><strong>🎯 出题人视角：</strong>这道题表面考几何公式，真正筛查的是“把生活语言翻译成目标函数与约束”的建模能力。最容易拉开分差的不是求偏导，而是能否正确认出 x、y、z 是周长，并在最后证明候选值确实是最小值。</div>
+</div>
+
+<div class="tag-float t-summary">
+    <div class="tf-title">铁丝分配题的通用流水线</div>
+    <div class="tf-body">
+        <strong>① 设长度：</strong>每个去向设一个变量；<br>
+        <strong>② 写约束：</strong>所有长度相加 = 总长度；<br>
+        <strong>③ 翻译目标：</strong>先由周长求半径或边长，再写面积和；<br>
+        <strong>④ 乘 λ：</strong>构造“目标函数 + λ×约束”；<br>
+        <strong>⑤ 联立求解：</strong>所有偏导与约束同时等于 0；<br>
+        <strong>⑥ 证明最小：</strong>用正定二次函数、柯西不等式或题目给定范围说明最小值能够取到。
+    </div>
+</div>
+
+<div class="tag-float t-warn">
+    <div class="tf-title">铁丝分段题的五个易错点</div>
+    <div class="tf-body">
+        <ul>
+            <li><strong>把周长当边长：</strong>x、y、z 是三段铁丝长度，也就是三个图形的周长。</li>
+            <li><strong>圆面积漏掉 π：</strong>\(r=x/(2\pi)\)，所以面积是 \(x^2/(4\pi)\)，不是 \(x^2/(4\pi^2)\)。</li>
+            <li><strong>三角形系数算错：</strong>边长是 \(z/3\)，面积是 \(\sqrt3z^2/36\)。</li>
+            <li><strong>想当然平均分：</strong>三个面积公式的系数不同，最优分配不可能直接写成 \(2/3,2/3,2/3\)。</li>
+            <li><strong>只求驻点不判最小：</strong>必须补一句“下界能够取到”或说明目标函数严格凸。</li>
+        </ul>
+    </div>
+</div>
+
+<div class="tag-float t-strategy">
+    <div class="tf-title">条件极值应用题的卷面五段</div>
+    <div class="tf-body">
+        <strong>第 1 段：</strong>设变量并写 \(x+y+z=2\)；<br>
+        <strong>第 2 段：</strong>分别写三个面积，再得到目标函数 S；<br>
+        <strong>第 3 段：</strong>构造 L，完整列出四个偏导方程；<br>
+        <strong>第 4 段：</strong>解出三段长度并代回计算面积；<br>
+        <strong>第 5 段：</strong>说明最小值存在，带单位写最终结论。<br>
+        <strong>阅卷重点：</strong>建模、拉格朗日方程组、长度比例、最小值与存在性，五项都要落在卷面上。
+    </div>
+</div>
+
+<div class="must-card">
+    <div class="must-label">🎯 本章应试策略总结（80 分必备）</div>
+    <p><strong>1. 答题时间分配：</strong>选择题 2~3 分钟/题，填空题 3 分钟/题，解答题 8~12 分钟/题。</p>
+    <p><strong>2. 答题顺序：</strong>先做 5 分钟内能拿分的题，再回头啃难的。</p>
+    <p><strong>3. 关键拿分动作：</strong>写对公式 + 写出关键步骤 + 给出最终答案。每一步都对应一个得分点。</p>
+    <p><strong>4. 复盘方法：</strong>做完真题后对照「得分点」清单逐项打分，缺哪一步就回去补哪一步。</p>
+    <p><strong>5. ch05 专属：</strong>多元极值题<strong>必先配方判有无实数解</strong>（不要直接套 AC−B²）。链式题<strong>必画路径图</strong>（漏一条 = 错一项）。</p>
 </div>
     </div>
 </section>

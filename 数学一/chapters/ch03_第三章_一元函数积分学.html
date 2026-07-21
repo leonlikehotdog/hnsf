@@ -285,6 +285,102 @@
                 </tbody>
             </table>
         </div>
+
+        <!-- ========== 三角函数积分公式的意义图解（小白救命卡）========== -->
+        <div class="story-card" style="background:linear-gradient(135deg,#fdf2f8 0%,#fce7f3 100%);border-left:4px solid #be185d;">
+            <div class="story-label">🆘 三角函数积分公式的意义图解（小白必看）</div>
+            <p><strong>核心心法：</strong>"<strong>积分 = 导数的'翻转'</strong>"。下面 6 个公式不是"硬记"——<strong>每个都有'为什么'</strong>。</p>
+
+            <p><span class="section-tag tag-core">🎯 万能钥匙：反函数求导公式</span></p>
+            <p><strong>若 y = f⁻¹(x)，则 y' = 1 / f'(f⁻¹(x))</strong></p>
+            <p>翻译：<strong>反函数的导数 = 1 ÷ 正函数的导数（自变量换成反函数）</strong>。</p>
+            <p style="font-size:12px;color:#666;">📝 用法举例：y = arcsin x → x = sin y → 1 = cos y · y' → y' = 1/cos y = 1/√(1-x²)</p>
+
+            <!-- 1️⃣ ∫sin x dx = -cos x + C -->
+            <p><span class="section-tag tag-tip">1️⃣ ∫sin x dx = -cos x + C — 单位圆上的"上下浮动"</span></p>
+            <p><strong>为什么是 -cos x？</strong>因为 (cos x)' = -sin x，反过来：<strong>sin x 是负的 cos x 的导数</strong>。</p>
+            <div class="formula-box" style="text-align:center;line-height:1.6;">
+                单位圆：<br>
+                &nbsp;&nbsp;&nbsp;y=sin t（高度）随 t 变化 → 速度是 cos t<br>
+                &nbsp;&nbsp;&nbsp;cos t 又是 t 的"水平投影" → "高度变化"等于"水平投影"<br>
+                &nbsp;&nbsp;&nbsp;但符号：cos t = (sin t)' 的导数 = cos t（不是 -cos t）<br>
+                &nbsp;&nbsp;&nbsp;所以反推 sin t 的原函数 = -cos t
+            </div>
+            <p>🏔️ <strong>类比：</strong>sin 描述"高度变化"，-cos 描述"累积高度"（从原点出发的总位移）。</p>
+
+            <!-- 2️⃣ ∫cos x dx = sin x + C -->
+            <p><span class="section-tag tag-tip">2️⃣ ∫cos x dx = sin x + C — 圆上"水平位移"的累积</span></p>
+            <p><strong>为什么是 sin x？</strong>因为 (sin x)' = cos x，<strong>反推就是 sin x</strong>（最直接）。</p>
+            <p>🔄 <strong>类比：</strong>cos 描述"水平位置变化率"，sin 描述"水平位移"（从原点出发的 x 方向距离）。</p>
+
+            <!-- 3️⃣ ∫sec²x dx = tan x + C -->
+            <p><span class="section-tag tag-tip">3️⃣ ∫sec²x dx = tan x + C — 坡度的"变化速度"</span></p>
+            <p><strong>为什么是 tan x？</strong>因为 (tan x)' = sec²x（商法则可推），反推 = tan x。</p>
+            <p>商法则推导：tan x = sin x / cos x → (tan x)' = (cos²x + sin²x) / cos²x = <strong>sec²x</strong></p>
+            <p>🚗 <strong>类比：</strong>tan 是"坡度"，sec² 是"坡度的变化速度"。<strong>对变化速度求积分 = 还原"坡度本身"</strong>。</p>
+
+            <!-- 4️⃣ ∫csc²x dx = -cot x + C -->
+            <p><span class="section-tag tag-tip">4️⃣ ∫csc²x dx = -cot x + C — cot 是 tan 的"镜像"</span></p>
+            <p><strong>为什么是 -cot x？</strong>因为 (cot x)' = -csc²x，反推 = -cot x。</p>
+            <p>两种推导方式：</p>
+            <ul>
+                <li>商法则：cot = cos/sin → (cot)' = -1/sin²x = -csc²x</li>
+                <li>tan 的变形：cot x = tan(π/2 - x) → (cot x)' = sec²(π/2-x)·(-1) = -csc²x</li>
+            </ul>
+            <p>🪞 <strong>类比：</strong>cot = tan 旋转 90°。sec² 描述"陡度变化"，csc² 描述"水平倒数的变化"。</p>
+
+            <!-- 5️⃣ ∫1/(1+x²) dx = arctan x + C -->
+            <p><span class="section-tag tag-tip">5️⃣ ∫1/(1+x²) dx = arctan x + C — 钟形曲线下的面积 = π</span></p>
+            <p><strong>为什么是 arctan？</strong>用万能钥匙反函数法推：</p>
+            <div class="formula-box">
+                y = arctan x → x = tan y → 1 = sec²y · y' → y' = 1/sec²y = cos²y = 1/(1+tan²y) = <strong>1/(1+x²)</strong>
+            </div>
+            <p>🌡️ <strong>几何意义：</strong>1/(1+x²) 是"钟形曲线"（高斯分布的形状！），x=0 时最高（=1），整个曲线下面积 = π。</p>
+            <p>📝 <strong>类比：</strong>arctan x = "看 (x, 1) 点的角度"。1/(1+x²) = "角度变化的速度"：x=0 最近（角度转得快），x→±∞ 很远（角度转得慢）。</p>
+
+            <!-- 6️⃣ ∫1/√(1-x²) dx = arcsin x + C -->
+            <p><span class="section-tag tag-tip">6️⃣ ∫1/√(1-x²) dx = arcsin x + C — 单位圆上的"角度反查"</span></p>
+            <p><strong>为什么是 arcsin？</strong>用万能钥匙反函数法推：</p>
+            <div class="formula-box">
+                y = arcsin x → x = sin y → 1 = cos y · y' → y' = 1/cos y = 1/√(1-sin²y) = <strong>1/√(1-x²)</strong>
+            </div>
+            <p>🔵 <strong>几何意义：</strong>1/√(1-x²) 是"单位圆上半部分的密度"——x=±1 处圆弧最陡（密度爆炸），x=0 处圆弧水平（密度最低）。</p>
+            <p>📝 <strong>类比：</strong>arcsin x = "把 sin 值反查回角度"。1/√(1-x²) = "角度变化的速度"：x 接近 ±1（最值）时，sin 最敏感（角度转最快）。</p>
+
+            <!-- 总结速记卡 -->
+            <p><span class="section-tag tag-core">📊 6 个公式的意义汇总表</span></p>
+            <table style="width:100%;font-size:13px;border-collapse:collapse;margin:8px 0;background:#fff;">
+                <thead style="background:#fbcfe8;">
+                    <tr><th style="padding:8px;border:1px solid #f9a8d4;">积分公式</th><th style="padding:8px;border:1px solid #f9a8d4;">导数反推</th><th style="padding:8px;border:1px solid #f9a8d4;">生活类比</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td style="padding:6px;border:1px solid #f9a8d4;">∫sin x dx = <strong>-cos x</strong></td><td style="padding:6px;border:1px solid #f9a8d4;">(cos)' = -sin → 翻转加负号</td><td style="padding:6px;border:1px solid #f9a8d4;">山上累积高度</td></tr>
+                    <tr><td style="padding:6px;border:1px solid #f9a8d4;">∫cos x dx = <strong>sin x</strong></td><td style="padding:6px;border:1px solid #f9a8d4;">(sin)' = cos → 翻转</td><td style="padding:6px;border:1px solid #f9a8d4;">水平累积距离</td></tr>
+                    <tr><td style="padding:6px;border:1px solid #f9a8d4;">∫sec²x dx = <strong>tan x</strong></td><td style="padding:6px;border:1px solid #f9a8d4;">(tan)' = sec² → 翻转</td><td style="padding:6px;border:1px solid #f9a8d4;">开车上山累积坡度</td></tr>
+                    <tr><td style="padding:6px;border:1px solid #f9a8d4;">∫csc²x dx = <strong>-cot x</strong></td><td style="padding:6px;border:1px solid #f9a8d4;">(cot)' = -csc² → 翻转加负号</td><td style="padding:6px;border:1px solid #f9a8d4;">飞机的水平倒数累积</td></tr>
+                    <tr><td style="padding:6px;border:1px solid #f9a8d4;">∫1/(1+x²) dx = <strong>arctan x</strong></td><td style="padding:6px;border:1px solid #f9a8d4;">反函数法 y'=1/(1+x²)</td><td style="padding:6px;border:1px solid #f9a8d4;">"看 (x,1) 点的角度"</td></tr>
+                    <tr><td style="padding:6px;border:1px solid #f9a8d4;">∫1/√(1-x²) dx = <strong>arcsin x</strong></td><td style="padding:6px;border:1px solid #f9a8d4;">反函数法 y'=1/√(1-x²)</td><td style="padding:6px;border:1px solid #f9a8d4;">"sin 反查角度"</td></tr>
+                </tbody>
+            </table>
+
+            <!-- 万能自救口诀 -->
+            <p><span class="section-tag tag-warn">🆘 小白自救口诀（下次再遇到不会的）</span></p>
+            <p style="background:#fff8e1;padding:10px;border-left:3px solid #f59e0b;">
+                <strong>3 步推任何"反函数"或"三角函数"导数：</strong><br>
+                ① 是反函数（arcsin, arctan, ln, exp）→ <strong>用"反函数求导公式"</strong>现推<br>
+                ② 是"商"（tan = sin/cos, cot = cos/sin）→ <strong>商法则</strong>现推<br>
+                ③ 还不行 → 泰勒展开（f(x) ≈ f(0) + f'(0)x + ...）<br>
+                <strong>6 个公式 = "工具推出来"的，不是"背下来"的。</strong>
+            </p>
+
+            <p style="background:#fce4ec;padding:10px;border-left:3px solid #be185d;">
+                🎯 <strong>图像速记：</strong><br>
+                • <strong>tan 越陡越往上爬（sec²）</strong>（坡度的变化速度）<br>
+                • <strong>cot 越陡越往下滑（-csc²）</strong>（水平的倒数）<br>
+                • <strong>arcsin 是 S 头</strong>：x=0 最陡（=1），两边垂直（→∞）<br>
+                • <strong>arctan 是 S 腰</strong>：x=0 最陡（=1），两边躺平（→0）
+            </p>
+        </div>
         <div class="must-card">
             <div class="must-label">📖 必背：牛顿-莱布尼茨公式</div>
             <div class="formula-box">∫<sub>a</sub><sup>b</sup> f(x) dx = F(b) - F(a) &nbsp;&nbsp;（其中 F'(x) = f(x)）</div>
