@@ -439,6 +439,54 @@ a { text-decoration: none; color: inherit; }
     display: block;
 }
 
+/* 横向滚动时间线（节点过多时显示左右箭头） */
+.story-card.timeline-svg-wrap {
+    position: relative;
+}
+.story-card.timeline-svg-wrap .tl-scroll {
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    /* 让 svg 在窄屏下保持原宽度，溢出时可滚动 */
+}
+.story-card.timeline-svg-wrap .tl-scroll svg {
+    min-width: 900px;  /* 触发横向滚动条的临界宽度 */
+}
+.story-card.timeline-svg-wrap .tl-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 5;
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(108, 52, 131, 0.85);
+    color: #fff;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    transition: background 0.2s, transform 0.1s;
+    user-select: none;
+}
+.story-card.timeline-svg-wrap .tl-arrow:hover {
+    background: rgba(108, 52, 131, 1);
+    transform: translateY(-50%) scale(1.08);
+}
+.story-card.timeline-svg-wrap .tl-arrow:active {
+    transform: translateY(-50%) scale(0.95);
+}
+.story-card.timeline-svg-wrap .tl-arrow-left  { left: 8px; }
+.story-card.timeline-svg-wrap .tl-arrow-right { right: 8px; }
+/* 按钮在不可滚动方向时变淡（视觉提示） */
+.story-card.timeline-svg-wrap .tl-arrow:disabled,
+.story-card.timeline-svg-wrap .tl-arrow.is-disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+
 /* ========== Inline math/code chips ========== */
 /* 统一内联公式（如 <code>x_n e^{x_{n+1}} = e^{x_n} − 1</code>）的样式，
    让它与 .formula-box 视觉协调：浅色衬底 + 暖色强调 + 衬线字。 */

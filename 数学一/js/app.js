@@ -219,6 +219,7 @@
         // 章节内容是动态加载的，KaTeX auto-render 不会自动处理这里
         renderMathWhenReady(contentWrap);
         initChapterTabs(chapterId);
+        initTimelineScrollers();
 
         // 特殊模块：真题精练初始化
         if (chapterId === 'zhenti' && typeof window.initZhentiModule === 'function') {
@@ -404,6 +405,40 @@
                 // 滚到章节顶部
                 window.scrollTo({ top: chContent.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' });
             });
+        });
+    }
+
+    // ===== 时间线 SVG 横向滚动控制 =====
+    function initTimelineScrollers() {
+        contentWrap.querySelectorAll('.timeline-svg-wrap').forEach(function(wrap) {
+            // 防止重复绑定
+            if (wrap.dataset.tlBound === '1') return;
+            wrap.dataset.tlBound = '1';
+            var scrollEl = wrap.querySelector('.tl-scroll');
+            var leftBtn = wrap.querySelector('.tl-arrow-left');
+            var rightBtn = wrap.querySelector('.tl-arrow-right');
+            if (!scrollEl || !leftBtn || !rightBtn) return;
+
+            function step() {
+                // 每次滚动 80% 容器宽度，让用户看到新内容
+                return Math.max(120, scrollEl.clientWidth * 0.8);
+            }
+            function updateButtons() {
+                var max = scrollEl.scrollWidth - scrollEl.clientWidth;
+                leftBtn.classList.toggle('is-disabled', scrollEl.scrollLeft <= 1);
+                rightBtn.classList.toggle('is-disabled', scrollEl.scrollLeft >= max - 1);
+            }
+            leftBtn.addEventListener('click', function() {
+                scrollEl.scrollBy({ left: -step(), behavior: 'smooth' });
+            });
+            rightBtn.addEventListener('click', function() {
+                scrollEl.scrollBy({ left: step(), behavior: 'smooth' });
+            });
+            scrollEl.addEventListener('scroll', updateButtons, { passive: true });
+            // 窗口缩放后重新判断
+            window.addEventListener('resize', updateButtons);
+            // 初始化
+            setTimeout(updateButtons, 50);
         });
     }
 
