@@ -914,6 +914,24 @@ code sub, code sup {
     border-radius: 6px;
     border-left: 3px solid #e3e8ee;
 }
+.problem-card .pc-overview {
+    margin-top: 12px;
+    padding: 12px 16px;
+    background: linear-gradient(135deg, #fef9e7 0%, #fdebd0 100%);
+    border-left: 4px solid #f39c12;
+    border-radius: 6px;
+    font-family: 'SF Mono', 'Consolas', 'Monaco', monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    color: #6e4a00;
+    white-space: pre;
+    overflow-x: auto;
+}
+.problem-card .pc-overview-line {
+    margin: 0;
+    padding: 0;
+    white-space: pre;
+}
 .problem-card .pc-hints {
     margin-top: 12px;
 }

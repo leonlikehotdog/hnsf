@@ -419,7 +419,15 @@
             + '</div>';
         var cards = problems.map(function(p, i) {
             var stars = p.difficulty || '★★';
-            var hintsHtml = '<details class="pc-hints"><summary>查看提示（共 ' + p.hints.length + ' 条）</summary><ol>'
+            // 骨架总览（如果有）：先看这个建立全局观
+            var overviewHtml = '';
+            if (p.overview && p.overview.length > 0) {
+                overviewHtml = '<div class="pc-overview">'
+                    + p.overview.map(function(line) { return '<div class="pc-overview-line">' + line + '</div>'; }).join('')
+                    + '</div>';
+            }
+            // 详细推导：默认折叠，避免一眼看到长篇
+            var hintsHtml = '<details class="pc-hints"><summary>📖 查看详细推导（共 ' + p.hints.length + ' 条）</summary><ol>'
                 + p.hints.map(function(h) { return '<li>' + h + '</li>'; }).join('')
                 + '</ol></details>';
             var toggleHtml = buildMasteryToggleHTML(chapterId, i);
@@ -433,6 +441,7 @@
                 + toggleHtml
                 + '</div>'
                 + '<div class="pc-question">' + p.question + '</div>'
+                + overviewHtml
                 + hintsHtml
                 + panelHtml
                 + '</div>';
