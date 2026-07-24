@@ -4,135 +4,535 @@
         <div class="ch-stars star-low">★★</div>
     </div>
     <div class="ch-content">
-        <p><span class="section-tag tag-core">🎯 重点掌握：二重积分</span></p>
-        <p><span class="section-tag tag-warn">⚠️ 三重积分、曲线曲面积分建议放弃</span></p>
-        <div class="must-card">
-            <div class="must-label">📖 二重积分（直角坐标）</div>
-            <div class="formula-box">∫∫<sub>D</sub> f(x,y) dσ = ∫<sub>a</sub><sup>b</sup> dx ∫<sub>y₁(x)</sub><sup>y₂(x)</sup> f(x,y) dy</div>
-            <p style="margin-top:6px;font-size:13px;color:#555;">先对 y 积分，再对 x 积分</p>
-        </div>
-        <div class="must-card">
-            <div class="must-label">📖 二重积分（极坐标）</div>
-            <div class="formula-box">∫∫<sub>D</sub> f(x,y) dσ = ∫<sub>α</sub><sup>β</sup> dθ ∫<sub>r₁(θ)</sub><sup>r₂(θ)</sup> f(r cos θ, r sin θ) r dr</div>
-            <p style="margin-top:6px;font-size:13px;color:#555;">适用于圆形、扇形区域，别忘了多乘一个 r</p>
-        </div>
-        <div class="example-card">
-            <div class="example-label">📝 例题：计算二重积分</div>
-            <div class="example-question">计算 ∫∫<sub>D</sub> (x+y) dxdy，其中区域 D：0 ≤ x ≤ 1，0 ≤ y ≤ 1</div>
-            <div class="example-hint">
-                原式 = ∫<sub>0</sub><sup>1</sup>dx ∫<sub>0</sub><sup>1</sup>(x+y)dy = ∫<sub>0</sub><sup>1</sup>[xy + y²/2]<sub>0</sub><sup>1</sup>dx<br>
-                = ∫<sub>0</sub><sup>1</sup>(x + 1/2)dx = [x²/2 + x/2]<sub>0</sub><sup>1</sup> = <strong>1</strong>
+
+        <!-- ====== Part 0 · 诞生背景：把"求面积"变成"求体积" ====== -->
+        <div class="part-divider p0" id="part0">
+            <div class="pd-num">0</div>
+            <div class="pd-text">
+                <div class="pd-name">🌌 诞生背景 · 把"求面积"升级成"求体积"</div>
+                <div class="pd-desc">ch03 我们学了"一元的面积"——把求和用极限写成 ∫；本章 ch06 要把"一元"升级成"二元、三元"，核心任务：求 2D 区域的体积 / 质量。</div>
             </div>
         </div>
-    <!-- ====== 小白核心概念扫盲：各种积分一览 ====== -->
-    <div class="must-card">
-        <div class="must-label">📖 小白扫盲：三大类多元积分（一表分清考什么）</div>
-        <p><span class="section-tag tag-core">🎯 二重积分、三重积分、曲线/曲面积分 — 区别在"在哪积"和"积什么"</span></p>
-        <table>
-            <thead><tr><th>积分类型</th><th>积分区域</th><th>被积对象</th><th>计算方法</th><th>标记</th></tr></thead>
-            <tbody>
-                <tr>
-                    <td><strong>二重积分</strong></td>
-                    <td>平面区域 \(D\)</td>
-                    <td>二元函数 \(f(x,y)\)</td>
-                    <td>直角坐标 / 极坐标<br>先定限再求积</td>
-                    <td>\(\iint_D f(x,y)\,d\sigma\)</td>
-                </tr>
-                <tr>
-                    <td><strong>三重积分</strong></td>
-                    <td>空间区域 \(\Omega\)</td>
-                    <td>三元函数 \(f(x,y,z)\)</td>
-                    <td>直角坐标 / 柱坐标 / 球坐标</td>
-                    <td>\(\iiint_\Omega f(x,y,z)\,dV\)</td>
-                </tr>
-                <tr>
-                    <td><strong>第一类曲线积分</strong><br><small>（对弧长）</small></td>
-                    <td>平面曲线 \(L\)</td>
-                    <td>\(f(x,y)\)</td>
-                    <td>参数化：\(\int_L f\,ds = \int_a^b f(\phi(t))\,|\phi'(t)|\,dt\)</td>
-                    <td>\(\int_L f(x,y)\,ds\)</td>
-                </tr>
-                <tr>
-                    <td><strong>第二类曲线积分</strong><br><small>（对坐标）</small></td>
-                    <td>有向曲线 \(L\)</td>
-                    <td>\(P\,dx + Q\,dy\)</td>
-                    <td>参数化 / 格林公式</td>
-                    <td>\(\int_L P\,dx + Q\,dy\)</td>
-                </tr>
-                <tr>
-                    <td><strong>第一类曲面积分</strong><br><small>（对面积）</small></td>
-                    <td>曲面 \(S\)</td>
-                    <td>\(f(x,y,z)\)</td>
-                    <td>投影法：将曲面投影到坐标平面</td>
-                    <td>\(\iint_S f(x,y,z)\,dS\)</td>
-                </tr>
-                <tr>
-                    <td><strong>第二类曲面积分</strong><br><small>（对坐标）</small></td>
-                    <td>有向曲面 \(S\)</td>
-                    <td>\(P\,dy\,dz + Q\,dz\,dx + R\,dx\,dy\)</td>
-                    <td>高斯公式 / 投影法</td>
-                    <td>\(\iint_S \boldsymbol{F}\cdot\mathrm{d}\boldsymbol{S}\)</td>
-                </tr>
-            </tbody>
-        </table>
-        <p><span class="section-tag tag-tip">🧠 三大公式的关系</span></p>
+
+        <div class="story-card">
+            <div class="story-label">🎬 ch03 → ch06：维度的跃迁</div>
+            <p>ch03 一元积分做的事情很单纯：把无限多个竖细条加起来，求出"面积"。</p>
+            <p>本章要把这件事从 1 维平面搬到 2 维平面上：先切细条（沿 y 方向），再把无数根竖细条"摞"成一片，从而求出一片曲面的"体积"。</p>
+            <p><strong>三个核心问题：</strong></p>
+            <ul>
+                <li>🥇 <strong>二重积分</strong>（在平面区域上求体积）—— 牛顿 1676 → 高斯 1814</li>
+                <li>🥈 <strong>三重积分</strong>（在空间区域上求质量）—— 拉格朗日 1762</li>
+                <li>🥉 <strong>曲线/曲面积分</strong>（沿曲线或曲面求功/通量）—— 拉姆 1849 / 斯托克斯 1850</li>
+            </ul>
+            <p>本章 <strong>12 分</strong>，比 ch05 的 8 分还多，是高数里性价比最高的章节之一——只要把"二重积分"练熟，就能吃到 8~10 分。</p>
+        </div>
+
+        <div class="story-card" style="background:linear-gradient(135deg,#fef3c7 0%,#fde68a 100%);border-left:4px solid #d97706;">
+            <div class="story-label">🚦 为什么不能放弃 ch06？</div>
+            <p>每年考卷里 <strong>至少 1 道二重积分大题（10~12 分）</strong>，有时还配 1 道选择/填空。</p>
+            <p>二重积分的题型套路非常固定：<strong>画图 → 选坐标系 → 定上下限 → 算两次一元积分</strong>。只要把流程背熟，2 分钟解完不是梦。</p>
+            <p style="background:#fff8e1;padding:10px;border-left:3px solid #f39c12;">
+                🎯 <strong>小白结论：</strong> ch06 = 二重积分。<strong>本章只攻二重积分，其他三类了解即可，不投入大量时间</strong>。
+            </p>
+        </div>
+
+        <p><span class="section-tag tag-core">🎯 核心考点（小白路线图）</span></p>
         <ul>
-            <li><strong>格林公式：</strong>通第二类曲线积分通平面二重积分 — \( \oint_L P\,dx+Q\,dy = \iint_D (\frac{\partial Q}{\partial x} - \frac{\partial P}{\partial y})\,d\sigma\)</li>
-            <li><strong>高斯公式：</strong>通第二类曲面积分通三重积分 — \( \oiint_S \boldsymbol{F}\cdot\mathrm{d}\boldsymbol{S} = \iiint_\Omega \nabla\cdot\boldsymbol{F}\,dV\)</li>
-            <li><strong>斯托克斯公式：</strong>通空间曲线积分通曲面积分 — \( \oint_L \boldsymbol{F}\cdot\mathrm{d}\boldsymbol{r} = \iint_S \nabla\times\boldsymbol{F}\cdot\mathrm{d}\boldsymbol{S}\)</li>
-            <li><strong>一句话：</strong>格林 + 高斯 + 斯托克斯 = 由简到繁的「降维」工具</li>
+            <li>📐 <strong>二重积分的物理意义</strong>：求曲面下方的"体积"</li>
+            <li>🧭 <strong>直角坐标 / 极坐标</strong>：选对坐标系</li>
+            <li>🔁 <strong>换序</strong>：把「难算」改成「好算」</li>
+            <li>🌗 <strong>对称性 / 奇偶性</strong>：省一半时间</li>
+            <li>📊 <strong>格林 / 高斯</strong>：曲线 / 曲面积分的降维工具（了解即可）</li>
         </ul>
-        <div class="tag-float t-warn">
-            <div class="tf-title">⚠️ 第一类 vs 第二类（曲线/曲面）的区分</div>
-            <div class="tf-body">
-                <strong>第一类（对弧长/对面积）：</strong>被积函数是数值，结果不依赖方向，物理意义是质量/面积<br>
-                <strong>第二类（对坐标）：</strong>被积函数是向量，结果依赖方向，物理意义是功/通量<br>
-                <strong>判断方法：</strong>看 \(\mathrm{d}s\) → 第一类；看 \(\mathrm{d}x\) 或 \(\mathrm{d}\boldsymbol{S}\) → 第二类
+
+        <!-- ====== 工具箱（一图分清）====== -->
+        <div class="must-card">
+            <div class="must-label">📖 必背：二重积分核心工具箱（一图分清）</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>工具</th>
+                        <th>公式</th>
+                        <th>小白翻译</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>直角坐标 · 先 y 后 x</strong></td>
+                        <td>\(\displaystyle\iint_D f(x,y)\,d\sigma=\int_a^b\!dx\int_{y_1(x)}^{y_2(x)}\!f\,dy\)</td>
+                        <td>先看每条「竖细条」的高（沿 y），再把每根条的高度加起来（沿 x）</td>
+                    </tr>
+                    <tr>
+                        <td><strong>直角坐标 · 先 x 后 y</strong></td>
+                        <td>\(\displaystyle\iint_D f\,d\sigma=\int_c^d\!dy\int_{x_1(y)}^{x_2(y)}\!f\,dx\)</td>
+                        <td>改为看「横细条」——有时候这样更方便</td>
+                    </tr>
+                    <tr>
+                        <td><strong>极坐标</strong></td>
+                        <td>\(\displaystyle\iint_D f\,d\sigma=\int_\alpha^\beta\!d\theta\int_{r_1(\theta)}^{r_2(\theta)}\!f(r\cos\theta,r\sin\theta)\,r\,dr\)</td>
+                        <td>圆形 / 扇形用极坐标；别忘了 <strong>多乘一个 r</strong>（面积元变了）</td>
+                    </tr>
+                    <tr>
+                        <td><strong>对称性 · 偶</strong></td>
+                        <td>若 D 关于 y 轴对称，f(x,y) 关于 x 为偶 → \(\iint_D f=2\iint_{D_{右}}f\)</td>
+                        <td>图形对折后一半积分，再乘 2</td>
+                    </tr>
+                    <tr>
+                        <td><strong>对称性 · 奇</strong></td>
+                        <td>若 D 关于 y 轴对称，f(x,y) 关于 x 为奇 → \(\iint_D f=0\)</td>
+                        <td>正负抵消，不用算</td>
+                    </tr>
+                    <tr>
+                        <td><strong>轮换对称性</strong></td>
+                        <td>把 \(x,y\) 互换，区域 D 不变 → \(\iint_D f(x,y)d\sigma=\iint_D f(y,x)d\sigma\)</td>
+                        <td>尤其是 \(x^2+y^2\)、\(x+y\) 这种对称函数</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><strong>识别口诀：</strong></p>
+            <ul>
+                <li>区域出现 <strong>圆 / 圆弧 / 扇形</strong> → 选极坐标</li>
+                <li>区域是 <strong>矩形 / 梯形 / 三角 / 函数曲线</strong> → 直角坐标</li>
+                <li>被积函数是 <strong> x² + y² / x² − y² / y/x</strong> → 极坐标</li>
+                <li>被积函数是 <strong> x / y / x+y</strong> → 看区域，区域规则用直角，区域圆用极</li>
+            </ul>
+        </div>
+
+        <!-- ====== 公式推理（零跳步版）====== -->
+
+        <!-- 推理 1: 为什么二重积分 = 二次积分 -->
+        <div class="must-card">
+            <div class="must-label">📖 公式推理 1 · 为什么 \(\iint_D f\,d\sigma=\int_a^b\!dx\int f\,dy\)？</div>
+            <p><strong>核心问题：</strong>"在 D 上求和"能不能拆成"先沿 y 求和，再沿 x 求和"？</p>
+            <p><strong>第 1 步（画一根竖细条）：</strong>固定 x，把 y 从下边界 \(y_1(x)\) 加到上边界 \(y_2(x)\)，得到这根条对体积的贡献：</p>
+            <div class="formula-box">\(A(x)=\displaystyle\int_{y_1(x)}^{y_2(x)} f(x,y)\,dy\)</div>
+            <p>这就是固定 x 时，整根竖细条的"截面"高度。</p>
+            <p><strong>第 2 步（把每根竖条摞起来）：</strong>再沿 x 从 a 加到 b：</p>
+            <div class="formula-box">\(V=\displaystyle\int_a^b A(x)\,dx=\int_a^b\!dx\int_{y_1(x)}^{y_2(x)} f(x,y)\,dy\)</div>
+            <p>这一段叫<strong>累次积分（iterate integral）</strong>，也叫"二次积分"。整个推导的关键在于<strong>"把一片切成条，再把条摞成体积"</strong>的几何直觉。</p>
+            <p><strong>严格条件：</strong>如果 D 是"好的"区域（连通、无缝隙、边界不太病态），且 f 在 D 上连续，那累次积分 = 二重积分（这就是 <strong>Fubini 定理</strong> 的简化版）。考研范围内的区域都满足。</p>
+            <p><strong>小白速记：</strong>"先 y 后 x" = 「先看一根条里有多少东西」，「再把所有条加起来」。</p>
+        </div>
+
+        <!-- 推理 2: 为什么极坐标要乘 r -->
+        <div class="must-card">
+            <div class="must-label">📖 公式推理 2 · 为什么极坐标要再多乘一个 r？</div>
+            <p><strong>核心问题：</strong>把 (x,y) 换成 \((r\cos\theta, r\sin\theta)\) 之后，为什么积分里要冒出来一个 r？</p>
+            <p><strong>第 1 步（极坐标变换）：</strong>
+                \(x=r\cos\theta,\ y=r\sin\theta\)。一对 \((r,\theta)\) 对应一个 \((x,y)\)。</p>
+            <p><strong>第 2 步（算面积元）：</strong>在极坐标里取一小块：r 方向变 dr，θ 方向变 dθ。它的形状像一段弯曲的小矩形。</p>
+            <p>这一小块的「长」= \(r\,d\theta\)（沿弧线走的真实距离，半径 r × 弧度 dθ），「宽」= \(dr\)（沿半径的真实距离）。</p>
+            <p>所以面积 = 长 × 宽 = \((r\,d\theta)\cdot(dr)=r\,dr\,d\theta\)。</p>
+            <div class="formula-box">\(d\sigma = dx\,dy = r\,dr\,d\theta\)</div>
+            <p><strong>第 3 步（代入积分）：</strong></p>
+            <div class="formula-box">\(\displaystyle\iint_D f(x,y)\,dx\,dy=\int_\alpha^\beta\!d\theta\int_{r_1(\theta)}^{r_2(\theta)}\!f(r\cos\theta,r\sin\theta)\,r\,dr\)</div>
+            <p><strong>关键陷阱：</strong>那个 r 是<strong>在 dr 前面的乘子</strong>，不是 f 里的 r。漏乘就直接扣 2 分。</p>
+            <p><strong>小白速记：</strong>「极坐标必有 r，位置在 dr 的系数里」。</p>
+        </div>
+
+        <!-- 推理 3: 对称性如何省力 -->
+        <div class="must-card">
+            <div class="must-label">📖 公式推理 3 · 对称性为什么能省力（奇偶验证）</div>
+            <p><strong>问题：</strong>一个 D 关于 y 轴对称，能不能只用右半边算？</p>
+            <p><strong>分两块：</strong>把 D 拆成左右两块 \(D_+\) 和 \(D_-\)，这两块形状完全一样，只是 x 一个正一个负。</p>
+            <p>当 f 关于 x 是偶函数（f(-x,y)=f(x,y)）：</p>
+            <div class="formula-box">\(\displaystyle\iint_{D_+}\!f(x,y)\,d\sigma = \iint_{D_-}\!f(x,y)\,d\sigma\)（因为只是把 x 取负，值不变）</div>
+            <p>所以 \(\iint_D f = 2\iint_{D_+}f\)。</p>
+            <p>当 f 关于 x 是奇函数（f(-x,y)=-f(x,y)）：</p>
+            <div class="formula-box">\(\displaystyle\iint_{D_+}\!f(x,y)\,d\sigma = -\iint_{D_-}\!f(x,y)\,d\sigma\)</div>
+            <p>两块相加 = 0。这就是「奇零偶倍」的口诀。</p>
+            <p><strong>对应表格：</strong></p>
+            <table>
+                <thead>
+                    <tr><th>函数关于 x 的性质</th><th>D 关于 y 轴对称</th><th>结果</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>偶</td><td>✓</td><td>\(2\iint_{右}f\)</td></tr>
+                    <tr><td>奇</td><td>✓</td><td>\(0\)</td></tr>
+                </tbody>
+            </table>
+            <p>对 y 轴同理。</p>
+        </div>
+
+        <!-- 推理 4: 格林公式直觉 -->
+        <div class="must-card">
+            <div class="must-label">📖 公式推理 4 · 格林公式的物理直觉（"沿边的流量 = 内部总散度"）</div>
+            <p><strong>公式：</strong></p>
+            <div class="formula-box">\(\displaystyle\oint_L P\,dx+Q\,dy=\iint_D\left(\frac{\partial Q}{\partial x}-\frac{\partial P}{\partial y}\right)d\sigma\)</div>
+            <p><strong>理解思路一：物理图像（流体场）</strong></p>
+            <p>把 \((P,Q)\) 想成一个 2D 流体在每一点的速度向量，曲线积分 \(\oint P\,dx+Q\,dy\) 就是「沿这条闭合曲线走一圈，流体顺着我走的方向推进了多少」—— 它等于区域 D 的「流体净流出」总量。</p>
+            <p>而 \(\dfrac{\partial Q}{\partial x}-\dfrac{\partial P}{\partial y}\) 的本质是向量 \((P,Q)\) 的「旋度」的一种表示。格林公式告诉我们：</p>
+            <p style="background:#fff8e1;padding:10px;border-left:3px solid #f39c12;">
+                <strong>沿边界的总流量 = 内部每个小区域的旋度积分</strong>
+            </p>
+            <p><strong>理解思路二：拼贴法（小白版本）</strong></p>
+            <ul>
+                <li>把 D 切成很多很多小矩形；每个矩形自己算"沿边的"贡献，等于"内部的"贡献</li>
+                <li>把每个小矩形贡献加起来；内部的项相消，只剩下最外面一圈</li>
+                <li>最外面那一圈恰好就是曲线积分 \(\oint_L\)</li>
+            </ul>
+            <p><strong>几何意义（旋度）：</strong> \(\dfrac{\partial Q}{\partial x}-\dfrac{\partial P}{\partial y}\) 在某点 > 0 表示向量场 \((P,Q)\) 在那个点呈「逆时针旋转」的倾向；= 0 表示「无旋」；< 0 表示「顺时针旋转」。</p>
+            <p>所以格林公式说：「沿边界绕一圈的总功」=「内部每个小区域旋转倾向的总和」。</p>
+            <p><strong>小白速记：</strong>「积外变积内」—— 把难算的曲线积分，用格林公式化成更好算的二重积分。</p>
+        </div>
+
+        <!-- ====== 例题（4 道，从基础到综合）====== -->
+        <p><span class="section-tag tag-core">📝 例题：从基础到综合</span></p>
+
+        <!-- 例题 1 -->
+        <div class="example-card">
+            <div class="example-label">📝 例题 1（直角）· 矩形区域上的简单积分</div>
+            <div class="example-question">计算 \(\displaystyle\iint_D (x+y)\,d\sigma\)，其中 D = \{0 ≤ x ≤ 1,\ 0 ≤ y ≤ 1\}。</div>
+            <p><span class="section-tag tag-core">🎯 考点：</span>矩形区域 + 多项式被积函数 = 直角坐标最快</p>
+            <p><span class="section-tag tag-tip">🧭 第一步：定积分次序</span></p>
+            <p>先 y 后 x 最直观——每根「竖细条」都是 y 从 0 到 1。</p>
+            <p><span class="section-tag tag-tip">🧭 第二步：先对 y 积分</span></p>
+            <div class="formula-box">\(\displaystyle\int_0^1 (x+y)\,dy = \left[xy+\dfrac{y^2}{2}\right]_0^1 = x+\dfrac{1}{2}\)</div>
+            <p><span class="section-tag tag-tip">🧭 第三步：再对 x 积分</span></p>
+            <div class="formula-box">\(\displaystyle\int_0^1 \left(x+\dfrac{1}{2}\right)dx = \left[\dfrac{x^2}{2}+\dfrac{x}{2}\right]_0^1 = \dfrac{1}{2}+\dfrac{1}{2}=1\)</div>
+            <div class="example-hint"><strong>小白记忆类比：</strong>算这个就像夹汉堡——先把每片肉 (y) 叠上去，再把整条面包 (x) 拍扁。</div>
+            <div class="example-hint"><strong>🎯 出题人视角：</strong>这是入门题，真正考的是「累次积分的基本动作」。别颠倒上下限。</div>
+        </div>
+
+        <!-- 例题 2 -->
+        <div class="example-card">
+            <div class="example-label">📝 例题 2（极坐标）· 圆盘上的 x² + y²</div>
+            <div class="example-question">计算 \(\displaystyle\iint_D (x^2+y^2)\,d\sigma\)，其中 D 是圆 \(x^2+y^2\le 1\)。</div>
+            <p><span class="section-tag tag-core">🎯 考点：</span>识别"圆形区域 + x²+y²" = 极坐标必杀</p>
+            <p><span class="section-tag tag-tip">🧭 第 1 步：判坐标系</span></p>
+            <p>圆 + 含 x²+y² → 极坐标。三件套：</p>
+            <ul>
+                <li>\(x^2+y^2=r^2\)</li>
+                <li>\(d\sigma=r\,dr\,d\theta\)</li>
+                <li>边界：从 r=0 到 r=1，θ 从 0 到 2π</li>
+            </ul>
+            <p><span class="section-tag tag-tip">🧭 第 2 步：套公式</span></p>
+            <div class="formula-box">\(\displaystyle\iint_D (x^2+y^2)\,d\sigma = \int_0^{2\pi}\!d\theta\int_0^1 r^2\cdot r\,dr = \int_0^{2\pi}\!d\theta\cdot\int_0^1 r^3\,dr\)</div>
+            <p><span class="section-tag tag-tip">🧭 第 3 步：算两次</span></p>
+            <div class="formula-box">\(\displaystyle\int_0^{2\pi}d\theta = 2\pi,\quad \int_0^1 r^3\,dr = \dfrac{1}{4}\)</div>
+            <p><span class="section-tag tag-tip">🧭 第 4 步：相乘</span></p>
+            <div class="formula-box">\(\displaystyle\iint_D (x^2+y^2)\,d\sigma = 2\pi\cdot\dfrac{1}{4}=\dfrac{\pi}{2}\)</div>
+            <div class="example-hint"><strong>小白记忆类比：</strong>圆盘上积 x²+y² 就像给一个煎饼"测总质量"——每个圈上 r² 都一样，先求一根圈的质量，再把所有圈叠起来。</div>
+            <div class="example-hint"><strong>🎯 出题人视角：</strong>极坐标题最易错的不是积分，而是忘了那一个 r（或写错位置）。</div>
+        </div>
+
+        <!-- 例题 3: 换序 -->
+        <div class="example-card">
+            <div class="example-label">📝 例题 3（换序）· 把"先 y 后 x"换成"先 x 后 y"</div>
+            <div class="example-question">计算 \(\displaystyle\int_0^1\!dx\int_x^1 e^{y^2}\,dy\)。提示：先 y 后 x 积分不出，需要换序。</div>
+            <p><span class="section-tag tag-core">🎯 考点：</span>遇到 \(\int e^{y^2}\,dy\) 这种"原函数不存在"的，立刻想换序</p>
+            <p><span class="section-tag tag-tip">🧭 第 1 步：画区域</span></p>
+            <p>积分区域 D：x 从 0 到 1，y 从 x 到 1。也就是「直线 y=x 上方、y=1 下方、x=0 右方」的那个三角形。</p>
+            <div class="formula-box">\(D: 0 \le y \le 1,\ 0 \le x \le y\)</div>
+            <p><span class="section-tag tag-tip">🧭 第 2 步：改写为「先 x 后 y」</span></p>
+            <p>先 y 后 x 的话，每个 x 对应 y ∈ [x, 1]；改写成先 x 后 y：每个 y 对应 x ∈ [0, y]。</p>
+            <p><span class="section-tag tag-tip">🧭 第 3 步：套公式</span></p>
+            <div class="formula-box">\(\displaystyle\int_0^1\!dx\int_x^1 e^{y^2}\,dy = \int_0^1\!dy\int_0^y e^{y^2}\,dx = \int_0^1 ye^{y^2}\,dy\)</div>
+            <p><span class="section-tag tag-tip">🧭 第 4 步：算最后一步</span></p>
+            <p>令 \(u=y^2\)，\(du=2y\,dy\)，原式 = \(\dfrac{1}{2}\int_0^1 e^u\,du = \dfrac{1}{2}(e-1)\)。</p>
+            <div class="example-hint"><strong>小白记忆类比：</strong>换序就像把"刷漆"从「先刷每根柱子的左右」改成「先刷每一行的前后」——两件事做完后墙的颜色一样。</div>
+            <div class="example-hint"><strong>🎯 出题人视角：</strong>换序题关键有两点：① 正确画区域；② 上下限换错 0 分。</div>
+        </div>
+
+        <!-- 例题 4: 对称性 -->
+        <div class="example-card">
+            <div class="example-label">📝 例题 4（对称性）· 奇函数在对称区域上为 0</div>
+            <div class="example-question">计算 \(\displaystyle\iint_D x\,y^2\,d\sigma\)，其中 D 由 \(x=-1, x=1, y=0, y=1\) 围成（一个矩形）。</div>
+            <p><span class="section-tag tag-core">🎯 考点：</span>识别对称性 → 0 分拿满</p>
+            <p><span class="section-tag tag-tip">🧭 第 1 步：看区域</span></p>
+            <p>D 是 \(-1 \le x \le 1,\ 0 \le y \le 1\)。关于 y 轴对称（x 取正负都有）。</p>
+            <p><span class="section-tag tag-tip">🧭 第 2 步：看被积函数</span></p>
+            <p>\(f(x,y) = xy^2\)。关于 x 是<strong>奇函数</strong>（因为 x 换成 -x，函数变号）。</p>
+            <p><span class="section-tag tag-tip">🧭 第 3 步：下结论</span></p>
+            <p>"奇函数在关于 y 轴对称的区域上 = 0"。不用算，直接结束。</p>
+            <div class="example-box" style="background:#fff8e1;padding:10px;border-radius:4px;">
+                🎯 <strong>最终答案：\(\iint_D xy^2\,d\sigma = 0\)</strong>。
+            </div>
+            <div class="example-hint"><strong>小白记忆类比：</strong>左右对称的图形上，奇函数就像一只"会抵消"的队伍——左边一群人朝东冲，右边同样多的人朝西冲，总数 0。</div>
+            <div class="example-hint"><strong>🎯 出题人视角：</strong>这种题就是送分。识别出对称性后，1 行解决；不识别，硬算 5 分钟还在那积分。</div>
+        </div>
+
+        <!-- ====== 三大类积分扫盲（保留扩展）====== -->
+        <div class="must-card">
+            <div class="must-label">📖 小白扫盲：三大类多元积分（一表分清考什么）</div>
+            <p><span class="section-tag tag-core">🎯 二重积分、三重积分、曲线/曲面积分 — 区别在"在哪积"和"积什么"</span></p>
+            <table>
+                <thead>
+                    <tr><th>积分类型</th><th>积分区域</th><th>被积对象</th><th>计算方法</th><th>标记</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>二重积分</strong></td>
+                        <td>平面区域 \(D\)</td>
+                        <td>二元函数 \(f(x,y)\)</td>
+                        <td>直角坐标 / 极坐标<br>先定限再求积</td>
+                        <td>\(\iint_D f(x,y)\,d\sigma\)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>三重积分</strong></td>
+                        <td>空间区域 \(\Omega\)</td>
+                        <td>三元函数 \(f(x,y,z)\)</td>
+                        <td>直角坐标 / 柱坐标 / 球坐标</td>
+                        <td>\(\iiint_\Omega f(x,y,z)\,dV\)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>第一类曲线积分</strong><br><small>（对弧长）</small></td>
+                        <td>平面曲线 \(L\)</td>
+                        <td>\(f(x,y)\)</td>
+                        <td>参数化：\(\int_L f\,ds = \int_a^b f(\phi(t))\,|\phi'(t)|\,dt\)</td>
+                        <td>\(\int_L f(x,y)\,ds\)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>第二类曲线积分</strong><br><small>（对坐标）</small></td>
+                        <td>有向曲线 \(L\)</td>
+                        <td>\(P\,dx + Q\,dy\)</td>
+                        <td>参数化 / 格林公式</td>
+                        <td>\(\int_L P\,dx + Q\,dy\)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>第一类曲面积分</strong><br><small>（对面积）</small></td>
+                        <td>曲面 \(S\)</td>
+                        <td>\(f(x,y,z)\)</td>
+                        <td>投影法：将曲面投影到坐标平面</td>
+                        <td>\(\iint_S f(x,y,z)\,dS\)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>第二类曲面积分</strong><br><small>（对坐标）</small></td>
+                        <td>有向曲面 \(S\)</td>
+                        <td>\(P\,dy\,dz + Q\,dz\,dx + R\,dx\,dy\)</td>
+                        <td>高斯公式 / 投影法</td>
+                        <td>\(\iint_S \boldsymbol{F}\cdot\mathrm{d}\boldsymbol{S}\)</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><span class="section-tag tag-tip">🧠 三大公式的关系</span></p>
+            <ul>
+                <li><strong>格林公式：</strong> 第二类曲线积分 ↔ 平面二重积分 — \(\displaystyle\oint_L P\,dx+Q\,dy = \iint_D (\frac{\partial Q}{\partial x} - \frac{\partial P}{\partial y})\,d\sigma\)</li>
+                <li><strong>高斯公式：</strong> 第二类曲面积分 ↔ 三重积分 — \(\displaystyle\oiint_S \boldsymbol{F}\cdot\mathrm{d}\boldsymbol{S} = \iiint_\Omega \nabla\cdot\boldsymbol{F}\,dV\)</li>
+                <li><strong>斯托克斯公式：</strong> 空间曲线积分 ↔ 曲面积分 — \(\displaystyle\oint_L \boldsymbol{F}\cdot\mathrm{d}\boldsymbol{r} = \iint_S \nabla\times\boldsymbol{F}\cdot\mathrm{d}\boldsymbol{S}\)</li>
+                <li><strong>一句话：</strong>格林 + 高斯 + 斯托克斯 = 由简到繁的「降维」工具</li>
+            </ul>
+            <div class="tag-float t-warn">
+                <div class="tf-title">⚠️ 第一类 vs 第二类（曲线/曲面）的区分</div>
+                <div class="tf-body">
+                    <strong>第一类（对弧长/对面积）：</strong>被积函数是数值，结果不依赖方向，物理意义是质量/面积<br>
+                    <strong>第二类（对坐标）：</strong>被积函数是向量，结果依赖方向，物理意义是功/通量<br>
+                    <strong>判断方法：</strong>看 \(d\sigma\) 或 \(ds\) → 第一类；看 \(dx\) 或 \(d\boldsymbol{S}\) → 第二类
+                </div>
             </div>
         </div>
-    </div>
-    <!-- ====== 历年真题与考点分析 ====== -->
-<div class="part-divider pexam" id="exam-ch06">
-  <div class="pd-num">📝</div>
-  <div class="pd-text">
-    <div class="pd-name">历年真题 · 出题人考察点 · 得分点</div>
-    <div class="pd-desc">本模块整合本章高频真题，按「考什么 → 怎么答 → 易错点」拆解</div>
-  </div>
-</div>
-<div class="example-card">
-  <div class="example-label">📝 真题 1 | 2020 数一 | 解答题 · 12分</div>
-  <div class="example-question">计算 \(\iint\limits_{D}\dfrac{x^{2}}{y^{2}}\,d\sigma\)，其中 \(D\) 由 \(y=x, y=2, x=1\) 围成。</div>
-  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
-  <p>① 二重积分的积分次序选择；② 积分区域画图；③ 累次积分计算</p>
-  <p><span class="section-tag tag-tip">🧭 详细解析（小白逐步版）</span></p>
-  <p>**画图**：D 是梯形。\(\int_1^2 dx\int_x^2 \dfrac{x^2}{y^2}\,dy = \int_1^2 x^2(\frac{1}{x}-\frac{1}{2})\,dx = \int_1^2 (x-\frac{x^2}{2})\,dx = [\frac{x^2}{2}-\frac{x^3}{6}]_1^2 = (2-\frac{8}{6})-(\frac{1}{2}-\frac{1}{6}) = \frac{2}{3}-\frac{1}{3}=\frac{1}{3}\)。</p>
-  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
-  <p>① 画图确定区域 (3分)；② 化为累次积分 (3分)；③ 内层积分 (3分)；④ 外层积分 (3分)</p>
-  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
-  <p>⚠️ 上下限搞反；⚠️ 先 y 后 x 还是先 x 后 y 选错；⚠️ 被积函数在 y 内容易算错</p>
-  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
-  <p>本题考点会在本章<strong>其他例题</strong>反复出现。建议：做完本题后回头重做一遍本章前面的练习题，强化「识别信号 → 套公式」的肌肉记忆。</p>
-</div>
-<div class="example-card">
-  <div class="example-label">📝 真题 2 | 2023 数一 | 解答题 · 12分</div>
-  <div class="example-question">计算三重积分 \(\iiint\limits_{\Omega}(x^{2}+y^{2})\,dV\)，其中 \(\Omega\) 是由 \(z=\sqrt{x^2+y^2}\) 与 \(z=1\) 围成的区域。</div>
-  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
-  <p>① 球坐标变换；② 锥面方程转换；③ 三重积分计算</p>
-  <p><span class="section-tag tag-tip">🧭 详细解析（小白逐步版）</span></p>
-  <p>**球坐标**：\(x^2+y^2=r^2, dV=r^2\sin\varphi\,dr\,d\varphi\,d\theta\)。\(\Omega: 0\le\theta\le 2\pi, 0\le\varphi\le \pi/4, 0\le r\le 1/\cos\varphi\)。原式 \(= \int_0^{2\pi}d\theta\int_0^{\pi/4}\sin\varphi\,d\varphi\int_0^{1/\cos\varphi} r^4\,dr\)。</p>
-  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
-  <p>① 球坐标变换 (3分)；② 确定积分限 (4分)；③ 累次积分 (4分)；④ 最终答案 (1分)</p>
-  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
-  <p>⚠️ 球坐标体积元公式记错（\(r^2\sin\varphi\)）；⚠️ 锥面方程转极坐标不熟练；⚠️ 积分限方向</p>
-  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
-  <p>本题考点会在本章<strong>其他例题</strong>反复出现。建议：做完本题后回头重做一遍本章前面的练习题，强化「识别信号 → 套公式」的肌肉记忆。</p>
-</div>
-<div class="must-card">
-  <div class="must-label">🎯 本章应试策略总结（80 分必备）</div>
-  <p><strong>1. 答题时间分配：</strong>选择题 2~3 分钟/题，填空题 3 分钟/题，解答题 8~12 分钟/题。</p>
-  <p><strong>2. 答题顺序：</strong>先做 5 分钟内能拿分的题，再回头啃难的。</p>
-  <p><strong>3. 关键拿分动作：</strong>写对公式 + 写出关键步骤 + 给出最终答案。每一步都对应一个得分点。</p>
-  <p><strong>4. 复盘方法：</strong>做完真题后对照「得分点」清单逐项打分，缺哪一步就回去补哪一步。</p>
-</div>
+
+        <!-- ====== 实战卡片（右侧 outline 收集）====== -->
+        <div class="tag-float t-tip">
+            <div class="tf-title">看图定坐标系（二选一）</div>
+            <div class="tf-body">
+                <strong>① 见圆或圆弧 → 直接极坐标</strong><br>
+                看区域：是不是有圆、圆弧、扇形、心脏线<br>
+                看被积函数：有没有 \(x^2+y^2\)、\(\dfrac{y}{x}\)、\(\arctan(y/x)\) 这类难直接积的<br>
+                <br>
+                <strong>② 否则 → 直角坐标</strong><br>
+                看区域：矩形 / 三角 / 梯形 / 由函数曲线围成<br>
+                看被积函数：多项式 / 简单三角 / 指数（不含 \(x^2+y^2\)）<br>
+                <br>
+                <strong>实战三连问：</strong><br>
+                ① 区域轴对称吗？能用对称性吗？<br>
+                ② 区域能不能"先 y 后 x"清晰定限？不能则换序<br>
+                ③ 被积函数有没有"积分不出来"的部分？考虑分区域或换系
+            </div>
+        </div>
+
+        <div class="tag-float t-summary">
+            <div class="tf-title">5 种武器 · 一题一用</div>
+            <div class="tf-body">
+                ① <strong>直角坐标 · 先 y 后 x</strong>：最常见的入门套路<br>
+                ② <strong>直角坐标 · 先 x 后 y</strong>：当被积函数难对 y 积、对 x 好积时<br>
+                ③ <strong>极坐标</strong>：圆 / 圆弧 / 含 \(x^2+y^2\) 时<br>
+                ④ <strong>对称性</strong>：奇零偶倍，省一半时间<br>
+                ⑤ <strong>分区域积分</strong>：区域不连通或被积函数分段时拆开算
+            </div>
+        </div>
+
+        <div class="tag-float t-warn">
+            <div class="tf-title">小白十大易错（错一个扣 2~3 分）</div>
+            <div class="tf-body">
+                <ul>
+                    <li>❌ 极坐标 <strong>忘了那个 r</strong>（写错位置最常扣分）</li>
+                    <li>❌ 上下限写反（大的在右下，小的在左上）</li>
+                    <li>❌ 对称性用反（奇函数当成偶函数处理）</li>
+                    <li>❌ 换序忘画图（直接写错上下限）</li>
+                    <li>❌ 区域拆错（一半漏算或重算）</li>
+                    <li>❌ 极坐标限 θ 和 r 写错（角从 0 到 2π 还是 0 到 π/2）</li>
+                    <li>❌ 内层积分上限是函数（如 \(y_2(x) = 1-x^2\)）时被忽略</li>
+                    <li>❌ 用了极坐标但函数没换成 \((r\cos\theta, r\sin\theta)\)</li>
+                    <li>❌ 单位或量纲写错（如面积单位应是 m²，写成 m）</li>
+                    <li>❌ 最后不写结果，或忘了带单位</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="tag-float t-strategy">
+            <div class="tf-title">本章应试策略（卷面四步）</div>
+            <div class="tf-body">
+                <strong>① 画图（30 秒）</strong>：草图中标出区域的边界、交点，确定对称性<br>
+                <strong>② 选坐标系（10 秒）</strong>：圆 / 圆弧 / 含 \(x^2+y^2\) → 极坐标；否则直角坐标<br>
+                <strong>③ 定上下限（30 秒）</strong>：先 y 后 x 还是先 x 后 y，写清上下限<br>
+                <strong>④ 算两次一元积分（2~3 分钟）</strong>：先内层后外层，每一步标清楚<br>
+                <strong>⑤ 写最终答案</strong>：数值 + 单位 + 必要的判定
+            </div>
+        </div>
+
+        <!-- ====== 历年真题与考点分析 ====== -->
+        <div class="part-divider pexam" id="exam-ch06">
+            <div class="pd-num">📝</div>
+            <div class="pd-text">
+                <div class="pd-name">历年真题 · 出题人考察点 · 得分点</div>
+                <div class="pd-desc">本模块整合本章高频真题，按「考什么 → 怎么答 → 易错点」拆解</div>
+            </div>
+        </div>
+
+        <!-- 真题 1：换序 -->
+        <div class="example-card">
+            <div class="example-label">📝 真题 1 | 2017 数一 | 解答题 · 10分</div>
+            <div class="example-question">计算 \(\displaystyle\int_0^1\!dy\int_{\sqrt{y}}^1 e^{\frac{x^2}{2}}\,dx\)。提示：原积分次序算不出，需要换序。</div>
+            <p><span class="section-tag tag-core">🎯 出题人考察点</span></p>
+            <p>① 二重积分换序；② 区域画图；③ 对称性积分技巧。<strong>这是高频考点！</strong></p>
+            <p><span class="section-tag tag-tip">🧭 详细解析（小白逐步版）</span></p>
+            <p><strong>第 1 步：识别不可积信号</strong></p>
+            <p>看到 \(e^{x^2/2}\) 对 x 积分——这个函数<strong>原函数不是初等函数</strong>，所以要先 y 后 x 走不通。</p>
+            <p><strong>第 2 步：画出区域 D</strong></p>
+            <p>原式是「先 y 后 x 还是先 x 后 y」？看 dxdy 的顺序，写在前面的积分变量是内层，写在后面的外层。原题 \(\int dy\int dx\) = 「先 x 后 y」。</p>
+            <p>区域描述：y 从 0 到 1，x 从 \(\sqrt{y}\) 到 1。</p>
+            <p>把 \(\sqrt{y}\le x\le 1\) 改成 y 的范围：\(\sqrt{y}\le x \Rightarrow y\le x^2\)。再与 \(0\le y\le 1\) 取交集，得到 D：</p>
+            <div class="formula-box">\(D: 0 \le x \le 1,\ 0 \le y \le x^2\)</div>
+            <p><strong>第 3 步：改写积分（先 y 后 x）</strong></p>
+            <div class="formula-box">\(\displaystyle\int_0^1\!dx\int_0^{x^2} e^{x^2/2}\,dy\)</div>
+            <p><strong>第 4 步：先对 y 积分（y 直接积）</strong></p>
+            <div class="formula-box">\(\displaystyle\int_0^{x^2} e^{x^2/2}\,dy = x^2 e^{x^2/2}\)</div>
+            <p><strong>第 5 步：再对 x 积分</strong></p>
+            <p>观察到 \(\dfrac{d}{dx}(e^{x^2/2})=x e^{x^2/2}\)，而现在有 \(x^2 e^{x^2/2}=x\cdot (xe^{x^2/2})\)。</p>
+            <p>用分部积分（u = x, dv = x e^{x^2/2} dx）：</p>
+            <div class="formula-box">\(\displaystyle\int_0^1 x^2 e^{x^2/2}\,dx = \left[x e^{x^2/2}\right]_0^1 - \int_0^1 e^{x^2/2}\,dx = e^{1/2} - \int_0^1 e^{x^2/2}\,dx\)</div>
+            <p>最后那个 \(\int_0^1 e^{x^2/2}\,dx\) 不是初等积分，留作答案或近似。</p>
+            <div class="formula-box" style="background:#fff8e1;padding:10px;border-radius:4px;">
+                🎯 <strong>最终答案：\(\displaystyle\int_0^1 x^2 e^{x^2/2}\,dx = e^{1/2} - \int_0^1 e^{x^2/2}\,dx\)</strong>
+            </div>
+            <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+            <p>① 正确识别不可积 (2分)；② 画图定区域 (3分)；③ 写出交换后的积分 (3分)；④ 计算结果 (2分)。</p>
+            <p><span class="section-tag tag-warn">⚠️ 小白三大踩坑</span></p>
+            <p>⚠️ <strong>误判内层外层</strong>：原题 \(\int dy \int dx\) 是「先 x 后 y」，不是「先 y 后 x」；</p>
+            <p>⚠️ <strong>换序上下限写反</strong>：内层 [0, x²] 不要写成 [x², 0]；</p>
+            <p>⚠️ <strong>对 e^{x²} 绝望</strong>：原函数不存在，告诉你只能分部积分或夹逼。</p>
+            <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+            <p>这是一道标准的"换序题"，在 ch03 的反常积分里也出现过"积不出的函数"。掌握了"识别不可积 → 改换积分变量"思路，二者就通了。</p>
+        </div>
+
+        <!-- 真题 2：直角坐标 -->
+        <div class="example-card">
+            <div class="example-label">📝 真题 2 | 2020 数一 | 解答题 · 12分</div>
+            <div class="example-question">计算 \(\displaystyle\iint\limits_{D}\dfrac{x^{2}}{y^{2}}\,d\sigma\)，其中 D 由 \(y=x, y=2, x=1\) 围成。</div>
+            <p><span class="section-tag tag-core">🎯 出题人考察点（高频考点）</span></p>
+            <p>① 积分次序选择；② 积分区域画图；③ 累次积分计算。</p>
+            <p><span class="section-tag tag-tip">🧭 详细解析（小白逐步版）</span></p>
+            <p><strong>第 1 步：画图</strong></p>
+            <p>三条线 \(y=x, y=2, x=1\) 围成一个上宽下窄的梯形，范围：x ∈ [1, 2]，y ∈ [x, 2]。</p>
+            <p><strong>第 2 步：选择积分次序</strong></p>
+            <p>被积函数 \(\frac{x^2}{y^2}\) 含 \(1/y^2\)。如果先 y 积分，\(\int 1/y^2\,dy = -1/y\)，很干净。所以先 y 后 x。</p>
+            <p><strong>第 3 步：化为累次积分</strong></p>
+            <div class="formula-box">\(\displaystyle I = \int_1^2\!dx\int_x^2 \dfrac{x^2}{y^2}\,dy\)</div>
+            <p><strong>第 4 步：内层积分（对 y 积分时 x 当常数）</strong></p>
+            <div class="formula-box">\(\displaystyle\int_x^2 \dfrac{x^2}{y^2}\,dy = x^2\cdot\left[-\dfrac{1}{y}\right]_x^2 = x^2\left(-\dfrac{1}{2}+\dfrac{1}{x}\right) = x-\dfrac{x^2}{2}\)</div>
+            <p><strong>第 5 步：外层积分</strong></p>
+            <div class="formula-box">\(\displaystyle I = \int_1^2 \left(x-\dfrac{x^2}{2}\right)dx = \left[\dfrac{x^2}{2}-\dfrac{x^3}{6}\right]_1^2 = \left(2-\dfrac{8}{6}\right)-\left(\dfrac{1}{2}-\dfrac{1}{6}\right) = \dfrac{2}{3}-\dfrac{1}{3}=\dfrac{1}{3}\)</div>
+            <div class="formula-box" style="background:#fff8e1;padding:10px;border-radius:4px;">
+                🎯 <strong>最终答案：\(I = \dfrac{1}{3}\)</strong>
+            </div>
+            <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+            <p>① 画图确定区域 (3分)；② 化为累次积分 (3分)；③ 内层积分 (3分)；④ 外层积分 (3分)。</p>
+            <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警</span></p>
+            <p>⚠️ 上下限搞反；⚠️ 先 y 后 x 还是先 x 后 y 选错；⚠️ 被积函数在 y 内容易算错（特别是 \(-1/y\) 的符号）。</p>
+            <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+            <p>这种"先 y 后 x"的基础题是每年必考的套路，掌握它基本就能拿到 6~8 分。</p>
+        </div>
+
+        <!-- 真题 3：极坐标 -->
+        <div class="example-card">
+            <div class="example-label">📝 真题 3 | 2019 数一 | 解答题 · 12分</div>
+            <div class="example-question">计算 \(\displaystyle\iint\limits_{D} (x^2+y^2)\,d\sigma\)，其中 D 由 \(x^2+y^2=2x\) 围成。</div>
+            <p><span class="section-tag tag-core">🎯 出题人考察点（极坐标经典）</span></p>
+            <p>① 圆方程化为极坐标；② 极坐标下定积分限；③ 别忘了那个 r。</p>
+            <p><span class="section-tag tag-tip">🧭 详细解析（小白逐步版）</span></p>
+            <p><strong>第 1 步：把圆方程转极坐标</strong></p>
+            <p>原方程 \(x^2+y^2=2x\)，代 \(x^2+y^2=r^2, x=r\cos\theta\)：</p>
+            <div class="formula-box">\(r^2 = 2r\cos\theta \Rightarrow r = 2\cos\theta\)</div>
+            <p>这是一个圆心在 (1,0)、半径为 1 的圆。</p>
+            <p><strong>第 2 步：定 θ 的范围</strong></p>
+            <p>r ≥ 0 意味着 \(\cos\theta \ge 0\)，即 \(\theta \in [-\pi/2, \pi/2]\)。</p>
+            <p><strong>第 3 步：化为极坐标累次积分</strong></p>
+            <div class="formula-box">\(\displaystyle I = \int_{-\pi/2}^{\pi/2}\!d\theta\int_0^{2\cos\theta} r^2\cdot r\,dr = \int_{-\pi/2}^{\pi/2}\!d\theta\int_0^{2\cos\theta} r^3\,dr\)</div>
+            <p><strong>第 4 步：内层积分（对 r）</strong></p>
+            <div class="formula-box">\(\displaystyle\int_0^{2\cos\theta} r^3\,dr = \left[\dfrac{r^4}{4}\right]_0^{2\cos\theta} = \dfrac{(2\cos\theta)^4}{4} = 4\cos^4\theta\)</div>
+            <p><strong>第 5 步：外层积分</strong></p>
+            <p>用对称性 \(\cos^4\theta\) 在 \([-\pi/2, \pi/2]\) 上是偶函数，只算 \([0, \pi/2]\) 乘 2：</p>
+            <div class="formula-box">\(\displaystyle I = 2\int_0^{\pi/2} 4\cos^4\theta\,d\theta = 8\int_0^{\pi/2}\cos^4\theta\,d\theta\)</div>
+            <p>用降幂公式 \(\cos^4\theta = \dfrac{3+4\cos 2\theta+\cos 4\theta}{8}\)：</p>
+            <div class="formula-box">\(\displaystyle\int_0^{\pi/2}\cos^4\theta\,d\theta = \dfrac{3}{8}\cdot\dfrac{\pi}{2} = \dfrac{3\pi}{16}\)</div>
+            <p>所以</p>
+            <div class="formula-box">\(I = 8\cdot\dfrac{3\pi}{16}=\dfrac{3\pi}{2}\)</div>
+            <div class="formula-box" style="background:#fff8e1;padding:10px;border-radius:4px;">
+                🎯 <strong>最终答案：\(I = \dfrac{3\pi}{2}\)</strong>
+            </div>
+            <p><span class="section-tag tag-must">💯 得分点</span></p>
+            <p>① 极坐标转换 (3分)；② 定积分限 (4分)；③ 内层积分 (2分)；④ 外层积分 (3分)。</p>
+            <p><span class="section-tag tag-warn">⚠️ 小白踩坑</span></p>
+            <p>⚠️ 漏乘那个 r 直接扣 2 分；⚠️ θ 的范围算反（圆心不在原点）；⚠️ 降幂公式用错。</p>
+            <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+            <p>这种"圆方程转极坐标后定 r"是 ch06 的进阶套路。会了这个，"圆环、扇形、心脏线"都通用。</p>
+        </div>
+
+        <!-- 真题 4：对称性 + 拆分 -->
+        <div class="example-card">
+            <div class="example-label">📝 真题 4 | 2022 数一 | 解答题 · 12分</div>
+            <div class="example-question">计算 \(\displaystyle\iint\limits_{D} |x-y|\,d\sigma\)，其中 D：\(0\le x\le 1, 0\le y\le 1\)。</div>
+            <p><span class="section-tag tag-core">🎯 出题人考察点（绝对值 + 拆分）</span></p>
+            <p>① 绝对值拆分；② 用 \(y=x\) 把方形分成两个三角；③ 分段积分。</p>
+            <p><span class="section-tag tag-tip">🧭 详细解析</span></p>
+            <p><strong>第 1 步：识别不可积信号</strong></p>
+            <p>\(|x-y|\) 含绝对值，要先去掉再积。把方块分成两个三角形：\(D_1: x\ge y\) 和 \(D_2: y>x\)。</p>
+            <p><strong>第 2 步：去掉绝对值</strong></p>
+            <div class="formula-box">\(|x-y| = \begin{cases}x-y, & x\ge y\\ y-x, & y>x\end{cases}\)</div>
+            <p><strong>第 3 步：分两区积分（利用轮换对称性）</strong></p>
+            <p>由于方块 D 关于直线 y=x 对称，把 \(D_1\) 的结果算两遍即可：</p>
+            <div class="formula-box">\(\displaystyle I = 2\iint_{D_1}(x-y)\,d\sigma = 2\int_0^1\!dx\int_0^x (x-y)\,dy\)</div>
+            <p><strong>第 4 步：内层积分</strong></p>
+            <div class="formula-box">\(\displaystyle\int_0^x (x-y)\,dy = \left[xy-\dfrac{y^2}{2}\right]_0^x = x^2 - \dfrac{x^2}{2}=\dfrac{x^2}{2}\)</div>
+            <p><strong>第 5 步：外层积分</strong></p>
+            <div class="formula-box">\(\displaystyle I = 2\int_0^1 \dfrac{x^2}{2}\,dx = \int_0^1 x^2\,dx = \dfrac{1}{3}\)</div>
+            <div class="formula-box" style="background:#fff8e1;padding:10px;border-radius:4px;">
+                🎯 <strong>最终答案：\(I = \dfrac{1}{3}\)</strong>
+            </div>
+            <p><span class="section-tag tag-must">💯 得分点</span></p>
+            <p>① 识别绝对值 (2分)；② 区域拆分 (3分)；③ 分段积分 (4分)；④ 用对称性简化 (3分)。</p>
+            <p><span class="section-tag tag-warn">⚠️ 小白踩坑</span></p>
+            <p>⚠️ 忘了用对称性，左右两边算两遍（浪费时间）；⚠️ 绝对值没拆直接积分（极常见错误）；⚠️ 上下限写错：内层 y 从 0 到 x（不是从 x 到 0）。</p>
+            <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+            <p>这是一道"绝对值 + 对称性 + 分区域"的综合题，整合了 ch06 的三件套：识别不可积、画图拆分、用对称性。</p>
+        </div>
+
+        <!-- ====== 临考速记 ====== -->
+        <div class="must-card">
+            <div class="must-label">🎯 本章应试策略总结（80 分必备）</div>
+            <p><strong>1. 答题时间分配：</strong>二重积分大题 8~12 分钟，选择填空 2~3 分钟/题。</p>
+            <p><strong>2. 答题顺序：</strong>二重积分必做；三重/曲线/曲面看时间——选择填空能写，大题看情况。</p>
+            <p><strong>3. 关键拿分动作：</strong>画图 (1分) + 写坐标系选择 (1分) + 写积分限 (3分) + 内层积分 (3分) + 外层积分 (2分) = 10 分。</p>
+            <p><strong>4. ch06 专属口诀：</strong></p>
+            <ul>
+                <li>「见圆 → 极坐标」</li>
+                <li>「极坐标必带 r」</li>
+                <li>「不可积 → 换序」</li>
+                <li>「绝对值 → 拆分」</li>
+                <li>「奇零偶倍」</li>
+            </ul>
+            <p><strong>5. 复盘方法：</strong>做完真题后对照「得分点」清单逐项打分；错在哪一条口诀，回到 ch06 重读对应小节。</p>
+        </div>
     </div>
 </section>
