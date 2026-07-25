@@ -932,6 +932,32 @@ code sub, code sup {
     padding: 0;
     white-space: pre;
 }
+/* 骨架折叠框（默认折叠） */
+.problem-card .pc-overview-toggle {
+    margin-top: 12px;
+}
+.problem-card .pc-overview-toggle > summary {
+    cursor: pointer;
+    user-select: none;
+    color: #9c640c;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 6px 0;
+    list-style: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.problem-card .pc-overview-toggle > summary::-webkit-details-marker { display: none; }
+.problem-card .pc-overview-toggle > summary::before {
+    content: "▶";
+    font-size: 11px;
+    transition: transform 0.2s;
+    display: inline-block;
+}
+.problem-card .pc-overview-toggle[open] > summary::before {
+    transform: rotate(90deg);
+}
 .problem-card .pc-hints {
     margin-top: 12px;
 }

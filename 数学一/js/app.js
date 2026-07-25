@@ -419,12 +419,15 @@
             + '</div>';
         var cards = problems.map(function(p, i) {
             var stars = p.difficulty || '★★';
-            // 骨架总览（如果有）：先看这个建立全局观
+            // 解题骨架（如果有）：默认折叠，点击才看
             var overviewHtml = '';
             if (p.overview && p.overview.length > 0) {
-                overviewHtml = '<div class="pc-overview">'
+                overviewHtml = '<details class="pc-overview-toggle">'
+                    + '<summary>🗺️ 先看解题骨架（' + p.overview.length + ' 步）</summary>'
+                    + '<div class="pc-overview">'
                     + p.overview.map(function(line) { return '<div class="pc-overview-line">' + line + '</div>'; }).join('')
-                    + '</div>';
+                    + '</div>'
+                    + '</details>';
             }
             // 详细推导：默认折叠，避免一眼看到长篇
             var hintsHtml = '<details class="pc-hints"><summary>📖 查看详细推导（共 ' + p.hints.length + ' 条）</summary><ol>'
