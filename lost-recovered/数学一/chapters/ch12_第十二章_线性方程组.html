@@ -1,0 +1,65 @@
+<section class="chapter-card" id="ch12">
+    <div class="ch-header">
+        <div class="ch-title">第十二章：线性方程组 <span class="ch-score">| 6分</span></div>
+        <div class="ch-stars star-high">⭐⭐⭐⭐⭐</div>
+    </div>
+    <div class="ch-content">
+        <p><span class="section-tag tag-core">🎯 核心考点</span></p>
+        <ul>
+            <li>齐次线性方程组的解的结构与求解</li>
+            <li>非齐次线性方程组的解的结构与求解</li>
+        </ul>
+        <div class="must-card">
+            <div class="must-label">📖 必背：解的结构定理</div>
+            <p><strong>齐次方程组 Ax = 0</strong></p>
+            <ul>
+                <li>一定有零解（x = 0）</li>
+                <li>有非零解 ⟺ r(A) < n（未知数个数）</li>
+                <li>通解 = 基础解系的线性组合：k₁ξ₁ + k₂ξ₂ + ...</li>
+            </ul>
+            <p style="margin-top:6px;"><strong>非齐次方程组 Ax = b</strong></p>
+            <ul>
+                <li>有解 ⟺ r(A) = r(A|b)</li>
+                <li>通解 = 齐次通解 + 非齐次特解</li>
+            </ul>
+        </div>
+        <div class="example-card">
+            <div class="example-label">📝 例题</div>
+            <div class="example-question">求解线性方程组：x₁ + 2x₂ = 5，3x₁ + 4x₂ = 11</div>
+            <div class="example-hint">
+                写成矩阵形式 [1 2; 3 4][x₁; x₂] = [5; 11]，|A| = 1·4 - 2·3 = -2 ≠ 0，有唯一解。<br>
+                用克拉默法则或消元：由①得 x₁ = 5-2x₂，代入②得 3(5-2x₂)+4x₂=11 ⟹ 15-6x₂+4x₂=11 ⟹ -2x₂=-4 ⟹ x₂=2，x₁=1。<br>
+                所以解为 <strong>x₁ = 1，x₂ = 2</strong>
+            </div>
+        </div>
+    <!-- ====== 历年真题与考点分析 ====== -->
+<div class="part-divider pexam" id="exam-ch12">
+  <div class="pd-num">📝</div>
+  <div class="pd-text">
+    <div class="pd-name">历年真题 · 出题人考察点 · 得分点</div>
+    <div class="pd-desc">本模块整合本章高频真题，按「考什么 → 怎么答 → 易错点」拆解</div>
+  </div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 真题 1 | 2022 数一 | 解答题 · 12分</div>
+  <div class="example-question">求线性方程组 \(\begin{cases}x_1+x_2+x_3+x_4=0\\x_1+2x_2+x_3-3x_4=0\\x_1+3x_2+x_3-5x_4=0\end{cases}\) 的通解。</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>① 高斯消元法；② 自由变量的选取；③ 通解结构</p>
+  <p><span class="section-tag tag-tip">🧭 详细解析（小白逐步版）</span></p>
+  <p>**初等行变换**：化为行最简形后，自由变量 \(x_3,x_4\)，通解为 \(x_1=-x_3-5x_4, x_2=4x_4\)，即 \(k_1(-1,0,1,0)^T + k_2(-5,4,0,1)^T\)。</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 增广矩阵 (1分)；② 行变换 (5分)；③ 化简到行最简 (3分)；④ 通解 (3分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>⚠️ 自由变量没选对；⚠️ 行变换出错；⚠️ 通解漏写 \(k\)</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点会在本章<strong>其他例题</strong>反复出现。建议：做完本题后回头重做一遍本章前面的练习题，强化「识别信号 → 套公式」的肌肉记忆。</p>
+</div>
+<div class="must-card">
+  <div class="must-label">🎯 本章应试策略总结（80 分必备）</div>
+  <p><strong>1. 答题时间分配：</strong>选择题 2~3 分钟/题，填空题 3 分钟/题，解答题 8~12 分钟/题。</p>
+  <p><strong>2. 答题顺序：</strong>先做 5 分钟内能拿分的题，再回头啃难的。</p>
+  <p><strong>3. 关键拿分动作：</strong>写对公式 + 写出关键步骤 + 给出最终答案。每一步都对应一个得分点。</p>
+  <p><strong>4. 复盘方法：</strong>做完真题后对照「得分点」清单逐项打分，缺哪一步就回去补哪一步。</p>
+</div>
+    </div>
+</section>

@@ -958,6 +958,92 @@ code sub, code sup {
 .problem-card .pc-overview-toggle[open] > summary::before {
     transform: rotate(90deg);
 }
+/* 举一反三折叠面板（默认折叠，紫罗兰色区分） */
+.problem-card .pc-extra-toggle {
+    margin-top: 14px;
+    border-top: 1px dashed #c39bd3;
+    padding-top: 12px;
+}
+.problem-card .pc-extra-toggle > summary {
+    cursor: pointer;
+    user-select: none;
+    color: #6c3483;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 6px 0;
+    list-style: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.problem-card .pc-extra-toggle > summary::-webkit-details-marker { display: none; }
+.problem-card .pc-extra-toggle > summary::before {
+    content: "▶";
+    font-size: 11px;
+    transition: transform 0.2s;
+    display: inline-block;
+}
+.problem-card .pc-extra-toggle[open] > summary::before {
+    transform: rotate(90deg);
+}
+.problem-card .pc-extra-list {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.problem-card .pc-extra-card {
+    padding: 12px 14px;
+    background: linear-gradient(135deg, #f4ecf7 0%, #e8def0 100%);
+    border-left: 4px solid #8e44ad;
+    border-radius: 6px;
+}
+.problem-card .pc-extra-source {
+    font-size: 12px;
+    color: #6c3483;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+.problem-card .pc-extra-score {
+    font-size: 12px;
+    color: #4a235a;
+    display: inline-block;
+    background: #e8def0;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-bottom: 6px;
+}
+.problem-card .pc-extra-question {
+    font-size: 14px;
+    line-height: 1.7;
+    margin-bottom: 8px;
+    color: #2c3e50;
+}
+.problem-card .pc-extra-overview { margin-top: 8px; }
+.problem-card .pc-extra-hints { margin-top: 8px; }
+.problem-card .pc-extra-overview > summary,
+.problem-card .pc-extra-hints > summary {
+    cursor: pointer;
+    font-size: 13px;
+    color: #6c3483;
+    padding: 4px 0;
+    list-style: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+.problem-card .pc-extra-overview > summary::before,
+.problem-card .pc-extra-hints > summary::before {
+    content: "▶";
+    font-size: 10px;
+    transition: transform 0.2s;
+}
+.problem-card .pc-extra-overview[open] > summary::before,
+.problem-card .pc-extra-hints[open] > summary::before {
+    transform: rotate(90deg);
+}
+.problem-card .pc-extra-overview > summary::-webkit-details-marker,
+.problem-card .pc-extra-hints > summary::-webkit-details-marker { display: none; }
 .problem-card .pc-hints {
     margin-top: 12px;
 }

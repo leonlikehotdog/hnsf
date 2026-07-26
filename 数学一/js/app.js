@@ -22,6 +22,7 @@
     // ===== 配置 =====
     const CHAPTERS = [
         { id: 'zhenti', file: 'zhenti.html', title: '近5年真题精练', part: '专题', stars: '★★★★★', cls: 'high', score: '40题', special: true },
+        { id: 'zhenti-2023', file: 'zhenti_2023.html', title: '2023 真题闯关', part: '专题', stars: '★★★★★', cls: 'high', score: '22题', special: true },
         { id: 'ch01', file: 'ch01_第一章_函数、极限、连续.html', title: '函数极限连续', part: '一', stars: '★★★★★', cls: 'high', score: '12分' },
         { id: 'ch02', file: 'ch02_第二章_一元函数微分学.html', title: '一元微分', part: '一', stars: '★★★★★', cls: 'high', score: '16分' },
         { id: 'ch03', file: 'ch03_第三章_一元函数积分学.html', title: '一元积分', part: '一', stars: '★★★★★', cls: 'high', score: '16分' },
@@ -215,6 +216,13 @@
             + '</div>';
 
         contentWrap.innerHTML = html + navHtml;
+
+        // 真题专区隐藏右侧「本章要点」大纲
+        var outlinePanel = document.getElementById('outlinePanel');
+        if (outlinePanel) {
+            outlinePanel.style.display = (chapterId === 'zhenti') ? 'none' : '';
+        }
+
         buildOutline();
         // 章节内容是动态加载的，KaTeX auto-render 不会自动处理这里
         renderMathWhenReady(contentWrap);
@@ -223,6 +231,19 @@
         // 特殊模块：真题精练初始化
         if (chapterId === 'zhenti' && typeof window.initZhentiModule === 'function') {
             window.initZhentiModule();
+        }
+        // 2023 真题闯关初始化
+        if (chapterId === 'zhenti-2023') {
+            // zhenti_2023.js 通过 DOMContentLoaded 自动启动，但此时页面已加载
+            // 触发一次 init 调用（如果还没启动）
+            if (typeof window.__zx23 === 'object') {
+                // 已经启动，等 DOM 渲染
+                setTimeout(() => {
+                    if (typeof window.__zx23.init === 'function') {
+                        window.__zx23.init();
+                    }
+                }, 100);
+            }
         }
     }
 
@@ -433,6 +454,39 @@
             var hintsHtml = '<details class="pc-hints"><summary>📖 查看详细推导（共 ' + p.hints.length + ' 条）</summary><ol>'
                 + p.hints.map(function(h) { return '<li>' + h + '</li>'; }).join('')
                 + '</ol></details>';
+            // 举一反三：默认折叠，点击展开
+            var extraHtml = '';
+            if (p.extra_problems && p.extra_problems.length > 0) {
+                extraHtml = '<details class="pc-extra-toggle">'
+                    + '<summary>🔁 举一反三（' + p.extra_problems.length + ' 道同知识点变形）</summary>'
+                    + '<div class="pc-extra-list">'
+                    + p.extra_problems.map(function(ex, idx) {
+                        var exOverviewHtml = '';
+                        if (ex.overview && ex.overview.length > 0) {
+                            exOverviewHtml = '<details class="pc-extra-overview">'
+                                + '<summary>🗺️ 解题骨架（' + ex.overview.length + ' 步）</summary>'
+                                + '<div class="pc-overview">'
+                                + ex.overview.map(function(line) { return '<div class="pc-overview-line">' + line + '</div>'; }).join('')
+                                + '</div>'
+                                + '</details>';
+                        }
+                        var exHintsHtml = '<details class="pc-extra-hints">'
+                            + '<summary>📖 详细解析（共 ' + ex.hints.length + ' 条）</summary>'
+                            + '<ol>'
+                            + ex.hints.map(function(h) { return '<li>' + h + '</li>'; }).join('')
+                            + '</ol>'
+                            + '</details>';
+                        return '<div class="pc-extra-card">'
+                            + '<div class="pc-extra-source">📚 ' + (ex.source || '举一反三') + '</div>'
+                            + (ex.score ? '<div class="pc-extra-score">分值：' + ex.score + '</div>' : '')
+                            + '<div class="pc-extra-question">' + ex.question + '</div>'
+                            + exOverviewHtml
+                            + exHintsHtml
+                            + '</div>';
+                    }).join('')
+                    + '</div>'
+                    + '</details>';
+            }
             var toggleHtml = buildMasteryToggleHTML(chapterId, i);
             var panelHtml = buildMasteryPanelHTML(chapterId, i);
             var notesHtml = buildNotesButtonHTML(chapterId, i);
@@ -446,6 +500,7 @@
                 + '<div class="pc-question">' + p.question + '</div>'
                 + overviewHtml
                 + hintsHtml
+                + extraHtml
                 + panelHtml
                 + '</div>';
         }).join('');

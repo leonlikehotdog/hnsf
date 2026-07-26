@@ -1,0 +1,474 @@
+[
+  {
+    "id": "2018-01",
+    "year": 2018,
+    "num": "一(1)",
+    "qnum": 1,
+    "type": "选择题",
+    "score": 4,
+    "part": "高数",
+    "difficulty": 2,
+    "knowledgeIds": [
+      "GS.1.3",
+      "GS.2.1"
+    ],
+    "chapter": "ch01",
+    "question": "下列函数中, 在 $x = 0$ 处不可导的是( )",
+    "options": [
+      "A. $f(x) = |x| \\sin |x|$ .",
+      "B. $f(x) = |x| \\sin \\sqrt{|x|}$ .",
+      "C. $f(x) = \\cos |x|$ .",
+      "D. $f(x) = \\cos{\\sqrt{|x|}}.$"
+    ],
+    "answer": "",
+    "analysis": ""
+  },
+  {
+    "id": "2018-02",
+    "year": 2018,
+    "num": "一(2)",
+    "qnum": 2,
+    "type": "选择题",
+    "score": 4,
+    "part": "高数",
+    "difficulty": 2,
+    "knowledgeIds": [
+      "GS.1.3",
+      "GS.5.3"
+    ],
+    "chapter": "ch01",
+    "question": "过点 $(1,0,0), (0,1,0)$ , 且与曲面 $z = x^2 + y^2$ 相切的平面为( )",
+    "options": [
+      "A. $z = 0$ 与 $x + y - z = 1$ .",
+      "B. $z = 0$ 与 $2x + 2y - z = 2$ .",
+      "C. $x = y$ 与 $x + y - z = 1$ .",
+      "D. $x = y$ 与 $2x + 2y - z = 2.$"
+    ],
+    "answer": "",
+    "analysis": ""
+  },
+  {
+    "id": "2018-03",
+    "year": 2018,
+    "num": "一(3)",
+    "qnum": 3,
+    "type": "选择题",
+    "score": 4,
+    "part": "高数",
+    "difficulty": 3,
+    "knowledgeIds": [
+      "GS.1.3"
+    ],
+    "chapter": "ch01",
+    "question": "$\\sum_{n=0}^{\\infty}(-1)^{n}\\frac{2n+3}{(2n+1)!}=$",
+    "options": [
+      "A. $\\sin 1 + \\cos 1$",
+      "B. $2\\sin 1 + \\cos 1$",
+      "C. $2 \\sin 1 + 2 \\cos 1$ .",
+      "D. $2 \\sin 1 + 3 \\cos 1$ ."
+    ],
+    "answer": "",
+    "analysis": ""
+  },
+  {
+    "id": "2018-04",
+    "year": 2018,
+    "num": "一(4)",
+    "qnum": 4,
+    "type": "选择题",
+    "score": 4,
+    "part": "高数",
+    "difficulty": 3,
+    "knowledgeIds": [
+      "GS.1.3"
+    ],
+    "chapter": "ch01",
+    "question": "设 $M = \\int_{-\\frac{\\pi}{2}}^{\\frac{\\pi}{2}} \\frac{(1 + x)^2}{1 + x^2} \\mathrm{d}x, N = \\int_{-\\frac{\\pi}{2}}^{\\frac{\\pi}{2}} \\frac{1 + x}{\\mathrm{e}^x} \\mathrm{d}x, K = \\int_{-\\frac{\\pi}{2}}^{\\frac{\\pi}{2}} (1 + \\sqrt{\\cos x}) \\mathrm{d}x$ , 则( )",
+    "options": [
+      "A. $M > N > K.$",
+      "B. $M > K > N.$",
+      "C. $K > M > N.$",
+      "D. $K > N > M.$"
+    ],
+    "answer": "",
+    "analysis": ""
+  },
+  {
+    "id": "2018-05",
+    "year": 2018,
+    "num": "一(5)",
+    "qnum": 5,
+    "type": "选择题",
+    "score": 4,
+    "part": "线代",
+    "difficulty": 3,
+    "knowledgeIds": [
+      "XD.10.1",
+      "XD.13.2"
+    ],
+    "chapter": "ch10",
+    "question": "下列矩阵中, 与矩阵 $\\left( \\begin{array}{lll}1 & 1 & 0\\\\ 0 & 1 & 1\\\\ 0 & 0 & 1 \\end{array} \\right)$ 相似的为( )",
+    "options": [
+      "A. $\\left( \\begin{array}{rrr}1 & 1 & -1\\\\ 0 & 1 & 1\\\\ 0 & 0 & 1 \\end{array} \\right)$",
+      "B. $\\left( \\begin{array}{rrr}1 & 0 & -1\\\\ 0 & 1 & 1\\\\ 0 & 0 & 1 \\end{array} \\right)$",
+      "C. $\\left( \\begin{array}{rrr}1 & 1 & -1\\\\ 0 & 1 & 0\\\\ 0 & 0 & 1 \\end{array} \\right)$",
+      "D. $\\left( \\begin{array}{rrr}1 & 0 & -1\\\\ 0 & 1 & 0\\\\ 0 & 0 & 1 \\end{array} \\right)$ ."
+    ],
+    "answer": "",
+    "analysis": ""
+  },
+  {
+    "id": "2018-06",
+    "year": 2018,
+    "num": "一(6)",
+    "qnum": 6,
+    "type": "选择题",
+    "score": 4,
+    "part": "线代",
+    "difficulty": 4,
+    "knowledgeIds": [
+      "XD.10.1",
+      "XD.10.3"
+    ],
+    "chapter": "ch10",
+    "question": "设 $A, B$ 为 $n$ 阶矩阵, 记 $r(X)$ 为矩阵 $X$ 的秩, $(X, Y)$ 表示分块矩阵, 则( )",
+    "options": [
+      "A. $r(\\mathbf{",
+      "B. $r(\\mathbf{",
+      "C. $r(\\mathbf{"
+    ],
+    "answer": "",
+    "analysis": ""
+  },
+  {
+    "id": "2018-07",
+    "year": 2018,
+    "num": "一(7)",
+    "qnum": 7,
+    "type": "选择题",
+    "score": 4,
+    "part": "概率",
+    "difficulty": 4,
+    "knowledgeIds": [
+      "GL.16.2",
+      "GS.1.3"
+    ],
+    "chapter": "ch16",
+    "question": "设随机变量 $X$ 的概率密度 $f(x)$ 满足 $f(1 + x) = f(1 - x)$ , 且 $\\int_0^2 f(x) , \\mathrm{d}x = 0.6$ , 则 $P\\{X < 0\\} =$ ( )",
+    "options": [
+      "A. 0.2.",
+      "B. 0.3.",
+      "C. 0.4.",
+      "D. 0.5."
+    ],
+    "answer": "",
+    "analysis": ""
+  },
+  {
+    "id": "2018-08",
+    "year": 2018,
+    "num": "一(8)",
+    "qnum": 8,
+    "type": "选择题",
+    "score": 4,
+    "part": "概率",
+    "difficulty": 4,
+    "knowledgeIds": [
+      "GL.20.3",
+      "GS.1.3"
+    ],
+    "chapter": "ch20",
+    "question": "设总体 $X$ 服从正态分布 $N(\\mu, \\sigma^2)$ . $X_1, X_2, \\dots, X_n$ 是来自总体 $X$ 的简单随机样本, 据此样本检验假设: $H_0: \\mu = \\mu_0, H_1: \\mu \\neq \\mu_0$ , 则( )",
+    "options": [
+      "A. 如果在检验水平 $\\alpha = 0.05$ 下拒绝 $H_{0}$ , 那么 $\\alpha = 0.01$ 下必拒绝 $H_{0}$ .",
+      "B. 如果在检验水平 $\\alpha = 0.05$ 下拒绝 $H_{0}$ , 那么 $\\alpha = 0.01$ 下必接受 $H_{0}$ .",
+      "C. 如果在检验水平 $\\alpha = 0.05$ 下接受 $H_{0}$ , 那么 $\\alpha = 0.01$ 下必拒绝 $H_{0}$ .",
+      "D. 如果在检验水平 $\\alpha = 0.05$ 下接受 $H_{0}$ , 那么 $\\alpha = 0.01$ 下必接受 $H_{0}$ ."
+    ],
+    "answer": "",
+    "analysis": ""
+  },
+  {
+    "id": "2018-09",
+    "year": 2018,
+    "num": "二(9)",
+    "qnum": 9,
+    "type": "填空题",
+    "score": 4,
+    "part": "高数",
+    "difficulty": 1,
+    "knowledgeIds": [
+      "GS.1.2",
+      "GS.1.3"
+    ],
+    "chapter": "ch01",
+    "question": "若 $\\lim_{x \\to 0} \\left( \\frac{1 - \\tan x}{1 + \\tan x} \\right)^{\\frac{1}{\\sin kx}} = e$ ，则 $k = _$",
+    "options": [],
+    "answer": "",
+    "analysis": ""
+  },
+  {
+    "id": "2018-10",
+    "year": 2018,
+    "num": "二(10)",
+    "qnum": 10,
+    "type": "填空题",
+    "score": 4,
+    "part": "高数",
+    "difficulty": 1,
+    "knowledgeIds": [
+      "GS.1.3",
+      "GS.1.5"
+    ],
+    "chapter": "ch01",
+    "question": "设函数 $f(x)$ 具有 2 阶连续导数. 若曲线 $y = f(x)$ 过点 $(0,0)$ 且与曲线 $y = 2^x$ 在点 $(1,2)$ 处相切, 则 $\\int_{0}^{1} x f``(x) \\mathrm{d}x =$ ________.",
+    "options": [],
+    "answer": "",
+    "analysis": ""
+  },
+  {
+    "id": "2018-11",
+    "year": 2018,
+    "num": "二(11)",
+    "qnum": 11,
+    "type": "填空题",
+    "score": 4,
+    "part": "高数",
+    "difficulty": 2,
+    "knowledgeIds": [
+      "GS.1.3",
+      "GS.6.9"
+    ],
+    "chapter": "ch01",
+    "question": "设 $F(x, y, z) = xy \\mathbf{i} - yz \\mathbf{j} + zx \\mathbf{k}$ , 则 $\\operatorname{rot} F(1, 1, 0) =$ ______.",
+    "options": [],
+    "answer": "",
+    "analysis": ""
+  },
+  {
+    "id": "2018-12",
+    "year": 2018,
+    "num": "二(12)",
+    "qnum": 12,
+    "type": "填空题",
+    "score": 4,
+    "part": "高数",
+    "difficulty": 2,
+    "knowledgeIds": [
+      "GS.1.3"
+    ],
+    "chapter": "ch01",
+    "question": "设 $L$ 为球面 $x^{2} + y^{2} + z^{2} = 1$ 与平面 $x + y + z = 0$ 的交线, 则 $\\oint_{L} xy , \\mathrm{d}s =$ ______.",
+    "options": [],
+    "answer": "",
+    "analysis": ""
+  },
+  {
+    "id": "2018-13",
+    "year": 2018,
+    "num": "二(13)",
+    "qnum": 13,
+    "type": "填空题",
+    "score": 4,
+    "part": "线代",
+    "difficulty": 3,
+    "knowledgeIds": [
+      "XD.13.1",
+      "GS.1.3"
+    ],
+    "chapter": "ch13",
+    "question": "设 2 阶矩阵 $\\mathbf{A}$ 有两个不同特征值, $\\alpha_{1}, \\alpha_{2}$ 是 $\\mathbf{A}$ 的线性无关的特征向量, 且满足 $A^{2}(\\alpha_{1} + \\alpha_{2}) = \\alpha_{1} + \\alpha_{2}$ , 则 $|\\mathbf{A}| =$ ______.",
+    "options": [],
+    "answer": "",
+    "analysis": ""
+  },
+  {
+    "id": "2018-14",
+    "year": 2018,
+    "num": "二(14)",
+    "qnum": 14,
+    "type": "填空题",
+    "score": 4,
+    "part": "概率",
+    "difficulty": 3,
+    "knowledgeIds": [
+      "GL.15.2",
+      "GS.1.3"
+    ],
+    "chapter": "ch15",
+    "question": "设随机事件 $A$ 与 $B$ 相互独立, $A$ 与 $C$ 相互独立, $BC = \\varnothing$ . 若 $P(A) = P(B) = \\frac{1}{2}, P(AC \\mid AB \\cup C) = \\frac{1}{4}$ , 则 $P(C) = _$ .",
+    "options": [],
+    "answer": "",
+    "analysis": ""
+  },
+  {
+    "id": "2018-15",
+    "year": 2018,
+    "num": "三(15)",
+    "qnum": 15,
+    "type": "解答题",
+    "score": 10,
+    "part": "高数",
+    "difficulty": 2,
+    "knowledgeIds": [
+      "GS.3.1",
+      "GS.3.2"
+    ],
+    "chapter": "ch03",
+    "question": "(本题满分 10 分)\\n\\n求不定积分 $\\int \\mathrm{e}^{2x}\\arctan{\\sqrt{\\mathrm{e}^x - 1}}\\mathrm{d}x.$",
+    "options": [],
+    "answer": "",
+    "analysis": ""
+  },
+  {
+    "id": "2018-16",
+    "year": 2018,
+    "num": "三(16)",
+    "qnum": 16,
+    "type": "解答题",
+    "score": 10,
+    "part": "高数",
+    "difficulty": 2,
+    "knowledgeIds": [
+      "GS.3.6"
+    ],
+    "chapter": "ch03",
+    "question": "(本题满分 10 分)\\n\\n将长为 $2 \\mathrm{~m}$ 的铁丝分成三段, 依次围成圆、正方形与正三角形. 三个图形的面积之和是否存在最小值? 若存在, 求出最小值.",
+    "options": [],
+    "answer": "",
+    "analysis": ""
+  },
+  {
+    "id": "2018-17",
+    "year": 2018,
+    "num": "三(17)",
+    "qnum": 17,
+    "type": "解答题",
+    "score": 10,
+    "part": "高数",
+    "difficulty": 3,
+    "knowledgeIds": [
+      "GS.1.3",
+      "GS.3.6"
+    ],
+    "chapter": "ch01",
+    "question": "(本题满分 10 分)\\n\\n设 $\\Sigma$ 是曲面 $x = \\sqrt{1 - 3y^2 - 3z^2}$ 的前侧，计算曲面积分 $I = \\iint_{\\Sigma} x , \\mathrm{d}y , \\mathrm{d}z + (y^3 + 2) , \\mathrm{d}z , \\mathrm{d}x + z^3 , \\mathrm{d}x , \\mathrm{d}y.$",
+    "options": [],
+    "answer": "",
+    "analysis": ""
+  },
+  {
+    "id": "2018-18",
+    "year": 2018,
+    "num": "三(18)",
+    "qnum": 18,
+    "type": "解答题",
+    "score": 10,
+    "part": "高数",
+    "difficulty": 3,
+    "knowledgeIds": [
+      "GS.8.1",
+      "GS.8.2"
+    ],
+    "chapter": "ch08",
+    "question": "(本题满分 10 分)\\n\\n已知微分方程 $y` + y = f(x)$ ，其中 $f(x)$ 是 $\\mathbf{R}$ 上的连续函数\\n\\n（I）若 $f(x) = x$ ，求方程的通解；  \\n（Ⅱ）若 $f(x)$ 是周期为 $T$ 的函数，证明：方程存在唯一的以 $T$ 为周期的解",
+    "options": [],
+    "answer": "",
+    "analysis": ""
+  },
+  {
+    "id": "2018-19",
+    "year": 2018,
+    "num": "三(19)",
+    "qnum": 19,
+    "type": "解答题",
+    "score": 10,
+    "part": "高数",
+    "difficulty": 4,
+    "knowledgeIds": [
+      "GS.1.1",
+      "GS.1.2"
+    ],
+    "chapter": "ch01",
+    "question": "(本题满分 10 分)\\n\\n设数列 $\\{x_{n}\\}$ 满足： $x_{1} > 0, x_{n} \\mathrm{e}^{x_{n + 1}} = \\mathrm{e}^{x_{n}} - 1 (n = 1,2,\\dots)$ . 证明数列 $\\{x_{n}\\}$ 收敛，并求 $\\lim_{n\\to \\infty}x_n$",
+    "options": [],
+    "answer": "",
+    "analysis": ""
+  },
+  {
+    "id": "2018-20",
+    "year": 2018,
+    "num": "三(20)",
+    "qnum": 20,
+    "type": "解答题",
+    "score": 10,
+    "part": "高数",
+    "difficulty": 4,
+    "knowledgeIds": [
+      "GS.1.3",
+      "XD.14.1"
+    ],
+    "chapter": "ch01",
+    "question": "(本题满分 11 分)\\n\\n设实二次型 $f(x_{1},x_{2},x_{3}) = (x_{1} - x_{2} + x_{3})^{2} + (x_{2} + x_{3})^{2} + (x_{1} + ax_{3})^{2}$ ，其中 $a$ 是参数.\\n\\n(I) 求 $f(x_{1}, x_{2}, x_{3}) = 0$ 的解；  \\n（Ⅱ）求 $f(x_{1},x_{2},x_{3})$ 的规范形",
+    "options": [],
+    "answer": "",
+    "analysis": ""
+  },
+  {
+    "id": "2018-21",
+    "year": 2018,
+    "num": "三(21)",
+    "qnum": 21,
+    "type": "解答题",
+    "score": 12,
+    "part": "高数",
+    "difficulty": 5,
+    "knowledgeIds": [
+      "GS.1.3",
+      "XD.10.1"
+    ],
+    "chapter": "ch01",
+    "question": "(本题满分 11 分)\\n\\n已知 $a$ 是常数，且矩阵 $\\mathbf{A} = \\begin{pmatrix} 1 & 2 & a \\\\ 1 & 3 & 0 \\\\ 2 & 7 & -a \\end{pmatrix}$ 可经初等列变换化为矩阵 $\\mathbf{B} = \\begin{pmatrix} 1 & a & 2 \\\\ 0 & 1 & 1 \\\\ -1 & 1 & 1 \\end{pmatrix}$ .\\n\\n(I) 求 $a$ ;   \\n（Ⅱ）求满足 $AP = B$ 的可逆矩阵 $\\pmb{P}$",
+    "options": [],
+    "answer": "",
+    "analysis": ""
+  },
+  {
+    "id": "2018-22",
+    "year": 2018,
+    "num": "三(22)",
+    "qnum": 22,
+    "type": "解答题",
+    "score": 12,
+    "part": "高数",
+    "difficulty": 5,
+    "knowledgeIds": [
+      "GS.1.3",
+      "GL.15.2"
+    ],
+    "chapter": "ch01",
+    "question": "(本题满分 11 分)\\n\\n设随机变量 $X$ 与 $Y$ 相互独立, $X$ 的概率分布为 $P\\{X = 1\\} = P\\{X = -1\\} = \\frac{1}{2}, Y$ 服从参数为 $\\lambda$ 的泊松分布. 令 $Z = XY$ .\\n\\n(I) 求 $\\operatorname{Cov}(X, Z)$ ;   \\n（Ⅱ）求 $Z$ 的概率分布",
+    "options": [],
+    "answer": "",
+    "analysis": ""
+  },
+  {
+    "id": "2018-23",
+    "year": 2018,
+    "num": "三(23)",
+    "qnum": 23,
+    "type": "解答题",
+    "score": 12,
+    "part": "概率",
+    "difficulty": 5,
+    "knowledgeIds": [
+      "GL.20.2",
+      "GS.1.3"
+    ],
+    "chapter": "ch20",
+    "question": "(本题满分 11 分)\\n\\n设总体 $X$ 的概率密度为\\n\\n$$\\nf (x; \\sigma) = \\frac {1}{2 \\sigma} \\mathrm {e} ^ {- \\frac {| x |}{\\sigma}}, - \\infty <   x <   + \\infty ,\\n$$\\n\\n其中 $\\sigma \\in (0, +\\infty)$ 为未知参数， $X_1, X_2, \\dots, X_n$ 为来自总体 $X$ 的简单随机样本。记 $\\sigma$ 的最大似然估计量为 $\\hat{\\sigma}$ 。\\n\\n(I) 求 $\\hat{\\sigma}$ ;   \\n（Ⅱ）求 $E(\\hat{\\sigma}),D(\\hat{\\sigma})$",
+    "options": [],
+    "answer": "",
+    "analysis": ""
+  }
+]

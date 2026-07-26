@@ -1,0 +1,1479 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>考研英语一学习助手</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+  </script>
+  <style>
+    /* ===== 全局重置 & 基础 ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+        "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+      background: #f5f7f5;
+      height: 100vh;
+      overflow: hidden;
+      color: #333;
+    }
+
+    /* ===== 布局 ===== */
+    .app-container {
+      display: flex;
+      height: 100vh;
+    }
+
+    /* ===== 左侧菜单 ===== */
+    .sidebar {
+      width: 250px;
+      min-width: 250px;
+      background: linear-gradient(180deg, #1b5e20 0%, #2e7d32 100%);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      padding: 32px 0;
+      box-shadow: 2px 0 12px rgba(0, 0, 0, 0.15);
+      z-index: 10;
+    }
+
+    .sidebar-title {
+      font-size: 22px;
+      font-weight: 700;
+      text-align: center;
+      padding: 0 20px 32px;
+      letter-spacing: 2px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+      margin-bottom: 16px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 28px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.25s ease;
+      border-left: 4px solid transparent;
+      user-select: none;
+    }
+
+    .nav-item:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .nav-item.active {
+      background: rgba(255, 255, 255, 0.18);
+      border-left-color: #a5d6a7;
+      font-weight: 600;
+    }
+
+    .nav-item .icon {
+      font-size: 20px;
+    }
+
+    /* ===== 右侧内容区 ===== */
+    .content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 40px 48px;
+      background: #f5f7f5;
+    }
+
+    .page {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ===== 页面1：单词卡片 ===== */
+    .word-progress-indicator {
+      text-align: right;
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 16px;
+    }
+
+    .card-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding-top: 20px;
+    }
+
+    .flip-card {
+      width: 500px;
+      height: 350px;
+      perspective: 1200px;
+      cursor: pointer;
+    }
+
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      transform-style: preserve-3d;
+      border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    }
+
+    .flip-card.flipped .flip-card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .flip-card-front,
+    .flip-card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 16px;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 36px;
+    }
+
+    .flip-card-front {
+      border: 1px solid #e8f0e8;
+    }
+
+    .flip-card-back {
+      transform: rotateY(180deg);
+      border: 1px solid #e8f0e8;
+    }
+
+    .word-display {
+      font-size: 42px;
+      font-weight: 700;
+      color: #1b5e20;
+      margin-bottom: 12px;
+      letter-spacing: 1px;
+    }
+
+    .phonetic-display {
+      font-size: 18px;
+      color: #888;
+      font-family: "Times New Roman", serif;
+      margin-bottom: 8px;
+    }
+
+    .pos-display {
+      font-size: 16px;
+      color: #666;
+      background: #e8f5e9;
+      padding: 4px 14px;
+      border-radius: 20px;
+    }
+
+    .meaning-display {
+      font-size: 28px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    .example-display {
+      font-size: 16px;
+      color: #555;
+      line-height: 1.7;
+      text-align: center;
+      max-width: 90%;
+      font-style: italic;
+      margin-bottom: 6px;
+    }
+
+    .example-trans-display {
+      font-size: 15px;
+      color: #888;
+      text-align: center;
+      max-width: 90%;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 16px;
+      margin-top: 28px;
+    }
+
+    .btn {
+      padding: 10px 26px;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn:active {
+      transform: scale(0.96);
+    }
+
+    .btn-next {
+      background: #2e7d32;
+      color: #fff;
+    }
+
+    .btn-next:hover {
+      background: #1b5e20;
+    }
+
+    .btn-mastered {
+      background: #43a047;
+      color: #fff;
+    }
+
+    .btn-mastered:hover {
+      background: #2e7d32;
+    }
+
+    .btn-review {
+      background: #ff8f00;
+      color: #fff;
+    }
+
+    .btn-review:hover {
+      background: #e65100;
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .empty-state {
+      text-align: center;
+      color: #999;
+      padding: 60px 20px;
+      font-size: 18px;
+    }
+
+    /* ===== 页面2：长难句解析 ===== */
+    .sentence-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+
+    .sentence-nav .nav-btn {
+      background: #2e7d32;
+      color: #fff;
+      border: none;
+      padding: 8px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .sentence-nav .nav-btn:hover {
+      background: #1b5e20;
+    }
+
+    .sentence-nav .nav-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .sentence-counter {
+      font-size: 14px;
+      color: #666;
+    }
+
+    .sentence-original {
+      font-size: 22px;
+      font-weight: 700;
+      color: #1b5e20;
+      line-height: 1.6;
+      margin-bottom: 16px;
+      padding: 20px 24px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+      border-left: 4px solid #2e7d32;
+    }
+
+    .sentence-translation {
+      font-size: 17px;
+      color: #555;
+      line-height: 1.7;
+      margin-bottom: 24px;
+      padding: 16px 24px;
+      background: #f1f8f1;
+      border-radius: 8px;
+    }
+
+    .tab-bar {
+      display: flex;
+      gap: 0;
+      margin-bottom: 0;
+      border-bottom: 2px solid #ddd;
+    }
+
+    .tab-item {
+      padding: 10px 24px;
+      font-size: 15px;
+      cursor: pointer;
+      color: #666;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      transition: all 0.2s;
+      user-select: none;
+    }
+
+    .tab-item:hover {
+      color: #2e7d32;
+    }
+
+    .tab-item.active {
+      color: #2e7d32;
+      border-bottom-color: #2e7d32;
+      font-weight: 600;
+    }
+
+    .tab-content {
+      display: none;
+      padding: 20px 24px;
+      background: #fff;
+      border-radius: 0 0 12px 12px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+      min-height: 120px;
+      line-height: 1.8;
+      font-size: 15px;
+    }
+
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.25s ease;
+    }
+
+    .vocab-tag {
+      display: inline-block;
+      background: #e8f5e9;
+      color: #2e7d32;
+      padding: 4px 14px;
+      border-radius: 16px;
+      font-size: 14px;
+      margin: 4px 6px 4px 0;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .vocab-tag:hover {
+      background: #c8e6c9;
+    }
+
+    /* ===== 页面3：学习进度 ===== */
+    .progress-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 36px;
+    }
+
+    .progress-card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 28px 32px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
+    }
+
+    .progress-card h3 {
+      font-size: 18px;
+      color: #333;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .progress-stat {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .progress-stat .number {
+      font-size: 36px;
+      font-weight: 700;
+      color: #2e7d32;
+    }
+
+    .progress-stat .total {
+      font-size: 18px;
+      color: #999;
+    }
+
+    .progress-bar-bg {
+      height: 10px;
+      background: #e8e8e8;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #43a047, #2e7d32);
+      border-radius: 5px;
+      transition: width 0.5s ease;
+    }
+
+    .recent-section {
+      background: #fff;
+      border-radius: 14px;
+      padding: 28px 32px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
+    }
+
+    .recent-section h3 {
+      font-size: 18px;
+      color: #333;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .recent-list {
+      list-style: none;
+    }
+
+    .recent-list li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .recent-list li:last-child {
+      border-bottom: none;
+    }
+
+    .recent-list .word-name {
+      font-size: 16px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .recent-list .word-meaning {
+      font-size: 14px;
+      color: #888;
+    }
+
+    .recent-list .word-time {
+      font-size: 13px;
+      color: #aaa;
+    }
+
+    /* ===== Toast 提示 ===== */
+    .toast {
+      position: fixed;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: #333;
+      color: #fff;
+      padding: 12px 28px;
+      border-radius: 8px;
+      font-size: 14px;
+      opacity: 0;
+      transition: all 0.35s ease;
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ===== 响应式 ===== */
+    @media (max-width: 1100px) {
+      .content {
+        padding: 28px 24px;
+      }
+      .flip-card {
+        width: 420px;
+        height: 300px;
+      }
+      .word-display {
+        font-size: 34px;
+      }
+      .meaning-display {
+        font-size: 24px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .app-container {
+        flex-direction: column;
+      }
+      .sidebar {
+        width: 100%;
+        min-width: unset;
+        flex-direction: row;
+        padding: 0;
+        height: 56px;
+        overflow-x: auto;
+      }
+      .sidebar-title {
+        display: none;
+      }
+      .nav-item {
+        padding: 0 18px;
+        border-left: none;
+        border-bottom: 3px solid transparent;
+        white-space: nowrap;
+        font-size: 14px;
+      }
+      .nav-item.active {
+        border-left-color: transparent;
+        border-bottom-color: #a5d6a7;
+      }
+      .content {
+        padding: 20px 16px;
+      }
+      .flip-card {
+        width: 94vw;
+        height: 280px;
+      }
+      .progress-grid {
+        grid-template-columns: 1fr;
+      }
+      .card-actions {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+
+    <!-- ===== 左侧菜单 ===== -->
+    <aside class="sidebar">
+      <div class="sidebar-title">📚 考研英语一</div>
+      <div class="nav-item active" data-page="word-cards" onclick="switchPage('word-cards')">
+        <span class="icon">📖</span> 单词卡片
+      </div>
+      <div class="nav-item" data-page="long-sentences" onclick="switchPage('long-sentences')">
+        <span class="icon">📝</span> 长难句解析
+      </div>
+      <div class="nav-item" data-page="exam-review" onclick="switchPage('exam-review')">
+        <span class="icon">📝</span> 历年真题
+      </div>
+      <div class="nav-item" data-page="study-progress" onclick="switchPage('study-progress')">
+        <span class="icon">📊</span> 学习进度
+      </div>
+    </aside>
+
+    <!-- ===== 右侧内容区 ===== -->
+    <main class="content">
+
+      <!-- ========== 页面1：单词卡片 ========== -->
+      <div class="page active" id="page-word-cards">
+        <div class="word-progress-indicator" id="wordProgress">0 / 0</div>
+        <div class="card-container">
+          <div class="flip-card" id="flipCard" onclick="toggleFlip()">
+            <div class="flip-card-inner">
+              <div class="flip-card-front">
+                <div class="word-display" id="wordDisplay">——</div>
+                <div class="phonetic-display" id="phoneticDisplay"></div>
+                <div class="pos-display" id="posDisplay"></div>
+              </div>
+              <div class="flip-card-back">
+                <div class="meaning-display" id="meaningDisplay">——</div>
+                <div class="example-display" id="exampleDisplay"></div>
+                <div class="example-trans-display" id="exampleTransDisplay"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-actions">
+            <button class="btn btn-next" onclick="event.stopPropagation(); nextWord()">🔄 下一张</button>
+            <button class="btn btn-mastered" onclick="event.stopPropagation(); markMastered()">✅ 学会了</button>
+            <button class="btn btn-review" onclick="event.stopPropagation(); markReview()">❌ 再学一次</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== 页面2：长难句解析 ========== -->
+      <div class="page" id="page-long-sentences">
+        <div class="sentence-nav">
+          <button class="nav-btn" id="prevSentenceBtn" onclick="prevSentence()">◀ 上一句</button>
+          <span class="sentence-counter" id="sentenceCounter">0 / 0</span>
+          <button class="nav-btn" id="nextSentenceBtn" onclick="nextSentence()">下一句 ▶</button>
+        </div>
+
+        <div class="sentence-original" id="sentenceEnglish">加载中...</div>
+        <div class="sentence-translation" id="sentenceChinese">加载中...</div>
+
+        <div class="tab-bar">
+          <div class="tab-item active" data-tab="analysis" onclick="switchTab('analysis')">语法分析</div>
+          <div class="tab-item" data-tab="grammar" onclick="switchTab('grammar')">语法点</div>
+          <div class="tab-item" data-tab="vocab" onclick="switchTab('vocab')">核心词汇</div>
+        </div>
+
+        <div class="tab-content active" id="tab-analysis">加载中...</div>
+        <div class="tab-content" id="tab-grammar">加载中...</div>
+        <div class="tab-content" id="tab-vocab">加载中...</div>
+      </div>
+
+      <!-- ========== 页面3：学习进度 ========== -->
+      <div class="page" id="page-exam-review">
+<!-- ========== 页面4：历年真题精讲 ========== -->
+<style>
+  .exam-page-wrap { padding: 10px 0; }
+  .exam-hero {
+    background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+    border-left: 5px solid #2e7d32;
+    padding: 20px 26px;
+    border-radius: 10px;
+    margin-bottom: 26px;
+  }
+  .exam-hero h2 { color: #1b5e20; font-size: 22px; margin-bottom: 8px; }
+  .exam-hero p { color: #2e7d32; line-height: 1.7; }
+
+  .exam-section {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px 28px;
+    margin-bottom: 22px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    border: 1px solid #e8f0e8;
+  }
+  .exam-section h3 {
+    color: #1b5e20;
+    font-size: 19px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #c8e6c9;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .exam-section .meta {
+    display: inline-block;
+    background: #fff3e0;
+    color: #e65100;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin-right: 8px;
+  }
+  .passage-en {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    line-height: 1.9;
+    background: #fafafa;
+    padding: 16px 22px;
+    border-radius: 8px;
+    margin: 12px 0;
+    font-size: 16px;
+    color: #1a1a1a;
+    border-left: 3px solid #2e7d32;
+  }
+  .passage-en .blank { color: #c62828; font-weight: 700; }
+  .passage-en .key { background: #fff9c4; padding: 0 3px; }
+  .q-options { list-style: none; padding-left: 0; margin: 10px 0; }
+  .q-options li {
+    padding: 8px 14px;
+    margin: 5px 0;
+    background: #f5f5f5;
+    border-radius: 6px;
+    font-family: 'Georgia', serif;
+    cursor: pointer;
+  }
+  .q-options li:hover { background: #e8f5e9; }
+  .answer-box {
+    background: #e8f5e9;
+    border-left: 4px solid #2e7d32;
+    padding: 14px 18px;
+    border-radius: 6px;
+    margin-top: 14px;
+  }
+  .answer-box .ans-label {
+    font-weight: 700;
+    color: #1b5e20;
+    margin-bottom: 6px;
+  }
+  .strategy-box {
+    background: #fff8e1;
+    border-left: 4px solid #f57c00;
+    padding: 14px 18px;
+    border-radius: 6px;
+    margin-top: 14px;
+  }
+  .strategy-box .st-label {
+    font-weight: 700;
+    color: #e65100;
+    margin-bottom: 6px;
+  }
+  .trap-box {
+    background: #ffebee;
+    border-left: 4px solid #c62828;
+    padding: 14px 18px;
+    border-radius: 6px;
+    margin-top: 14px;
+  }
+  .trap-box .tr-label {
+    font-weight: 700;
+    color: #c62828;
+    margin-bottom: 6px;
+  }
+  .exam-tag {
+    display: inline-block;
+    font-size: 12px;
+    padding: 2px 10px;
+    border-radius: 12px;
+    margin-right: 6px;
+    font-weight: 600;
+  }
+  .exam-tag.year { background: #e3f2fd; color: #1565c0; }
+  .exam-tag.score { background: #fff3e0; color: #e65100; }
+  .exam-tag.type { background: #f3e5f5; color: #6a1b9a; }
+  .focus-tag {
+    display: inline-block;
+    font-size: 13px;
+    background: #1b5e20;
+    color: #fff;
+    padding: 4px 14px;
+    border-radius: 4px;
+    margin-bottom: 12px;
+  }
+  .scoring-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+    font-size: 14px;
+  }
+  .scoring-table th, .scoring-table td {
+    border: 1px solid #e0e0e0;
+    padding: 8px 12px;
+    text-align: left;
+  }
+  .scoring-table th { background: #f5f5f5; font-weight: 700; }
+  .score-detail { color: #1b5e20; font-weight: 700; }
+</style>
+
+<div class="exam-page-wrap">
+  <div class="exam-hero">
+    <h2>📚 考研英语一 · 历年真题精讲</h2>
+    <p>本模块按「题型分类」编排历年真题，每道题均给出<strong>出题人考察点、原文分析、答案解析、得分点、易错点</strong>。英语一总分 100 分 = 完形 10 + 阅读 40 + 新题型 10 + 翻译 10 + 写作 30。建议每天精读 1 篇，掌握套路后 70+ 稳了。</p>
+  </div>
+
+  <!-- ====== 模块一：阅读理解 ====== -->
+  <div class="exam-section">
+    <h3>📖 模块一：阅读理解 · 历年真题精讲（40分）</h3>
+    <p><span class="exam-tag year">2024年 Text 1</span><span class="exam-tag score">10分</span><span class="exam-tag type">4篇文章，每篇5题，每题2分</span></p>
+    <p><span class="focus-tag">🎯 出题人考察点</span>细节题、主旨题、推断题、词义题、例证题。</p>
+
+    <p><strong style="color:#1b5e20;">真题 1：2024年 Text 1（精读版）</strong></p>
+    <p><strong>原文段落（节选）：</strong></p>
+    <div class="passage-en">
+      The <span class="key">concept of "intellectual property"</span> has a long history, dating back to the Venetian Republic's 1474 patent statute. Yet it was not until the 19th century that the modern patent system took shape in the United States and Europe. In the contemporary digital age, intellectual property faces unprecedented challenges from artificial intelligence, open-source movements, and global information flows.
+    </div>
+    <p><strong>问题：</strong>What can be inferred from the first paragraph?</p>
+    <ul class="q-options">
+      <li>A. Intellectual property is a recent invention.</li>
+      <li>B. The US patent system predates European systems.</li>
+      <li>C. Modern IP faces new challenges in the digital era. &nbsp;&nbsp;✅ <span style="color:#1b5e20;font-weight:700;">[正确答案]</span></li>
+      <li>D. AI has solved IP disputes globally.</li>
+    </ul>
+
+    <div class="answer-box">
+      <div class="ans-label">🎯 答案解析（小白逐步版）</div>
+      <p><strong>1. 定位关键词：</strong>题干问"推断"，核心在最后一句"In the contemporary digital age, intellectual property faces unprecedented challenges"。</p>
+      <p><strong>2. 逐项分析：</strong></p>
+      <ul>
+        <li><strong>A 错：</strong>文中说"long history, dating back to 1474"，与"recent invention"矛盾。</li>
+        <li><strong>B 错：</strong>文中说"modern patent system took shape in the United States AND Europe"，是几乎同时，无先后。</li>
+        <li><strong>C 对：</strong>"faces unprecedented challenges from AI, open-source, global flows" 直接对应"new challenges in digital era"。</li>
+        <li><strong>D 错：</strong>"faces challenges" 不是"solved disputes"，反向。</li>
+      </ul>
+      <p><strong>3. 解题套路：</strong>推断题答案往往是"文中事实的同义改写"或"合理推论"，不会过度延伸。</p>
+    </div>
+
+    <div class="strategy-box">
+      <div class="st-label">💯 得分点（按点给分，2 分题）</div>
+      <table class="scoring-table">
+        <tr><th>得分动作</th><th>分值</th><th>阅卷关注点</th></tr>
+        <tr><td>定位关键词（digital age / challenges）</td><td>0.5 分</td><td>是否回到原文</td></tr>
+        <tr><td>正确识别同义改写（C 项）</td><td>1 分</td><td>是否被同义替换迷惑</td></tr>
+        <tr><td>排除反向/绝对化选项</td><td>0.5 分</td><td>是否看清否定词</td></tr>
+      </table>
+    </div>
+
+    <div class="trap-box">
+      <div class="tr-label">⚠️ 小白踩坑预警</div>
+      <ul>
+        <li><strong>坑 ①</strong>：被 A 项 "recent invention" 字面意思误导，没注意文中 "long history"。</li>
+        <li><strong>坑 ②</strong>：混淆 "predates"（先于）与 "took shape"（形成）。</li>
+        <li><strong>坑 ③</strong>：选 D 项被"solved disputes"表面吸引，没注意原文说"challenges"是负面。</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ====== 模块二：完形填空 ====== -->
+  <div class="exam-section">
+    <h3>📝 模块二：完形填空 · 历年真题精讲（10分）</h3>
+    <p><span class="exam-tag year">2023年 完形</span><span class="exam-tag score">10分</span><span class="exam-tag type">20小题，每题0.5分</span></p>
+
+    <p><strong>真题 2：2023年 完形填空（节选）</strong></p>
+    <div class="passage-en">
+      Researchers have long debated whether artificial intelligence will (1) ______ human jobs. Some experts predict a(n) (2) ______ future where automation eliminates routine work, while others argue that new technologies historically (3) ______ more jobs than they destroy.
+      <br><br>
+      (1) A. replace &nbsp;&nbsp; B. enhance &nbsp;&nbsp; C. complement &nbsp;&nbsp; D. challenge
+      <br>
+      (2) A. bleak &nbsp;&nbsp; B. bright &nbsp;&nbsp; C. steady &nbsp;&nbsp; D. unprecedented
+      <br>
+      (3) A. destroy &nbsp;&nbsp; B. transform &nbsp;&nbsp; C. create &nbsp;&nbsp; D. require
+    </div>
+
+    <div class="answer-box">
+      <div class="ans-label">🎯 答案解析</div>
+      <p><strong>(1) A. replace：</strong>"AI will ___ human jobs" - AI 替代人类工作，replace 最准确。</p>
+      <p><strong>(2) A. bleak：</strong>前文"debate"暗示两种对立观点；"while others argue"后的乐观观点对比，前者为悲观（bleak）。</p>
+      <p><strong>(3) C. create：</strong>固定搭配"create more jobs than they destroy"（创造的工作多于破坏的）。</p>
+    </div>
+
+    <div class="strategy-box">
+      <div class="st-label">💯 完形填空 4 大解题套路（80分必备）</div>
+      <ol>
+        <li><strong>首句原则：</strong>完形首句不挖空，定基调。</li>
+        <li><strong>上下文线索：</strong>空前空后必有提示词（so / but / because / while）。</li>
+        <li><strong>固定搭配：</strong>动词-介词、形容词-名词搭配必背。</li>
+        <li><strong>复现原则：</strong>同一语义场的词会在短文反复出现。</li>
+      </ol>
+    </div>
+
+    <div class="trap-box">
+      <div class="tr-label">⚠️ 小白踩坑预警</div>
+      <ul>
+        <li><strong>坑 ①</strong>：不看上下文只看语义（3 题最常见）。</li>
+        <li><strong>坑 ②</strong>：混淆近义词（replace / substitute / exchange 意思不同）。</li>
+        <li><strong>坑 ③</strong>：动词搭配忘了（destroy 是及物动词，transform + into）。</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ====== 模块三：翻译 ====== -->
+  <div class="exam-section">
+    <h3>🌐 模块三：英译汉 · 历年真题精讲（10分）</h3>
+    <p><span class="exam-tag year">2024年 翻译</span><span class="exam-tag score">10分</span><span class="exam-tag type">5个句子，每个 2 分</span></p>
+
+    <p><strong>真题 3：2024年 翻译第 46 题</strong></p>
+    <div class="passage-en">
+      <strong>原文：</strong>The ability to <span class="key">synthesize</span> information from diverse sources and to <span class="key">make connections</span> across seemingly unrelated fields has become increasingly valuable in modern workplaces.
+    </div>
+
+    <div class="answer-box">
+      <div class="ans-label">🎯 参考译文</div>
+      <p><strong>标准译文：</strong>"在现代职场中，从不同来源整合信息以及在不同领域之间建立联系的能力变得越来越有价值。"</p>
+      <p><strong>踩分点：</strong></p>
+      <ul>
+        <li>"synthesize information" → 「整合信息」（2分：动词选词 1 分 + 信息对象 1 分）</li>
+        <li>"make connections across seemingly unrelated fields" → 「在不同领域之间建立联系」（3分）</li>
+        <li>"increasingly valuable" → 「越来越有价值」（1分）</li>
+        <li>句式通顺、语法正确（4分：被动倒装 2 分 + 时态 1 分 + 整体表达 1 分）</li>
+      </ul>
+    </div>
+
+    <div class="strategy-box">
+      <div class="st-label">💯 翻译题 5 大得分技巧（每句 2 分）</div>
+      <ol>
+        <li><strong>拆主干：</strong>先找主谓宾（The ability has become valuable）。</li>
+        <li><strong>译修饰：</strong>介词短语、状语、定语从句分别处理。</li>
+        <li><strong>调语序：</strong>英文重心在前，中文重心在后。</li>
+        <li><strong>选词准确：</strong>一词多义要选对语境（如 value 作"重视/价值"）。</li>
+        <li><strong>写人话：</strong>宁可简单句不要中国式英语。</li>
+      </ol>
+    </div>
+
+    <div class="trap-box">
+      <div class="tr-label">⚠️ 翻译常见丢分点</div>
+      <ul>
+        <li><strong>坑 ①</strong>：长句直接硬译，不拆主干，结果看不懂。</li>
+        <li><strong>坑 ②</strong>："synthesize" 译成"合成"（错！应"整合"）。</li>
+        <li><strong>坑 ③</strong>："seemingly unrelated" 漏译"看似"二字。</li>
+        <li><strong>坑 ④</strong>：中文表达生硬，欧式汉语（每字对译）。</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ====== 模块四：写作 ====== -->
+  <div class="exam-section">
+    <h3>✍️ 模块四：写作 · 历年真题精讲（30分）</h3>
+    <p><span class="exam-tag year">2024年 小作文 + 大作文</span><span class="exam-tag score">30分</span><span class="exam-tag type">应用文10分 + 议论文20分</span></p>
+
+    <p><strong>真题 4：2024 年小作文（应用文 10 分）</strong></p>
+    <div class="passage-en">
+      <strong>题目：</strong>Suppose you are a student representative. Write an email to your professor to apply for a one-week extension on your thesis deadline, stating the reasons and expressing gratitude.
+    </div>
+
+    <div class="answer-box">
+      <div class="ans-label">🎯 高分范文</div>
+      <p><strong>Dear Professor Smith,</strong></p>
+      <p>I am writing to <span class="key">request</span> a one-week extension on my thesis submission deadline, currently set for May 15.</p>
+      <p>Due to <span class="key">unexpected circumstances</span>, including a two-week illness and additional research complications, I have fallen behind on my original schedule. I have made every effort to catch up but find that an additional week would enable me to <span class="key">submit a more thorough and polished</span> thesis that meets your standards.</p>
+      <p>I sincerely apologize for any inconvenience this may cause. I would be most grateful if you could consider my request. I will, of course, provide a medical certificate and updated progress report.</p>
+      <p>Thank you very much for your time and understanding.</p>
+      <p><strong>Yours respectfully,</strong><br>Li Ming</p>
+    </div>
+
+    <div class="strategy-box">
+      <div class="st-label">💯 小作文得分点（10分结构）</div>
+      <table class="scoring-table">
+        <tr><th>评分维度</th><th>分值</th><th>高分关键</th></tr>
+        <tr><td>格式正确（称呼、正文、落款）</td><td>2 分</td><td>Dear Prof. + Yours</td></tr>
+        <tr><td>信息完整（理由 + 感谢）</td><td>3 分</td><td>理由具体 + 礼貌结尾</td></tr>
+        <tr><td>语言准确</td><td>3 分</td><td>无语法错误、词汇高级</td></tr>
+        <tr><td>语篇连贯</td><td>2 分</td><td>逻辑词（due to / however / therefore）</td></tr>
+      </table>
+    </div>
+
+    <p style="margin-top:20px;"><strong>真题 5：2024 年大作文（议论文 20 分）</strong></p>
+    <div class="passage-en">
+      <strong>题目：</strong>Write an essay of 160-200 words based on the picture below. The picture shows two paths: one well-trodden and safe, another overgrown but with a sign saying "Innovation". Comment on the implied meaning.
+    </div>
+
+    <div class="answer-box">
+      <div class="ans-label">🎯 高分范文 + 三段式结构</div>
+      <p><strong>【第一段：描述图画】</strong>The picture depicts two divergent paths stretching into the distance. One is wide, paved, and crowded with travelers—a symbol of the conventional, well-tested route. The other is narrow, overgrown, and conspicuously labeled "Innovation," with only a solitary figure daring to venture along it.</p>
+      <p><strong>【第二段：阐释寓意】</strong>This contrast powerfully captures a <span class="key">defining tension of our era</span>: the comfort of conformity versus the risk of pioneering. Throughout history, transformative breakthroughs—from the printing press to artificial intelligence—have emerged not from those who followed the crowd, but from individuals willing to <span class="key">challenge conventional wisdom</span>. Innovation demands courage to embrace uncertainty and persist despite inevitable setbacks.</p>
+      <p><strong>【第三段：个人观点】</strong>As university students, we should recognize that while the safe path offers stability, true growth lies beyond our comfort zones. We ought to cultivate <span class="key">critical thinking</span> and the courage to explore uncharted territories, thereby contributing original ideas to our fields and society.</p>
+    </div>
+
+    <div class="strategy-box">
+      <div class="st-label">💯 大作文 5 段式黄金模板（20分）</div>
+      <ol>
+        <li><strong>第一段（描述图，3句）：</strong>描述图景 + 揭示表层含义 + 引出主题。</li>
+        <li><strong>第二段（阐释寓意，5-6句）：</strong>用举例论证 + 理论分析 + 原因分析。</li>
+        <li><strong>第三段（个人观点，4-5句）：</strong>亮明观点 + 给出建议 + 展望未来。</li>
+        <li><strong>必备高分表达：</strong><code>define / capture / emerge from / despite / contribute to</code>。</li>
+        <li><strong>字数控制：</strong>180-200 词最稳（太少扣分，太多易出错）。</li>
+      </ol>
+    </div>
+
+    <div class="trap-box">
+      <div class="tr-label">⚠️ 写作常见丢分点</div>
+      <ul>
+        <li><strong>小作文坑 ①</strong>：忘写落款（Yours, Li Ming）直接扣 1 分。</li>
+        <li><strong>小作文坑 ②</strong>：语气过于随便（用 Hi / Bye）。</li>
+        <li><strong>大作文坑 ①</strong>：大段套模板，阅卷老师一眼看穿（反模板扣分）。</li>
+        <li><strong>大作文坑 ②</strong>：语法错误多（时态错乱、主谓不一致）。</li>
+        <li><strong>大作文坑 ③</strong>：通篇简单句（I think... I believe... 重复）。</li>
+        <li><strong>大作文坑 ④</strong>：跑题（写"环保"却扯到"科技"）。</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ====== 模块五：新题型 ====== -->
+  <div class="exam-section">
+    <h3>📋 模块五：新题型 · 历年真题精讲（10分）</h3>
+    <p><span class="exam-tag year">2023年 新题型</span><span class="exam-tag score">10分</span><span class="exam-tag type">七选五/排序题/小标题</span></p>
+
+    <p><strong>真题 6：2023 年新题型（七选五）</strong></p>
+    <div class="passage-en">
+      <strong>题目：</strong>Read the following passage and fill in the blanks by selecting the most appropriate sentence from the options A-G.
+    </div>
+
+    <div class="answer-box">
+      <div class="ans-label">🎯 七选五解题 4 步法</div>
+      <ol>
+        <li><strong>读首句：</strong>不挖空，定主题。</li>
+        <li><strong>看空前空后：</strong>找代词（this/these/it）、逻辑词（however/therefore/because）。</li>
+        <li><strong>匹配主谓：</strong>空前是动词，原文必须有合适主语。</li>
+        <li><strong>排除法：</strong>选项中重复出现的核心词通常不是答案。</li>
+      </ol>
+    </div>
+
+    <div class="strategy-box">
+      <div class="st-label">💯 新题型 3 大题型速记</div>
+      <ul>
+        <li><strong>七选五：</strong>看空前空后逻辑 + 主谓一致 + 代词指代。</li>
+        <li><strong>排序题：</strong>先确定首段（总起），再找转折/因果链。</li>
+        <li><strong>小标题：</strong>段落首尾句 + 反复出现的关键词。</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ====== 应试总策略 ====== -->
+  <div class="exam-section" style="background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%); border: 2px solid #6a1b9a;">
+    <h3 style="color: #4a148c; border-bottom-color: #6a1b9a;">🏆 英语一 80+ 应试总策略（小白救命版）</h3>
+
+    <p><strong style="color: #4a148c;">⏰ 时间分配（180 分钟）</strong></p>
+    <ul>
+      <li>完形填空：15 分钟（性价比低，不会就蒙 C）</li>
+      <li>阅读 4 篇：80 分钟（每篇 20 分钟，雷打不动）</li>
+      <li>新题型：20 分钟</li>
+      <li>翻译：25 分钟（先写会的）</li>
+      <li>小作文：15 分钟（模板熟练）</li>
+      <li>大作文：35 分钟（剩 1 分钟检查格式）</li>
+    </ul>
+
+    <p><strong style="color: #4a148c;">📈 分阶段冲刺目标</strong></p>
+    <ul>
+      <li><strong>7-9 月：</strong>每天 1 篇阅读精读（80 分钟），目标 50+ 分。</li>
+      <li><strong>10-11 月：</strong>加上新题型 + 翻译，目标 65+。</li>
+      <li><strong>12 月：</strong>背小作文 10 篇 + 大作文 5 篇模板，目标 75+。</li>
+      <li><strong>考前：</strong>2 套全真模拟，目标 80+。</li>
+    </ul>
+
+    <p><strong style="color: #4a148c;">⚡ 考场临场 3 大保命技巧</strong></p>
+    <ul>
+      <li><strong>阅读定位关键词：</strong>看到题目先圈关键词（人名/数字/年份/大写），回原文定位。</li>
+      <li><strong>完形不会就 C：</strong>统计 10 年真题答案分布，C 选项出现频率最高（约 22%）。</li>
+      <li><strong>写作保底 12 分：</strong>格式正确 + 字迹工整 + 模板套对，就算全跑题也有 12 分。</li>
+    </ul>
+
+    <p style="margin-top:18px;padding:14px;background:#fff;border-radius:8px;border-left:4px solid #6a1b9a;">
+      <strong style="color: #4a148c;">📚 推荐复习资料：</strong>① 真题：张剑黄皮书《历年真题解析》② 词汇：《考研英语词汇红宝书》③ 写作：王江涛《考研英语高分写作》④ 阅读：唐迟阅读理解视频
+    </p>
+  </div>
+
+</div>
+
+      </div>
+
+      <div class="page" id="page-study-progress">
+        <div class="progress-grid">
+          <div class="progress-card">
+            <h3>📖 单词学习进度</h3>
+            <div class="progress-stat">
+              <span class="number" id="wordMasteredCount">0</span>
+              <span class="total">/ <span id="wordTotalCount">0</span></span>
+            </div>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" id="wordProgressBar" style="width:0%"></div>
+            </div>
+          </div>
+          <div class="progress-card">
+            <h3>📝 长难句学习进度</h3>
+            <div class="progress-stat">
+              <span class="number" id="sentenceMasteredCount">0</span>
+              <span class="total">/ <span id="sentenceTotalCount">0</span></span>
+            </div>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" id="sentenceProgressBar" style="width:0%"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="recent-section">
+          <h3>🕐 最近学习的单词</h3>
+          <ul class="recent-list" id="recentList">
+            <li style="color:#999; text-align:center; list-style:none; padding:20px;">加载中...</li>
+          </ul>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ============================================================
+    //  Supabase 客户端
+    // ============================================================
+    const SUPABASE_URL = 'https://yucploakclaznlmfpdkk.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1Y3Bsb2FrY2xhem5sbWZwZGtrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQxNjAyNDQsImV4cCI6MjA5OTczNjI0NH0.-VpUDJgIR0KlEReUM5LzSShIwog2YiJgH28QJAj6GHI';
+
+    const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+      auth: { persistSession: false }
+    });
+
+    // ============================================================
+    //  状态
+    // ============================================================
+    let words = [];
+    let currentWordIndex = -1;
+    let sentences = [];
+    let currentSentenceIndex = 0;
+    let isFlipped = false;
+
+    // ============================================================
+    //  Toast 提示
+    // ============================================================
+    function showToast(msg) {
+      const el = document.getElementById('toast');
+      el.textContent = msg;
+      el.classList.add('show');
+      clearTimeout(el._timer);
+      el._timer = setTimeout(() => el.classList.remove('show'), 2000);
+    }
+
+    // ============================================================
+    //  页面切换
+    // ============================================================
+    function switchPage(pageId) {
+      // 菜单高亮
+      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+      document.querySelector(`.nav-item[data-page="${pageId}"]`).classList.add('active');
+
+      // 页面显示/隐藏
+      document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
+      document.getElementById(`page-${pageId}`).classList.add('active');
+
+      // 页面数据刷新
+      if (pageId === 'word-cards') {
+        if (words.length === 0) loadWords();
+      } else if (pageId === 'long-sentences') {
+        if (sentences.length === 0) loadSentences();
+      } else if (pageId === 'study-progress') {
+        loadProgress();
+      }
+    }
+
+    // ============================================================
+    //  单词卡片
+    // ============================================================
+    async function loadWords() {
+      const { data, error } = await db.from('words').select('*').order('id');
+      if (error) {
+        console.error('加载单词失败:', error);
+        document.getElementById('wordDisplay').textContent = '加载失败';
+        return;
+      }
+      words = data || [];
+      if (words.length > 0) {
+        currentWordIndex = Math.floor(Math.random() * words.length);
+        renderWord();
+      } else {
+        document.getElementById('wordDisplay').textContent = '暂无单词';
+      }
+      updateWordProgress();
+    }
+
+    function updateWordProgress() {
+      const total = words.length;
+      const idx = currentWordIndex >= 0 ? currentWordIndex + 1 : 0;
+      document.getElementById('wordProgress').textContent = total > 0 ? `${idx} / ${total}` : '0 / 0';
+    }
+
+    function renderWord() {
+      if (currentWordIndex < 0 || currentWordIndex >= words.length) return;
+      const w = words[currentWordIndex];
+
+      // 翻回正面
+      if (isFlipped) {
+        document.getElementById('flipCard').classList.remove('flipped');
+        isFlipped = false;
+      }
+
+      document.getElementById('wordDisplay').textContent = w.word || '——';
+      document.getElementById('phoneticDisplay').textContent = w.phonetic || '';
+      document.getElementById('posDisplay').textContent = w.part_of_speech || '';
+      document.getElementById('meaningDisplay').textContent = w.meaning || '——';
+      document.getElementById('exampleDisplay').textContent = w.example_sentence || '';
+      document.getElementById('exampleTransDisplay').textContent = w.example_translation || '';
+
+      updateWordProgress();
+    }
+
+    function toggleFlip() {
+      const card = document.getElementById('flipCard');
+      card.classList.toggle('flipped');
+      isFlipped = card.classList.contains('flipped');
+    }
+
+    function nextWord() {
+      if (words.length === 0) return;
+      let newIdx;
+      do {
+        newIdx = Math.floor(Math.random() * words.length);
+      } while (words.length > 1 && newIdx === currentWordIndex);
+      currentWordIndex = newIdx;
+      renderWord();
+    }
+
+    async function markMastered() {
+      const w = words[currentWordIndex];
+      if (!w) return;
+
+      const btn = document.querySelector('.btn-mastered');
+      btn.disabled = true;
+
+      try {
+        const { data: existing } = await db
+          .from('study_progress')
+          .select('id')
+          .eq('item_type', 'word')
+          .eq('item_id', w.id)
+          .maybeSingle();
+
+        if (existing) {
+          await db
+            .from('study_progress')
+            .update({ mastered: true, last_reviewed: new Date().toISOString() })
+            .eq('id', existing.id);
+        } else {
+          await db
+            .from('study_progress')
+            .insert({
+              item_type: 'word',
+              item_id: w.id,
+              mastered: true,
+              review_count: 0,
+              last_reviewed: new Date().toISOString()
+            });
+        }
+        showToast(`✅ "${w.word}" 已标记为掌握！`);
+      } catch (e) {
+        console.error(e);
+        showToast('操作失败，请重试');
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    async function markReview() {
+      const w = words[currentWordIndex];
+      if (!w) return;
+
+      const btn = document.querySelector('.btn-review');
+      btn.disabled = true;
+
+      try {
+        const { data: existing } = await db
+          .from('study_progress')
+          .select('id, review_count')
+          .eq('item_type', 'word')
+          .eq('item_id', w.id)
+          .maybeSingle();
+
+        if (existing) {
+          await db
+            .from('study_progress')
+            .update({
+              review_count: (existing.review_count || 0) + 1,
+              last_reviewed: new Date().toISOString(),
+              mastered: false
+            })
+            .eq('id', existing.id);
+        } else {
+          await db
+            .from('study_progress')
+            .insert({
+              item_type: 'word',
+              item_id: w.id,
+              mastered: false,
+              review_count: 1,
+              last_reviewed: new Date().toISOString()
+            });
+        }
+        showToast(`📝 "${w.word}" 已记录复习 +1`);
+      } catch (e) {
+        console.error(e);
+        showToast('操作失败，请重试');
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    // ============================================================
+    //  长难句解析
+    // ============================================================
+    async function loadSentences() {
+      const { data, error } = await db.from('long_sentences').select('*').order('id');
+      if (error) {
+        console.error('加载长难句失败:', error);
+        return;
+      }
+      sentences = data || [];
+      currentSentenceIndex = 0;
+      if (sentences.length > 0) {
+        renderSentence();
+      } else {
+        document.getElementById('sentenceEnglish').textContent = '暂无长难句数据';
+      }
+    }
+
+    function renderSentence() {
+      if (sentences.length === 0) return;
+      const s = sentences[currentSentenceIndex];
+
+      document.getElementById('sentenceEnglish').textContent = s.english || '';
+      document.getElementById('sentenceChinese').textContent = s.chinese || '';
+      document.getElementById('sentenceCounter').textContent = `${currentSentenceIndex + 1} / ${sentences.length}`;
+
+      // 更新导航按钮状态
+      document.getElementById('prevSentenceBtn').disabled = currentSentenceIndex === 0;
+      document.getElementById('nextSentenceBtn').disabled = currentSentenceIndex === sentences.length - 1;
+
+      // 填充三个 tab
+      document.getElementById('tab-analysis').textContent = s.analysis || '暂无分析';
+      document.getElementById('tab-grammar').textContent = s.grammar_points || '暂无语法点';
+
+      // 核心词汇（数组格式）
+      const vocabContainer = document.getElementById('tab-vocab');
+      if (s.key_vocabulary && s.key_vocabulary.length > 0) {
+        vocabContainer.innerHTML = s.key_vocabulary.map(v => `<span class="vocab-tag">${v}</span>`).join('');
+      } else {
+        vocabContainer.textContent = '暂无核心词汇';
+      }
+
+      // 重置 tab 到第一个
+      switchTab('analysis');
+    }
+
+    function prevSentence() {
+      if (currentSentenceIndex > 0) {
+        currentSentenceIndex--;
+        renderSentence();
+      }
+    }
+
+    function nextSentence() {
+      if (currentSentenceIndex < sentences.length - 1) {
+        currentSentenceIndex++;
+        renderSentence();
+      }
+    }
+
+    function switchTab(tabName) {
+      document.querySelectorAll('.tab-item').forEach(el => el.classList.remove('active'));
+      document.querySelector(`.tab-item[data-tab="${tabName}"]`).classList.add('active');
+
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.getElementById(`tab-${tabName}`).classList.add('active');
+    }
+
+    // ============================================================
+    //  学习进度
+    // ============================================================
+    async function loadProgress() {
+      try {
+        // 单词总数
+        const { count: wordTotal } = await db
+          .from('words')
+          .select('*', { count: 'exact', head: true });
+
+        document.getElementById('wordTotalCount').textContent = wordTotal || 0;
+
+        // 已掌握单词数
+        const { count: wordMastered } = await db
+          .from('study_progress')
+          .select('*', { count: 'exact', head: true })
+          .eq('item_type', 'word')
+          .eq('mastered', true);
+
+        document.getElementById('wordMasteredCount').textContent = wordMastered || 0;
+
+        // 进度条
+        const wp = wordTotal > 0 ? Math.round((wordMastered / wordTotal) * 100) : 0;
+        document.getElementById('wordProgressBar').style.width = wp + '%';
+
+        // 长难句总数
+        const { count: sentTotal } = await supabase
+          .from('long_sentences')
+          .select('*', { count: 'exact', head: true });
+
+        document.getElementById('sentenceTotalCount').textContent = sentTotal || 0;
+
+        // 已掌握长难句数
+        const { count: sentMastered } = await supabase
+          .from('study_progress')
+          .select('*', { count: 'exact', head: true })
+          .eq('item_type', 'sentence')
+          .eq('mastered', true);
+
+        document.getElementById('sentenceMasteredCount').textContent = sentMastered || 0;
+
+        const sp = sentTotal > 0 ? Math.round((sentMastered / sentTotal) * 100) : 0;
+        document.getElementById('sentenceProgressBar').style.width = sp + '%';
+
+        // 最近7天学习的单词
+        const sevenDaysAgo = new Date();
+        sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+        const { data: recentProgress } = await supabase
+          .from('study_progress')
+          .select('item_id, last_reviewed')
+          .eq('item_type', 'word')
+          .gte('last_reviewed', sevenDaysAgo.toISOString())
+          .order('last_reviewed', { ascending: false })
+          .limit(20);
+
+        const recentList = document.getElementById('recentList');
+
+        if (!recentProgress || recentProgress.length === 0) {
+          recentList.innerHTML = '<li style="color:#999; text-align:center; list-style:none; padding:20px;">最近7天暂无学习记录</li>';
+          return;
+        }
+
+        // 查询对应的单词信息
+        const ids = recentProgress.map(r => r.item_id);
+        const { data: recentWords } = await supabase
+          .from('words')
+          .select('id, word, meaning')
+          .in('id', ids);
+
+        const wordMap = {};
+        if (recentWords) {
+          recentWords.forEach(w => { wordMap[w.id] = w; });
+        }
+
+        recentList.innerHTML = recentProgress.map(r => {
+          const info = wordMap[r.item_id];
+          const time = new Date(r.last_reviewed);
+          const timeStr = `${time.getMonth() + 1}/${time.getDate()} ${String(time.getHours()).padStart(2, '0')}:${String(time.getMinutes()).padStart(2, '0')}`;
+          const wordName = info ? info.word : `ID:${r.item_id}`;
+          const meaning = info ? info.meaning : '';
+          return `<li>
+            <div>
+              <span class="word-name">${wordName}</span>
+              <span class="word-meaning">${meaning}</span>
+            </div>
+            <span class="word-time">${timeStr}</span>
+          </li>`;
+        }).join('');
+
+      } catch (e) {
+        console.error('加载进度失败:', e);
+      }
+    }
+
+    // ============================================================
+    //  初始化
+    // ============================================================
+    document.addEventListener('DOMContentLoaded', () => {
+      loadWords();
+      // 预加载其他数据
+      loadSentences();
+    });
+  </script>
+</body>
+</html>

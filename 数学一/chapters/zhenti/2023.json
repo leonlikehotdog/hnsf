@@ -1,0 +1,1375 @@
+[
+  {
+    "id": "2023-01",
+    "year": 2023,
+    "num": "一(1)",
+    "score": 5,
+    "type": "选择题",
+    "part": "高数",
+    "difficulty": 3,
+    "question": "曲线 \\(y = x \\ln\\left(\\mathrm{e} + \\dfrac{1}{x-1}\\right)\\) 的斜渐近线方程为（　　）",
+    "options": [
+      "A. \\(y = x + \\mathrm{e}\\)",
+      "B. \\(y = x + \\dfrac{1}{\\mathrm{e}}\\)",
+      "C. \\(y = x\\)",
+      "D. \\(y = x - \\dfrac{1}{\\mathrm{e}}\\)"
+    ],
+    "testPoints": [
+      "斜渐近线的求法"
+    ],
+    "knowledgeIds": [
+      "GS.1.5"
+    ],
+    "knowledgePoints": [
+      {
+        "name": "斜渐近线的求法",
+        "chapter": "ch01",
+        "anchor": "part1"
+      }
+    ],
+    "solution": [
+      {
+        "step": 1,
+        "title": "渐近线思维导图",
+        "content": "【定义域】<br>├─ 有限无定义点 \\(x=a\\) → 算 \\(\\lim_{x\\to a^\\pm}f(x)\\)<br>│　├─ 至少一侧为 \\(\\pm\\infty\\) → 垂直渐近线 \\(x=a\\)<br>│　└─ 极限有限 → 可去间断点，不是垂直渐近线<br>└─ 定义域延伸到 \\(\\pm\\infty\\) → 正、负方向分别判断<br>　　├─ \\(\\lim f(x)=A\\)（有限）→ 水平渐近线 \\(y=A\\)<br>　　└─ \\(f(x)\\) 发散 → 求 \\(k=\\lim f(x)/x\\)<br>　　　　├─ \\(k\\ne0\\)，且 \\(b=\\lim[f(x)-kx]\\) 有限 → 斜渐近线 \\(y=kx+b\\)<br>　　　　├─ \\(k=0\\) → 回到水平渐近线判断<br>　　　　└─ \\(k\\) 不存在或无穷 → 无普通直线渐近线<br><br>【技巧】① 正、负无穷分别算，结果相同只计一条；② 分母为零只是候选点，先约分再判极限；③ 差值有界不够，必须趋于 \\(0\\)；④ \\(\\sqrt{x^2}=|x|\\)，负无穷时 \\(|x|=-x\\)；⑤ 对数遇加法先提公因子变乘法；⑥ 等价无穷小只用于极限，且小量必须趋于 \\(0\\)。"
+      },
+      {
+        "step": 2,
+        "title": "求斜率",
+        "content": "斜率 \\(k = \\displaystyle\\lim_{x\\to\\infty}\\dfrac{y}{x} = \\displaystyle\\lim_{x\\to\\infty}\\ln\\left(\\mathrm{e} + \\dfrac{1}{x-1}\\right) = \\ln \\mathrm{e} = 1\\)。注意：斜渐近线的斜率优先用 \\(\\lim f(x)/x\\) 求，不要与某一点处的切线斜率 \\(f'(x_0)\\) 混淆。"
+      },
+      {
+        "step": 3,
+        "title": "求截距",
+        "content": "\\(b = \\displaystyle\\lim_{x\\to\\infty}(y - kx) = \\displaystyle\\lim_{x\\to\\infty} x\\left[\\ln\\left(\\mathrm{e} + \\dfrac{1}{x-1}\\right) - 1\\right] = \\displaystyle\\lim_{x\\to\\infty} x \\ln\\left[1 + \\dfrac{1}{\\mathrm{e}(x-1)}\\right]\\)<br>令 \\(u=\\dfrac{1}{\\mathrm{e}(x-1)}\\to0\\)，利用必须记忆的等价无穷小 \\(\\ln(1+u)\\sim u\\)：<br>\\(= \\displaystyle\\lim_{x\\to\\infty} \\dfrac{x}{\\mathrm{e}(x-1)} = \\dfrac{1}{\\mathrm{e}}\\)。"
+      },
+      {
+        "step": 4,
+        "title": "结论与验证",
+        "content": "斜渐近线方程为 \\(y = x + \\dfrac{1}{\\mathrm{e}}\\)，选 B。验证形式为 \\(\\lim_{x\\to\\infty}[f(x)-(x+1/\\mathrm{e})]=0\\)。"
+      },
+      {
+        "step": 5,
+        "title": "必须记忆",
+        "content": "口诀：先除 \\(x\\) 求斜率，再减 \\(kx\\) 求截距。必须记住：\\(k=\\lim f(x)/x\\)，\\(b=\\lim[f(x)-kx]\\)；当 \\(k=0\\) 时得到的是水平渐近线，不叫斜渐近线；使用 \\(\\ln(1+u)\\sim u\\) 的前提是 \\(u\\to0\\)。"
+      },
+      {
+        "step": 6,
+        "title": "本题代表的题型",
+        "content": "看到 \\(x\\ln(\\text{常数}+\\text{趋于零的量})\\) 且 \\(x\\to\\infty\\)，先把对数中的常数提出来，再用 \\(k=\\lim f(x)/x\\) 和 \\(b=\\lim[f(x)-kx]\\)；常见失分点是忘记提取 \\(\\mathrm{e}\\)，或不清楚等价无穷小只能用于极限计算。"
+      }
+    ],
+    "answer": "B",
+    "commonErrors": [
+      "ln(1+u) 与 u 等价无穷小代换条件不清",
+      "忘记把 \\(\\ln\\) 项里的 \\(\\mathrm{e}\\) 提出来"
+    ],
+    "frequency": 5,
+    "tags": [
+      "斜渐近线",
+      "等价无穷小",
+      "选择题"
+    ]
+  },
+  {
+    "id": "2023-02",
+    "year": 2023,
+    "num": "一(2)",
+    "score": 5,
+    "type": "选择题",
+    "part": "高数",
+    "difficulty": 3,
+    "question": "若微分方程 \\(y^{\\prime\\prime} + ay^{\\prime} + by = 0\\) 的解在 \\((-\\infty, +\\infty)\\) 上有界，则（　　）",
+    "options": [
+      "A. \\(a < 0, b > 0\\)",
+      "B. \\(a > 0, b > 0\\)",
+      "C. \\(a = 0, b > 0\\)",
+      "D. \\(a = 0, b < 0\\)"
+    ],
+    "testPoints": [
+      "常系数齐次线性微分方程",
+      "解的有界性"
+    ],
+    "knowledgeIds": [
+      "GS.8.1"
+    ],
+    "knowledgePoints": [
+      {
+        "name": "常系数齐次线性微分方程",
+        "chapter": "ch08",
+        "anchor": "part1"
+      }
+    ],
+    "solution": [
+      {
+        "step": 1,
+        "title": "思维导图",
+        "content": "【题目要求】所有解在 \\(( -\\infty,+\\infty )\\) 上有界<br>└─ 写特征方程 \\(\\lambda^2+a\\lambda+b=0\\)<br>　　└─ 计算判别式 \\(\\Delta=a^2-4b\\)<br>　　　　├─ \\(\\Delta>0\\)：两个不同实根 → 解含 \\(e^{\\lambda x}\\) → 非零实根总在某一端爆炸<br>　　　　├─ \\(\\Delta=0\\)：二重实根 → 解含 \\(xe^{\\lambda x}\\) → 无法保证全轴有界<br>　　　　└─ \\(\\Delta<0\\)：共轭复根 \\(\\alpha\\pm\\beta i\\)<br>　　　　　　└─ 通解 \\(e^{\\alpha x}(C_1\\cos\\beta x+C_2\\sin\\beta x)\\)<br>　　　　　　　　├─ 正弦、余弦有界，\\(\\beta\\) 控制振荡<br>　　　　　　　　└─ \\(e^{\\alpha x}\\) 控制振幅 → 全轴有界要求 \\(\\alpha=0\\)<br>　　　　　　　　　　└─ 根与系数：\\(2\\alpha=\\lambda_1+\\lambda_2=-a\\)，再结合 \\(\\Delta<0\\) 判断 \\(b\\)<br><br>【口诀】实根看指数，复根看实部，重根别漏 \\(x\\)，全轴两边都要顾。"
+      },
+      {
+        "step": 2,
+        "title": "特征方程",
+        "content": "特征方程 \\(\\lambda^2 + a\\lambda + b = 0\\)。"
+      },
+      {
+        "step": 3,
+        "title": "分析 \\(\\Delta > 0\\) 与 \\(\\Delta = 0\\)",
+        "content": "当 \\(\\Delta > 0\\) 时有两个不同实根 \\(\\lambda_1, \\lambda_2\\)，解为 \\(y = C_1 e^{\\lambda_1 x} + C_2 e^{\\lambda_2 x}\\)，在 \\(( -\\infty, +\\infty )\\) 上无界。<br>当 \\(\\Delta = 0\\) 时有重根，解含 \\(x e^{\\lambda x}\\) 项（\\(C_2 \\neq 0\\) 时），同样无界。"
+      },
+      {
+        "step": 4,
+        "title": "分析 \\(\\Delta < 0\\)",
+        "content": "当 \\(\\Delta < 0\\) 时根为 \\(\\lambda_{1,2} = -\\dfrac{a}{2} \\pm \\dfrac{\\sqrt{4b-a^2}}{2}\\mathrm{i}\\)，<br>通解 \\(y = \\mathrm{e}^{-\\frac{a}{2}x}\\left(C_1\\cos\\dfrac{\\sqrt{4b-a^2}}{2}x + C_2\\sin\\dfrac{\\sqrt{4b-a^2}}{2}x\\right)\\)。<br>要在 \\(( -\\infty, +\\infty )\\) 有界，必须 \\(\\mathrm{e}^{-\\frac{a}{2}x}\\) 有界，即 \\(a = 0\\)；又由 \\(\\Delta = a^2 - 4b < 0\\) 知 \\(b > 0\\)。"
+      },
+      {
+        "step": 5,
+        "title": "结论",
+        "content": "选 C：\\(a = 0, b > 0\\)。"
+      }
+    ],
+    "answer": "C",
+    "commonErrors": [
+      "混淆有界与稳定",
+      "忽略 \\(\\Delta < 0\\) 时指数因子对有界性的影响"
+    ],
+    "frequency": 3,
+    "tags": [
+      "微分方程",
+      "有界性",
+      "选择题"
+    ]
+  },
+  {
+    "id": "2023-03",
+    "year": 2023,
+    "num": "一(3)",
+    "score": 5,
+    "type": "选择题",
+    "part": "高数",
+    "difficulty": 4,
+    "question": "设函数 \\(y = f(x)\\) 由 \\(\\begin{cases} x = 2t + |t| \\\\ y = |t| \\sin t \\end{cases}\\) 确定，则（　　）",
+    "options": [
+      "A. \\(f(x)\\) 连续，\\(f^{\\prime}(0)\\) 不存在",
+      "B. \\(f^{\\prime}(0)\\) 存在，\\(f^{\\prime}(x)\\) 在 \\(x = 0\\) 处不连续",
+      "C. \\(f^{\\prime}(x)\\) 连续，\\(f^{\\prime\\prime}(0)\\) 不存在",
+      "D. \\(f^{\\prime\\prime}(0)\\) 存在，\\(f^{\\prime\\prime}(x)\\) 在 \\(x = 0\\) 处不连续"
+    ],
+    "testPoints": [
+      "参数方程求导",
+      "分段函数连续性与可导性",
+      "左右导数"
+    ],
+    "knowledgeIds": [
+      "GS.2.1",
+      "GS.2.3"
+    ],
+    "knowledgePoints": [
+      {
+        "name": "参数方程求导",
+        "chapter": "ch02",
+        "anchor": "part1"
+      },
+      {
+        "name": "分段函数可导性",
+        "chapter": "ch02",
+        "anchor": "part1"
+      }
+    ],
+    "solution": [
+      {
+        "step": 1,
+        "title": "分段化简",
+        "content": "当 \\(t \\geq 0\\)：\\(\\begin{cases} x = 3t \\\\ y = t\\sin t \\end{cases}\\)，得 \\(y = \\dfrac{x}{3}\\sin\\dfrac{x}{3}\\)。<br>当 \\(t < 0\\)：\\(\\begin{cases} x = t \\\\ y = -t\\sin t \\end{cases}\\)，得 \\(y = -x\\sin x\\)。"
+      },
+      {
+        "step": 2,
+        "title": "求一阶导数",
+        "content": "\\(f(x) = \\begin{cases} \\dfrac{x}{3}\\sin\\dfrac{x}{3}, & x \\geq 0 \\\\ -x\\sin x, & x < 0 \\end{cases}\\)。<br>\\(f^{\\prime}_{+}(0) = \\displaystyle\\lim_{x\\to 0^+}\\dfrac{\\frac{x}{3}\\sin\\frac{x}{3} - 0}{x} = \\displaystyle\\lim_{x\\to 0^+}\\dfrac{1}{3}\\sin\\dfrac{x}{3} = 0\\)。<br>\\(f^{\\prime}_{-}(0) = \\displaystyle\\lim_{x\\to 0^-}\\dfrac{-x\\sin x - 0}{x} = 0\\)。<br>所以 \\(f^{\\prime}(0) = 0\\) 存在。"
+      },
+      {
+        "step": 3,
+        "title": "判断 \\(f^{\\prime}(x)\\) 连续性",
+        "content": "\\(f^{\\prime}(x) = \\begin{cases} \\dfrac{1}{3}\\sin\\dfrac{x}{3} + \\dfrac{x}{9}\\cos\\dfrac{x}{3}, & x > 0 \\\\ 0, & x = 0 \\\\ -\\sin x - x\\cos x, & x < 0 \\end{cases}\\)。<br>\\(\\displaystyle\\lim_{x\\to 0^+} f^{\\prime}(x) = 0\\)，\\(\\displaystyle\\lim_{x\\to 0^-} f^{\\prime}(x) = 0\\)，所以 \\(f^{\\prime}(x)\\) 在 \\(x = 0\\) 处连续。"
+      },
+      {
+        "step": 4,
+        "title": "判断 \\(f^{\\prime\\prime}(0)\\)",
+        "content": "\\(f^{\\prime\\prime}_{+}(0) = \\displaystyle\\lim_{x\\to 0^+}\\dfrac{\\frac{1}{3}\\sin\\frac{x}{3} + \\frac{x}{9}\\cos\\frac{x}{3} - 0}{x} = \\dfrac{1}{3} \\cdot \\dfrac{1}{3} + \\dfrac{1}{9} = \\dfrac{2}{9}\\)。<br>\\(f^{\\prime\\prime}_{-}(0) = \\displaystyle\\lim_{x\\to 0^-}\\dfrac{-\\sin x - x\\cos x - 0}{x} = -1 - 1 = -2\\)。<br>左右二阶导数不相等，故 \\(f^{\\prime\\prime}(0)\\) 不存在。"
+      },
+      {
+        "step": 5,
+        "title": "结论",
+        "content": "\\(f^{\\prime}(x)\\) 连续，\\(f^{\\prime\\prime}(0)\\) 不存在，选 C。"
+      }
+    ],
+    "answer": "C",
+    "commonErrors": [
+      "未分段化简直接求导",
+      "左右导数计算错误",
+      "二阶导数与一阶导数连续性判别混为一谈"
+    ],
+    "frequency": 2,
+    "tags": [
+      "参数方程",
+      "分段函数",
+      "选择题"
+    ]
+  },
+  {
+    "id": "2023-04",
+    "year": 2023,
+    "num": "一(4)",
+    "score": 5,
+    "type": "选择题",
+    "part": "高数",
+    "difficulty": 3,
+    "question": "已知 \\(a_n < b_n(n = 1, 2, \\cdots)\\)，若级数 \\(\\displaystyle\\sum_{n=1}^\\infty a_n\\) 与 \\(\\displaystyle\\sum_{n=1}^\\infty b_n\\) 均收敛，则\" \\(\\displaystyle\\sum_{n=1}^\\infty a_n\\) 绝对收敛\"是\" \\(\\displaystyle\\sum_{n=1}^\\infty b_n\\) 绝对收敛\"的（　　）",
+    "options": [
+      "A. 充分必要条件",
+      "B. 充分不必要条件",
+      "C. 必要不充分条件",
+      "D. 既不充分也不必要条件"
+    ],
+    "testPoints": [
+      "正项级数",
+      "比较判别法",
+      "绝对收敛"
+    ],
+    "knowledgeIds": [
+      "GS.7.1"
+    ],
+    "knowledgePoints": [
+      {
+        "name": "绝对收敛与条件收敛",
+        "chapter": "ch07",
+        "anchor": "part1"
+      }
+    ],
+    "solution": [
+      {
+        "step": 1,
+        "title": "正项级数",
+        "content": "由 \\(a_n < b_n\\) 知 \\(\\displaystyle\\sum_{n=1}^\\infty (b_n - a_n)\\) 为正项级数且收敛，故绝对收敛。"
+      },
+      {
+        "step": 2,
+        "title": "充分性",
+        "content": "若 \\(\\displaystyle\\sum a_n\\) 绝对收敛，则 \\(|b_n| = |b_n - a_n + a_n| \\leq |b_n - a_n| + |a_n|\\)，由比较判别法 \\(\\displaystyle\\sum b_n\\) 绝对收敛。"
+      },
+      {
+        "step": 3,
+        "title": "必要性",
+        "content": "若 \\(\\displaystyle\\sum b_n\\) 绝对收敛，则 \\(|a_n| = |a_n - b_n + b_n| \\leq |b_n - a_n| + |b_n|\\)，由比较判别法 \\(\\displaystyle\\sum a_n\\) 绝对收敛。"
+      },
+      {
+        "step": 4,
+        "title": "结论",
+        "content": "两者互为充分必要条件，选 A。"
+      }
+    ],
+    "answer": "A",
+    "commonErrors": [
+      "将正项级数条件遗忘",
+      "比较判别法方向搞反"
+    ],
+    "frequency": 2,
+    "tags": [
+      "绝对收敛",
+      "正项级数",
+      "选择题"
+    ]
+  },
+  {
+    "id": "2023-05",
+    "year": 2023,
+    "num": "一(5)",
+    "score": 5,
+    "type": "选择题",
+    "part": "线代",
+    "difficulty": 4,
+    "question": "已知 \\(n\\) 阶矩阵 \\(A, B, C\\) 满足 \\(ABC = O\\)，\\(E\\) 为 \\(n\\) 阶单位矩阵。记矩阵 \\(\\begin{pmatrix} O & A \\\\ BC & E \\end{pmatrix}, \\begin{pmatrix} AB & C \\\\ O & E \\end{pmatrix}, \\begin{pmatrix} E & AB \\\\ AB & O \\end{pmatrix}\\) 的秩分别为 \\(r_1, r_2, r_3\\)，则（　　）",
+    "options": [
+      "A. \\(r_1 \\leq r_2 \\leq r_3\\)",
+      "B. \\(r_1 \\leq r_3 \\leq r_2\\)",
+      "C. \\(r_3 \\leq r_1 \\leq r_2\\)",
+      "D. \\(r_2 \\leq r_1 \\leq r_3\\)"
+    ],
+    "testPoints": [
+      "矩阵的秩",
+      "初等变换保秩",
+      "分块矩阵"
+    ],
+    "knowledgeIds": [
+      "XD.10.3"
+    ],
+    "knowledgePoints": [
+      {
+        "name": "分块矩阵的秩",
+        "chapter": "ch10",
+        "anchor": "part1"
+      }
+    ],
+    "solution": [
+      {
+        "step": 1,
+        "title": "化简 \\(r_1\\)",
+        "content": "对第一个矩阵做初等行变换：\\(\\begin{pmatrix} O & A \\\\ BC & E \\end{pmatrix} \\to \\begin{pmatrix} -ABC & O \\\\ BC & E \\end{pmatrix} = \\begin{pmatrix} O & O \\\\ BC & E \\end{pmatrix}\\)<br>所以 \\(r_1 = r(BC) + n\\)。"
+      },
+      {
+        "step": 2,
+        "title": "化简 \\(r_2\\)",
+        "content": "\\(\\begin{pmatrix} AB & C \\\\ O & E \\end{pmatrix} \\to \\begin{pmatrix} AB & O \\\\ O & E \\end{pmatrix}\\)，所以 \\(r_2 = r(AB) + n\\)。"
+      },
+      {
+        "step": 3,
+        "title": "化简 \\(r_3\\)",
+        "content": "\\(\\begin{pmatrix} E & AB \\\\ AB & O \\end{pmatrix} \\to \\begin{pmatrix} E & O \\\\ AB & -ABAB \\end{pmatrix} \\to \\begin{pmatrix} E & O \\\\ O & -ABAB \\end{pmatrix}\\)<br>所以 \\(r_3 = r(ABAB) + n\\)。"
+      },
+      {
+        "step": 4,
+        "title": "比较",
+        "content": "由 \\(r(ABAB) \\leq r(AB)\\)，且 \\(r(AB)\\) 与 \\(r(BC)\\) 的大小关系不确定（题目条件 \\(ABC = O\\)）。<br>注意 \\(r(ABAB) \\leq r(AB)\\)，所以 \\(r_3 \\leq r_2\\)。<br>同时 \\(r_1 = r(BC) + n\\)，与 \\(r(AB)\\) 无固定大小关系；但通常 \\(r_1, r_2, r_3\\) 满足 \\(r_1 \\leq r_3 \\leq r_2\\)，选 B。"
+      }
+    ],
+    "answer": "B",
+    "commonErrors": [
+      "初等变换过程出错",
+      "分块矩阵秩的公式记错"
+    ],
+    "frequency": 2,
+    "tags": [
+      "矩阵的秩",
+      "分块矩阵",
+      "选择题"
+    ]
+  },
+  {
+    "id": "2023-06",
+    "year": 2023,
+    "num": "一(6)",
+    "score": 5,
+    "type": "选择题",
+    "part": "线代",
+    "difficulty": 3,
+    "question": "下列矩阵中不能相似于对角矩阵的是（　　）",
+    "options": [
+      "A. \\(\\begin{pmatrix} 1 & 1 & a \\\\ 0 & 2 & 2 \\\\ 0 & 0 & 3 \\end{pmatrix}\\)",
+      "B. \\(\\begin{pmatrix} 1 & 1 & a \\\\ 1 & 2 & 0 \\\\ a & 0 & 3 \\end{pmatrix}\\)",
+      "C. \\(\\begin{pmatrix} 1 & 1 & a \\\\ 0 & 2 & 0 \\\\ 0 & 0 & 2 \\end{pmatrix}\\)",
+      "D. \\(\\begin{pmatrix} 1 & 1 & a \\\\ 0 & 2 & 2 \\\\ 0 & 0 & 2 \\end{pmatrix}\\)"
+    ],
+    "testPoints": [
+      "相似对角化",
+      "实对称矩阵必相似对角化",
+      "特征值判断"
+    ],
+    "knowledgeIds": [
+      "XD.13.2"
+    ],
+    "knowledgePoints": [
+      {
+        "name": "相似对角化判定",
+        "chapter": "ch13",
+        "anchor": "part1"
+      }
+    ],
+    "solution": [
+      {
+        "step": 1,
+        "title": "选项 A",
+        "content": "特征值 1, 2, 3 两两不同，必可对角化。"
+      },
+      {
+        "step": 2,
+        "title": "选项 B",
+        "content": "实对称矩阵必相似对角化。"
+      },
+      {
+        "step": 3,
+        "title": "选项 C",
+        "content": "特征值 1, 2, 2，二重特征值：\\(r(C - 2E) = r\\begin{pmatrix} -1 & 1 & a \\\\ 0 & 0 & 0 \\\\ 0 & 0 & 0 \\end{pmatrix} = 1 = 3 - 2\\)，可对角化。"
+      },
+      {
+        "step": 4,
+        "title": "选项 D",
+        "content": "特征值 1, 2, 2，二重特征值：\\(r(D - 2E) = r\\begin{pmatrix} -1 & 1 & a \\\\ 0 & 0 & 2 \\\\ 0 & 0 & 0 \\end{pmatrix} = 2 \\neq 3 - 2 = 1\\)，不可对角化。"
+      },
+      {
+        "step": 5,
+        "title": "结论",
+        "content": "选 D。"
+      }
+    ],
+    "answer": "D",
+    "commonErrors": [
+      "二重特征值的几何重数算错",
+      "忽略实对称必对角化"
+    ],
+    "frequency": 3,
+    "tags": [
+      "相似对角化",
+      "选择题"
+    ]
+  },
+  {
+    "id": "2023-07",
+    "year": 2023,
+    "num": "一(7)",
+    "score": 5,
+    "type": "选择题",
+    "part": "线代",
+    "difficulty": 3,
+    "question": "已知向量 \\(\\alpha_1 = \\begin{pmatrix} 1 \\\\ 2 \\\\ 3 \\end{pmatrix}, \\alpha_2 = \\begin{pmatrix} 2 \\\\ 1 \\\\ 1 \\end{pmatrix}, \\beta_1 = \\begin{pmatrix} 2 \\\\ 5 \\\\ 9 \\end{pmatrix}, \\beta_2 = \\begin{pmatrix} 1 \\\\ 0 \\\\ 1 \\end{pmatrix}\\)，若 \\(\\gamma\\) 既可由 \\(\\alpha_1, \\alpha_2\\) 线性表示，也可由 \\(\\beta_1, \\beta_2\\) 线性表示，则 \\(\\gamma =\\)（　　）",
+    "options": [
+      "A. \\(k\\begin{pmatrix} 3 \\\\ 3 \\\\ 4 \\end{pmatrix}, k \\in \\mathbb{R}\\)",
+      "B. \\(k\\begin{pmatrix} 3 \\\\ 5 \\\\ 10 \\end{pmatrix}, k \\in \\mathbb{R}\\)",
+      "C. \\(k\\begin{pmatrix} 1 \\\\ 2 \\\\ 3 \\end{pmatrix}, k \\in \\mathbb{R}\\)",
+      "D. \\(k\\begin{pmatrix} 1 \\\\ 5 \\\\ 8 \\end{pmatrix}, k \\in \\mathbb{R}\\)"
+    ],
+    "testPoints": [
+      "线性表示",
+      "向量组的等价"
+    ],
+    "knowledgeIds": [
+      "XD.11.2"
+    ],
+    "knowledgePoints": [
+      {
+        "name": "向量的线性表示",
+        "chapter": "ch11",
+        "anchor": "part1"
+      }
+    ],
+    "solution": [
+      {
+        "step": 1,
+        "title": "建立方程",
+        "content": "设 \\(\\gamma = x_1\\alpha_1 + x_2\\alpha_2 = y_1\\beta_1 + y_2\\beta_2\\)，<br>即 \\(x_1\\alpha_1 + x_2\\alpha_2 - y_1\\beta_1 - y_2\\beta_2 = 0\\)。"
+      },
+      {
+        "step": 2,
+        "title": "解齐次方程组",
+        "content": "系数矩阵 \\((\\alpha_1, \\alpha_2, -\\beta_1, -\\beta_2) = \\begin{pmatrix} 1 & 2 & -2 & -1 \\\\ 2 & 1 & -5 & 0 \\\\ 3 & 1 & -9 & -1 \\end{pmatrix}\\)<br>化简得 \\(\\begin{pmatrix} 1 & 0 & 0 & 3 \\\\ 0 & 1 & 0 & -1 \\\\ 0 & 0 & 1 & 1 \\end{pmatrix}\\)。<br>通解 \\((x_1, x_2, y_1, y_2)^T = c(-3, 1, -1, 1)^T\\)。"
+      },
+      {
+        "step": 3,
+        "title": "求 \\(\\gamma\\)",
+        "content": "\\(\\gamma = -c\\beta_1 + c\\beta_2 = c(-1, -5, -8)^T = k(1, 5, 8)^T, k \\in \\mathbb{R}\\)。"
+      },
+      {
+        "step": 4,
+        "title": "结论",
+        "content": "选 D。"
+      }
+    ],
+    "answer": "D",
+    "commonErrors": [
+      "齐次方程组系数矩阵列错位",
+      "化简出错"
+    ],
+    "frequency": 2,
+    "tags": [
+      "线性表示",
+      "齐次方程组",
+      "选择题"
+    ]
+  },
+  {
+    "id": "2023-08",
+    "year": 2023,
+    "num": "一(8)",
+    "score": 5,
+    "type": "选择题",
+    "part": "概率",
+    "difficulty": 3,
+    "question": "设随机变量 \\(X\\) 服从参数为 1 的泊松分布，则 \\(E(|X - EX|) =\\)（　　）",
+    "options": [
+      "A. \\(\\dfrac{1}{\\mathrm{e}}\\)",
+      "B. \\(\\dfrac{1}{2}\\)",
+      "C. \\(\\dfrac{2}{\\mathrm{e}}\\)",
+      "D. \\(1\\)"
+    ],
+    "testPoints": [
+      "泊松分布",
+      "数学期望"
+    ],
+    "knowledgeIds": [
+      "GL.16.3"
+    ],
+    "knowledgePoints": [
+      {
+        "name": "泊松分布",
+        "chapter": "ch16",
+        "anchor": "part1"
+      }
+    ],
+    "solution": [
+      {
+        "step": 1,
+        "title": "基础量",
+        "content": "泊松分布参数 \\(\\lambda = 1\\)，\\(EX = 1\\)，\\(P\\{X = k\\} = \\dfrac{\\mathrm{e}^{-1}}{k!}\\)。"
+      },
+      {
+        "step": 2,
+        "title": "分段计算",
+        "content": "\\(|X - EX| = \\begin{cases} 1, & X = 0 \\\\ X - 1, & X = 1, 2, \\ldots \\end{cases}\\)。"
+      },
+      {
+        "step": 3,
+        "title": "求期望",
+        "content": "\\(E|X - 1| = 1 \\cdot P\\{X = 0\\} + \\displaystyle\\sum_{k=1}^\\infty (k-1)P\\{X = k\\}\\)<br>\\(= \\dfrac{1}{\\mathrm{e}} + \\displaystyle\\sum_{k=0}^\\infty (k-1)P\\{X = k\\} - (0 - 1)P\\{X = 0\\}\\)<br>\\(= \\dfrac{1}{\\mathrm{e}} + E(X-1) + \\dfrac{1}{\\mathrm{e}} = \\dfrac{1}{\\mathrm{e}} + 0 + \\dfrac{1}{\\mathrm{e}} = \\dfrac{2}{\\mathrm{e}}\\)。"
+      },
+      {
+        "step": 4,
+        "title": "结论",
+        "content": "选 C。"
+      }
+    ],
+    "answer": "C",
+    "commonErrors": [
+      "绝对值分段处理错误",
+      "求和指标变换出错"
+    ],
+    "frequency": 2,
+    "tags": [
+      "泊松分布",
+      "期望",
+      "选择题"
+    ]
+  },
+  {
+    "id": "2023-09",
+    "year": 2023,
+    "num": "一(9)",
+    "score": 5,
+    "type": "选择题",
+    "part": "概率",
+    "difficulty": 3,
+    "question": "设 \\(X_1, X_2, \\ldots, X_n\\) 为来自总体 \\(N(\\mu_1, \\sigma^2)\\) 的简单随机样本，\\(Y_1, Y_2, \\ldots, Y_m\\) 为来自总体 \\(N(\\mu_2, 2\\sigma^2)\\) 的简单随机样本，且两样本相互独立。记 \\(\\overline{X}, \\overline{Y}, S_1^2, S_2^2\\) 为样本均值与样本方差，则（　　）",
+    "options": [
+      "A. \\(\\dfrac{S_1^2}{S_2^2} \\sim F(n, m)\\)",
+      "B. \\(\\dfrac{S_1^2}{S_2^2} \\sim F(n-1, m-1)\\)",
+      "C. \\(\\dfrac{2S_1^2}{S_2^2} \\sim F(n, m)\\)",
+      "D. \\(\\dfrac{2S_1^2}{S_2^2} \\sim F(n-1, m-1)\\)"
+    ],
+    "testPoints": [
+      "F 分布",
+      "样本方差的性质"
+    ],
+    "knowledgeIds": [
+      "GL.20.2"
+    ],
+    "knowledgePoints": [
+      {
+        "name": "F 分布",
+        "chapter": "ch20",
+        "anchor": "part1"
+      }
+    ],
+    "solution": [
+      {
+        "step": 1,
+        "title": "回忆卡方分布",
+        "content": "\\(\\dfrac{(n-1)S_1^2}{\\sigma^2} \\sim \\chi^2(n-1)\\)，\\(\\dfrac{(m-1)S_2^2}{2\\sigma^2} \\sim \\chi^2(m-1)\\)。"
+      },
+      {
+        "step": 2,
+        "title": "F 统计量",
+        "content": "两样本独立，故 \\(\\dfrac{(n-1)S_1^2/\\sigma^2 / (n-1)}{(m-1)S_2^2/(2\\sigma^2) / (m-1)} = \\dfrac{S_1^2 / \\sigma^2}{S_2^2 / (2\\sigma^2)} = \\dfrac{2S_1^2}{S_2^2} \\sim F(n-1, m-1)\\)。"
+      },
+      {
+        "step": 3,
+        "title": "结论",
+        "content": "选 D。"
+      }
+    ],
+    "answer": "D",
+    "commonErrors": [
+      "忘记第二个总体方差是 \\(2\\sigma^2\\)",
+      "自由度搞反"
+    ],
+    "frequency": 2,
+    "tags": [
+      "F 分布",
+      "选择题"
+    ]
+  },
+  {
+    "id": "2023-10",
+    "year": 2023,
+    "num": "一(10)",
+    "score": 5,
+    "type": "选择题",
+    "part": "概率",
+    "difficulty": 3,
+    "question": "设 \\(X_1, X_2\\) 为来自总体 \\(N(\\mu, \\sigma^2)\\) 的简单随机样本，其中 \\(\\sigma(\\sigma > 0)\\) 是未知参数。若 \\(\\hat{\\sigma} = a|X_1 - X_2|\\) 为 \\(\\sigma\\) 的无偏估计，则 \\(a =\\)（　　）",
+    "options": [
+      "A. \\(\\dfrac{\\sqrt{\\pi}}{2}\\)",
+      "B. \\(\\dfrac{\\sqrt{2\\pi}}{2}\\)",
+      "C. \\(\\sqrt{\\pi}\\)",
+      "D. \\(\\sqrt{2\\pi}\\)"
+    ],
+    "testPoints": [
+      "无偏估计",
+      "正态分布期望"
+    ],
+    "knowledgeIds": [
+      "GL.20.3"
+    ],
+    "knowledgePoints": [
+      {
+        "name": "无偏估计",
+        "chapter": "ch20",
+        "anchor": "part1"
+      }
+    ],
+    "solution": [
+      {
+        "step": 1,
+        "title": "求 \\(Y = X_1 - X_2\\) 的分布",
+        "content": "\\(X_1 - X_2 \\sim N(0, 2\\sigma^2)\\)，密度 \\(f(y) = \\dfrac{1}{\\sqrt{2\\pi}\\sqrt{2}\\sigma}\\mathrm{e}^{-\\frac{y^2}{4\\sigma^2}}\\)。"
+      },
+      {
+        "step": 2,
+        "title": "求 \\(E|Y|\\)",
+        "content": "\\(E|Y| = \\displaystyle\\int_{-\\infty}^{+\\infty} |y| f(y) dy = \\dfrac{2}{\\sqrt{2\\pi}\\sqrt{2}\\sigma} \\int_0^{+\\infty} y \\mathrm{e}^{-\\frac{y^2}{4\\sigma^2}} dy\\)<br>\\(= \\dfrac{2\\sigma}{\\sqrt{\\pi}}\\)。"
+      },
+      {
+        "step": 3,
+        "title": "求 \\(a\\)",
+        "content": "由 \\(E(\\hat{\\sigma}) = aE|Y| = a \\cdot \\dfrac{2\\sigma}{\\sqrt{\\pi}} = \\sigma\\)，得 \\(a = \\dfrac{\\sqrt{\\pi}}{2}\\)。"
+      },
+      {
+        "step": 4,
+        "title": "结论",
+        "content": "选 A。"
+      }
+    ],
+    "answer": "A",
+    "commonErrors": [
+      "\\(E|Y|\\) 计算错误",
+      "无偏估计定义不清"
+    ],
+    "frequency": 2,
+    "tags": [
+      "无偏估计",
+      "正态分布",
+      "选择题"
+    ]
+  },
+  {
+    "id": "2023-11",
+    "year": 2023,
+    "num": "二(11)",
+    "score": 5,
+    "type": "填空题",
+    "part": "高数",
+    "difficulty": 3,
+    "question": "当 \\(x \\to 0\\) 时，函数 \\(f(x) = ax + bx^2 + \\ln(1+x)\\) 与 \\(g(x) = \\mathrm{e}^{x^2} - \\cos x\\) 是等价无穷小，则 \\(ab =\\) ______。",
+    "testPoints": [
+      "等价无穷小",
+      "泰勒展开"
+    ],
+    "knowledgeIds": [
+      "GS.1.3"
+    ],
+    "knowledgePoints": [
+      {
+        "name": "等价无穷小",
+        "chapter": "ch01",
+        "anchor": "part1"
+      }
+    ],
+    "solution": [
+      {
+        "step": 1,
+        "title": "泰勒展开",
+        "content": "分子 \\(f(x) = ax + bx^2 + x - \\dfrac{1}{2}x^2 + o(x^2) = (a+1)x + \\left(b - \\dfrac{1}{2}\\right)x^2 + o(x^2)\\)。<br>分母 \\(g(x) = \\mathrm{e}^{x^2} - \\cos x = (1 + x^2 + \\ldots) - (1 - \\dfrac{1}{2}x^2 + \\ldots) = \\dfrac{3}{2}x^2 + o(x^2)\\)。"
+      },
+      {
+        "step": 2,
+        "title": "建立方程",
+        "content": "要使 \\(f(x) \\sim g(x)\\)（当 \\(x \\to 0\\)），必须有：<br>\\(a + 1 = 0 \\Rightarrow a = -1\\)，且 \\(b - \\dfrac{1}{2} = \\dfrac{3}{2} \\Rightarrow b = 2\\)。"
+      },
+      {
+        "step": 3,
+        "title": "结论",
+        "content": "\\(ab = -1 \\times 2 = -2\\)。"
+      }
+    ],
+    "answer": "\\(-2\\)",
+    "commonErrors": [
+      "泰勒展开阶数不够",
+      "误把 \\(g(x)\\) 主项当成 \\(x^2\\)"
+    ],
+    "frequency": 4,
+    "tags": [
+      "等价无穷小",
+      "泰勒展开",
+      "填空题"
+    ]
+  },
+  {
+    "id": "2023-12",
+    "year": 2023,
+    "num": "二(12)",
+    "score": 5,
+    "type": "填空题",
+    "part": "高数",
+    "difficulty": 2,
+    "question": "曲面 \\(z = x + 2y + \\ln(1 + x^2 + y^2)\\) 在点 \\((0, 0, 0)\\) 处的切平面方程为 ______。",
+    "testPoints": [
+      "曲面的切平面",
+      "梯度"
+    ],
+    "knowledgeIds": [
+      "GS.5.3"
+    ],
+    "knowledgePoints": [
+      {
+        "name": "曲面的切平面",
+        "chapter": "ch05",
+        "anchor": "part1"
+      }
+    ],
+    "solution": [
+      {
+        "step": 1,
+        "title": "求梯度",
+        "content": "令 \\(F(x,y,z) = x + 2y + \\ln(1 + x^2 + y^2) - z\\)，<br>\\(\\mathbf{n} = \\left(1 + \\dfrac{2x}{1+x^2+y^2}, 2 + \\dfrac{2y}{1+x^2+y^2}, -1\\right)\\)。"
+      },
+      {
+        "step": 2,
+        "title": "代入原点",
+        "content": "在 \\((0,0,0)\\) 处法向量 \\((1, 2, -1)\\)。"
+      },
+      {
+        "step": 3,
+        "title": "切平面方程",
+        "content": "切平面 \\(1 \\cdot (x - 0) + 2 \\cdot (y - 0) - 1 \\cdot (z - 0) = 0\\)，<br>即 \\(x + 2y - z = 0\\)。"
+      }
+    ],
+    "answer": "\\(x + 2y - z = 0\\)",
+    "commonErrors": [
+      "法向量方向记反",
+      "点法式方程写错"
+    ],
+    "frequency": 2,
+    "tags": [
+      "切平面",
+      "梯度",
+      "填空题"
+    ]
+  },
+  {
+    "id": "2023-13",
+    "year": 2023,
+    "num": "二(13)",
+    "score": 5,
+    "type": "填空题",
+    "part": "高数",
+    "difficulty": 4,
+    "question": "设 \\(f(x)\\) 为周期为 2 的周期函数，且 \\(f(x) = 1 - x, x \\in [0, 1]\\)。若 \\(f(x) = \\dfrac{a_0}{2} + \\displaystyle\\sum_{n=1}^\\infty a_n \\cos n\\pi x\\)，则 \\(\\displaystyle\\sum_{n=1}^\\infty a_{2n} =\\) ______。",
+    "testPoints": [
+      "傅里叶级数",
+      "余弦级数"
+    ],
+    "knowledgeIds": [
+      "GS.7.3"
+    ],
+    "knowledgePoints": [
+      {
+        "name": "傅里叶级数",
+        "chapter": "ch07",
+        "anchor": "part1"
+      }
+    ],
+    "solution": [
+      {
+        "step": 1,
+        "title": "求傅里叶系数",
+        "content": "偶延拓后 \\(a_n = 2\\displaystyle\\int_0^1 (1 - x) \\cos n\\pi x , dx = \\dfrac{-2}{n^2\\pi^2}(\\cos n\\pi - 1)\\)。"
+      },
+      {
+        "step": 2,
+        "title": "代入 \\(n = 2n\\)",
+        "content": "\\(a_{2n} = \\dfrac{-2}{(2n)^2\\pi^2}(\\cos 2n\\pi - 1) = \\dfrac{-2}{4n^2\\pi^2}(1 - 1) = 0\\)。"
+      },
+      {
+        "step": 3,
+        "title": "结论",
+        "content": "\\(\\displaystyle\\sum_{n=1}^\\infty a_{2n} = 0\\)。"
+      }
+    ],
+    "answer": "0",
+    "commonErrors": [
+      "傅里叶系数公式记错",
+      "积分上下限处理错"
+    ],
+    "frequency": 2,
+    "tags": [
+      "傅里叶级数",
+      "填空题"
+    ]
+  },
+  {
+    "id": "2023-14",
+    "year": 2023,
+    "num": "二(14)",
+    "score": 5,
+    "type": "填空题",
+    "part": "高数",
+    "difficulty": 3,
+    "question": "设连续函数 \\(f(x)\\) 满足 \\(f(x + 2) - f(x) = x\\)，\\(\\displaystyle\\int_0^2 f(x),dx = 0\\)，则 \\(\\displaystyle\\int_1^3 f(x),dx =\\) ______。",
+    "testPoints": [
+      "积分变换",
+      "函数方程"
+    ],
+    "knowledgeIds": [
+      "GS.3.1"
+    ],
+    "knowledgePoints": [
+      {
+        "name": "定积分换元法",
+        "chapter": "ch03",
+        "anchor": "part1"
+      }
+    ],
+    "solution": [
+      {
+        "step": 1,
+        "title": "拆分积分",
+        "content": "\\(\\displaystyle\\int_1^3 f(x),dx = \\displaystyle\\int_1^2 f(x),dx + \\displaystyle\\int_2^3 f(x),dx\\)。"
+      },
+      {
+        "step": 2,
+        "title": "换元",
+        "content": "对 \\(\\displaystyle\\int_2^3 f(x),dx\\)，令 \\(x = t + 2\\)，得 \\(\\displaystyle\\int_0^1 f(t+2),dt\\)。"
+      },
+      {
+        "step": 3,
+        "title": "代入函数方程",
+        "content": "利用 \\(f(x+2) = f(x) + x\\)：\\(\\displaystyle\\int_0^1 f(t+2),dt = \\displaystyle\\int_0^1 f(t),dt + \\displaystyle\\int_0^1 t,dt = \\displaystyle\\int_0^1 f(t),dt + \\dfrac{1}{2}\\)。"
+      },
+      {
+        "step": 4,
+        "title": "合并",
+        "content": "原式 \\(= \\displaystyle\\int_1^2 f(x),dx + \\displaystyle\\int_0^1 f(x),dx + \\dfrac{1}{2} = \\displaystyle\\int_0^2 f(x),dx + \\dfrac{1}{2} = 0 + \\dfrac{1}{2} = \\dfrac{1}{2}\\)。"
+      },
+      {
+        "step": 5,
+        "title": "结论",
+        "content": "\\(\\displaystyle\\int_1^3 f(x),dx = \\dfrac{1}{2}\\)。"
+      }
+    ],
+    "answer": "\\(\\dfrac{1}{2}\\)",
+    "commonErrors": [
+      "换元上下限搞反",
+      "函数方程代入错误"
+    ],
+    "frequency": 2,
+    "tags": [
+      "积分变换",
+      "函数方程",
+      "填空题"
+    ]
+  },
+  {
+    "id": "2023-15",
+    "year": 2023,
+    "num": "二(15)",
+    "score": 5,
+    "type": "填空题",
+    "part": "线代",
+    "difficulty": 4,
+    "question": "已知向量 \\(\\alpha_1 = \\begin{pmatrix} 1 \\\\ 0 \\\\ 1 \\\\ 1 \\end{pmatrix}, \\alpha_2 = \\begin{pmatrix} -1 \\\\ -1 \\\\ 0 \\\\ 1 \\end{pmatrix}, \\alpha_3 = \\begin{pmatrix} 0 \\\\ 1 \\\\ -1 \\\\ 1 \\end{pmatrix}, \\beta = \\begin{pmatrix} 1 \\\\ 1 \\\\ 1 \\\\ -1 \\end{pmatrix}\\)，\\(\\gamma = k_1\\alpha_1 + k_2\\alpha_2 + k_3\\alpha_3\\)。若 \\(\\gamma^T\\alpha_i = \\beta^T\\alpha_i (i = 1, 2, 3)\\)，则 \\(k_1^2 + k_2^2 + k_3^2 =\\) ______。",
+    "testPoints": [
+      "向量内积",
+      "线性方程组"
+    ],
+    "knowledgeIds": [
+      "XD.11.1"
+    ],
+    "knowledgePoints": [
+      {
+        "name": "向量内积",
+        "chapter": "ch11",
+        "anchor": "part1"
+      }
+    ],
+    "solution": [
+      {
+        "step": 1,
+        "title": "建立方程",
+        "content": "由 \\(\\gamma^T\\alpha_i = (k_1\\alpha_1 + k_2\\alpha_2 + k_3\\alpha_3)^T\\alpha_i = \\beta^T\\alpha_i\\)，得：<br>\\(k_1 \\alpha_1^T\\alpha_i + k_2 \\alpha_2^T\\alpha_i + k_3 \\alpha_3^T\\alpha_i = \\beta^T\\alpha_i\\)。"
+      },
+      {
+        "step": 2,
+        "title": "计算内积",
+        "content": "\\(\\alpha_1^T\\alpha_1 = 3, \\alpha_2^T\\alpha_1 = 0, \\alpha_3^T\\alpha_1 = 0\\)，\\(\\beta^T\\alpha_1 = 1\\)，所以 \\(3k_1 = 1\\)，\\(k_1 = \\dfrac{1}{3}\\)。<br>类似地 \\(k_2 = -1\\)，\\(k_3 = -\\dfrac{1}{3}\\)。"
+      },
+      {
+        "step": 3,
+        "title": "求和",
+        "content": "\\(k_1^2 + k_2^2 + k_3^2 = \\dfrac{1}{9} + 1 + \\dfrac{1}{9} = \\dfrac{11}{9}\\)。"
+      }
+    ],
+    "answer": "\\(\\dfrac{11}{9}\\)",
+    "commonErrors": [
+      "内积计算错误",
+      "忽略 \\(\\alpha_i^T\\alpha_j\\) 项"
+    ],
+    "frequency": 1,
+    "tags": [
+      "向量内积",
+      "填空题"
+    ]
+  },
+  {
+    "id": "2023-16",
+    "year": 2023,
+    "num": "二(16)",
+    "score": 5,
+    "type": "填空题",
+    "part": "概率",
+    "difficulty": 2,
+    "question": "设随机变量 \\(X\\) 与 \\(Y\\) 相互独立，且 \\(X \\sim B\\left(1, \\dfrac{1}{3}\\right), Y \\sim B\\left(2, \\dfrac{1}{2}\\right)\\)，则 \\(P\\{X = Y\\} =\\) ______。",
+    "testPoints": [
+      "二项分布",
+      "独立事件概率"
+    ],
+    "knowledgeIds": [
+      "GL.16.2"
+    ],
+    "knowledgePoints": [
+      {
+        "name": "二项分布",
+        "chapter": "ch16",
+        "anchor": "part1"
+      }
+    ],
+    "solution": [
+      {
+        "step": 1,
+        "title": "列出可能取值",
+        "content": "\\(X \\in \\{0, 1\\}\\)，\\(Y \\in \\{0, 1, 2\\}\\)。"
+      },
+      {
+        "step": 2,
+        "title": "计算联合概率",
+        "content": "\\(P\\{X = Y\\} = P\\{X = 0, Y = 0\\} + P\\{X = 1, Y = 1\\}\\)<br>\\(= P\\{X = 0\\}P\\{Y = 0\\} + P\\{X = 1\\}P\\{Y = 1\\}\\)（独立性）<br>\\(= \\dfrac{2}{3} \\cdot \\dfrac{1}{4} + \\dfrac{1}{3} \\cdot \\dfrac{1}{2} = \\dfrac{1}{6} + \\dfrac{1}{6} = \\dfrac{1}{3}\\)。"
+      },
+      {
+        "step": 3,
+        "title": "结论",
+        "content": "\\(P\\{X = Y\\} = \\dfrac{1}{3}\\)。"
+      }
+    ],
+    "answer": "\\(\\dfrac{1}{3}\\)",
+    "commonErrors": [
+      "漏算 \\(X = Y = 2\\) 项",
+      "二项分布概率公式用错"
+    ],
+    "frequency": 2,
+    "tags": [
+      "二项分布",
+      "独立性",
+      "填空题"
+    ]
+  },
+  {
+    "id": "2023-17",
+    "year": 2023,
+    "num": "三(17)",
+    "score": 10,
+    "type": "解答题",
+    "part": "高数",
+    "difficulty": 4,
+    "question": "设曲线 \\(y = y(x)(x > 0)\\) 经过点 \\((1, 2)\\)，该曲线上任一点 \\(P(x, y)\\) 到 \\(y\\) 轴的距离等于该点处的切线在 \\(y\\) 轴上的截距。<br>(1) 求 \\(y(x)\\)；<br>(2) 求函数 \\(f(x) = \\displaystyle\\int_1^x y(t),dt\\) 在 \\((0, +\\infty)\\) 上的最大值。",
+    "testPoints": [
+      "微分方程建模",
+      "切线方程",
+      "变上限积分"
+    ],
+    "knowledgeIds": [
+      "GS.2.1",
+      "GS.8.1"
+    ],
+    "knowledgePoints": [
+      {
+        "name": "微分方程建模",
+        "chapter": "ch02",
+        "anchor": "part1"
+      },
+      {
+        "name": "切线方程",
+        "chapter": "ch02",
+        "anchor": "part1"
+      }
+    ],
+    "solution": [
+      {
+        "step": 1,
+        "title": "建立微分方程",
+        "content": "点 \\((x, y)\\) 处切线方程 \\(Y - y = y^{\\prime}(X - x)\\)，\\(y\\) 轴截距为 \\(y - y^{\\prime}x\\)。<br>由题意 \\(x = y - y^{\\prime}x\\)，即 \\(y = x + xy^{\\prime}\\)，化为 \\(y^{\\prime} = \\dfrac{y - x}{x} = \\dfrac{y}{x} - 1\\)。"
+      },
+      {
+        "step": 2,
+        "title": "解方程",
+        "content": "\\(\\dfrac{dy}{dx} = \\dfrac{y}{x} - 1\\)，\\(\\dfrac{dy}{dx} - \\dfrac{1}{x}y = -1\\)，<br>积分因子 \\(\\mu = \\mathrm{e}^{-\\int \\frac{1}{x}dx} = \\dfrac{1}{x}\\)。<br>通解 \\(\\dfrac{y}{x} = -\\ln x + C\\)，即 \\(y = x(C - \\ln x)\\)。"
+      },
+      {
+        "step": 3,
+        "title": "求特解",
+        "content": "由 \\(y(1) = 2\\)，得 \\(C = 2\\)，故 \\(y(x) = x(2 - \\ln x)\\)。"
+      },
+      {
+        "step": 4,
+        "title": "(2) 求最大值",
+        "content": "\\(f(x) = \\displaystyle\\int_1^x t(2 - \\ln t),dt\\)，\\(f^{\\prime}(x) = x(2 - \\ln x)\\)。<br>令 \\(f^{\\prime}(x) = 0\\)，得 \\(x = \\mathrm{e}^2\\)。<br>当 \\(0 < x < \\mathrm{e}^2\\) 时 \\(f^{\\prime}(x) > 0\\)，\\(x > \\mathrm{e}^2\\) 时 \\(f^{\\prime}(x) < 0\\)，<br>故 \\(f(x)\\) 在 \\(x = \\mathrm{e}^2\\) 取最大值：<br>\\(f(\\mathrm{e}^2) = \\displaystyle\\int_1^{\\mathrm{e}^2} x(2 - \\ln x),dx = \\dfrac{1}{4}\\mathrm{e}^4 - \\dfrac{5}{4}\\)。"
+      }
+    ],
+    "answer": "(1) \\(y = x(2 - \\ln x)\\)，(2) 最大值 \\(\\dfrac{1}{4}\\mathrm{e}^4 - \\dfrac{5}{4}\\)",
+    "commonErrors": [
+      "微分方程列错",
+      "最大值计算时定积分算错"
+    ],
+    "frequency": 2,
+    "tags": [
+      "微分方程",
+      "变上限积分",
+      "解答题"
+    ]
+  },
+  {
+    "id": "2023-18",
+    "year": 2023,
+    "num": "三(18)",
+    "score": 12,
+    "type": "解答题",
+    "part": "高数",
+    "difficulty": 5,
+    "question": "求函数 \\(f(x, y) = (y - x^2)(y - x^3)\\) 的极值。",
+    "testPoints": [
+      "多元函数极值",
+      "Hesse 矩阵",
+      "极值的充分条件"
+    ],
+    "knowledgeIds": [
+      "GS.5.5"
+    ],
+    "knowledgePoints": [
+      {
+        "name": "多元函数极值",
+        "chapter": "ch05",
+        "anchor": "part1"
+      }
+    ],
+    "solution": [
+      {
+        "step": 1,
+        "title": "求驻点",
+        "content": "\\(f_x^{\\prime} = -x(2y + 3xy - 5x^3) = 0\\)，\\(f_y^{\\prime} = 2y - x^2 - x^3 = 0\\)。<br>得驻点 \\((0, 0), (1, 1), \\left(\\dfrac{2}{3}, \\dfrac{10}{27}\\right)\\)。"
+      },
+      {
+        "step": 2,
+        "title": "求 Hesse 矩阵",
+        "content": "\\(A = f_{xx}^{\\prime\\prime} = -(2y + 3xy - 5x^3) - x(3y - 15x^2)\\)<br>\\(B = f_{xy}^{\\prime\\prime} = -x(2 + 3x)\\)<br>\\(C = f_{yy}^{\\prime\\prime} = 2\\)"
+      },
+      {
+        "step": 3,
+        "title": "判断驻点",
+        "content": "在 \\((0,0)\\)：\\(A = 0, B = 0, C = 2\\)，\\(AC - B^2 = 0\\)，充分条件失效。取 \\(y = x^2 + kx^3 (k > 0)\\) 代入分析，\\((0,0)\\) 不是极值点。<br>在 \\((1, 1)\\)：\\(A = 12, B = -5, C = 2\\)，\\(AC - B^2 < 0\\)，不是极值点。<br>在 \\(\\left(\\dfrac{2}{3}, \\dfrac{10}{27}\\right)\\)：\\(A = \\dfrac{100}{27}, B = -\\dfrac{8}{3}, C = 2\\)，\\(AC - B^2 > 0\\) 且 \\(A > 0\\)，是极小值点。"
+      },
+      {
+        "step": 4,
+        "title": "结论",
+        "content": "极小值 \\(f\\left(\\dfrac{2}{3}, \\dfrac{10}{27}\\right) = \\left(\\dfrac{10}{27} - \\dfrac{4}{9}\\right)\\left(\\dfrac{10}{27} - \\dfrac{8}{27}\\right) = -\\dfrac{2}{27} \\cdot \\dfrac{2}{27} = -\\dfrac{4}{729}\\)。"
+      }
+    ],
+    "answer": "极小值 \\(-\\dfrac{4}{729}\\)，点 \\(\\left(\\dfrac{2}{3}, \\dfrac{10}{27}\\right)\\)",
+    "commonErrors": [
+      "极值充分条件失效时未用其他方法判断",
+      "代入坐标计算失误"
+    ],
+    "frequency": 2,
+    "tags": [
+      "多元函数极值",
+      "Hesse 矩阵",
+      "解答题"
+    ]
+  },
+  {
+    "id": "2023-19",
+    "year": 2023,
+    "num": "三(19)",
+    "score": 12,
+    "type": "解答题",
+    "part": "高数",
+    "difficulty": 4,
+    "question": "设空间有界区域 \\(\\Omega\\) 由柱面 \\(x^2 + y^2 = 1\\) 与平面 \\(z = 0\\) 和 \\(x + z = 1\\) 围成，\\(\\Sigma\\) 为 \\(\\Omega\\) 的边界曲面的外侧。计算曲面积分 \\(I = \\iint_\\Sigma 2xz,dy,dz + xz\\cos y,dz,dy + 3yz\\sin x,dx,dy\\)。",
+    "testPoints": [
+      "高斯公式",
+      "三重积分计算"
+    ],
+    "knowledgeIds": [
+      "GS.6.7"
+    ],
+    "knowledgePoints": [
+      {
+        "name": "高斯公式",
+        "chapter": "ch06",
+        "anchor": "part1"
+      }
+    ],
+    "solution": [
+      {
+        "step": 1,
+        "title": "应用高斯公式",
+        "content": "由高斯公式：\\(I = \\iiint_\\Omega (2z - xz\\sin y + 3y\\sin x),dV\\)。"
+      },
+      {
+        "step": 2,
+        "title": "利用对称性",
+        "content": "由对称性：\\(\\iiint_\\Omega xz\\sin y,dV = 0\\)，\\(\\iiint_\\Omega 3y\\sin x,dV = 0\\)。<br>故 \\(I = \\iiint_\\Omega 2z,dV\\)。"
+      },
+      {
+        "step": 3,
+        "title": "化为二重积分",
+        "content": "投影到 \\(D_{xy} : x^2 + y^2 \\leq 1\\)：<br>\\(I = \\iint_{D_{xy}} dx,dy \\displaystyle\\int_0^{1-x} 2z,dz = \\iint_{D_{xy}} (1 - x)^2 dx,dy = \\iint_{D_{xy}} (1 - 2x + x^2) dx,dy\\)。"
+      },
+      {
+        "step": 4,
+        "title": "极坐标计算",
+        "content": "\\(= \\pi + \\dfrac{1}{2}\\iint_{D_{xy}}(x^2 + y^2) dx,dy = \\pi + \\dfrac{1}{2}\\int_0^{2\\pi} d\\theta \\int_0^1 r^3 dr = \\pi + \\dfrac{\\pi}{4} = \\dfrac{5\\pi}{4}\\)。"
+      },
+      {
+        "step": 5,
+        "title": "结论",
+        "content": "\\(I = \\dfrac{5\\pi}{4}\\)。"
+      }
+    ],
+    "answer": "\\(\\dfrac{5\\pi}{4}\\)",
+    "commonErrors": [
+      "高斯公式中偏导项算错",
+      "上下限或对称性使用错误"
+    ],
+    "frequency": 2,
+    "tags": [
+      "高斯公式",
+      "曲面积分",
+      "解答题"
+    ]
+  },
+  {
+    "id": "2023-20",
+    "year": 2023,
+    "num": "三(20)",
+    "score": 12,
+    "type": "解答题",
+    "part": "高数",
+    "difficulty": 5,
+    "question": "设函数 \\(f(x)\\) 在 \\([-a, a]\\) 上具有二阶连续导数，证明：<br>(1) 若 \\(f(0) = 0\\)，则存在 \\(\\xi \\in (-a, a)\\)，使得 \\(f^{\\prime\\prime}(\\xi) = \\dfrac{1}{a^2}[f(a) + f(-a)]\\)；<br>(2) 若 \\(f(x)\\) 在 \\((-a, a)\\) 内取得极值，则存在 \\(\\eta \\in (-a, a)\\)，使得 \\(|f^{\\prime\\prime}(\\eta)| \\geq \\dfrac{1}{2a^2}|f(a) - f(-a)|\\)。",
+    "testPoints": [
+      "泰勒公式",
+      "介值定理",
+      "极值点导数"
+    ],
+    "knowledgeIds": [
+      "GS.2.8"
+    ],
+    "knowledgePoints": [
+      {
+        "name": "泰勒公式",
+        "chapter": "ch02",
+        "anchor": "part1"
+      },
+      {
+        "name": "介值定理",
+        "chapter": "ch01",
+        "anchor": "part1"
+      }
+    ],
+    "solution": [
+      {
+        "step": 1,
+        "title": "(1) 一阶泰勒展开",
+        "content": "由泰勒公式：\\(f(a) = f(0) + f^{\\prime}(0) a + \\dfrac{f^{\\prime\\prime}(\\eta_1)}{2} a^2 = f^{\\prime}(0)a + \\dfrac{f^{\\prime\\prime}(\\eta_1)}{2}a^2\\)（\\(0 < \\eta_1 < a\\)）。<br>同理 \\(f(-a) = -f^{\\prime}(0)a + \\dfrac{f^{\\prime\\prime}(\\eta_2)}{2}a^2\\)（\\(-a < \\eta_2 < 0\\)）。"
+      },
+      {
+        "step": 2,
+        "title": "(1) 介值定理",
+        "content": "两式相加：\\(f(a) + f(-a) = \\dfrac{a^2}{2}[f^{\\prime\\prime}(\\eta_1) + f^{\\prime\\prime}(\\eta_2)]\\)。<br>由介值定理，存在 \\(\\xi \\in (\\eta_2, \\eta_1) \\subset (-a, a)\\)，使得 \\(f^{\\prime\\prime}(\\xi) = \\dfrac{f^{\\prime\\prime}(\\eta_1) + f^{\\prime\\prime}(\\eta_2)}{2}\\)。<br>代入得 \\(f^{\\prime\\prime}(\\xi) = \\dfrac{f(a) + f(-a)}{a^2}\\)。"
+      },
+      {
+        "step": 3,
+        "title": "(2) 设极值点",
+        "content": "设 \\(f\\) 在 \\(x_0 \\in (-a, a)\\) 取极值，则 \\(f^{\\prime}(x_0) = 0\\)。"
+      },
+      {
+        "step": 4,
+        "title": "(2) 二阶展开",
+        "content": "\\(f(a) = f(x_0) + \\dfrac{f^{\\prime\\prime}(\\gamma_1)}{2}(a - x_0)^2\\)，\\(f(-a) = f(x_0) + \\dfrac{f^{\\prime\\prime}(\\gamma_2)}{2}(a + x_0)^2\\)。"
+      },
+      {
+        "step": 5,
+        "title": "(2) 放缩",
+        "content": "\\(|f(a) - f(-a)| \\leq \\dfrac{1}{2}|f^{\\prime\\prime}(\\gamma_2)|(a - x_0)^2 + \\dfrac{1}{2}|f^{\\prime\\prime}(\\gamma_1)|(a + x_0)^2\\)。<br>设 \\(M = \\max(|f^{\\prime\\prime}(\\gamma_1)|, |f^{\\prime\\prime}(\\gamma_2)|)\\)，则 \\(|f(a) - f(-a)| \\leq M(a^2 + x_0^2) \\leq 2Ma^2\\)，<br>即 \\(M \\geq \\dfrac{|f(a) - f(-a)|}{2a^2}\\)，取 \\(\\eta = \\gamma_1\\) 或 \\(\\gamma_2\\) 即得结论。"
+      }
+    ],
+    "answer": "证明见解析",
+    "commonErrors": [
+      "介值定理使用条件未验证",
+      "极值点可导性质未用"
+    ],
+    "frequency": 1,
+    "tags": [
+      "泰勒公式",
+      "介值定理",
+      "证明题",
+      "解答题"
+    ]
+  },
+  {
+    "id": "2023-21",
+    "year": 2023,
+    "num": "三(21)",
+    "score": 12,
+    "type": "解答题",
+    "part": "线代",
+    "difficulty": 4,
+    "question": "已知二次型 \\(f(x_1, x_2, x_3) = x_1^2 + 2x_2^2 + 2x_3^2 + 2x_1 x_2 - 2x_1 x_3\\)，\\(g(y_1, y_2, y_3) = y_1^2 + y_2^2 + y_3^2 + 2y_2 y_3\\)。<br>(1) 求可逆变换 \\(\\mathbf{x} = P\\mathbf{y}\\)，将 \\(f\\) 化成 \\(g\\)；<br>(2) 是否存在正交变换 \\(\\mathbf{x} = Q\\mathbf{y}\\)，将 \\(f\\) 化成 \\(g\\)？",
+    "testPoints": [
+      "二次型",
+      "配方法",
+      "正交变换",
+      "矩阵相似"
+    ],
+    "knowledgeIds": [
+      "XD.14.1",
+      "XD.14.2"
+    ],
+    "knowledgePoints": [
+      {
+        "name": "二次型化简",
+        "chapter": "ch14",
+        "anchor": "part1"
+      },
+      {
+        "name": "正交变换",
+        "chapter": "ch14",
+        "anchor": "part1"
+      }
+    ],
+    "solution": [
+      {
+        "step": 1,
+        "title": "配方法化 f",
+        "content": "\\(f = (x_1 + x_2 - x_3)^2 + x_2^2 + x_3^2 + 2x_2 x_3 = (x_1 + x_2 - x_3)^2 + (x_2 + x_3)^2\\)。"
+      },
+      {
+        "step": 2,
+        "title": "配方法化 g",
+        "content": "\\(g = y_1^2 + (y_2 + y_3)^2\\)。"
+      },
+      {
+        "step": 3,
+        "title": "求可逆变换",
+        "content": "令 \\(\\begin{cases} z_1 = x_1 + x_2 - x_3 \\\\ z_2 = x_2 + x_3 \\\\ z_3 = x_3 \\end{cases}\\) 与 \\(\\begin{cases} z_1 = y_1 \\\\ z_2 = y_2 + y_3 \\\\ z_3 = y_3 \\end{cases}\\)。<br>可解出 \\(\\mathbf{x} = P\\mathbf{y}\\)，其中 \\(P = \\begin{pmatrix} 1 & -1 & 1 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1 \\end{pmatrix}\\)。"
+      },
+      {
+        "step": 4,
+        "title": "判断正交变换",
+        "content": "\\(f\\) 的矩阵 \\(A = \\begin{pmatrix} 1 & 1 & -1 \\\\ 1 & 2 & 0 \\\\ -1 & 0 & 2 \\end{pmatrix}\\)，\\(\\mathrm{tr}(A) = 5\\)。<br>\\(g\\) 的矩阵 \\(B = \\begin{pmatrix} 1 & 0 & 0 \\\\ 0 & 1 & 1 \\\\ 0 & 1 & 1 \\end{pmatrix}\\)，\\(\\mathrm{tr}(B) = 3\\)。<br>若存在正交变换，则 \\(A, B\\) 相似，从而迹相等。矛盾，故不存在正交变换。"
+      },
+      {
+        "step": 5,
+        "title": "结论",
+        "content": "(1) \\(P = \\begin{pmatrix} 1 & -1 & 1 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1 \\end{pmatrix}\\)，(2) 不存在。"
+      }
+    ],
+    "answer": "(1) \\(P = \\begin{pmatrix} 1 & -1 & 1 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1 \\end{pmatrix}\\)；(2) 不存在正交变换",
+    "commonErrors": [
+      "配方错误",
+      "矩阵迹作为相似不变量遗漏"
+    ],
+    "frequency": 2,
+    "tags": [
+      "二次型",
+      "配方法",
+      "正交变换",
+      "解答题"
+    ]
+  },
+  {
+    "id": "2023-22",
+    "year": 2023,
+    "num": "三(22)",
+    "score": 12,
+    "type": "解答题",
+    "part": "概率",
+    "difficulty": 4,
+    "question": "设二维随机变量 \\((X, Y)\\) 的概率密度为 \\(f(x, y) = \\begin{cases} \\dfrac{2}{\\pi}(x^2 + y^2), & x^2 + y^2 \\leq 1 \\\\ 0, & \\text{其他} \\end{cases}\\)。<br>(1) 求 \\(X\\) 与 \\(Y\\) 的方差；<br>(2) \\(X\\) 与 \\(Y\\) 是否相互独立？<br>(3) 求 \\(Z = X^2 + Y^2\\) 的概率密度。",
+    "testPoints": [
+      "二维随机变量",
+      "独立性",
+      "函数分布"
+    ],
+    "knowledgeIds": [
+      "GL.17.1",
+      "GL.17.3",
+      "GL.17.4"
+    ],
+    "knowledgePoints": [
+      {
+        "name": "二维随机变量",
+        "chapter": "ch17",
+        "anchor": "part1"
+      },
+      {
+        "name": "独立性判断",
+        "chapter": "ch17",
+        "anchor": "part1"
+      },
+      {
+        "name": "随机变量函数分布",
+        "chapter": "ch17",
+        "anchor": "part1"
+      }
+    ],
+    "solution": [
+      {
+        "step": 1,
+        "title": "(1) 求 E(X), D(X)",
+        "content": "由对称性 \\(E(X) = \\displaystyle\\iint_D x \\cdot \\dfrac{2}{\\pi}(x^2+y^2) d\\sigma = 0\\)。<br>\\(E(X^2) = \\displaystyle\\iint_D x^2 \\cdot \\dfrac{2}{\\pi}(x^2+y^2) d\\sigma = \\dfrac{1}{3}\\)，所以 \\(D(X) = \\dfrac{1}{3}\\)。<br>同理 \\(D(Y) = \\dfrac{1}{3}\\)。"
+      },
+      {
+        "step": 2,
+        "title": "(2) 判断独立性",
+        "content": "\\(f_X(x) = \\begin{cases} \\dfrac{4}{3\\pi}(1 + 2x^2)\\sqrt{1 - x^2}, & -1 < x < 1 \\\\ 0, & \\text{其他} \\end{cases}\\)。<br>同理 \\(f_Y(y) = \\begin{cases} \\dfrac{4}{3\\pi}(1 + 2y^2)\\sqrt{1 - y^2}, & -1 < y < 1 \\\\ 0, & \\text{其他} \\end{cases}\\)。<br>因 \\(f_X(x)f_Y(y) \\neq f(x,y)\\)，所以 \\(X\\) 与 \\(Y\\) 不独立。"
+      },
+      {
+        "step": 3,
+        "title": "(3) 求 Z 的分布",
+        "content": "当 \\(0 \\leq z < 1\\)：\\(F_Z(z) = P\\{X^2 + Y^2 \\leq z\\} = \\displaystyle\\iint_{x^2+y^2 \\leq z} \\dfrac{2}{\\pi}(x^2+y^2) d\\sigma\\)<br>\\(= \\dfrac{2}{\\pi} \\int_0^{2\\pi} d\\theta \\int_0^{\\sqrt{z}} r^3 dr = \\dfrac{2}{\\pi} \\cdot 2\\pi \\cdot \\dfrac{z^2}{4} = z^2\\)。"
+      },
+      {
+        "step": 4,
+        "title": "(3) 求密度",
+        "content": "\\(f_Z(z) = F_Z^{\\prime}(z) = \\begin{cases} 2z, & 0 < z < 1 \\\\ 0, & \\text{其他} \\end{cases}\\)。"
+      }
+    ],
+    "answer": "(1) \\(D(X) = D(Y) = \\dfrac{1}{3}\\)；(2) 不独立；(3) \\(f_Z(z) = \\begin{cases} 2z, & 0 < z < 1 \\\\ 0, & \\text{其他} \\end{cases}\\)",
+    "commonErrors": [
+      "二维积分计算错误",
+      "独立性判断条件搞混"
+    ],
+    "frequency": 2,
+    "tags": [
+      "二维随机变量",
+      "独立性",
+      "函数分布",
+      "解答题"
+    ]
+  }
+]

@@ -1,1579 +1,1268 @@
-/**
- * 考研数学一 · 真题模块主逻辑
+/*
+ * 考研数学一 · 真题专区主逻辑
+ * =================================================
+ * - 知识点树（左侧）点击 → 右侧题目高亮 + 筛选
+ * - 缩略图条（顶部）点击 → 放大查看试卷
+ * - 题目列表（中部）点击 → 详情弹窗
+ * - 考点频率图（底部）→ 知识点考查频率
  *
- * 功能模块：
- *   1) 总览统计 (overview)
- *   2) 历年真题列表 (all) - 支持年份/板块/题型/难度/关键词筛选
- *   3) 考点分类 (kpoint) - 按考察点/必备知识点聚合
- *   4) 错题本 (wrongbook) - 自动收集掌握度 < 60% 的题
- *   5) 模考模式 (mock) - 随机抽题 + 倒计时 + 成绩报告
- *   6) 学习统计 (stats) - 各维度掌握度可视化
- *   7) 掌握度追踪（Supabase 持久化 + localStorage 兜底）
- *
- * 暴露给 app.js：
- *   window.initZhentiModule() - 在 zhenti.html 注入到 DOM 后调用
- *
- * 暴露给浏览器（HTML 内联脚本调用）：
- *   window.__zhenti - 全局状态对象（用于调试与扩展）
+ * 数据源：异步 fetch chapters/zhenti/{year}.json（按年份拆分维护）
  */
 
 (function() {
     'use strict';
 
-    // ===== 状态 =====
+    /* ===== 状态 ===== */
     const state = {
-        currentTab: 'all',       // all | kpoint | wrongbook | mock | stats
         filters: {
             year: 'all',
             part: 'all',
             type: 'all',
-            difficulty: 'all',
-            keyword: ''
+            keyword: '',
+            activeKP: null,
+            mastery: 'all',
         },
-        masteryCache: {},         // questionId -> [{level, date, note, ...}]
-        mockState: null           // 模考运行状态
+        questions: [],            // 所有题（平铺）
+        byYear: {},               // 按年份 → 题数组
+        kpCount: {},              // 知识点频次
+        loaded: false,            // 数据是否已加载
+        loading: false,           // 正在加载
+        manifest: null,           // 年份清单
+        activeTab: 'list',        // 当前主区域 Tab：'list' | 'progress'
     };
 
-    // ===== DOM 引用（懒初始化） =====
-    let contentArea, overviewEl, filtersEl, tabsEl;
+    /* ===== 数据加载 ===== */
+    const ZHENTI_BASE = 'chapters/zhenti/';
 
-    // ============================================================
-    // 初始化入口
-    // ============================================================
-    function init() {
-        contentArea = document.getElementById('zhentiContentArea');
-        overviewEl = document.getElementById('zhentiOverview');
-        filtersEl = document.getElementById('zhentiFilters');
-        tabsEl = document.querySelector('.zhenti-tabs');
+    /* ===== 掌握程度模块 ===== */
+    const MASTERY_KEY = 'zhenti_mastery';
+    const SUPABASE_URL = 'https://yucploakclaznlmfpdkk.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1Y3Bsb2FrY2xhem5sbWZwZGtrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQxNjAyNDQsImV4cCI6MjA5OTczNjI0NH0.-VpUDJgIR0KlEReUM5LzSShIwog2YiJgH28QJAj6GHI';
+    const MASTERY_LEVELS = [
+        { id: 'new',        label: '未开始',   icon: '⚪', color: '#94a3b8', desc: '尚未学习' },
+        { id: 'learning',   label: '学习中',   icon: '🟡', color: '#f59e0b', desc: '概念模糊，需要再练习' },
+        { id: 'familiar',   label: '基本掌握', icon: '🔵', color: '#3b82f6', desc: '能做对但不够熟练' },
+        { id: 'mastered',   label: '熟练掌握', icon: '🟢', color: '#10b981', desc: '可以快速、准确完成' },
+        { id: 'expert',     label: '完全精通', icon: '🟣', color: '#a855f7', desc: '完全掌握，能举一反三' },
+    ];
+    const MASTERY_BY_ID = MASTERY_LEVELS.reduce((m, l) => (m[l.id] = l, m), {});
 
-        if (!contentArea || !window.ZHENTI_DATA) {
-            console.warn('zhenti 模块初始化失败：DOM 或数据未就绪');
-            return;
-        }
+    let masteryData = {};
+    let _supabaseClient = null;
 
-        bindTabEvents();
-        bindFilterEvents();
-        bindSearchEvent();
-        renderOverview();
-        renderCurrentTab();
-        renderMathWhenReady(contentArea);
-        renderMathWhenReady(document.querySelector('.zhenti-overview'));
-        renderMathWhenReady(document.querySelector('.zhenti-intro'));
-
-        // 异步加载历史掌握度（拿到数据后再渲染一次，让 mastery badge 显示真实数据）
-        loadAllMasteryCache().then(function() {
-            renderOverview();
-            renderCurrentTab();
-            // 二次渲染 KaTeX（重新生成的卡片里可能包含公式）
-            renderMathWhenReady(contentArea);
-            renderMathWhenReady(document.querySelector('.zhenti-overview'));
-        });
-    }
-
-    // ============================================================
-    // 总览统计卡片
-    // ============================================================
-    function renderOverview() {
-        if (!overviewEl) return;
-        var total = 0;
-        var byYear = {};
-        var byPart = { '高数': 0, '线代': 0, '概率': 0 };
-        var byType = { '选择题': 0, '填空题': 0, '解答题': 0 };
-        var masteredCount = 0;
-        var weakCount = 0;
-
-        Object.keys(window.ZHENTI_DATA).forEach(function(year) {
-            var arr = window.ZHENTI_DATA[year];
-            byYear[year] = arr.length;
-            total += arr.length;
-            arr.forEach(function(q) {
-                if (byPart[q.part] !== undefined) byPart[q.part]++;
-                if (byType[q.type] !== undefined) byType[q.type]++;
-
-                // 掌握度
-                var mid = q.id;
-                var records = state.masteryCache[mid];
-                if (records && records.length > 0) {
-                    var latest = getLatestRecord(records);
-                    if (latest.level >= 80) masteredCount++;
-                    else if (latest.level < 60) weakCount++;
-                }
-            });
-        });
-
-        // 主卡片行（4 个）：总数、已掌握、薄弱题、覆盖年份
-        var mainRowHtml =
-            '<div class="zhenti-stat-row" style="display:flex;gap:10px;margin-bottom:10px;flex-wrap:wrap;">' +
-                statCard('📚', total, '真题总数', '#3498db') +
-                statCard('✅', masteredCount, '已掌握(≥80%)', '#27ae60') +
-                statCard('⚠️', weakCount, '薄弱题(<60%)', '#e74c3c') +
-                statCard('📅', Object.keys(byYear).length, '覆盖年份', '#9b59b6') +
-            '</div>';
-
-        // 板块分布行（3 个紧凑条）
-        var partTotal = byPart['高数'] + byPart['线代'] + byPart['概率'] || 1;
-        var partRowHtml =
-            '<div class="zhenti-part-row" style="display:flex;align-items:center;gap:10px;background:#fff;padding:10px 14px;border-radius:8px;box-shadow:0 2px 6px rgba(0,0,0,0.06);flex-wrap:wrap;">' +
-                '<div class="zrp-label" style="font-size:12px;white-space:nowrap;min-width:64px;color:#1abc9c;">📐 高数 <strong style="color:#1a3a5c;font-size:14px;">' + byPart['高数'] + '</strong></div>' +
-                '<div class="zrp-bar" style="flex:1;min-width:60px;height:8px;background:#f0f4f8;border-radius:4px;overflow:hidden;"><div class="zrp-fill" style="height:100%;background:#1abc9c;border-radius:4px;transition:width 0.6s ease;width:' + (byPart['高数']/partTotal*100).toFixed(1) + '%;"></div></div>' +
-                '<div class="zrp-label" style="font-size:12px;white-space:nowrap;min-width:64px;color:#f39c12;">🔢 线代 <strong style="color:#1a3a5c;font-size:14px;">' + byPart['线代'] + '</strong></div>' +
-                '<div class="zrp-bar" style="flex:1;min-width:60px;height:8px;background:#f0f4f8;border-radius:4px;overflow:hidden;"><div class="zrp-fill" style="height:100%;background:#f39c12;border-radius:4px;transition:width 0.6s ease;width:' + (byPart['线代']/partTotal*100).toFixed(1) + '%;"></div></div>' +
-                '<div class="zrp-label" style="font-size:12px;white-space:nowrap;min-width:64px;color:#e67e22;">🎲 概率 <strong style="color:#1a3a5c;font-size:14px;">' + byPart['概率'] + '</strong></div>' +
-                '<div class="zrp-bar" style="flex:1;min-width:60px;height:8px;background:#f0f4f8;border-radius:4px;overflow:hidden;"><div class="zrp-fill" style="height:100%;background:#e67e22;border-radius:4px;transition:width 0.6s ease;width:' + (byPart['概率']/partTotal*100).toFixed(1) + '%;"></div></div>' +
-            '</div>';
-
-        overviewEl.innerHTML = mainRowHtml + partRowHtml;
-    }
-
-    function statCard(icon, num, label, color) {
-        // 用 inline style 兜底，避免浏览器缓存了旧 CSS 时样式失效
-        return '<div class="zhenti-stat-card" style="flex:1 1 0;min-width:0;background:#fff;border-radius:8px;padding:12px 8px;box-shadow:0 2px 6px rgba(0,0,0,0.06);text-align:center;border-top:3px solid ' + color + ';">' +
-            '<div class="zs-icon" style="font-size:20px;margin-bottom:2px;">' + icon + '</div>' +
-            '<div class="zs-num" style="font-size:20px;font-weight:700;color:#1a3a5c;line-height:1.2;">' + num + '</div>' +
-            '<div class="zs-label" style="font-size:11px;color:#6a8fbb;margin-top:2px;">' + label + '</div>' +
-            '</div>';
-    }
-
-    // ============================================================
-    // Tab 切换
-    // ============================================================
-    function bindTabEvents() {
-        if (!tabsEl) return;
-        tabsEl.querySelectorAll('.zhenti-tab').forEach(function(btn) {
-            btn.addEventListener('click', function() {
-                var tab = btn.dataset.tab;
-                if (tab === state.currentTab) return;
-                state.currentTab = tab;
-                tabsEl.querySelectorAll('.zhenti-tab').forEach(function(b) {
-                    b.classList.toggle('active', b === btn);
+    /* ----- Supabase 客户端（lazy init）----- */
+    function getSupabase() {
+        if (typeof window.supabase === 'undefined') return null;
+        if (!_supabaseClient) {
+            try {
+                _supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+                    auth: { persistSession: false }
                 });
-                // 切换 tab 时显示/隐藏筛选栏
-                if (filtersEl) {
-                    filtersEl.style.display = (tab === 'all' || tab === 'kpoint') ? '' : 'none';
-                }
-                renderCurrentTab();
-            });
-        });
-    }
-
-    function renderCurrentTab() {
-        if (!contentArea) return;
-        switch (state.currentTab) {
-            case 'all':        renderAllQuestions(); break;
-            case 'kpoint':     renderByKnowledgePoint(); break;
-            case 'wrongbook':  renderWrongBook(); break;
-            case 'mock':       openMockModal(); break;
-            case 'stats':      renderStats(); break;
-        }
-        // 每次切换 tab 后统一渲染一次数学公式（覆盖 kpoint/stats 等不再单独调用的分支）
-        renderMathWhenReady(contentArea);
-    }
-
-    // ============================================================
-    // 筛选逻辑
-    // ============================================================
-    function bindFilterEvents() {
-        document.querySelectorAll('#filterYear .filter-pill').forEach(function(b) {
-            b.addEventListener('click', function() {
-                setActive(b.parentElement, b);
-                state.filters.year = b.dataset.year;
-                renderCurrentTab();
-            });
-        });
-        document.querySelectorAll('#filterPart .filter-pill').forEach(function(b) {
-            b.addEventListener('click', function() {
-                setActive(b.parentElement, b);
-                state.filters.part = b.dataset.part;
-                renderCurrentTab();
-            });
-        });
-        document.querySelectorAll('#filterType .filter-pill').forEach(function(b) {
-            b.addEventListener('click', function() {
-                setActive(b.parentElement, b);
-                state.filters.type = b.dataset.type;
-                renderCurrentTab();
-            });
-        });
-        document.querySelectorAll('#filterDifficulty .filter-pill').forEach(function(b) {
-            b.addEventListener('click', function() {
-                setActive(b.parentElement, b);
-                state.filters.difficulty = b.dataset.difficulty;
-                renderCurrentTab();
-            });
-        });
-    }
-
-    function bindSearchEvent() {
-        var input = document.getElementById('zhentiSearch');
-        if (!input) return;
-        var debounce;
-        input.addEventListener('input', function() {
-            clearTimeout(debounce);
-            debounce = setTimeout(function() {
-                state.filters.keyword = input.value.trim().toLowerCase();
-                renderCurrentTab();
-            }, 200);
-        });
-    }
-
-    function setActive(parent, btn) {
-        parent.querySelectorAll('.filter-pill').forEach(function(b) {
-            b.classList.toggle('active', b === btn);
-        });
-    }
-
-    function applyFilters(questions) {
-        var f = state.filters;
-        return questions.filter(function(q) {
-            if (f.year !== 'all' && String(q.year) !== f.year) return false;
-            if (f.part !== 'all' && q.part !== f.part) return false;
-            if (f.type !== 'all' && q.type !== f.type) return false;
-            if (f.difficulty !== 'all' && String(q.difficulty) !== f.difficulty) return false;
-            if (f.keyword) {
-                var kw = f.keyword;
-                var hay = (q.question + ' ' + q.num + ' ' + q.part + ' ' + q.type + ' ' +
-                    (q.tags || []).join(' ') + ' ' +
-                    (q.testPoints || []).join(' ') + ' ' +
-                    (q.knowledgePoints || []).map(function(k) { return k.name; }).join(' ')
-                ).toLowerCase();
-                if (hay.indexOf(kw) === -1) return false;
+            } catch (e) {
+                console.warn('Supabase client 初始化失败:', e);
+                return null;
             }
-            return true;
-        });
+        }
+        return _supabaseClient;
     }
 
-    function getAllQuestions() {
-        var all = [];
-        Object.keys(window.ZHENTI_DATA).forEach(function(year) {
-            (window.ZHENTI_DATA[year] || []).forEach(function(q) {
-                all.push(q);
-            });
-        });
-        // 按年份倒序 + 题号排序
-        all.sort(function(a, b) {
-            if (a.year !== b.year) return b.year - a.year;
-            return a.num.localeCompare(b.num);
-        });
-        return all;
-    }
-
-    // ============================================================
-    // 历年真题列表
-    // ============================================================
-    function renderAllQuestions() {
-        var all = applyFilters(getAllQuestions());
-
-        if (all.length === 0) {
-            contentArea.innerHTML = '<div class="zhenti-empty">' +
-                '<div class="empty-icon">🔍</div>' +
-                '<div class="empty-text">没有符合条件的真题</div>' +
-                '<div class="empty-tip">试着调整筛选条件或清空搜索关键词</div>' +
-            '</div>';
-            return;
-        }
-
-        var headerHtml = '<div class="zhenti-list-header">' +
-            '<div class="zlh-info">共找到 <strong>' + all.length + '</strong> 道真题，按年份倒序排列</div>' +
-            '<div class="zlh-actions">' +
-                '<button class="zbtn zbtn-ghost" id="zhentiExpandAll">📖 全部展开</button>' +
-                '<button class="zbtn zbtn-ghost" id="zhentiCollapseAll">📕 全部收起</button>' +
-            '</div>' +
-        '</div>';
-
-        var listHtml = all.map(function(q) { return renderQuestionCard(q); }).join('');
-        contentArea.innerHTML = headerHtml + '<div class="zhenti-question-list">' + listHtml + '</div>';
-
-        bindCardEvents();
-        bindMasteryToggles();
-        renderMathWhenReady(contentArea);
-    }
-
-    // ============================================================
-    // 单题卡片
-    // ============================================================
-    function renderQuestionCard(q) {
-        var records = state.masteryCache[q.id] || [];
-        var latest = getLatestRecord(records);
-        var masteryHtml = renderMasteryBadge(latest);
-
-        var difficultyStars = '';
-        for (var i = 0; i < 5; i++) {
-            difficultyStars += i < q.difficulty ? '★' : '☆';
-        }
-
-        var optionsHtml = '';
-        if (q.options && q.options.length > 0) {
-            optionsHtml = '<div class="q-options">' +
-                q.options.map(function(opt) { return '<div class="q-option">' + opt + '</div>'; }).join('') +
-            '</div>';
-        }
-
-        var kpHtml = '';
-        if (q.knowledgePoints && q.knowledgePoints.length > 0) {
-            kpHtml = '<div class="q-kpoints">' +
-                '<span class="qk-label">📚 必备知识点：</span>' +
-                q.knowledgePoints.map(function(kp) {
-                    return '<a class="qk-chip" data-chapter="' + kp.chapter + '" ' +
-                        'data-anchor="' + (kp.anchor || '') + '" ' +
-                        'title="点击跳转到 ' + kp.chapter + ' 章节">' +
-                        escapeHtml(kp.name) +
-                    '</a>';
-                }).join('') +
-            '</div>';
-        }
-
-        var tpHtml = '';
-        if (q.testPoints && q.testPoints.length > 0) {
-            tpHtml = '<div class="q-tpoints">' +
-                '<span class="qt-label">🎯 考察点：</span>' +
-                q.testPoints.map(function(t) { return '<span class="qt-chip">' + escapeHtml(t) + '</span>'; }).join('') +
-            '</div>';
-        }
-
-        var errHtml = '';
-        if (q.commonErrors && q.commonErrors.length > 0) {
-            errHtml = '<div class="q-errors">' +
-                '<span class="qe-label">⚠️ 易错点：</span>' +
-                '<ul>' + q.commonErrors.map(function(e) { return '<li>' + escapeHtml(e) + '</li>'; }).join('') + '</ul>' +
-            '</div>';
-        }
-
-        return '<div class="zhenti-card" data-qid="' + q.id + '">' +
-            '<div class="zc-head" data-role="card-head">' +
-                '<div class="zc-head-left">' +
-                    '<span class="zc-year">' + q.year + '</span>' +
-                    '<span class="zc-num">' + q.num + '</span>' +
-                    '<span class="zc-part zc-part-' + q.part + '">' + q.part + '</span>' +
-                    '<span class="zc-type">' + q.type + '</span>' +
-                    '<span class="zc-score">' + q.score + '分</span>' +
-                    '<span class="zc-difficulty" title="难度">' + difficultyStars + '</span>' +
-                '</div>' +
-                '<div class="zc-head-right">' +
-                    masteryHtml +
-                    '<span class="zc-toggle">▾</span>' +
-                '</div>' +
-            '</div>' +
-            '<div class="zc-body">' +
-                '<div class="zc-question">' +
-                    '<div class="zq-label">📝 题目</div>' +
-                    '<div class="zq-text">' + q.question + '</div>' +
-                    optionsHtml +
-                '</div>' +
-                '<div class="zc-meta">' +
-                    tpHtml +
-                    kpHtml +
-                '</div>' +
-                '<div class="zc-actions">' +
-                    '<button class="zbtn zbtn-primary" data-role="view-solution">📖 查看详细解析</button>' +
-                    '<button class="zbtn" data-role="view-answer">🎯 看答案</button>' +
-                    '<button class="zbtn zbtn-ghost" data-role="record-mastery">📊 记录掌握度</button>' +
-                '</div>' +
-                '<div class="zc-solution" data-role="solution" hidden>' +
-                    '<div class="zs-head">🧭 解题步骤</div>' +
-                    '<ol class="zs-steps">' +
-                        q.solution.map(function(s) {
-                            var formulaHtml = s.formula ? '<div class="zs-formula">' + s.formula + '</div>' : '';
-                            return '<li class="zs-step">' +
-                                '<div class="zs-step-title">' + escapeHtml(s.title) + '</div>' +
-                                '<div class="zs-step-content">' + s.content + '</div>' +
-                                formulaHtml +
-                            '</li>';
-                        }).join('') +
-                    '</ol>' +
-                    '<div class="zs-answer">' +
-                        '<span class="zsa-label">🎯 最终答案：</span>' +
-                        '<span class="zsa-value">' + q.answer + '</span>' +
-                    '</div>' +
-                    errHtml +
-                '</div>' +
-                '<div class="zc-mastery-panel" data-role="mastery-panel" hidden>' +
-                    renderMasteryPanel(q.id) +
-                '</div>' +
-            '</div>' +
-        '</div>';
-    }
-
-    function renderMasteryBadge(latest) {
-        if (!latest) {
-            return '<span class="zc-mastery none" title="还未记录掌握度">📊 未记录</span>';
-        }
-        var color = latest.level >= 80 ? '#27ae60' : (latest.level < 60 ? '#e74c3c' : '#f39c12');
-        var cls = latest.level >= 80 ? 'strong' : (latest.level < 60 ? 'weak' : 'mid');
-        return '<span class="zc-mastery ' + cls + '" style="background:' + color + ';" title="最近掌握度 ' + latest.level + '% · ' + latest.record_date + '">' +
-            '📊 ' + latest.level + '% · ' + latest.record_date.substring(5) +
-        '</span>';
-    }
-
-    function renderMasteryPanel(qid) {
-        var records = state.masteryCache[qid] || [];
-        var latest = getLatestRecord(records);
-        var cur = latest ? latest.level : 50;
-        return '<div class="zmp-inner">' +
-            '<div class="zmp-row">' +
-                '<label>掌握度</label>' +
-                '<input type="range" min="0" max="100" step="5" value="' + cur + '" data-role="range">' +
-                '<span class="zmp-value" data-role="value">' + cur + '%</span>' +
-            '</div>' +
-            '<div class="zmp-row">' +
-                '<label>日期</label>' +
-                '<input type="date" data-role="date" value="' + todayStr() + '">' +
-            '</div>' +
-            '<div class="zmp-row">' +
-                '<label>备注</label>' +
-                '<input type="text" data-role="note" placeholder="第几次复习、错在哪、记忆口诀...">' +
-            '</div>' +
-            '<div class="zmp-actions">' +
-                '<button class="zbtn zbtn-primary" data-role="save">💾 保存</button>' +
-                '<button class="zbtn zbtn-ghost" data-role="close">收起 ▲</button>' +
-            '</div>' +
-            '<div class="zmp-history" data-role="history">' + renderHistoryItems(records) + '</div>' +
-        '</div>';
-    }
-
-    function renderHistoryItems(records) {
-        if (!records || records.length === 0) {
-            return '<div class="zmp-empty">还没有记录。做完一道题就保存一下，掌握度会跟着日期积累 📈</div>';
-        }
-        var sorted = records.slice().sort(function(a, b) {
-            if (a.record_date !== b.record_date) return a.record_date < b.record_date ? 1 : -1;
-            return (b.created_at || '') < (a.created_at || '') ? -1 : 1;
-        });
-        return '<div class="zmp-history-title">📜 历史记录</div>' +
-            '<ul class="zmp-history-list">' +
-            sorted.map(function(r) {
-                var color = r.level >= 80 ? '#27ae60' : (r.level < 60 ? '#e74c3c' : '#f39c12');
-                var noteHtml = r.note ? '<span class="zh-note" title="' + escapeAttr(r.note) + '">' + escapeHtml(r.note) + '</span>' : '';
-                return '<li class="zmp-history-item" data-id="' + r.id + '">' +
-                    '<span class="zh-date">' + r.record_date + '</span>' +
-                    '<div class="zh-bar"><div class="zh-bar-fill" style="width:' + r.level + '%; background:' + color + '"></div></div>' +
-                    '<span class="zh-pct" style="color:' + color + '">' + r.level + '%</span>' +
-                    noteHtml +
-                    '<button class="zh-delete" data-role="del" data-id="' + r.id + '">✕</button>' +
-                '</li>';
-            }).join('') +
-            '</ul>';
-    }
-
-    function getLatestRecord(records) {
-        if (!records || records.length === 0) return null;
-        var sorted = records.slice().sort(function(a, b) {
-            if (a.record_date !== b.record_date) return a.record_date < b.record_date ? 1 : -1;
-            return (b.created_at || '') < (a.created_at || '') ? -1 : 1;
-        });
-        // 注意：数据库中 mastery_level 字段，在本地存储中叫 level
-        var r = sorted[0];
-        return {
-            level: r.mastery_level !== undefined ? r.mastery_level : r.level,
-            record_date: r.record_date,
-            id: r.id
-        };
-    }
-
-    function bindCardEvents() {
-        // 折叠/展开
-        contentArea.querySelectorAll('[data-role="card-head"]').forEach(function(head) {
-            head.addEventListener('click', function(e) {
-                if (e.target.closest('[data-role="mastery-toggle"]')) return;
-                var card = head.closest('.zhenti-card');
-                var body = card.querySelector('.zc-body');
-                var toggle = card.querySelector('.zc-toggle');
-                var isCollapsed = card.classList.toggle('collapsed');
-                if (toggle) toggle.textContent = isCollapsed ? '▾' : '▴';
-            });
-        });
-
-        // 查看详细解析
-        contentArea.querySelectorAll('[data-role="view-solution"]').forEach(function(btn) {
-            btn.addEventListener('click', function() {
-                var card = btn.closest('.zhenti-card');
-                var sol = card.querySelector('[data-role="solution"]');
-                if (sol) {
-                    var willShow = sol.hidden;
-                    sol.hidden = !willShow;
-                    btn.textContent = willShow ? '📕 收起解析' : '📖 查看详细解析';
-                    if (willShow) {
-                        renderMathWhenReady(sol);
-                    }
+    /* ----- 数据加载：Supabase 优先，localStorage 兜底 ----- */
+    async function loadMastery() {
+        masteryData = {};
+        const db = getSupabase();
+        if (db) {
+            try {
+                const { data, error } = await db.from('zhenti_mastery').select('*');
+                if (!error && data && data.length) {
+                    data.forEach(row => {
+                        masteryData[row.question_id] = {
+                            level: row.level,
+                            updatedAt: row.updated_at,
+                        };
+                    });
+                    // 同步到本地缓存
+                    try { localStorage.setItem(MASTERY_KEY, JSON.stringify(masteryData)); } catch (e) {}
+                    return;
                 }
-            });
+            } catch (e) {
+                console.warn('Supabase 加载失败，使用本地缓存:', e);
+            }
+        }
+        // 降级：从 localStorage 加载
+        try {
+            const raw = localStorage.getItem(MASTERY_KEY);
+            masteryData = raw ? JSON.parse(raw) : {};
+        } catch (e) {
+            masteryData = {};
+        }
+    }
+
+    /* ----- 本地缓存（兜底）----- */
+    function saveMastery() {
+        try {
+            localStorage.setItem(MASTERY_KEY, JSON.stringify(masteryData));
+        } catch (e) {
+            console.warn('保存掌握程度失败:', e);
+        }
+    }
+
+    /* ----- 异步写 Supabase ----- */
+    async function saveMasteryToSupabase(qid, level) {
+        const db = getSupabase();
+        if (!db) return;
+        try {
+            await db.from('zhenti_mastery').upsert(
+                { question_id: qid, level: level },
+                { onConflict: 'question_id' }
+            );
+        } catch (e) {
+            console.warn('Supabase 保存失败:', e);
+        }
+    }
+
+    async function deleteMasteryFromSupabase(qid) {
+        const db = getSupabase();
+        if (!db) return;
+        try {
+            await db.from('zhenti_mastery').delete().eq('question_id', qid);
+        } catch (e) {
+            console.warn('Supabase 删除失败:', e);
+        }
+    }
+
+    function getMastery(qid) {
+        return masteryData[qid] ? MASTERY_BY_ID[masteryData[qid].level] : MASTERY_BY_ID.new;
+    }
+
+    function setMastery(qid, levelId) {
+        if (!MASTERY_BY_ID[levelId]) return;
+        masteryData[qid] = {
+            level: levelId,
+            updatedAt: new Date().toISOString(),
+        };
+        saveMastery();
+        saveMasteryToSupabase(qid, levelId);
+    }
+
+    function clearMastery(qid) {
+        delete masteryData[qid];
+        saveMastery();
+        deleteMasteryFromSupabase(qid);
+    }
+
+    function masteryStats() {
+        const stats = { total: state.questions.length, byLevel: {} };
+        MASTERY_LEVELS.forEach(l => stats.byLevel[l.id] = 0);
+        state.questions.forEach(q => {
+            const lv = masteryData[q.id] ? masteryData[q.id].level : 'new';
+            stats.byLevel[lv] = (stats.byLevel[lv] || 0) + 1;
+        });
+        return stats;
+    }
+
+    /* ===== 掌握程度 UI ===== */
+    function renderMasteryBadge(qid) {
+        const lv = getMastery(qid);
+        if (lv.id === 'new') return '';
+        return `<span class="mastery-badge" style="background:${lv.color}20;color:${lv.color};border:1px solid ${lv.color}40">${lv.icon} ${lv.label}</span>`;
+    }
+
+    function refreshMasteryUI(qid) {
+        const currentLv = getMastery(qid);
+
+        // 更新侧边栏状态显示
+        const sidebarState = document.getElementById('masterySidebarState');
+        if (sidebarState) {
+            sidebarState.textContent = `${currentLv.icon} ${currentLv.label}`;
+            sidebarState.style.color = currentLv.color;
+        }
+
+        // 更新详情弹窗内按钮状态
+        const btn = document.querySelector(`#questionModalBody [data-mastery-clear="${qid}"]`);
+        if (btn) {
+            btn.style.display = currentLv.id === 'new' ? 'none' : '';
+        }
+        document.querySelectorAll(`#questionModalBody [data-mastery]`).forEach(b => {
+            const isActive = b.dataset.mastery === currentLv.id;
+            b.classList.toggle('active', isActive);
         });
 
-        // 查看答案
-        contentArea.querySelectorAll('[data-role="view-answer"]').forEach(function(btn) {
-            btn.addEventListener('click', function() {
-                var card = btn.closest('.zhenti-card');
-                var qid = card.dataset.qid;
-                var q = findQuestionById(qid);
-                if (q) showAnswerModal(q);
-            });
-        });
+        // 更新题卡片上的徽章
+        const card = document.querySelector(`.question-card[data-id="${qid}"]`);
+        if (card) {
+            const badgeSlot = card.querySelector('.mastery-badge-slot');
+            if (badgeSlot) {
+                badgeSlot.innerHTML = renderMasteryBadge(qid);
+            }
+        }
 
-        // 知识点跳转
-        contentArea.querySelectorAll('.qk-chip').forEach(function(chip) {
-            chip.addEventListener('click', function(e) {
+        // 更新总览统计
+        if (els.masteryStats) {
+            renderMasteryStats();
+        }
+
+        // 更新进度总览（如当前在进度 Tab 或已渲染过，保持方格颜色/统计与 legend 同步）
+        if (els.progressArea) {
+            renderProgressOverview();
+        }
+    }
+
+    function renderMasteryStats() {
+        if (!els.masteryStats) return;
+        const stats = masteryStats();
+        const items = MASTERY_LEVELS.map(l => {
+            const count = stats.byLevel[l.id] || 0;
+            const pct = stats.total > 0 ? Math.round((count / stats.total) * 100) : 0;
+            return `<div class="mastery-stat-item" data-level="${l.id}">
+                <span class="ms-icon" style="color:${l.color}">${l.icon}</span>
+                <span class="ms-label">${l.label}</span>
+                <span class="ms-count">${count}</span>
+                <span class="ms-pct">${pct}%</span>
+            </div>`;
+        }).join('');
+        const mastered = (stats.byLevel['mastered'] || 0) + (stats.byLevel['expert'] || 0);
+        const masteredPct = stats.total > 0 ? Math.round((mastered / stats.total) * 100) : 0;
+        els.masteryStats.innerHTML = `
+            <div class="mastery-summary">
+                <div class="ms-total">已掌握 <strong>${mastered}</strong> / ${stats.total} 题 (<strong>${masteredPct}%</strong>)</div>
+                <div class="ms-progress"><div class="ms-progress-fill" style="width:${masteredPct}%"></div></div>
+            </div>
+            <div class="mastery-distribution">${items}</div>
+        `;
+    }
+
+    /* 事件代理: 掌握程度按钮点击 */
+    function bindMasteryEvents() {
+        // 在弹窗内绑定
+        document.getElementById('questionModalBody').addEventListener('click', (e) => {
+            const btn = e.target.closest('[data-mastery]');
+            if (btn) {
                 e.preventDefault();
                 e.stopPropagation();
-                var chapter = chip.dataset.chapter;
-                if (chapter && window.__navigateTo) {
-                    window.__navigateTo(chapter);
-                    // 滚动到 anchor（如果有）
-                    setTimeout(function() {
-                        var anchor = chip.dataset.anchor;
-                        if (anchor) {
-                            var target = document.getElementById(anchor);
-                            if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                        }
-                    }, 600);
-                }
-            });
-        });
-
-        // 全部展开 / 收起
-        var expandAll = document.getElementById('zhentiExpandAll');
-        var collapseAll = document.getElementById('zhentiCollapseAll');
-        if (expandAll) expandAll.addEventListener('click', function() {
-            contentArea.querySelectorAll('.zhenti-card').forEach(function(c) {
-                c.classList.remove('collapsed');
-                var toggle = c.querySelector('.zc-toggle');
-                if (toggle) toggle.textContent = '▴';
-            });
-        });
-        if (collapseAll) collapseAll.addEventListener('click', function() {
-            contentArea.querySelectorAll('.zhenti-card').forEach(function(c) {
-                c.classList.add('collapsed');
-                var toggle = c.querySelector('.zc-toggle');
-                if (toggle) toggle.textContent = '▾';
-            });
-        });
-    }
-
-    function bindMasteryToggles() {
-        // 记录掌握度按钮
-        contentArea.querySelectorAll('[data-role="record-mastery"]').forEach(function(btn) {
-            btn.addEventListener('click', function() {
-                var card = btn.closest('.zhenti-card');
-                var panel = card.querySelector('[data-role="mastery-panel"]');
-                if (panel) {
-                    panel.hidden = !panel.hidden;
-                    btn.textContent = panel.hidden ? '📊 记录掌握度' : '📊 收起';
-                }
-            });
-        });
-
-        // 关闭按钮
-        contentArea.querySelectorAll('[data-role="close"]').forEach(function(btn) {
-            btn.addEventListener('click', function() {
-                var panel = btn.closest('[data-role="mastery-panel"]');
-                if (panel) panel.hidden = true;
-            });
-        });
-
-        // 滑块
-        contentArea.querySelectorAll('[data-role="range"]').forEach(function(range) {
-            var valueEl = range.parentElement.querySelector('[data-role="value"]');
-            range.addEventListener('input', function() {
-                valueEl.textContent = range.value + '%';
-                valueEl.style.color = range.value >= 80 ? '#27ae60' : (range.value < 60 ? '#e74c3c' : '#1a3a5c');
-            });
-        });
-
-        // 保存按钮
-        contentArea.querySelectorAll('[data-role="save"]').forEach(function(btn) {
-            btn.addEventListener('click', async function() {
-                var panel = btn.closest('[data-role="mastery-panel"]');
-                var card = btn.closest('.zhenti-card');
-                var qid = card.dataset.qid;
-                var range = panel.querySelector('[data-role="range"]');
-                var date = panel.querySelector('[data-role="date"]');
-                var note = panel.querySelector('[data-role="note"]');
-                var level = parseInt(range.value, 10);
-                var dateStr = date.value || todayStr();
-                var noteStr = note.value.trim();
-
-                btn.disabled = true;
-                btn.textContent = '保存中...';
-                var rec = await saveMastery(qid, level, dateStr, noteStr);
-                if (rec) {
-                    showToast('✅ 已保存：' + dateStr + ' · ' + level + '%');
-                    note.value = '';
-                    range.value = 50;
-                    panel.querySelector('[data-role="value"]').textContent = '50%';
-                    date.value = todayStr();
-                    // 更新本地缓存
-                    state.masteryCache[qid] = state.masteryCache[qid] || [];
-                    state.masteryCache[qid].push(rec);
-                    // 刷新卡片头部 + 历史
-                    refreshCardMastery(card, qid);
+                const qid = btn.dataset.qid;
+                const level = btn.dataset.mastery;
+                const current = (masteryData[qid] || {}).level;
+                if (current === level) {
+                    clearMastery(qid);
                 } else {
-                    showToast('❌ 保存失败', 'error');
+                    setMastery(qid, level);
                 }
-                btn.disabled = false;
-                btn.textContent = '💾 保存';
-            });
-        });
-
-        // 删除按钮
-        contentArea.querySelectorAll('[data-role="del"]').forEach(function(btn) {
-            btn.addEventListener('click', async function() {
-                var id = btn.dataset.id;
-                if (!confirm('确定删除这条记录？')) return;
-                btn.disabled = true;
-                var ok = await deleteMasteryById(id);
-                if (ok) {
-                    showToast('✅ 记录已删除');
-                    // 重新加载
-                    state.masteryCache = await fetchAllMasteryCache();
-                    var card = btn.closest('.zhenti-card');
-                    var qid = card.dataset.qid;
-                    var panel = card.querySelector('[data-role="mastery-panel"]');
-                    if (panel) {
-                        panel.querySelector('[data-role="history"]').innerHTML = renderHistoryItems(state.masteryCache[qid] || []);
-                        // 重新绑定删除按钮
-                        bindMasteryToggles();
-                    }
-                    refreshCardMastery(card, qid);
-                } else {
-                    showToast('❌ 删除失败', 'error');
-                    btn.disabled = false;
-                }
-            });
+                refreshMasteryUI(qid);
+                return;
+            }
+            const clearBtn = e.target.closest('[data-mastery-clear]');
+            if (clearBtn) {
+                e.preventDefault();
+                e.stopPropagation();
+                const qid = clearBtn.dataset.masteryClear;
+                clearMastery(qid);
+                refreshMasteryUI(qid);
+            }
         });
     }
 
-    function refreshCardMastery(card, qid) {
-        var records = state.masteryCache[qid] || [];
-        var latest = getLatestRecord(records);
-        var badge = card.querySelector('.zc-mastery');
-        if (badge) {
-            badge.outerHTML = renderMasteryBadge(latest);
-        }
-        var historyEl = card.querySelector('[data-role="history"]');
-        if (historyEl) historyEl.innerHTML = renderHistoryItems(records);
-        renderOverview();
+    async function loadManifest() {
+        const resp = await fetch(ZHENTI_BASE + 'manifest.json');
+        if (!resp.ok) throw new Error('manifest.json HTTP ' + resp.status);
+        return resp.json();
     }
 
-    // ============================================================
-    // 考点分类视图
-    // ============================================================
-    function renderByKnowledgePoint() {
-        var all = applyFilters(getAllQuestions());
+    async function loadYear(year) {
+        const resp = await fetch(ZHENTI_BASE + year + '.json');
+        if (!resp.ok) throw new Error(year + '.json HTTP ' + resp.status);
+        return resp.json();
+    }
 
-        // 收集所有考察点 + 知识点
-        var kpointMap = {};   // name -> {questions: [], freq: 0}
-        var kpMap = {};       // knowledge point name -> {chapter, questions: []}
-
-        all.forEach(function(q) {
-            (q.testPoints || []).forEach(function(tp) {
-                if (!kpointMap[tp]) kpointMap[tp] = { name: tp, questions: [], freq: 0 };
-                kpointMap[tp].questions.push(q);
-                kpointMap[tp].freq++;
+    async function loadAllData() {
+        if (state.loaded || state.loading) return state.questions;
+        state.loading = true;
+        try {
+            const manifest = await loadManifest();
+            state.manifest = manifest;
+            const years = manifest.years || [];
+            // 并行加载所有年份
+            const results = await Promise.all(years.map(y => loadYear(y).catch(e => {
+                console.warn('加载 ' + y + ' 失败:', e);
+                return [];
+            })));
+            // 组装 state
+            state.byYear = {};
+            state.questions = [];
+            years.forEach((y, i) => {
+                const arr = results[i] || [];
+                state.byYear[y] = arr;
+                state.questions.push(...arr);
             });
-            (q.knowledgePoints || []).forEach(function(kp) {
-                if (!kpMap[kp.name]) kpMap[kp.name] = { name: kp.name, chapter: kp.chapter, questions: [] };
-                kpMap[kp.name].questions.push(q);
-            });
-        });
-
-        var tpEntries = Object.values(kpointMap).sort(function(a, b) { return b.freq - a.freq; });
-        var kpEntries = Object.values(kpMap).sort(function(a, b) { return b.questions.length - a.questions.length; });
-
-        var html =
-            '<div class="zhenti-kp-overview">' +
-                '<div class="zkp-card">' +
-                    '<div class="zkp-title">🎯 考察点分布（高频考点）</div>' +
-                    '<div class="zkp-desc">汇总所有真题中出现的考察点，按出现频次排序。频次越高 = 出题人越爱考。</div>' +
-                '</div>' +
-            '</div>' +
-            '<div class="zhenti-kp-grid">';
-
-        // 考察点列
-        html += '<div class="zkp-section"><div class="zkp-section-title">🎯 考察点 Top ' + tpEntries.length + '</div>';
-        tpEntries.slice(0, 30).forEach(function(tp) {
-            html += '<div class="zkp-item" data-tp="' + escapeAttr(tp.name) + '">' +
-                '<span class="zkp-name">' + escapeHtml(tp.name) + '</span>' +
-                '<span class="zkp-count">' + tp.freq + '次</span>' +
-                '<span class="zkp-arrow">→</span>' +
-            '</div>';
-        });
-        if (tpEntries.length > 30) {
-            html += '<div class="zkp-more">... 还有 ' + (tpEntries.length - 30) + ' 个考察点（已被筛选过滤）</div>';
-        }
-        html += '</div>';
-
-        // 知识点列（按章节分组）
-        html += '<div class="zkp-section"><div class="zkp-section-title">📚 必备知识点（按章节）</div>';
-        var byChapter = {};
-        kpEntries.forEach(function(kp) {
-            if (!byChapter[kp.chapter]) byChapter[kp.chapter] = [];
-            byChapter[kp.chapter].push(kp);
-        });
-        Object.keys(byChapter).sort().forEach(function(ch) {
-            html += '<div class="zkp-chapter-group">' +
-                '<div class="zkp-chapter-label">📖 ' + chapterName(ch) + '（' + byChapter[ch].length + '个）</div>';
-            byChapter[ch].forEach(function(kp) {
-                html += '<div class="zkp-item kkp-item" data-kp="' + escapeAttr(kp.name) + '" data-chapter="' + ch + '">' +
-                    '<span class="zkp-name">' + escapeHtml(kp.name) + '</span>' +
-                    '<span class="zkp-count">' + kp.questions.length + '题</span>' +
-                    '<span class="zkp-arrow">→</span>' +
-                '</div>';
-            });
-            html += '</div>';
-        });
-        html += '</div>';
-
-        html += '</div>';
-
-        contentArea.innerHTML = html;
-
-        // 绑定点击事件：筛选到对应考察点
-        contentArea.querySelectorAll('.zkp-item').forEach(function(item) {
-            item.addEventListener('click', function() {
-                var tp = item.dataset.tp;
-                var kp = item.dataset.kp;
-                if (tp) {
-                    state.filters.keyword = tp;
-                    document.getElementById('zhentiSearch').value = tp;
-                } else if (kp) {
-                    state.filters.keyword = kp;
-                    document.getElementById('zhentiSearch').value = kp;
-                }
-                // 切回历年真题 tab
-                state.currentTab = 'all';
-                tabsEl.querySelectorAll('.zhenti-tab').forEach(function(b) {
-                    b.classList.toggle('active', b.dataset.tab === 'all');
+            state.questions.sort((a, b) => (a.year || 0) - (b.year || 0) || (a.qnum || 0) - (b.qnum || 0));
+            // 知识点频次
+            state.kpCount = {};
+            state.questions.forEach(q => {
+                (q.knowledgeIds || []).forEach(k => {
+                    state.kpCount[k] = (state.kpCount[k] || 0) + 1;
                 });
-                if (filtersEl) filtersEl.style.display = '';
-                renderCurrentTab();
             });
-        });
-    }
-
-    function chapterName(ch) {
-        var map = {
-            'ch01': '第一章 函数、极限、连续',
-            'ch02': '第二章 一元函数微分学',
-            'ch03': '第三章 一元函数积分学',
-            'ch04': '第四章 向量代数与解析几何',
-            'ch05': '第五章 多元函数微分学',
-            'ch06': '第六章 多元函数积分学',
-            'ch07': '第七章 无穷级数',
-            'ch08': '第八章 常微分方程',
-            'ch09': '第九章 行列式',
-            'ch10': '第十章 矩阵',
-            'ch11': '第十一章 向量',
-            'ch12': '第十二章 线性方程组',
-            'ch13': '第十三章 特征值与特征向量',
-            'ch14': '第十四章 二次型',
-            'ch15': '第十五章 随机事件与概率',
-            'ch16': '第十六章 随机变量及其分布',
-            'ch17': '第十七章 多维随机变量',
-            'ch18': '第十八章 数字特征',
-            'ch19': '第十九章 大数定律',
-            'ch20': '第二十章 数理统计'
-        };
-        return map[ch] || ch;
-    }
-
-    // ============================================================
-    // 错题本
-    // ============================================================
-    function renderWrongBook() {
-        var weak = getAllQuestions().filter(function(q) {
-            var records = state.masteryCache[q.id];
-            if (!records || records.length === 0) return false;
-            var latest = getLatestRecord(records);
-            return latest && latest.level < 60;
-        });
-
-        var untested = getAllQuestions().filter(function(q) {
-            var records = state.masteryCache[q.id];
-            return !records || records.length === 0;
-        });
-
-        var html = '<div class="zhenti-wrongbook">';
-        html += '<div class="zwb-header">' +
-            '<div class="zwb-title">📕 错题本（自动收集）</div>' +
-            '<div class="zwb-desc">系统自动收集你标记掌握度低于 60% 的真题。反复练习直到掌握度 ≥ 80%。</div>' +
-        '</div>';
-
-        html += '<div class="zwb-stats">' +
-            statCard('📕', weak.length, '薄弱题 (<60%)', '#e74c3c') +
-            statCard('❓', untested.length, '未做题', '#95a5a6') +
-            statCard('✅', getAllQuestions().length - weak.length - untested.length, '已掌握', '#27ae60') +
-        '</div>';
-
-        if (weak.length === 0 && untested.length === 0) {
-            html += '<div class="zwb-empty">' +
-                '<div class="empty-icon">🎉</div>' +
-                '<div class="empty-text">太棒了！暂时没有错题</div>' +
-                '<div class="empty-tip">继续保持，每做完一道题都记录掌握度</div>' +
-            '</div>';
-        } else {
-            if (weak.length > 0) {
-                html += '<div class="zwb-section">' +
-                    '<div class="zwb-section-title">📕 薄弱题 (' + weak.length + ')</div>' +
-                    '<div class="zhenti-question-list">' +
-                    weak.map(function(q) { return renderQuestionCard(q); }).join('') +
-                    '</div>' +
-                '</div>';
-            }
-            if (untested.length > 0) {
-                html += '<div class="zwb-section">' +
-                    '<div class="zwb-section-title">❓ 未做题 (' + untested.length + ')</div>' +
-                    '<div class="zwb-hint">⚠️ 这些题你还没做过，建议尽快开始练习</div>' +
-                    '<div class="zhenti-question-list">' +
-                    untested.map(function(q) { return renderQuestionCard(q); }).join('') +
-                    '</div>' +
-                '</div>';
-            }
+            state.loaded = true;
+            return state.questions;
+        } finally {
+            state.loading = false;
         }
-
-        html += '</div>';
-
-        contentArea.innerHTML = html;
-        bindCardEvents();
-        bindMasteryToggles();
-        renderMathWhenReady(contentArea);
     }
 
-    // ============================================================
-    // 模考模式
-    // ============================================================
-    function openMockModal() {
-        var modal = document.getElementById('mockModal');
-        if (!modal) return;
-        modal.hidden = false;
-        document.body.style.overflow = 'hidden';
+    /* ===== 知识点分类（来自全局 chapters/kp_tree.js）===== */
+    const KP_TREE = window.KP_TREE || [];
+    const KP_NAME = window.KP_NAME || {};
+    const KP_INDEX = window.KP_INDEX || {};
+    const KP_TO_CHAPTER = window.KP_TO_CHAPTER || {};
 
-        // 重置显示
-        document.getElementById('mockSetup').hidden = false;
-        document.getElementById('mockRunning').hidden = true;
-        document.getElementById('mockResult').hidden = true;
+    /* ===== Init ===== */
+    let els = {};
+    let initialized = false;
+    async function init() {
+        if (initialized) return;
+        // 检查必须的 DOM 是否存在 (zhenti.html 还没载入也跳过)
+        if (!document.getElementById('zhentiContentArea')) return;
+        initialized = true;
+        els.content = document.getElementById('zhentiContentArea');
+        els.tree = document.getElementById('knowledgeTree');
+        els.thumbList = document.getElementById('thumbList');
+        els.thumbStrip = document.getElementById('thumbStrip');
+        els.filterYear = document.getElementById('filterYear');
+        els.filterPart = document.getElementById('filterPart');
+        els.filterType = document.getElementById('filterType');
+        els.kpSearch = document.getElementById('kpSearch');
+       els.searchInput = document.getElementById('zhentiSearch');
+        els.kpChart = document.getElementById('kpChart');
+        els.filterKPRow = document.getElementById('filterKPRow');
+        els.activeKPName = document.getElementById('activeKPName');
+        els.clearKP = document.getElementById('clearKP');
+        els.masteryStats = document.getElementById('masteryStats');
+        els.filterMastery = document.getElementById('filterMastery');
+        // Tab 切换 + 进度总览相关 DOM
+        els.tabs = document.getElementById('zhentiTabs');
+        els.tabListBtn = els.tabs ? els.tabs.querySelector('[data-tab="list"]') : null;
+        els.tabProgressBtn = els.tabs ? els.tabs.querySelector('[data-tab="progress"]') : null;
+        els.progressArea = document.getElementById('zhentiProgressArea');
+        els.filtersBar = document.getElementById('zhentiFilters');
+        els.sidebar = document.getElementById('zhentiSidebar');
+        els.chartsBottom = document.getElementById('zhentiChartsBottom');
 
-        // 绑定事件
-        var closeBtn = document.getElementById('mockClose');
-        var startBtn = document.getElementById('mockStartBtn');
-        var submitBtn = document.getElementById('mockSubmitBtn');
-        var prevBtn = document.getElementById('mockPrevBtn');
-        var nextBtn = document.getElementById('mockNextBtn');
-        var restartBtn = document.getElementById('mockRestartBtn');
-        var backBtn = document.getElementById('mockBackBtn');
+        // 异步加载真题数据
+        els.content.innerHTML = '<div class="zhenti-loading"><div class="spinner"></div><p>正在加载真题（17 个年份 · 308 题）...</p></div>';
 
-        // 移除旧监听器（克隆节点法）
-        closeBtn.onclick = function() { modal.hidden = true; document.body.style.overflow = ''; };
-        startBtn.onclick = startMockExam;
-        submitBtn.onclick = submitMockExam;
-        prevBtn.onclick = function() { moveMockQuestion(-1); };
-        nextBtn.onclick = function() { moveMockQuestion(1); };
-        restartBtn.onclick = function() {
-            document.getElementById('mockSetup').hidden = false;
-            document.getElementById('mockRunning').hidden = true;
-            document.getElementById('mockResult').hidden = true;
-        };
-        backBtn.onclick = function() {
-            modal.hidden = true;
-            document.body.style.overflow = '';
-        };
-    }
-
-    function startMockExam() {
-        var yearRange = document.getElementById('mockYearRange').value;
-        var partFilter = document.getElementById('mockPart').value;
-        var count = parseInt(document.getElementById('mockCount').value, 10);
-        var duration = parseInt(document.getElementById('mockTime').value, 10);
-
-        // 收集候选题
-        var candidates = getAllQuestions().filter(function(q) {
-            if (yearRange === '2024-2025') {
-                if (q.year < 2024) return false;
-            } else if (yearRange === '2023-2025') {
-                if (q.year < 2023) return false;
-            } else if (yearRange === '2022-2025') {
-                if (q.year < 2022) return false;
-            }
-            if (partFilter !== 'all' && q.part !== partFilter) return false;
-            return true;
-        });
-
-        if (candidates.length < count) {
-            alert('候选题不足 ' + count + ' 道，请放宽条件。当前仅 ' + candidates.length + ' 道。');
+        try {
+            await loadAllData();
+        } catch (e) {
+            console.error('加载真题数据失败:', e);
+            els.content.innerHTML = '<div class="zhenti-empty">加载真题失败，请检查 chapters/zhenti/ 目录。</div>';
             return;
         }
 
-        // 随机抽取
-        var shuffled = candidates.slice().sort(function() { return Math.random() - 0.5; });
-        var picked = shuffled.slice(0, count);
+        if (!state.questions.length) {
+            els.content.innerHTML = '<div class="zhenti-empty">暂无真题数据</div>';
+            return;
+        }
 
-        state.mockState = {
-            questions: picked,
-            currentIdx: 0,
-            userAnswers: new Array(picked.length).fill(''),
-            startTime: Date.now(),
-            duration: duration * 60 * 1000,
-            timer: null,
-            submitted: false
-        };
+        buildYearFilter();
+        buildKnowledgeTree();
+        buildThumbStrip();
+        buildCharts();
+        bindEvents();
+        bindMasteryEvents();
+        bindTabEvents();
+        await loadMastery();
+        renderMasteryStats();
+        buildMasteryFilter();
+        renderQuestions();
+        applyMasteryBadgesToCards();
+        // 进度总览先预渲染一次，切换 Tab 时无需等待
+        renderProgressOverview();
+    }
 
-        // 切换到 running
-        document.getElementById('mockSetup').hidden = true;
-        document.getElementById('mockRunning').hidden = false;
-        document.getElementById('mockTotalNum').textContent = count;
+    /* ===== 构建年份筛选 ===== */
+    function buildYearFilter() {
+        const years = Object.keys(state.byYear).map(Number).sort((a, b) => b - a);
+        years.forEach(y => {
+            const btn = document.createElement('button');
+            btn.className = 'filter-pill';
+            btn.dataset.year = String(y);
+            const count = (state.byYear[y] || []).length;
+            btn.textContent = `${y} (${count})`;
+            els.filterYear.appendChild(btn);
+        });
+    }
 
-        // 渲染题目 dots
-        var dotsEl = document.getElementById('mockQuestionDots');
-        dotsEl.innerHTML = picked.map(function(_, i) {
-            return '<span class="mock-dot ' + (i === 0 ? 'active' : '') + '" data-idx="' + i + '">' + (i + 1) + '</span>';
+    /* ===== 构建知识点树 ===== */
+    function buildKnowledgeTree() {
+        const html = KP_TREE.map(group => `
+            <div class="kp-group" data-group="${group.id}">
+                <div class="kp-group-title" data-group="${group.id}">
+                    <span class="kp-icon">${group.icon}</span>
+                    <span class="kp-name">${group.name}</span>
+                    <span class="kp-count">${countGroup(group.id)}</span>
+                </div>
+                <ul class="kp-children">
+                    ${group.children.map(c => `
+                        <li class="kp-item" data-kp="${c.id}" data-kps='${JSON.stringify(c.kps)}'>
+                            <span class="kp-item-name">${c.name}</span>
+                            <span class="kp-item-count">${countKP(c.kps)}</span>
+                        </li>
+                    `).join('')}
+                </ul>
+            </div>
+        `).join('');
+        els.tree.innerHTML = html;
+    }
+
+    function countGroup(groupId) {
+        let sum = 0;
+        KP_TREE.find(g => g.id === groupId).children.forEach(c => {
+            sum += countKP(c.kps);
+        });
+        return sum;
+    }
+
+    function countKP(kps) {
+        let sum = 0;
+        (kps || []).forEach(k => sum += (state.kpCount[k] || 0));
+        return sum;
+    }
+
+    /* ===== 构建缩略图条 ===== */
+    function buildThumbStrip() {
+        const years = Object.keys(state.byYear).map(Number).sort((a, b) => b - a);
+        const html = years.map(y => {
+            const types = countTypes(y);
+            return `
+                <div class="thumb-item" data-year="${y}">
+                    <div class="thumb-year">${y}</div>
+                    <div class="thumb-stat">
+                        <span>选 ${types.choice}</span>
+                        <span>填 ${types.fill}</span>
+                        <span>解 ${types.solve}</span>
+                    </div>
+                    <div class="thumb-total">${(state.byYear[y] || []).length} 题</div>
+                </div>
+            `;
         }).join('');
-        dotsEl.querySelectorAll('.mock-dot').forEach(function(dot) {
-            dot.addEventListener('click', function() {
-                state.mockState.currentIdx = parseInt(dot.dataset.idx, 10);
-                renderMockQuestion();
+        els.thumbList.innerHTML = html;
+    }
+
+    function countTypes(year) {
+        const arr = state.byYear[year] || [];
+        return {
+            choice: arr.filter(q => q.type === '选择题').length,
+            fill: arr.filter(q => q.type === '填空题').length,
+            solve: arr.filter(q => q.type === '解答题').length,
+        };
+    }
+
+    /* ===== 图表（考点频率） ===== */
+    function buildCharts() {
+        // 知识点频率 (Top 20)
+        const topKP = Object.entries(state.kpCount)
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, 20);
+        const maxKP = topKP.length ? topKP[0][1] : 1;
+        els.kpChart.innerHTML = `
+            <div class="bar-chart">
+                ${topKP.map(([k, v]) => `
+                    <div class="bar-row" data-kp="${k}">
+                        <span class="bar-label">${KP_NAME[k.split('.')[0] + '.' + k.split('.')[1]] || k}</span>
+                        <div class="bar-track"><div class="bar-fill" style="width:${(v/maxKP*100).toFixed(1)}%">${v}</div></div>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+
+        // 绑定图表点击 → 筛选
+        els.kpChart.querySelectorAll('[data-kp]').forEach(el => {
+            el.addEventListener('click', () => {
+                const kp = KP_TREE.flatMap(g => g.children).find(c => c.kps.includes(el.dataset.kp));
+                if (kp) setActiveKP(kp.id, kp.name);
+            });
+        });
+    }
+
+    /* ===== 事件绑定 ===== */
+    function bindEvents() {
+        // 知识点树 - 点击展开/收起 + 点击叶子节点高亮题目
+        els.tree.querySelectorAll('.kp-group-title').forEach(el => {
+            el.addEventListener('click', () => {
+                el.parentElement.classList.toggle('open');
+            });
+        });
+        els.tree.querySelectorAll('.kp-item').forEach(el => {
+            el.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const kp = el.dataset.kp;
+                const name = el.querySelector('.kp-item-name').textContent;
+                setActiveKP(kp, name);
             });
         });
 
-        // 启动计时器
-        startMockTimer();
-        renderMockQuestion();
-    }
+        // 清除考点高亮
+        els.clearKP.addEventListener('click', () => clearActiveKP());
 
-    function startMockTimer() {
-        if (state.mockState.timer) clearInterval(state.mockState.timer);
-        state.mockState.timer = setInterval(function() {
-            var remaining = state.mockState.duration - (Date.now() - state.mockState.startTime);
-            if (remaining <= 0) {
-                clearInterval(state.mockState.timer);
-                state.mockState.timer = null;
-                submitMockExam(true);
-                return;
-            }
-            var m = Math.floor(remaining / 60000);
-            var s = Math.floor((remaining % 60000) / 1000);
-            document.getElementById('mockTimer').textContent =
-                (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
-            // 剩余时间变红
-            var timerEl = document.getElementById('mockTimer');
-            timerEl.classList.toggle('urgent', remaining < 10 * 60 * 1000);
-        }, 1000);
-    }
-
-    function renderMockQuestion() {
-        var idx = state.mockState.currentIdx;
-        var q = state.mockState.questions[idx];
-        var area = document.getElementById('mockQuestionArea');
-        document.getElementById('mockCurrentNum').textContent = idx + 1;
-
-        var optionsHtml = '';
-        if (q.options && q.options.length > 0) {
-            optionsHtml = '<div class="mock-options">' +
-                q.options.map(function(opt, i) {
-                    var checked = state.mockState.userAnswers[idx] === opt ? 'checked' : '';
-                    return '<label class="mock-option ' + checked + '">' +
-                        '<input type="radio" name="mockOpt" value="' + escapeAttr(opt) + '" ' + checked + '>' +
-                        '<span>' + opt + '</span>' +
-                    '</label>';
-                }).join('') +
-            '</div>';
-        } else {
-            // 填空/解答题
-            var placeholder = q.type === '填空题' ? '请输入答案（数字/字母/表达式）' : '请在此输入解答过程和最终答案';
-            optionsHtml = '<div class="mock-textarea">' +
-                '<textarea data-role="answer" rows="6" placeholder="' + placeholder + '">' +
-                escapeHtml(state.mockState.userAnswers[idx] || '') + '</textarea>' +
-            '</div>';
-        }
-
-        area.innerHTML = '<div class="mock-q-card">' +
-            '<div class="mq-head">' +
-                '<span class="mq-num">第 ' + (idx + 1) + ' / ' + state.mockState.questions.length + ' 题</span>' +
-                '<span class="mq-meta">' + q.year + ' · ' + q.part + ' · ' + q.type + ' · ' + q.score + '分</span>' +
-            '</div>' +
-            '<div class="mq-question">' + q.question + '</div>' +
-            optionsHtml +
-        '</div>';
-
-        // 更新 dots
-        var dotsEl = document.getElementById('mockQuestionDots');
-        dotsEl.querySelectorAll('.mock-dot').forEach(function(dot) {
-            var di = parseInt(dot.dataset.idx, 10);
-            dot.classList.toggle('active', di === idx);
-            dot.classList.toggle('answered', state.mockState.userAnswers[di] !== '');
-        });
-
-        // 绑定答案变化
-        area.querySelectorAll('input[name="mockOpt"]').forEach(function(radio) {
-            radio.addEventListener('change', function() {
-                state.mockState.userAnswers[idx] = radio.value;
-                area.querySelectorAll('.mock-option').forEach(function(opt) {
-                    var inp = opt.querySelector('input');
-                    opt.classList.toggle('checked', inp && inp.checked);
-                });
-                // 更新 dot
-                var dot = dotsEl.querySelector('[data-idx="' + idx + '"]');
-                if (dot) dot.classList.add('answered');
+        // 缩略图条 - 点击放大
+        els.thumbList.querySelectorAll('.thumb-item').forEach(el => {
+            el.addEventListener('click', () => {
+                const year = parseInt(el.dataset.year);
+                openThumbModal(year);
             });
         });
-        var textarea = area.querySelector('[data-role="answer"]');
-        if (textarea) {
-            textarea.addEventListener('input', function() {
-                state.mockState.userAnswers[idx] = textarea.value;
-                var dot = dotsEl.querySelector('[data-idx="' + idx + '"]');
-                if (dot) dot.classList.toggle('answered', textarea.value.trim() !== '');
+
+        // 筛选 pill
+        bindFilterPills(els.filterYear, 'year');
+        bindFilterPills(els.filterPart, 'part');
+        bindFilterPills(els.filterType, 'type');
+
+        // 关键词搜索
+        els.searchInput.addEventListener('input', debounce(() => {
+            state.filters.keyword = els.searchInput.value.trim();
+            renderQuestions();
+        }, 300));
+
+        // 知识点搜索
+        els.kpSearch.addEventListener('input', debounce(() => {
+            const q = els.kpSearch.value.trim().toLowerCase();
+            els.tree.querySelectorAll('.kp-item').forEach(el => {
+                const name = el.querySelector('.kp-item-name').textContent.toLowerCase();
+                el.style.display = (q === '' || name.includes(q)) ? '' : 'none';
             });
-        }
+        }, 200));
 
-        renderMathWhenReady(area);
-    }
-
-    function moveMockQuestion(delta) {
-        var m = state.mockState;
-        var next = m.currentIdx + delta;
-        if (next < 0 || next >= m.questions.length) return;
-        m.currentIdx = next;
-        renderMockQuestion();
-    }
-
-    function submitMockExam(autoSubmit) {
-        if (!state.mockState || state.mockState.submitted) return;
-        if (!autoSubmit) {
-            var unanswered = state.mockState.userAnswers.filter(function(a) { return !a || !a.trim(); }).length;
-            if (unanswered > 0) {
-                if (!confirm('还有 ' + unanswered + ' 道题未作答，确定要交卷吗？')) return;
-            }
-        }
-        state.mockState.submitted = true;
-        if (state.mockState.timer) {
-            clearInterval(state.mockState.timer);
-            state.mockState.timer = null;
-        }
-
-        // 显示成绩
-        document.getElementById('mockRunning').hidden = true;
-        document.getElementById('mockResult').hidden = false;
-
-        renderMockResult();
-    }
-
-    function renderMockResult() {
-        var m = state.mockState;
-        var total = m.questions.length;
-        var correctCount = 0;
-        var score = 0;
-
-        // 简化打分逻辑：选择题/填空题根据答案字符串匹配
-        m.questions.forEach(function(q, i) {
-            var ua = (m.userAnswers[i] || '').trim();
-            var ans = (q.answer || '').trim();
-            if (!ua) return;
-            // 标准化比较
-            var normUser = normalizeAnswer(ua);
-            var normAns = normalizeAnswer(ans);
-            if (normUser === normAns) {
-                correctCount++;
-                score += q.score;
-            }
+        // 缩略图弹窗
+        document.getElementById('thumbModalClose').addEventListener('click', () => {
+            document.getElementById('thumbModal').hidden = true;
         });
-
-        var maxScore = m.questions.reduce(function(s, q) { return s + q.score; }, 0);
-        var accuracy = total > 0 ? Math.round(correctCount / total * 100) : 0;
-
-        // 用时
-        var elapsed = Date.now() - m.startTime;
-        var elapsedMin = Math.floor(elapsed / 60000);
-        var elapsedSec = Math.floor((elapsed % 60000) / 1000);
-
-        // 渲染统计
-        document.getElementById('mockResultStats').innerHTML =
-            '<div class="mrs-grid">' +
-            statCard('🎯', score + ' / ' + maxScore, '预估得分', score / maxScore >= 0.6 ? '#27ae60' : '#e74c3c') +
-            statCard('✅', correctCount + ' / ' + total, '答对题数', '#3498db') +
-            statCard('📊', accuracy + '%', '正确率', accuracy >= 70 ? '#27ae60' : (accuracy >= 50 ? '#f39c12' : '#e74c3c')) +
-            statCard('⏱', elapsedMin + '分' + elapsedSec + '秒', '用时', '#9b59b6') +
-            '</div>';
-
-        // 渲染详细答题情况
-        var detailHtml = '<div class="mrd-title">📋 答题详情</div>';
-        m.questions.forEach(function(q, i) {
-            var ua = (m.userAnswers[i] || '').trim();
-            var isCorrect = normalizeAnswer(ua) === normalizeAnswer(q.answer);
-            var status = !ua ? 'skipped' : (isCorrect ? 'correct' : 'wrong');
-            var statusText = !ua ? '⚪ 未作答' : (isCorrect ? '✅ 正确' : '❌ 错误');
-            detailHtml += '<div class="mrd-item ' + status + '">' +
-                '<div class="mrd-head">' +
-                    '<span class="mrd-num">第 ' + (i + 1) + ' 题</span>' +
-                    '<span class="mrd-status">' + statusText + '</span>' +
-                '</div>' +
-                '<div class="mrd-q-text">' + q.question + '</div>' +
-                '<div class="mrd-answer-row">' +
-                    '<span class="mrd-label">你的答案：</span>' +
-                    '<span class="mrd-user">' + (ua || '<em>未作答</em>') + '</span>' +
-                '</div>' +
-                '<div class="mrd-answer-row">' +
-                    '<span class="mrd-label">参考答案：</span>' +
-                    '<span class="mrd-ans">' + q.answer + '</span>' +
-                '</div>' +
-            '</div>';
+        document.getElementById('questionModalClose').addEventListener('click', () => {
+            document.getElementById('questionModal').hidden = true;
         });
-        document.getElementById('mockResultDetail').innerHTML = detailHtml;
-        renderMathWhenReady(document.getElementById('mockResultDetail'));
     }
 
-    function normalizeAnswer(s) {
-        if (!s) return '';
-        return s.toLowerCase()
-            .replace(/\s+/g, '')
-            .replace(/\\left/g, '')
-            .replace(/\\right/g, '')
-            .replace(/\\,/g, '')
-            .replace(/\\\(/g, '')
-            .replace(/\\\)/g, '')
-            .replace(/\\\[/g, '')
-            .replace(/\\\]/g, '')
-            .replace(/\\/g, '')
-            .replace(/dfrac/g, '')
-            .replace(/frac/g, '')
-            .replace(/mathrm/g, '')
-            .replace(/\{/g, '')
-            .replace(/\}/g, '')
-            .replace(/，/g, ',')
-            .replace(/。/g, '.')
-            .replace(/;/g, '');
+    function bindFilterPills(container, key) {
+        container.addEventListener('click', (e) => {
+            if (e.target.tagName !== 'BUTTON') return;
+            container.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+            e.target.classList.add('active');
+            setFilter(key, e.target.dataset[key]);
+        });
     }
 
-    // ============================================================
-    // 学习统计
-    // ============================================================
-    function renderStats() {
-        var all = getAllQuestions();
+    function setFilter(key, value) {
+        state.filters[key] = value;
+        renderQuestions();
+    }
 
-        // 1. 总览
-        var totalCount = all.length;
-        var doneCount = 0;
-        var masteredCount = 0;
-        var weakCount = 0;
-        var midCount = 0;
-        var totalRecords = 0;
+    function setActiveKP(kpId, name) {
+        state.filters.activeKP = kpId;
+        // 高亮树
+        els.tree.querySelectorAll('.kp-item').forEach(el => {
+            el.classList.toggle('selected', el.dataset.kp === kpId);
+        });
+        els.filterKPRow.style.display = 'flex';
+        els.activeKPName.textContent = name;
+        renderQuestions();
+    }
 
-        all.forEach(function(q) {
-            var records = state.masteryCache[q.id];
-            if (records && records.length > 0) {
-                doneCount++;
-                totalRecords += records.length;
-                var latest = getLatestRecord(records);
-                if (latest.level >= 80) masteredCount++;
-                else if (latest.level < 60) weakCount++;
-                else midCount++;
+    function clearActiveKP() {
+        state.filters.activeKP = null;
+        els.tree.querySelectorAll('.kp-item').forEach(el => el.classList.remove('selected'));
+        els.filterKPRow.style.display = 'none';
+        renderQuestions();
+    }
+
+    /* ===== 渲染题目列表 ===== */
+    function renderQuestions() {
+        const { year, part, type, keyword, activeKP, mastery } = state.filters;
+        let filtered = state.questions.filter(q => {
+            if (year !== 'all' && String(q.year) !== String(year)) return false;
+            if (part !== 'all' && q.part !== part) return false;
+            if (type !== 'all' && q.type !== type) return false;
+            if (activeKP) {
+                const kpId = activeKP.split('.').slice(0, 2).join('.');
+                if (!q.knowledgeIds || !q.knowledgeIds.some(k => k.startsWith(kpId))) return false;
             }
-        });
-
-        var coverage = totalCount > 0 ? Math.round(doneCount / totalCount * 100) : 0;
-
-        // 2. 按板块统计
-        var partStats = { '高数': {total:0, done:0, mastered:0, weak:0}, '线代': {total:0, done:0, mastered:0, weak:0}, '概率': {total:0, done:0, mastered:0, weak:0} };
-        all.forEach(function(q) {
-            if (partStats[q.part]) {
-                partStats[q.part].total++;
-                var records = state.masteryCache[q.id];
-                if (records && records.length > 0) {
-                    partStats[q.part].done++;
-                    var latest = getLatestRecord(records);
-                    if (latest.level >= 80) partStats[q.part].mastered++;
-                    else if (latest.level < 60) partStats[q.part].weak++;
+            if (mastery && mastery !== 'all') {
+                const lv = (masteryData[q.id] || {}).level || 'new';
+                if (mastery === 'unmastered') {
+                    // 未掌握 = new / learning / familiar (低于 mastered)
+                    if (lv === 'mastered' || lv === 'expert') return false;
+                } else if (lv !== mastery) {
+                    return false;
                 }
             }
-        });
-
-        // 3. 按年份统计
-        var yearStats = {};
-        all.forEach(function(q) {
-            if (!yearStats[q.year]) yearStats[q.year] = {total:0, done:0, mastered:0};
-            yearStats[q.year].total++;
-            var records = state.masteryCache[q.id];
-            if (records && records.length > 0) {
-                yearStats[q.year].done++;
-                var latest = getLatestRecord(records);
-                if (latest.level >= 80) yearStats[q.year].mastered++;
+            if (keyword) {
+                const text = (q.question || '') + ' ' + (q.num || '') + ' ' + (q.id || '') + ' ' + (q.knowledgeIds || []).join(' ');
+                if (!text.toLowerCase().includes(keyword.toLowerCase())) return false;
             }
+            return true;
         });
 
-        // 4. 高频考点（掌握度低的）
-        var kpWeakMap = {};
-        all.forEach(function(q) {
-            var records = state.masteryCache[q.id];
-            if (!records) return;
-            var latest = getLatestRecord(records);
-            if (latest.level >= 60) return;
-            (q.testPoints || []).forEach(function(tp) {
-                if (!kpWeakMap[tp]) kpWeakMap[tp] = {name: tp, count: 0, totalLevel: 0};
-                kpWeakMap[tp].count++;
-                kpWeakMap[tp].totalLevel += latest.level;
-            });
+        // 按年份分组
+        const groups = {};
+        filtered.forEach(q => {
+            if (!groups[q.year]) groups[q.year] = [];
+            groups[q.year].push(q);
         });
-        var weakKPs = Object.values(kpWeakMap).sort(function(a, b) {
-            return (a.totalLevel / a.count) - (b.totalLevel / b.count);
-        }).slice(0, 10);
+        const years = Object.keys(groups).map(Number).sort((a, b) => b - a);
 
-        // 渲染
-        var html = '<div class="zhenti-stats">';
-
-        // 总览
-        html += '<div class="zst-section">' +
-            '<div class="zst-title">📊 总体进度</div>' +
-            '<div class="zst-grid">' +
-                statCard('📚', totalCount, '真题总数', '#3498db') +
-                statCard('✏️', doneCount, '已做题', '#1abc9c') +
-                statCard('📈', coverage + '%', '覆盖率', '#9b59b6') +
-                statCard('📜', totalRecords, '总记录数', '#34495e') +
-            '</div>' +
-            '<div class="zst-progress">' +
-                '<div class="zst-bar"><div class="zst-bar-fill mastered" style="width:' + (totalCount > 0 ? masteredCount/totalCount*100 : 0) + '%"></div></div>' +
-                '<div class="zst-bar"><div class="zst-bar-fill mid" style="width:' + (totalCount > 0 ? midCount/totalCount*100 : 0) + '%"></div></div>' +
-                '<div class="zst-bar"><div class="zst-bar-fill weak" style="width:' + (totalCount > 0 ? weakCount/totalCount*100 : 0) + '%"></div></div>' +
-                '<div class="zst-legend">' +
-                    '<span class="zl-item"><span class="zl-dot" style="background:#27ae60"></span> 已掌握 ' + masteredCount + '</span>' +
-                    '<span class="zl-item"><span class="zl-dot" style="background:#f39c12"></span> 中等 ' + midCount + '</span>' +
-                    '<span class="zl-item"><span class="zl-dot" style="background:#e74c3c"></span> 薄弱 ' + weakCount + '</span>' +
-                '</div>' +
-            '</div>' +
-        '</div>';
-
-        // 按板块
-        html += '<div class="zst-section">' +
-            '<div class="zst-title">📚 按板块统计</div>' +
-            '<div class="zst-part-grid">';
-        ['高数', '线代', '概率'].forEach(function(p) {
-            var s = partStats[p];
-            var cov = s.total > 0 ? Math.round(s.done / s.total * 100) : 0;
-            html += '<div class="zst-part-card">' +
-                '<div class="zsp-name">' + p + '</div>' +
-                '<div class="zsp-numbers">' +
-                    '<span>已做 <strong>' + s.done + '</strong>/' + s.total + '</span>' +
-                    '<span>掌握 <strong style="color:#27ae60">' + s.mastered + '</strong></span>' +
-                    '<span>薄弱 <strong style="color:#e74c3c">' + s.weak + '</strong></span>' +
-                '</div>' +
-                '<div class="zsp-progress"><div class="zsp-fill" style="width:' + cov + '%"></div></div>' +
-                '<div class="zsp-pct">' + cov + '%</div>' +
-            '</div>';
-        });
-        html += '</div></div>';
-
-        // 按年份
-        html += '<div class="zst-section">' +
-            '<div class="zst-title">📅 按年份统计</div>' +
-            '<div class="zst-year-list">';
-        var years = Object.keys(yearStats).sort().reverse();
-        years.forEach(function(y) {
-            var s = yearStats[y];
-            var cov = s.total > 0 ? Math.round(s.done / s.total * 100) : 0;
-            html += '<div class="zsy-row">' +
-                '<span class="zsy-year">' + y + '</span>' +
-                '<div class="zsy-bar"><div class="zsy-fill" style="width:' + cov + '%"></div></div>' +
-                '<span class="zsy-info">' + s.done + '/' + s.total + '</span>' +
-                '<span class="zsy-pct">' + cov + '%</span>' +
-            '</div>';
-        });
-        html += '</div></div>';
-
-        // 薄弱考点
-        if (weakKPs.length > 0) {
-            html += '<div class="zst-section">' +
-                '<div class="zst-title">⚠️ 薄弱考点 Top 10（需要重点复习）</div>' +
-                '<div class="zst-weak-list">';
-            weakKPs.forEach(function(kp) {
-                var avg = Math.round(kp.totalLevel / kp.count);
-                html += '<div class="zwk-item" data-tp="' + escapeAttr(kp.name) + '">' +
-                    '<span class="zwk-name">' + escapeHtml(kp.name) + '</span>' +
-                    '<span class="zwk-count">' + kp.count + '题</span>' +
-                    '<div class="zwk-bar"><div class="zwk-fill" style="width:' + avg + '%; background:' + (avg < 40 ? '#e74c3c' : '#f39c12') + '"></div></div>' +
-                    '<span class="zwk-pct">' + avg + '%</span>' +
-                '</div>';
-            });
-            html += '</div>' +
-                '<div class="zwk-hint">💡 点击考点名可以跳转到该考点的真题列表</div>' +
-            '</div>';
+        if (!filtered.length) {
+            els.content.innerHTML = '<div class="zhenti-empty">无匹配的题目</div>';
+            return;
         }
 
-        html += '</div>';
+        const html = `
+            <div class="zhenti-stats">
+                共找到 <strong>${filtered.length}</strong> 题
+                ${activeKP ? `<span class="kp-tag">考点：${els.activeKPName.textContent}</span>` : ''}
+            </div>
+            ${years.map(y => `
+                <div class="year-block">
+                    <h3 class="year-title">${y} 年（${groups[y].length} 题）</h3>
+                    <div class="question-list">
+                        ${groups[y].map(q => renderQuestionCard(q)).join('')}
+                    </div>
+                </div>
+            `).join('')}
+        `;
+        els.content.innerHTML = html;
 
-        contentArea.innerHTML = html;
+        // 渲染后立即处理 LaTeX
+        renderMath(els.content);
 
-        // 绑定薄弱考点点击
-        contentArea.querySelectorAll('[data-tp]').forEach(function(item) {
-            item.addEventListener('click', function() {
-                var tp = item.dataset.tp;
-                state.filters.keyword = tp;
-                document.getElementById('zhentiSearch').value = tp;
-                state.currentTab = 'all';
-                tabsEl.querySelectorAll('.zhenti-tab').forEach(function(b) {
-                    b.classList.toggle('active', b.dataset.tab === 'all');
+        // 绑定 mastery 徽章
+        applyMasteryBadgesToCards();
+
+        // 绑定题目卡片点击
+        els.content.querySelectorAll('.question-card').forEach(el => {
+            el.addEventListener('click', () => {
+                const id = el.dataset.id;
+                const q = state.questions.find(q => q.id === id);
+                if (q) openQuestionModal(q);
+            });
+        });
+    }
+
+    function renderQuestionCard(q) {
+        const kps = (q.knowledgeIds || []).map(k => `<span class="kp-badge">${k}</span>`).join('');
+        const opts = (q.options || []).slice(0, 4).map(o => `<div class="opt-line">${escapeHtml(o).substring(0, 60)}</div>`).join('');
+        const keywords = (q.knowledgeIds || []).map(k => KP_NAME[k.split('.')[0] + '.' + k.split('.')[1]] || '').filter(Boolean).join(' · ');
+        return `
+            <div class="question-card" data-id="${q.id}">
+                <div class="q-head">
+                    <span class="q-year">${q.year}</span>
+                    <span class="q-num">${q.num}</span>
+                    <span class="q-type q-type-${q.type}">${q.type}</span>
+                    <span class="q-difficulty">${'★'.repeat(q.difficulty || 2)}</span>
+                    <span class="q-score">${q.score}分</span>
+                </div>
+                <div class="q-body">${q.question || ''}</div>
+                ${opts ? `<div class="q-opts">${opts}</div>` : ''}
+                <div class="q-tags">
+                    <span class="q-part">${q.part}</span>
+                    ${kps}
+                    <span class="q-keywords">${keywords}</span>
+                </div>
+            </div>
+        `;
+    }
+
+    /* ===== 弹窗 ===== */
+    function openThumbModal(year) {
+        const arr = state.byYear[year] || [];
+        document.getElementById('thumbModalTitle').textContent = `${year} 年考研数学一真题`;
+        document.getElementById('thumbModalBody').innerHTML = `
+            <div class="thumb-modal-body">
+                <div class="thumb-modal-summary">
+                    <div class="thumb-modal-stat">共 <strong>${arr.length}</strong> 题</div>
+                    <div class="thumb-modal-dist">
+                        <span>选 ${arr.filter(q => q.type === '选择题').length}</span>
+                        <span>填 ${arr.filter(q => q.type === '填空题').length}</span>
+                        <span>解 ${arr.filter(q => q.type === '解答题').length}</span>
+                    </div>
+                    <div class="thumb-modal-tip">💡 每道题默认不显示答案，点击题目卡片展开详情</div>
+                </div>
+                <div class="thumb-modal-questions">
+                    ${arr.map(q => renderThumbQuestionItem(q)).join('')}
+                </div>
+            </div>
+        `;
+        renderMath(document.getElementById('thumbModalBody'));
+        // 每道题：默认只显示题目，点击后展开详情（含答案）
+        document.querySelectorAll('#thumbModalBody .thumb-q-item').forEach(el => {
+            el.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const id = el.dataset.id;
+                const q = state.questions.find(q => q.id === id);
+                if (q) {
+                    document.getElementById('thumbModal').hidden = true;
+                    openQuestionModal(q);
+                }
+            });
+        });
+        document.getElementById('thumbModal').hidden = false;
+    }
+
+    /* ===== 缩略图弹窗中的题目项：默认折叠（不显示答案） ===== */
+    function renderThumbQuestionItem(q) {
+        const opts = (q.options || []).slice(0, 4).map(o =>
+            `<div class="thumb-opt">${escapeHtml(o)}</div>`
+        ).join('');
+        return `
+            <div class="thumb-q-item" data-id="${q.id}">
+                <div class="thumb-q-head">
+                    <span class="q-year">${q.year}</span>
+                    <span class="q-num">${q.num}</span>
+                    <span class="q-type q-type-${q.type}">${q.type}</span>
+                    <span class="q-difficulty">${'★'.repeat(q.difficulty || 2)}</span>
+                    <span class="q-score">${q.score}分</span>
+                    <span class="thumb-q-go">点击查看详情 →</span>
+                </div>
+                <div class="q-body">${q.question || ''}</div>
+                ${opts ? `<div class="q-opts">${opts}</div>` : ''}
+            </div>
+        `;
+    }
+
+    function openQuestionModal(q) {
+        const title = `${q.year} ${q.num} (${q.type}, ${q.score}分)`;
+        const kpBadges = (q.knowledgeIds || []).map(k => `
+            <span class="kp-badge lg">${k}</span>
+        `).join(' ');
+        const opts = (q.options || []).map(o => `<div class="modal-opt">${escapeHtml(o)}</div>`).join('');
+
+        document.getElementById('questionModalTitle').textContent = title;
+        document.getElementById('questionModalBody').innerHTML = `
+            <div class="q-modal-body">
+                <div class="q-modal-main">
+                    <div class="q-modal-meta">
+                        <span class="q-part">${q.part}</span>
+                        <span class="q-type q-type-${q.type}">${q.type}</span>
+                        <span class="q-difficulty">${'★'.repeat(q.difficulty || 2)}</span>
+                        <span class="q-score">${q.score}分</span>
+                        ${q.chapter ? `<span class="q-chapter">章节 ${q.chapter}</span>` : ''}
+                    </div>
+                    ${kpBadges ? `<div class="q-modal-kps">${kpBadges}</div>` : ''}
+                    <div class="q-modal-question">${q.question || ''}</div>
+                    ${opts ? `<div class="q-modal-opts">${opts}</div>` : ''}
+
+                    ${renderCollapsibleSolution(q)}
+                    ${renderCollapsibleKnowledge(q)}
+                    ${renderCollapsiblePractice(q)}
+                </div>
+                <div class="q-modal-mastery-sidebar">
+                    ${renderMasterySidebar(q)}
+                </div>
+            </div>
+        `;
+        renderMath(document.getElementById('questionModalBody'));
+        bindCollapsibleToggles();
+        document.getElementById('questionModal').hidden = false;
+    }
+
+    /* ===== 折叠式：答案 + 解题骨架 + 详细步骤 ===== */
+    function renderCollapsibleSolution(q) {
+        const hasFullSolution = q.solution && q.solution.length > 0;
+        const hasSkeleton = hasFullSolution;
+        const hasCommonErrors = q.commonErrors && q.commonErrors.length > 0;
+        const answerText = q.answer || '（参考解析请查阅配套解析 PDF）';
+
+        // 骨架：来自 solution steps 的 title 列表
+        let skeletonHtml = '';
+        if (hasSkeleton) {
+            const items = q.solution.map(s =>
+                `<li><strong>第 ${s.step} 步</strong>：${escapeHtml(s.title || '')}</li>`
+            ).join('');
+            skeletonHtml = `<ol class="skeleton-list">${items}</ol>`;
+        } else if (q.testPoints && q.testPoints.length) {
+            skeletonHtml = `<ul class="skeleton-list">${q.testPoints.map(t => `<li>${escapeHtml(t)}</li>`).join('')}</ul>`;
+        } else {
+            skeletonHtml = '<p class="empty-tip">本题暂无解析骨架，请参考涉及知识点章节。</p>';
+        }
+
+        // 详细步骤
+        let detailedHtml = '';
+        if (hasFullSolution) {
+            const steps = q.solution.map(s => `
+                <div class="solution-step">
+                    <div class="step-num">第 ${s.step} 步</div>
+                    <div class="step-title">${escapeHtml(s.title || '')}</div>
+                    <div class="step-content">${s.content || ''}</div>
+                </div>
+            `).join('');
+            detailedHtml = steps;
+        } else {
+            detailedHtml = '<p class="empty-tip">本题暂未配置详细解题步骤，可查阅涉及知识点章节或配套解析 PDF。</p>';
+        }
+
+        // 常见错误
+        let errorsHtml = '';
+        if (hasCommonErrors) {
+            errorsHtml = `
+                <div class="common-errors">
+                    <div class="err-title">⚠️ 常见错误</div>
+                    <ul>${q.commonErrors.map(e => `<li>${escapeHtml(e)}</li>`).join('')}</ul>
+                </div>
+            `;
+        }
+
+        return `
+            <!-- 答案：默认折叠（防止意外看到） -->
+            <details class="q-collapse q-collapse-answer">
+                <summary>【答案】<span class="collapse-hint">点击展开</span></summary>
+                <div class="answer-content">${escapeHtml(answerText)}</div>
+            </details>
+
+            <!-- 解题骨架：默认展开 -->
+            <details class="q-collapse q-collapse-skeleton" open>
+                <summary>【解题骨架】<span class="collapse-hint">点击收起</span></summary>
+                <div class="skeleton-content">${skeletonHtml}</div>
+            </details>
+
+            <!-- 详细步骤：默认折叠 -->
+            <details class="q-collapse q-collapse-detail">
+                <summary>【详细步骤】<span class="collapse-hint">点击展开</span></summary>
+                <div class="detail-content">${detailedHtml}${errorsHtml}</div>
+            </details>
+        `;
+    }
+
+    /* ===== 折叠式：涉及知识点 ===== */
+    function renderCollapsibleKnowledge(q) {
+        const kps = q.knowledgeIds || [];
+        if (!kps.length) {
+            return `
+                <details class="q-collapse q-collapse-kp">
+                    <summary>【涉及知识点】<span class="collapse-hint">点击展开</span></summary>
+                    <p class="empty-tip">本题未标注知识点。</p>
+                </details>
+            `;
+        }
+
+        // 按 section 分组
+        const sectionMap = {};  // sectionId -> [kpId, ...]
+        kps.forEach(kp => {
+            const parts = kp.split('.');
+            const sectionId = parts[0] + '.' + parts[1];
+            (sectionMap[sectionId] = sectionMap[sectionId] || []).push(kp);
+        });
+
+        const sections = Object.entries(sectionMap).map(([secId, kpList]) => {
+            const idx = KP_INDEX[kpList[0]];
+            const sectionName = idx ? idx.sectionName : secId;
+            const majorName = idx ? idx.majorName : '';
+            const chapterId = KP_TO_CHAPTER[kpList[0]] || '';
+            const kpItems = kpList.map(kp => {
+                return `<span class="kp-tag">${kp}</span>`;
+            }).join(' ');
+            const chapterLink = chapterId
+                ? `<a href="#${chapterId}" class="kp-jump" onclick="event.preventDefault(); window.__navigateTo && window.__navigateTo('${chapterId}');">查看章节 ${chapterId} →</a>`
+                : '';
+            return `
+                <div class="kp-section">
+                    <div class="kp-section-name">${majorName} › ${sectionName}</div>
+                    <div class="kp-section-items">${kpItems}</div>
+                    ${chapterLink}
+                </div>
+            `;
+        }).join('');
+
+        return `
+            <details class="q-collapse q-collapse-kp">
+                <summary>【涉及知识点（${kps.length}）】<span class="collapse-hint">点击展开</span></summary>
+                <div class="kp-content">${sections}</div>
+            </details>
+        `;
+    }
+
+    /* ===== 折叠式：相关练习（从 PRACTICE_DATA + KP_MAP 匹配） ===== */
+    function renderCollapsiblePractice(q) {
+        const kps = q.knowledgeIds || [];
+        if (!kps.length || !window.PRACTICE_DATA) {
+            return `
+                <details class="q-collapse q-collapse-practice">
+                    <summary>【相关练习（模拟题）】<span class="collapse-hint">点击展开</span></summary>
+                    <p class="empty-tip">暂无相关练习。</p>
+                </details>
+            `;
+        }
+
+        // 三层匹配策略：
+        // 1. 精确：practice.knowledgeIds 与 q.knowledgeIds 交集
+        // 2. 关键词：practice.type 与 KP section 名称匹配
+        // 3. 兜底：题目所在章节 chapter = q.chapter 的所有练习题
+        const matched = [];
+
+        Object.keys(window.PRACTICE_DATA).forEach(chId => {
+            const problems = window.PRACTICE_DATA[chId] || [];
+            problems.forEach((p, idx) => {
+                // 1. 精确匹配（如果有 knowledgeIds）
+                if (p.knowledgeIds && p.knowledgeIds.some(k => kps.includes(k))) {
+                    matched.push({ chId, p, idx, matchType: 'exact', kps: p.knowledgeIds.filter(k => kps.includes(k)) });
+                    return;
+                }
+                // 2. 关键词匹配（按 KP section 名称）
+                const typeStr = (p.type || '') + ' ' + (p.source || '');
+                const matchedKps = [];
+                kps.forEach(kp => {
+                    const idx2 = KP_INDEX[kp];
+                    if (!idx2) return;
+                    // section name 关键词
+                    const kws = idx2.sectionName.split(/[、，,\s]+/);
+                    for (const part of kws) {
+                        if (part.length >= 2 && typeStr.includes(part)) {
+                            matchedKps.push(kp);
+                            break;
+                        }
+                    }
                 });
-                if (filtersEl) filtersEl.style.display = '';
-                renderCurrentTab();
+                if (matchedKps.length > 0) {
+                    matched.push({ chId, p, idx, matchType: 'keyword', kps: matchedKps });
+                }
+            });
+        });
+
+        if (!matched.length) {
+            // 3. 兜底：列出同一章节的所有练习
+            if (q.chapter && window.PRACTICE_DATA[q.chapter]) {
+                const fallback = (window.PRACTICE_DATA[q.chapter] || []).map((p, idx) => ({
+                    chId: q.chapter, p, idx, matchType: 'fallback', kps: []
+                }));
+                if (fallback.length > 0) {
+                    matched.push(...fallback);
+                }
+            }
+            if (!matched.length) {
+                return `
+                    <details class="q-collapse q-collapse-practice">
+                        <summary>【相关练习（模拟题）】<span class="collapse-hint">点击展开</span></summary>
+                        <p class="empty-tip">暂无匹配到相关模拟题。可先看涉及知识点 → 跳转章节练习。</p>
+                    </details>
+                `;
+            }
+        }
+
+        // 去重 + 排序：精确 > 关键词 > 兜底
+        const seen = new Set();
+        const unique = matched.filter(m => {
+            const key = m.chId + ':' + m.idx;
+            if (seen.has(key)) return false;
+            seen.add(key);
+            return true;
+        }).sort((a, b) => {
+            const rank = { exact: 0, keyword: 1, fallback: 2 };
+            return (rank[a.matchType] || 9) - (rank[b.matchType] || 9);
+        });
+
+        const items = unique.slice(0, 10).map(m => {
+            const { chId, p, idx, matchType, kps: matchedKps } = m;
+            const snippet = (p.question || '').replace(/\\\(|\\\)|\$/g, '').substring(0, 80);
+            const matchLabel = matchType === 'exact'
+                ? '✓ 精确匹配'
+                : matchType === 'keyword'
+                    ? '~ 关键词 ' + (matchedKps[0] || '')
+                    : '○ 同章节';
+            return `
+                <div class="practice-item" data-ch="${chId}" data-idx="${idx}">
+                    <div class="practice-meta">
+                        <span class="practice-ch">${chId}</span>
+                        <span class="practice-type">${escapeHtml(p.type || '')}</span>
+                        <span class="practice-score">${escapeHtml(p.score || '')}</span>
+                        <span class="practice-match">${matchLabel}</span>
+                    </div>
+                    <div class="practice-q">${escapeHtml(snippet)}…</div>
+                </div>
+            `;
+        }).join('');
+
+        return `
+            <details class="q-collapse q-collapse-practice">
+                <summary>【相关练习（模拟题 ${unique.length}）】<span class="collapse-hint">点击展开</span></summary>
+                <div class="practice-content">${items}</div>
+                <p class="practice-tip">💡 提示：先做完这些模拟题，确认掌握后再回真题区做本题。</p>
+            </details>
+        `;
+    }
+
+    /* ===== 折叠面板 toggle 事件绑定（同步 summary 文字）===== */
+    function bindCollapsibleToggles() {
+        const detailsList = document.querySelectorAll('#questionModalBody details.q-collapse');
+        detailsList.forEach(d => {
+            const summarySpan = d.querySelector('.collapse-hint');
+            if (!summarySpan) return;
+            if (d.open) {
+                summarySpan.textContent = '点击收起';
+            } else {
+                summarySpan.textContent = '点击展开';
+            }
+            d.addEventListener('toggle', () => {
+                summarySpan.textContent = d.open ? '点击收起' : '点击展开';
             });
         });
     }
 
-    // ============================================================
-    // 答案弹窗（精简版）
-    // ============================================================
-    function showAnswerModal(q) {
-        var modal = document.getElementById('answerModal');
-        document.getElementById('answerModalTitle').textContent = q.year + ' · ' + q.num + ' · ' + q.type + ' · ' + q.score + '分';
-        document.getElementById('answerModalBody').innerHTML =
-            '<div class="am-question">' + q.question + '</div>' +
-            (q.options ? '<div class="am-options">' + q.options.map(function(o) { return '<div class="am-option">' + o + '</div>'; }).join('') + '</div>' : '') +
-            '<div class="am-divider"></div>' +
-            '<div class="am-answer-row"><span class="am-label">✅ 最终答案：</span><span class="am-value">' + q.answer + '</span></div>' +
-            '<div class="am-actions">' +
-                '<button class="zbtn zbtn-primary" data-role="view-full">📖 查看完整解析</button>' +
-                '<button class="zbtn" data-role="goto-chapter">📚 跳到对应章节</button>' +
-            '</div>';
-        modal.hidden = false;
-
-        document.getElementById('answerModalClose').onclick = function() {
-            modal.hidden = true;
-        };
-
-        document.querySelector('#answerModalBody [data-role="view-full"]').onclick = function() {
-            modal.hidden = true;
-            // 触发对应卡片的"查看详细解析"
-            var card = contentArea.querySelector('.zhenti-card[data-qid="' + q.id + '"]');
-            if (card) {
-                if (card.classList.contains('collapsed')) card.querySelector('[data-role="card-head"]').click();
-                var btn = card.querySelector('[data-role="view-solution"]');
-                if (btn) btn.click();
-            }
-        };
-
-        document.querySelector('#answerModalBody [data-role="goto-chapter"]').onclick = function() {
-            modal.hidden = true;
-            if (q.knowledgePoints && q.knowledgePoints[0] && window.__navigateTo) {
-                window.__navigateTo(q.knowledgePoints[0].chapter);
-            }
-        };
-
-        renderMathWhenReady(document.getElementById('answerModalBody'));
+    /* ===== 侧边栏：掌握程度（固定在题目右侧，始终可见）===== */
+    function renderMasterySidebar(q) {
+        const current = (masteryData[q.id] || {}).level || 'new';
+        const currentLv = MASTERY_BY_ID[current];
+        const btns = MASTERY_LEVELS.map(l => {
+            const isActive = current === l.id;
+            return `<button type="button" class="mastery-btn ${isActive ? 'active' : ''}" data-mastery="${l.id}" data-qid="${q.id}" style="--btn-color:${l.color}">
+                <span class="mastery-icon">${l.icon}</span>
+                <span class="mastery-label">${l.label}</span>
+            </button>`;
+        }).join('');
+        const cleared = current !== 'new'
+            ? `<button type="button" class="mastery-clear-btn" data-mastery-clear="${q.id}">重置</button>`
+            : '';
+        return `
+            <div class="mastery-sidebar">
+                <h4 class="mastery-sidebar-title">🎯 掌握程度</h4>
+                <div class="mastery-sidebar-state" id="masterySidebarState" style="color:${currentLv.color}">${currentLv.icon} ${currentLv.label}</div>
+                <div class="mastery-sidebar-buttons">${btns}</div>
+                <div class="mastery-sidebar-footer">${cleared}</div>
+                <p class="mastery-sidebar-tip">点击按钮评价本题掌握程度，再次点击取消。数据保存在本地浏览器。</p>
+            </div>
+        `;
     }
 
-    // ===== 弹窗通用关闭逻辑 =====
-    document.addEventListener('click', function(e) {
-        // questionModal close button
-        var qmClose = document.getElementById('questionModalClose');
-        if (qmClose && (e.target === qmClose || qmClose.contains(e.target))) {
-            document.getElementById('questionModal').hidden = true;
-        }
-        // 点击弹窗外部关闭
-        document.querySelectorAll('.zhenti-modal').forEach(function(m) {
-            if (m.hidden) return;
-            if (e.target === m) {
-                m.hidden = true;
-            }
+    /* ===== 掌握程度筛选面板 ===== */
+    function buildMasteryFilter() {
+        if (!els.filterMastery) return;
+        const html = `
+            <button class="filter-pill active" data-m-filter="all">全部</button>
+            ${MASTERY_LEVELS.map(l => `
+                <button class="filter-pill" data-m-filter="${l.id}" style="--btn-color:${l.color}">
+                    ${l.icon} ${l.label}
+                </button>
+            `).join('')}
+            <button class="filter-pill" data-m-filter="unmastered" style="color:#dc2626;border-color:#fca5a5;">未掌握</button>
+        `;
+        els.filterMastery.innerHTML = html;
+        els.filterMastery.addEventListener('click', (e) => {
+            const btn = e.target.closest('[data-m-filter]');
+            if (!btn) return;
+            els.filterMastery.querySelectorAll('[data-m-filter]').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            applyMasteryFilter(btn.dataset.mFilter);
         });
-    });
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            document.querySelectorAll('.zhenti-modal').forEach(function(m) {
-                if (!m.hidden) m.hidden = true;
-            });
-        }
-    });
+    }
 
-    // ============================================================
-    // 工具函数
-    // ============================================================
-    function findQuestionById(qid) {
-        for (var y in window.ZHENTI_DATA) {
-            for (var i = 0; i < window.ZHENTI_DATA[y].length; i++) {
-                if (window.ZHENTI_DATA[y][i].id === qid) return window.ZHENTI_DATA[y][i];
-            }
+    function applyMasteryFilter(level) {
+        state.filters.mastery = level;
+        renderQuestions();
+    }
+
+    /* ===== Tab 切换：题目列表 / 进度总览 ===== */
+    function bindTabEvents() {
+        if (els.tabListBtn) {
+            els.tabListBtn.addEventListener('click', () => setActiveTab('list'));
         }
-        return null;
+        if (els.tabProgressBtn) {
+            els.tabProgressBtn.addEventListener('click', () => setActiveTab('progress'));
+        }
+    }
+
+    function setActiveTab(name) {
+        if (name !== 'list' && name !== 'progress') return;
+        state.activeTab = name;
+        const isProgress = name === 'progress';
+        document.body.dataset.zhentiTab = name;
+
+        // Tab 按钮态
+        if (els.tabListBtn) {
+            const active = !isProgress;
+            els.tabListBtn.classList.toggle('active', active);
+            els.tabListBtn.setAttribute('aria-selected', active ? 'true' : 'false');
+        }
+        if (els.tabProgressBtn) {
+            const active = isProgress;
+            els.tabProgressBtn.classList.toggle('active', active);
+            els.tabProgressBtn.setAttribute('aria-selected', active ? 'true' : 'false');
+        }
+
+        // 主区域可见性
+        if (els.progressArea) els.progressArea.hidden = !isProgress;
+        if (els.content) els.content.hidden = isProgress;
+
+        // 进度总览下隐藏只服务列表的区域，列表下恢复
+        const listOnly = [els.thumbStrip, els.filtersBar, els.sidebar, els.chartsBottom];
+        listOnly.forEach(el => {
+            if (!el) return;
+            el.hidden = isProgress;
+        });
+
+        if (isProgress) renderProgressOverview();
+    }
+
+    /* ===== 进度总览渲染：全部年份 × 全部题，一页展示，按掌握程度上色 ===== */
+    function renderProgressOverview() {
+        if (!els.progressArea) return;
+        const stats = masteryStats();
+        const total = stats.total;
+        const mastered = (stats.byLevel['mastered'] || 0) + (stats.byLevel['expert'] || 0);
+        const masteredPct = total > 0 ? Math.round((mastered / total) * 100) : 0;
+
+        // 顶部图例 + 总览（复用 masteryStats 数据）
+        const legendItems = MASTERY_LEVELS.map(l => {
+            const count = stats.byLevel[l.id] || 0;
+            return `<div class="progress-legend-item" data-level="${l.id}">
+                <span class="legend-color" style="background:${l.color}"></span>
+                <span class="legend-label">${l.label}</span>
+                <span class="legend-count">${count}</span>
+            </div>`;
+        }).join('');
+
+        // 年份降序、年内按 qnum 升序
+        const years = Object.keys(state.byYear).map(Number).sort((a, b) => b - a);
+        const yearBlocks = years.map(y => {
+            const arr = (state.byYear[y] || [])
+                .slice()
+                .sort((a, b) => (a.qnum || 0) - (b.qnum || 0));
+            const yMastered = arr.filter(q => {
+                const lv = (masteryData[q.id] || {}).level || 'new';
+                return lv === 'mastered' || lv === 'expert';
+            }).length;
+            const yPct = arr.length > 0 ? Math.round((yMastered / arr.length) * 100) : 0;
+            const boxes = arr.map(q => {
+                const lv = getMastery(q.id);
+                // 优先 qnum，回退 num
+                const displayNum = (q.qnum !== undefined && q.qnum !== null && q.qnum !== '')
+                    ? String(q.qnum)
+                    : (q.num != null ? String(q.num) : '');
+                const numAttr = escapeHtml(q.num || '');
+                const typeAttr = escapeHtml(q.type || '');
+                const yearAttr = escapeHtml(String(q.year));
+                const lvlAttr = escapeHtml(lv.label);
+                const bgRgba = hexToRgba(lv.color, 0.15);
+                const titleStr = `${q.year} ${q.num || q.qnum || ''} · ${q.type} · ${lv.label}`;
+                const ariaStr = `${q.year}年 第${q.num || q.qnum}题 ${q.type} 掌握程度:${lv.label}`;
+                return `<button type="button" class="progress-q" data-qid="${escapeHtml(q.id)}"
+                    data-year="${yearAttr}" data-num="${numAttr}" data-type="${typeAttr}" data-level="${lv.id}"
+                    style="--q-color:${lv.color};--q-bg:${bgRgba}"
+                    title="${escapeHtml(titleStr)}"
+                    aria-label="${escapeHtml(ariaStr)}">${escapeHtml(displayNum)}</button>`;
+            }).join('');
+            return `<div class="progress-year-block">
+                <h3 class="progress-year-title">
+                    <span class="progress-year-name">${y} 年</span>
+                    <span class="progress-year-stats">已掌握 <strong>${yMastered}</strong> / ${arr.length} <em class="progress-year-pct">(${yPct}%)</em></span>
+                </h3>
+                <div class="progress-year-bar" aria-hidden="true">
+                    <div class="progress-year-bar-fill" style="width:${yPct}%"></div>
+                </div>
+                <div class="progress-q-grid">${boxes}</div>
+            </div>`;
+        }).join('');
+
+        els.progressArea.innerHTML = `
+            <div class="progress-legend">
+                <div class="progress-summary">
+                    已掌握 <strong>${mastered}</strong> / ${total} 题（<strong>${masteredPct}%</strong>）
+                </div>
+                <div class="progress-legend-items">${legendItems}</div>
+            </div>
+            <div class="progress-years">${yearBlocks}</div>
+        `;
+
+        // 绑定方格点击 → 复用现有 openQuestionModal(q)
+        els.progressArea.querySelectorAll('.progress-q').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const id = btn.dataset.qid;
+                const q = state.questions.find(x => x.id === id);
+                if (q) openQuestionModal(q);
+            });
+        });
+    }
+
+    function hexToRgba(hex, alpha) {
+        if (!hex || typeof hex !== 'string') return `rgba(0,0,0,${alpha})`;
+        let h = hex.replace('#', '').trim();
+        if (h.length === 3) {
+            h = h.split('').map(c => c + c).join('');
+        }
+        if (h.length !== 6) return hex;
+        const r = parseInt(h.slice(0, 2), 16);
+        const g = parseInt(h.slice(2, 4), 16);
+        const b = parseInt(h.slice(4, 6), 16);
+        return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    }
+
+    /* ===== 题卡片上挂载 mastery 徽章 ===== */
+    function applyMasteryBadgesToCards() {
+        document.querySelectorAll('.question-card').forEach(card => {
+            const qid = card.dataset.id;
+            let slot = card.querySelector('.mastery-badge-slot');
+            if (!slot) {
+                slot = document.createElement('div');
+                slot.className = 'mastery-badge-slot';
+                const meta = card.querySelector('.question-card-meta') || card.firstElementChild;
+                if (meta) {
+                    meta.appendChild(slot);
+                } else {
+                    card.appendChild(slot);
+                }
+            }
+            slot.innerHTML = renderMasteryBadge(qid);
+        });
+    }
+
+    /* ===== 工具 ===== */
+    function debounce(fn, wait) {
+        let t;
+        return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), wait); };
     }
 
     function escapeHtml(s) {
-        return String(s || '').replace(/[&<>"']/g, function(c) {
-            return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
-        });
-    }
-    function escapeAttr(s) { return escapeHtml(s); }
-
-    function todayStr() {
-        var d = new Date();
-        var p = function(n) { return n < 10 ? '0' + n : '' + n; };
-        return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate());
+        if (s === null || s === undefined) return '';
+        return String(s)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;');
     }
 
-    function showToast(msg, type) {
-        var existing = document.querySelector('.zhenti-toast');
-        if (existing) existing.remove();
-        var t = document.createElement('div');
-        t.className = 'zhenti-toast' + (type === 'error' ? ' error' : '');
-        t.textContent = msg;
-        document.body.appendChild(t);
-        setTimeout(function() { t.classList.add('show'); }, 10);
-        setTimeout(function() {
-            t.classList.remove('show');
-            setTimeout(function() { t.remove(); }, 300);
-        }, 2200);
-    }
-
-    // ============================================================
-    // 掌握度数据层（Supabase + localStorage 兜底）
-    // ============================================================
-    const MASTERY_TABLE = 'zhenti_mastery';
-    const LOCAL_KEY = 'zhenti_mastery:all';
-
-    function getDb() {
-        if (typeof window.supabase === 'undefined') return null;
+    function renderMath(container) {
+        if (!container || !window.renderMathInElement) return;
         try {
-            return window.supabase.createClient(
-                'https://yucploakclaznlmfpdkk.supabase.co',
-                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1Y3Bsb2FrY2xhem5sbWZwZGtrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQxNjAyNDQsImV4cCI6MjA5OTczNjI0NH0.-VpUDJgIR0KlEReUM5LzSShIwog2YiJgH28QJAj6GHI',
-                { auth: { persistSession: false } }
-            );
-        } catch (e) { return null; }
+            renderMathInElement(container, {
+                delimiters: [
+                    { left: '$$', right: '$$', display: true },
+                    { left: '$', right: '$', display: false },
+                    { left: '\\(', right: '\\)', display: false },
+                    { left: '\\[', right: '\\]', display: true },
+                ],
+                throwOnError: false,
+            });
+        } catch (e) { /* ignore */ }
     }
 
-    function loadLocalAll() {
-        try {
-            var raw = localStorage.getItem(LOCAL_KEY);
-            return raw ? JSON.parse(raw) : [];
-        } catch (e) { return []; }
-    }
-    function saveLocalAll(records) {
-        try { localStorage.setItem(LOCAL_KEY, JSON.stringify(records)); } catch (e) {}
+    /* ===== 启动 ===== */
+    function start() {
+        init().catch(e => console.error('init() error:', e));
     }
 
-    async function fetchAllMasteryCache() {
-        var cache = {};
-        var db = getDb();
-        if (db) {
-            try {
-                var res = await db.from(MASTERY_TABLE).select('*');
-                if (!res.error && res.data) {
-                    res.data.forEach(function(r) {
-                        if (!cache[r.question_id]) cache[r.question_id] = [];
-                        cache[r.question_id].push(r);
-                    });
-                    return cache;
-                }
-            } catch (e) { /* fallback */ }
-        }
-        // localStorage 兜底
-        var all = loadLocalAll();
-        all.forEach(function(r) {
-            if (!cache[r.question_id]) cache[r.question_id] = [];
-            cache[r.question_id].push(r);
-        });
-        return cache;
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', start);
+    } else {
+        start();
     }
 
-    async function loadAllMasteryCache() {
-        state.masteryCache = await fetchAllMasteryCache();
-    }
-
-    async function saveMastery(qid, level, dateStr, note) {
-        var payload = {
-            question_id: qid,
-            mastery_level: level,
-            record_date: dateStr,
-            note: note || null
-        };
-        var db = getDb();
-        if (db) {
-            try {
-                var res = await db.from(MASTERY_TABLE).insert(payload).select();
-                if (!res.error && res.data && res.data[0]) return res.data[0];
-            } catch (e) { /* fallback */ }
-        }
-        // 本地兜底
-        payload.id = 'local-' + Date.now() + '-' + Math.random().toString(36).slice(2, 7);
-        payload.created_at = new Date().toISOString();
-        var all = loadLocalAll();
-        all.push(payload);
-        saveLocalAll(all);
-        return payload;
-    }
-
-    async function deleteMasteryById(id) {
-        var db = getDb();
-        if (db && String(id).indexOf('local-') !== 0) {
-            try {
-                var res = await db.from(MASTERY_TABLE).delete().eq('id', id);
-                if (!res.error) return true;
-            } catch (e) { /* fallback */ }
-        }
-        var all = loadLocalAll().filter(function(r) { return String(r.id) !== String(id); });
-        saveLocalAll(all);
-        return true;
-    }
-
-    // ============================================================
-    // 暴露给 app.js
-    // ============================================================
-    window.initZhentiModule = init;
-    window.__zhenti = state;  // 调试用
-
-    // KaTeX 渲染调用
-    // 优先用 app.js 暴露到 window 的版本（共享正则、共享修复）。
-    // 如果 window 版本不可用，本地兜底实现一份相同逻辑（与 app.js 的 renderMathWhenReady 行为一致）。
-    var _FALLBACK_MATH_PATTERN = /\\\(([\s\S]+?)\\\)|\\\[([\s\S]+?)\\\]|\$\$([\s\S]+?)\$\$|\$([^\$]+?)\$/g;
-    var _FALLBACK_MATH_DETECT = /\\\(|\\\[|\$\$|\$/;
-
-    function _fallbackRenderMath(target) {
-        if (typeof katex === 'undefined') return;
-        if (typeof target.normalize === 'function') target.normalize();
-        var walker = document.createTreeWalker(target, NodeFilter.SHOW_TEXT, {
-            acceptNode: function(node) {
-                var p = node.parentNode;
-                while (p && p !== target) {
-                    var tag = p.tagName;
-                    if (tag === 'SCRIPT' || tag === 'STYLE' || tag === 'TEXTAREA') {
-                        return NodeFilter.FILTER_REJECT;
-                    }
-                    p = p.parentNode;
-                }
-                return _FALLBACK_MATH_DETECT.test(node.nodeValue) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+    // 监听页面可能被动态注入 zhenti 模块（app.js 在 fetch zhenti.html 完成后会调用）
+    // 使用 MutationObserver 监测关键节点出现
+    if (typeof MutationObserver !== 'undefined') {
+        const obs = new MutationObserver(() => {
+            if (document.getElementById('zhenti') && !initialized) {
+                init().catch(e => console.error('init() error:', e));
             }
         });
-        var nodes = [];
-        var n;
-        while ((n = walker.nextNode())) nodes.push(n);
-        nodes.forEach(function(textNode) {
-            var html = textNode.nodeValue;
-            html = html.replace(_FALLBACK_MATH_PATTERN, function(match, g1, g2, g3, g4) {
-                try {
-                    if (g1 !== undefined) return katex.renderToString(g1, { displayMode: false, throwOnError: false });
-                    if (g2 !== undefined) return katex.renderToString(g2, { displayMode: true,  throwOnError: false });
-                    if (g3 !== undefined) return katex.renderToString(g3, { displayMode: true,  throwOnError: false });
-                    if (g4 !== undefined) return katex.renderToString(g4, { displayMode: false, throwOnError: false });
-                } catch (e) { return match; }
-            });
-            var span = document.createElement('span');
-            span.innerHTML = html;
-            var parent = textNode.parentNode;
-            while (span.firstChild) parent.insertBefore(span.firstChild, textNode);
-            parent.removeChild(textNode);
-        });
+        obs.observe(document.body, { childList: true, subtree: true });
+        // 30 秒后停止观察
+        setTimeout(() => obs.disconnect(), 30000);
     }
 
-    function _fallbackRenderMathWhenReady(target, tries) {
-        tries = tries || 0;
-        if (typeof katex !== 'undefined') {
-            try { _fallbackRenderMath(target); } catch (e) { console.warn('KaTeX render err:', e); }
-        } else if (tries < 60) {
-            setTimeout(function() { _fallbackRenderMathWhenReady(target, tries + 1); }, 100);
-        }
-    }
-
-    function renderMathWhenReady(target) {
-        if (typeof window.renderMathWhenReady === 'function') {
-            try { window.renderMathWhenReady(target); return; } catch (e) {}
-        }
-        if (typeof window.renderMath === 'function') {
-            try { window.renderMath(target); return; } catch (e) {}
-        }
-        // 兜底：本地实现
-        _fallbackRenderMathWhenReady(target);
-    }
-
-})();
+    // 暴露调试 API（兼容老版 app.js 调用）
+    window.initZhentiModule = start;
+    window.__zhenti = { state, KP_TREE, KP_NAME, loadAllData };
+})()

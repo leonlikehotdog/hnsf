@@ -1,0 +1,69 @@
+<section class="chapter-card" id="ch18">
+    <div class="ch-header">
+        <div class="ch-title">第十八章：网络层 <span class="ch-score">| 8分</span></div>
+        <div class="ch-stars star-high">★★★★</div>
+    </div>
+    <div class="ch-content">
+        <p><span class="section-tag tag-core">🎯 核心考点</span></p>
+        <ul>
+            <li>IP协议、子网划分（CIDR）、NAT</li>
+            <li>路由算法（RIP、OSPF、BGP）</li>
+        </ul>
+        <div class="must-card">
+            <div class="must-label">📖 必背：子网划分</div>
+            <p><strong>IP地址 = 网络号 + 主机号</strong></p>
+            <p>子网掩码将IP分为网络部分和主机部分。CIDR使用 /n 表示前缀长度。</p>
+            <p>例如：192.168.1.0/24 表示前24位是网络号，后8位是主机号（256个地址）。</p>
+        </div>
+        <div class="must-card">
+            <div class="must-label">📖 路由协议对比</div>
+            <table>
+                <thead><tr><th>协议</th><th>类型</th><th>算法</th><th>适用</th></tr></thead>
+                <tbody>
+                    <tr><td>RIP</td><td>内部网关</td><td>距离向量（跳数）</td><td>小型网络</td></tr>
+                    <tr><td>OSPF</td><td>内部网关</td><td>链路状态（带宽）</td><td>大型网络</td></tr>
+                    <tr><td>BGP</td><td>外部网关</td><td>路径向量</td><td>自治系统之间</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="example-card">
+            <div class="example-label">📝 历年真题（2023年·子网划分）</div>
+            <div class="example-question">某单位申请到一个IP地址块：200.10.20.0/24。需要划分成4个子网，每个子网至少60台主机。请给出子网掩码、各子网的网络地址和广播地址。</div>
+            <div class="example-hint">💡小白解析：①每子网至少60台主机→主机号至少需要6位（2⁶=64>60，减去全0和全1得62个可用IP）。②原来/24，主机号8位，借2位给子网号（2²=4个子网），剩余6位主机号。③新子网掩码=24+2=26，即255.255.255.192。④4个子网：<br>
+子网1：200.10.20.0/26，广播200.10.20.63<br>
+子网2：200.10.20.64/26，广播200.10.20.127<br>
+子网3：200.10.20.128/26，广播200.10.20.191<br>
+子网4：200.10.20.192/26，广播200.10.20.255<br>
+子网划分口诀：看需求→算位数→定掩码→列地址。</div>
+        </div>
+    <!-- ====== 历年真题与考点分析 ====== -->
+<div class="part-divider pexam" id="exam-ch18">
+  <div class="pd-num">📝</div>
+  <div class="pd-text">
+    <div class="pd-name">历年真题 · 出题人考察点 · 得分点</div>
+    <div class="pd-desc">本模块按「考什么 → 怎么答 → 易错点」拆解 408 高频真题</div>
+  </div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 真题 1 | 2019·35题·4分 | 选择题</div>
+  <div class="example-question">IP 地址 192.168.1.0/24 的子网掩码是？</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（408 高频考点）</span></p>
+  <p>① CIDR 表示；② 子网掩码计算；③ 网络号位数</p>
+  <p><span class="section-tag tag-tip">🧭 详细解析（小白逐步版）</span></p>
+  <p>/24 表示前 24 位为网络号。子网掩码 = 255.255.255.0。</p>
+  <p><span class="section-tag tag-must">💯 得分点（按点给分）</span></p>
+  <p>① 答对 (2分)；② 解释 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警</span></p>
+  <p>⚠️ /24 与 24 位的区别；⚠️ 反掩码混淆</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点会在本章<strong>其他例题</strong>反复出现。408 算法题占比高（45 分），建议做完题后立刻手写一遍代码加深印象。</p>
+</div>
+<div class="must-card">
+  <div class="must-label">🎯 本章应试策略总结（408 必备）</div>
+  <p><strong>1. 算法题（45 分）：</strong>4 道大题必考，先写思路再写代码，最后写复杂度分析。</p>
+  <p><strong>2. 选择题（80 分 × 2 分）：</strong>40 道，单题 2 分，时间 1.5 分钟/题。</p>
+  <p><strong>3. 关键拿分动作：</strong>算法题一定要写完整可编译代码（不要伪代码）+ 复杂度分析。</p>
+  <p><strong>4. 复盘方法：</strong>真题做完必须手写一遍代码，对照「得分点」逐项打分。</p>
+</div>
+    </div>
+</section>

@@ -1,0 +1,2 @@
+@echo off
+"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" --headless=new --disable-gpu --no-sandbox --enable-logging=stderr --v=0 --dump-dom "http://127.0.0.1:8888/test_direct.html" --virtual-time-budget=12000 > "d:\二战\hnsf\数学一\test_direct_out.txt" 2>&1

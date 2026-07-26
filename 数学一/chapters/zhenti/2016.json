@@ -1,0 +1,471 @@
+[
+  {
+    "id": "2016-01",
+    "year": 2016,
+    "num": "一(1)",
+    "qnum": 1,
+    "type": "选择题",
+    "score": 4,
+    "part": "高数",
+    "difficulty": 2,
+    "knowledgeIds": [
+      "GS.3.5"
+    ],
+    "chapter": "ch03",
+    "question": "若反常积分 $\\int_{0}^{+\\infty} \\frac{1}{x^a (1 + x)^b} \\mathrm{d}x$ 收敛, 则( )",
+    "options": [
+      "A. $a < 1$ 且 $b > 1$ .",
+      "B. $a > 1$ 且 $b > 1$ .",
+      "C. $a < 1$ 且 $a + b > 1$ .",
+      "D. $a > 1$ 且 $a + b > 1$ ."
+    ],
+    "answer": "",
+    "analysis": ""
+  },
+  {
+    "id": "2016-02",
+    "year": 2016,
+    "num": "一(2)",
+    "qnum": 2,
+    "type": "选择题",
+    "score": 4,
+    "part": "高数",
+    "difficulty": 2,
+    "knowledgeIds": [
+      "GS.1.3",
+      "GS.3.1"
+    ],
+    "chapter": "ch01",
+    "question": "已知函数 $f(x) = \\left\\{ \\begin{array}{ll} 2(x - 1), & x < 1, \\\\ \\ln x, & x \\geqslant 1, \\end{array} \\right.$ 则 $f(x)$ 的一个原函数是（\\n\\n$\\left(\\mathrm{A}\\right)F(x)=\\left\\{\\begin{array}{ll}\\left(x-1\\right)^{2},&x< 1,\\\\ x(\\ln x-1),&x\\geqslant 1.\\end{array}\\right.$\\n\\n$\\left(\\mathrm{B}\\right)F(x)=\\left\\{\\begin{array}{ll}\\left(x-1\\right)^{2},&x< 1,\\\\ x(\\ln x+1)-1,&x\\geqslant 1.\\end{array}\\right.$\\n\\n$\\left(\\mathrm{C}\\right)F(x)=\\left\\{\\begin{array}{ll}\\left(x-1\\right)^{2},&x< 1,\\\\ x\\left(\\ln x+1\\right)+1,&x\\geqslant 1.\\end{array}\\right.$\\n\\n$\\left(\\mathrm{D}\\right)F(x)=\\left\\{\\begin{array}{ll}\\left(x-1\\right)^{2},&x< 1,\\\\ x(\\ln x-1)+1,&x\\geqslant 1.\\end{array}\\right.$",
+    "options": [],
+    "answer": "",
+    "analysis": ""
+  },
+  {
+    "id": "2016-03",
+    "year": 2016,
+    "num": "一(3)",
+    "qnum": 3,
+    "type": "选择题",
+    "score": 4,
+    "part": "高数",
+    "difficulty": 3,
+    "knowledgeIds": [
+      "GS.8.1",
+      "GS.1.3"
+    ],
+    "chapter": "ch08",
+    "question": "若 $y = (1 + x^{2})^{2} - \\sqrt{1 + x^{2}}$ , $y = (1 + x^{2})^{2} + \\sqrt{1 + x^{2}}$ 是微分方程 $y` + p(x)y = q(x)$ 的两个解, 则 $q(x) = (\\quad)$",
+    "options": [
+      "A. $3x(1 + x^{2})$",
+      "B. $-3x(1 + x^{2})$",
+      "C. $\\frac{x}{1 + x^{2}}$ .",
+      "D. $-\\frac{x}{1 + x^2}$ ."
+    ],
+    "answer": "",
+    "analysis": ""
+  },
+  {
+    "id": "2016-04",
+    "year": 2016,
+    "num": "一(4)",
+    "qnum": 4,
+    "type": "选择题",
+    "score": 4,
+    "part": "高数",
+    "difficulty": 3,
+    "knowledgeIds": [
+      "GS.1.5",
+      "GS.1.3"
+    ],
+    "chapter": "ch01",
+    "question": "已知函数 $f(x) = \\left\\{ \\begin{array}{ll}x, & x\\leqslant 0,\\\\ \\frac{1}{n}, & \\frac{1}{n + 1} <  x\\leqslant \\frac{1}{n},n = 1,2,\\dots , \\end{array} \\right.$ 则（",
+    "options": [
+      "A. $x = 0$ 是 $f(x)$ 的第一类间断点.",
+      "B. $x = 0$ 是 $f(x)$ 的第二类间断点.",
+      "C. $f(x)$ 在 $x = 0$ 处连续但不可导.",
+      "D. $f(x)$ 在 $x = 0$ 处可导."
+    ],
+    "answer": "",
+    "analysis": ""
+  },
+  {
+    "id": "2016-05",
+    "year": 2016,
+    "num": "一(5)",
+    "qnum": 5,
+    "type": "选择题",
+    "score": 4,
+    "part": "线代",
+    "difficulty": 3,
+    "knowledgeIds": [
+      "XD.10.1",
+      "XD.10.2"
+    ],
+    "chapter": "ch10",
+    "question": "设 $A, B$ 是可逆矩阵，且 $A$ 与 $B$ 相似，则下列结论错误的是（）",
+    "options": [
+      "A. $",
+      "B. $",
+      "C. $"
+    ],
+    "answer": "",
+    "analysis": ""
+  },
+  {
+    "id": "2016-06",
+    "year": 2016,
+    "num": "一(6)",
+    "qnum": 6,
+    "type": "选择题",
+    "score": 4,
+    "part": "高数",
+    "difficulty": 4,
+    "knowledgeIds": [
+      "GS.1.3",
+      "GS.5.3"
+    ],
+    "chapter": "ch01",
+    "question": "设二次型 $f(x_{1}, x_{2}, x_{3}) = x_{1}^{2} + x_{2}^{2} + x_{3}^{2} + 4x_{1}x_{2} + 4x_{1}x_{3} + 4x_{2}x_{3}$ ，则 $f(x_{1}, x_{2}, x_{3}) = 2$ 在空间直角坐标下表示的二次曲面为（）",
+    "options": [
+      "A. 单叶双曲面.",
+      "B. 双叶双曲面.",
+      "C. 椭球面.",
+      "D. 柱面."
+    ],
+    "answer": "",
+    "analysis": ""
+  },
+  {
+    "id": "2016-07",
+    "year": 2016,
+    "num": "一(7)",
+    "qnum": 7,
+    "type": "选择题",
+    "score": 4,
+    "part": "高数",
+    "difficulty": 4,
+    "knowledgeIds": [
+      "GS.1.3"
+    ],
+    "chapter": "ch01",
+    "question": "设随机变量 $X \\sim N(\\mu, \\sigma^2) (\\sigma > 0)$ , 记 $p = P\\{X \\leqslant \\mu + \\sigma^2\\}$ , 则( )",
+    "options": [
+      "A. $p$ 随着 $\\mu$ 的增加而增加.",
+      "B. $p$ 随着 $\\sigma$ 的增加而增加.",
+      "C. $p$ 随着 $\\mu$ 的增加而减少.",
+      "D. $p$ 随着 $\\sigma$ 的增加而减少."
+    ],
+    "answer": "",
+    "analysis": ""
+  },
+  {
+    "id": "2016-08",
+    "year": 2016,
+    "num": "一(8)",
+    "qnum": 8,
+    "type": "选择题",
+    "score": 4,
+    "part": "概率",
+    "difficulty": 4,
+    "knowledgeIds": [
+      "GL.15.2",
+      "GL.17.3"
+    ],
+    "chapter": "ch15",
+    "question": "随机试验 $E$ 有三种两两不相容的结果 $A_{1}, A_{2}, A_{3}$ , 且三种结果发生的概率均为 $\\frac{1}{3}$ , 将试验 $E$ 独立重复做 2 次, $X$ 表示 2 次试验中结果 $A_{1}$ 发生的次数, $Y$ 表示 2 次试验中结果 $A_{2}$ 发生的次数, 则 $X$ 与 $Y$ 的相关系数为 ( )",
+    "options": [
+      "A. $-\\frac{1}{2}$ .",
+      "B. $-\\frac{1}{3}$ .",
+      "C. $\\frac{1}{3}$ .",
+      "D. $\\frac{1}{2}$ ."
+    ],
+    "answer": "",
+    "analysis": ""
+  },
+  {
+    "id": "2016-09",
+    "year": 2016,
+    "num": "二(9)",
+    "qnum": 9,
+    "type": "填空题",
+    "score": 4,
+    "part": "高数",
+    "difficulty": 1,
+    "knowledgeIds": [
+      "GS.1.2",
+      "GS.1.3"
+    ],
+    "chapter": "ch01",
+    "question": "$\\lim_{x\\to 0}\\frac{\\int_{0}^{x}t\\ln(1 + t\\sin t)\\mathrm{d}t}{1 - \\cos x^2} = \\underline{\\quad}$",
+    "options": [],
+    "answer": "",
+    "analysis": ""
+  },
+  {
+    "id": "2016-10",
+    "year": 2016,
+    "num": "二(10)",
+    "qnum": 10,
+    "type": "填空题",
+    "score": 4,
+    "part": "高数",
+    "difficulty": 1,
+    "knowledgeIds": [
+      "GS.6.9",
+      "GS.1.3"
+    ],
+    "chapter": "ch06",
+    "question": "向量场 $A(x, y, z) = (x + y + z)\\pmb{i} + xy\\pmb{j} + z\\pmb{k}$ 的旋度 $\\operatorname{rot} A =$ ______.",
+    "options": [],
+    "answer": "",
+    "analysis": ""
+  },
+  {
+    "id": "2016-11",
+    "year": 2016,
+    "num": "二(11)",
+    "qnum": 11,
+    "type": "填空题",
+    "score": 4,
+    "part": "高数",
+    "difficulty": 2,
+    "knowledgeIds": [
+      "GS.1.3",
+      "GS.5.2"
+    ],
+    "chapter": "ch01",
+    "question": "设函数 $f(u, v)$ 可微， $z = z(x, y)$ 由方程 $(x + 1)z - y^2 = x^2f(x - z, y)$ 确定，则 $\\mathrm{d}z|_{(0,1)} =$ ______.",
+    "options": [],
+    "answer": "",
+    "analysis": ""
+  },
+  {
+    "id": "2016-12",
+    "year": 2016,
+    "num": "二(12)",
+    "qnum": 12,
+    "type": "填空题",
+    "score": 4,
+    "part": "高数",
+    "difficulty": 2,
+    "knowledgeIds": [
+      "GS.1.3",
+      "GL.16.2"
+    ],
+    "chapter": "ch01",
+    "question": "设函数 $f(x) = \\arctan x - \\frac{x}{1 + ax^2}$ ，且 $f```(0) = 1$ ，则 $a =$ ______.",
+    "options": [],
+    "answer": "",
+    "analysis": ""
+  },
+  {
+    "id": "2016-13",
+    "year": 2016,
+    "num": "二(13)",
+    "qnum": 13,
+    "type": "填空题",
+    "score": 4,
+    "part": "高数",
+    "difficulty": 3,
+    "knowledgeIds": [
+      "GS.1.3",
+      "XD.9.1"
+    ],
+    "chapter": "ch01",
+    "question": "行列式 $\\left| \\begin{array}{cccc} \\lambda & -1 & 0 & 0 \\\\ 0 & \\lambda & -1 & 0 \\\\ 0 & 0 & \\lambda & -1 \\\\ 4 & 3 & 2 & \\lambda + 1 \\end{array} \\right| = _$ .",
+    "options": [],
+    "answer": "",
+    "analysis": ""
+  },
+  {
+    "id": "2016-14",
+    "year": 2016,
+    "num": "二(14)",
+    "qnum": 14,
+    "type": "填空题",
+    "score": 4,
+    "part": "高数",
+    "difficulty": 3,
+    "knowledgeIds": [
+      "GS.1.3",
+      "GL.20.1"
+    ],
+    "chapter": "ch01",
+    "question": "设 $X_{1}, X_{2}, \\dots, X_{n}$ 为来自总体 $N(\\mu, \\sigma^{2})$ 的简单随机样本，样本均值 $\\overline{X} = 9.5$ ，参数 $\\mu$ 的置信度为0.95的双侧置信区间的置信上限为10.8，则 $\\mu$ 的置信度为0.95的双侧置信区间为",
+    "options": [],
+    "answer": "",
+    "analysis": ""
+  },
+  {
+    "id": "2016-15",
+    "year": 2016,
+    "num": "三(15)",
+    "qnum": 15,
+    "type": "解答题",
+    "score": 10,
+    "part": "高数",
+    "difficulty": 2,
+    "knowledgeIds": [
+      "GS.1.3",
+      "GS.6.1"
+    ],
+    "chapter": "ch01",
+    "question": "(本题满分10分)\\n\\n已知平面区域 $D = \\left\\{(r, \\theta) \\mid 2 \\leqslant r \\leqslant 2(1 + \\cos \\theta), -\\frac{\\pi}{2} \\leqslant \\theta \\leqslant \\frac{\\pi}{2}\\right\\}$ , 计算二重积分 $\\iint_{D} x , \\mathrm{d}x , \\mathrm{d}y$ .",
+    "options": [],
+    "answer": "",
+    "analysis": ""
+  },
+  {
+    "id": "2016-16",
+    "year": 2016,
+    "num": "三(16)",
+    "qnum": 16,
+    "type": "解答题",
+    "score": 10,
+    "part": "高数",
+    "difficulty": 2,
+    "knowledgeIds": [
+      "GS.1.3",
+      "GS.3.5"
+    ],
+    "chapter": "ch01",
+    "question": "(本题满分 10 分)\\n\\n设函数 $y(x)$ 满足方程 $y`` + 2y` + ky = 0$ ，其中 $0 < k < 1$ .\\n\\n(I) 证明: 反常积分 $\\int_{0}^{+\\infty} y(x) \\mathrm{d}x$ 收敛;  \\n(II) 若 $y(0) = 1, y`(0) = 1$ ，求 $\\int_{0}^{+\\infty} y(x) \\mathrm{d}x$ 的值.",
+    "options": [],
+    "answer": "",
+    "analysis": ""
+  },
+  {
+    "id": "2016-17",
+    "year": 2016,
+    "num": "三(17)",
+    "qnum": 17,
+    "type": "解答题",
+    "score": 10,
+    "part": "高数",
+    "difficulty": 3,
+    "knowledgeIds": [
+      "GS.1.3",
+      "GL.17.1"
+    ],
+    "chapter": "ch01",
+    "question": "(本题满分10分)\\n\\n设函数 $f(x,y)$ 满足 $\\frac{\\partial f(x,y)}{\\partial x} = (2x + 1)\\mathrm{e}^{2x - y}$ , 且 $f(0,y) = y + 1, L_t$ 是从点 $(0,0)$ 到点 $(1,t)$ 的光滑曲线. 计算曲线积分 $I(t) = \\int_{L_t} \\frac{\\partial f(x,y)}{\\partial x} \\mathrm{d}x + \\frac{\\partial f(x,y)}{\\partial y} \\mathrm{d}y$ , 并求 $I(t)$ 的最小值.",
+    "options": [],
+    "answer": "",
+    "analysis": ""
+  },
+  {
+    "id": "2016-18",
+    "year": 2016,
+    "num": "三(18)",
+    "qnum": 18,
+    "type": "解答题",
+    "score": 10,
+    "part": "高数",
+    "difficulty": 3,
+    "knowledgeIds": [
+      "GS.1.3",
+      "GS.3.6"
+    ],
+    "chapter": "ch01",
+    "question": "(本题满分10分)\\n\\n设有界区域 $\\Omega$ 由平面 $2x + y + 2z = 2$ 与三个坐标平面围成， $\\Sigma$ 为 $\\Omega$ 整个表面的外侧，计算曲面积分 $I = \\iint_{\\Sigma} (x^2 + 1) , \\mathrm{d}y , \\mathrm{d}z - 2y , \\mathrm{d}z , \\mathrm{d}x + 3z , \\mathrm{d}x , \\mathrm{d}y.$",
+    "options": [],
+    "answer": "",
+    "analysis": ""
+  },
+  {
+    "id": "2016-19",
+    "year": 2016,
+    "num": "三(19)",
+    "qnum": 19,
+    "type": "解答题",
+    "score": 10,
+    "part": "高数",
+    "difficulty": 4,
+    "knowledgeIds": [
+      "GS.1.1",
+      "GS.1.2"
+    ],
+    "chapter": "ch01",
+    "question": "(本题满分10分)\\n\\n已知函数 $f(x)$ 可导，且 $f(0) = 1, 0 < f`(x) < \\frac{1}{2}$ . 设数列 $\\{x_{n}\\}$ 满足 $x_{n+1} = f(x_{n}) (n = 1, 2, \\dots)$ . 证明：\\n\\n(I) 级数 $\\sum_{n=1}^{\\infty}\\left(x_{n+1}-x_{n}\\right)$ 绝对收敛;  \\n(II) $\\lim_{n\\to \\infty}x_n$ 存在，且 $0 < \\lim_{n\\to \\infty}x_n < 2.$",
+    "options": [],
+    "answer": "",
+    "analysis": ""
+  },
+  {
+    "id": "2016-20",
+    "year": 2016,
+    "num": "三(20)",
+    "qnum": 20,
+    "type": "解答题",
+    "score": 10,
+    "part": "高数",
+    "difficulty": 4,
+    "knowledgeIds": [
+      "GS.1.3",
+      "XD.10.1"
+    ],
+    "chapter": "ch01",
+    "question": "(本题满分11分)\\n\\n设矩阵 $A = \\left( \\begin{array}{rrr}1 & -1 & -1\\\\ 2 & a & 1\\\\ -1 & 1 & a \\end{array} \\right),B = \\left( \\begin{array}{rr}2 & 2\\\\ 1 & a\\\\ -a - 1 & -2 \\end{array} \\right)$ 当 $a$ 为何值时，方程 $AX = B$ 无解、有唯一解、有无穷多解？在有解时，求解此方程",
+    "options": [],
+    "answer": "",
+    "analysis": ""
+  },
+  {
+    "id": "2016-21",
+    "year": 2016,
+    "num": "三(21)",
+    "qnum": 21,
+    "type": "解答题",
+    "score": 12,
+    "part": "高数",
+    "difficulty": 5,
+    "knowledgeIds": [
+      "GS.1.3",
+      "XD.10.1"
+    ],
+    "chapter": "ch01",
+    "question": "(本题满分 11 分)\\n\\n已知矩阵 $A = \\begin{pmatrix} 0 & -1 & 1 \\\\ 2 & -3 & 0 \\\\ 0 & 0 & 0 \\end{pmatrix}$ .\\n\\n(I)求 $A^{99}$   \\n（Ⅱ）设3阶矩阵 $\\pmb {B} = (\\pmb {\\alpha}_1,\\pmb {\\alpha}_2,\\pmb {\\alpha}_3)$ 满足 $B^{2} = BA$ 记 $B^{100} = (\\beta_{1},\\beta_{2},\\beta_{3})$ ，将 $\\beta_{1},\\beta_{2},\\beta_{3}$ 分别表示为 $\\alpha_{1},\\alpha_{2},\\alpha_{3}$ 的线性组合.",
+    "options": [],
+    "answer": "",
+    "analysis": ""
+  },
+  {
+    "id": "2016-22",
+    "year": 2016,
+    "num": "三(22)",
+    "qnum": 22,
+    "type": "解答题",
+    "score": 12,
+    "part": "概率",
+    "difficulty": 5,
+    "knowledgeIds": [
+      "GL.16.2",
+      "GL.17.1"
+    ],
+    "chapter": "ch16",
+    "question": "(本题满分 11 分)\\n\\n设二维随机变量 $(X,Y)$ 在区域 $D = \\{(x,y) \\mid 0 < x < 1, x^2 < y < \\sqrt{x}\\}$ 上服从均匀分布，令 $U = \\left\\{ \\begin{array}{ll} 1, & X \\leqslant Y, \\\\ 0, & X > Y. \\end{array} \\right.$\\n\\n(I) 写出 $(X, Y)$ 的概率密度;  \\n（Ⅱ）问 $U$ 与 $X$ 是否相互独立？并说明理由；  \\n（Ⅲ）求 $Z = U + X$ 的分布函数 $F(z)$",
+    "options": [],
+    "answer": "",
+    "analysis": ""
+  },
+  {
+    "id": "2016-23",
+    "year": 2016,
+    "num": "三(23)",
+    "qnum": 23,
+    "type": "解答题",
+    "score": 12,
+    "part": "高数",
+    "difficulty": 5,
+    "knowledgeIds": [
+      "GS.1.3",
+      "GL.20.2"
+    ],
+    "chapter": "ch01",
+    "question": "(本题满分 11 分)\\n\\n设总体 $X$ 的概率密度为 $f(x;\\theta) = \\left\\{ \\begin{array}{ll} \\frac{3x^2}{\\theta^3}, & 0 < x < \\theta, \\\\ 0, & \\text{其他}, \\end{array} \\right.$ 其中 $\\theta \\in (0, +\\infty)$ 为未知参数， $X_1, X_2, X_3$ 为来自总体 $X$ 的简单随机样本，令 $T = \\max \\{X_1, X_2, X_3\\}$ .\\n\\n(I)求 $T$ 的概率密度；  \\n（Ⅱ）确定 $a$ ，使得 $aT$ 为 $\\theta$ 的无偏估计",
+    "options": [],
+    "answer": "",
+    "analysis": ""
+  }
+]

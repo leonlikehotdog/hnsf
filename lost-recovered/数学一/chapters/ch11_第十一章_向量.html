@@ -1,0 +1,51 @@
+<section class="chapter-card" id="ch11">
+    <div class="ch-header">
+        <div class="ch-title">第十一章：向量 <span class="ch-score">| 6分</span></div>
+        <div class="ch-stars star-high">★★★</div>
+    </div>
+    <div class="ch-content">
+        <p><span class="section-tag tag-core">🎯 核心考点</span></p>
+        <ul>
+            <li>向量组的线性相关性（线性相关/无关判定）</li>
+            <li>极大无关组与向量组的秩</li>
+        </ul>
+        <div class="must-card">
+            <div class="must-label">📖 关键概念</div>
+            <ul>
+                <li><strong>线性相关</strong>：存在一组不全为零的系数使 k₁α₁ + k₂α₂ + ... + kₙαₙ = 0</li>
+                <li><strong>线性无关</strong>：只有当所有系数全为零时才成立</li>
+                <li><strong>判定方法</strong>：将向量组列排成矩阵，求秩 r。若 r < 向量个数，则线性相关；若 r = 向量个数，则线性无关</li>
+                <li><strong>极大无关组</strong>：向量组中选出 r 个线性无关的向量，且任意向量都可被它们线性表示</li>
+            </ul>
+        </div>
+    <!-- ====== 历年真题与考点分析 ====== -->
+<div class="part-divider pexam" id="exam-ch11">
+  <div class="pd-num">📝</div>
+  <div class="pd-text">
+    <div class="pd-name">历年真题 · 出题人考察点 · 得分点</div>
+    <div class="pd-desc">本模块整合本章高频真题，按「考什么 → 怎么答 → 易错点」拆解</div>
+  </div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 真题 1 | 2020 数一 | 解答题 · 10分</div>
+  <div class="example-question">设向量组 \(\alpha_1=(1,1,1)^T,\alpha_2=(1,2,3)^T,\alpha_3=(1,3,t)^T\)，问 \(t\) 为何值时 \(\alpha_1,\alpha_2,\alpha_3\) 线性无关？</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>① 向量组线性无关的判定；② 行列式与线性无关的关系</p>
+  <p><span class="section-tag tag-tip">🧭 详细解析（小白逐步版）</span></p>
+  <p>计算行列式 \(|\alpha_1,\alpha_2,\alpha_3|=\begin{vmatrix}1&1&1\\1&2&3\\1&3&t\end{vmatrix}=1\cdot(2t-9)-1\cdot(t-3)+1\cdot(3-2)=t-5\)。\(t\neq 5\) 时行列式非零，线性无关。</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 计算行列式 (5分)；② 判定条件 (3分)；③ 结论 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>⚠️ 行列式计算错；⚠️ 把「线性无关」说成「\(t=5\)」</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点会在本章<strong>其他例题</strong>反复出现。建议：做完本题后回头重做一遍本章前面的练习题，强化「识别信号 → 套公式」的肌肉记忆。</p>
+</div>
+<div class="must-card">
+  <div class="must-label">🎯 本章应试策略总结（80 分必备）</div>
+  <p><strong>1. 答题时间分配：</strong>选择题 2~3 分钟/题，填空题 3 分钟/题，解答题 8~12 分钟/题。</p>
+  <p><strong>2. 答题顺序：</strong>先做 5 分钟内能拿分的题，再回头啃难的。</p>
+  <p><strong>3. 关键拿分动作：</strong>写对公式 + 写出关键步骤 + 给出最终答案。每一步都对应一个得分点。</p>
+  <p><strong>4. 复盘方法：</strong>做完真题后对照「得分点」清单逐项打分，缺哪一步就回去补哪一步。</p>
+</div>
+    </div>
+</section>

@@ -1,0 +1,104 @@
+<!-- 2023 考研数学一 真题专项闯关 - 模拟考试模式 -->
+<meta charset="UTF-8">
+<link rel="stylesheet" href="css/zhenti_2023.css?v=1">
+<section class="chapter-card" id="zhenti-2023">
+    <div class="ch-header zhenti-header">
+        <div class="ch-title">📝 2023 真题闯关（模拟考场） <span class="ch-score">| 全真模拟 · 计时 · 错题本</span></div>
+        <div class="ch-stars star-high">一洗前耻 · 60→100</div>
+    </div>
+
+    <div class="zx23-stats">
+        <div class="zx23-stat-card">
+            <div class="zx23-stat-label">总题数</div>
+            <div class="zx23-stat-value">22</div>
+            <div class="zx23-stat-sub">10 选 + 6 填 + 6 解</div>
+        </div>
+        <div class="zx23-stat-card">
+            <div class="zx23-stat-label">总分</div>
+            <div class="zx23-stat-value">150</div>
+            <div class="zx23-stat-sub">选择填空每题 5 分</div>
+        </div>
+        <div class="zx23-stat-card">
+            <div class="zx23-stat-label">用时</div>
+            <div class="zx23-stat-value" id="zx23UsedTime">--</div>
+            <div class="zx23-stat-sub">建议 150 分钟</div>
+        </div>
+        <div class="zx23-stat-card">
+            <div class="zx23-stat-label">历史最高</div>
+            <div class="zx23-stat-value" id="zx23BestScore">—</div>
+            <div class="zx23-stat-sub">本地存储</div>
+        </div>
+    </div>
+
+    <!-- 启动 / 设置 -->
+    <div class="zx23-launch" id="zx23Launch">
+        <h3>⚔️ 启动 2023 真题闯关</h3>
+        <p class="zx23-tip">建议在 150 分钟内完成所有题目，并使用草稿纸演算。这是一次完整模拟考试。</p>
+        <div class="zx23-actions">
+            <button class="zx23-btn zx23-btn-primary" id="zx23StartBtn">🚀 开始闯关</button>
+            <button class="zx23-btn" id="zx23ResetBtn" style="display:none;">🔄 重置进度</button>
+            <button class="zx23-btn" id="zx23MistakeBtn" style="display:none;">📕 查看错题本 (<span id="zx23MistakeCount">0</span>)</button>
+        </div>
+    </div>
+
+    <!-- 考试中 -->
+    <div class="zx23-exam" id="zx23Exam" style="display:none;">
+        <div class="zx23-exam-header">
+            <div class="zx23-timer">
+                ⏱ <span id="zx23Timer">00:00:00</span>
+            </div>
+            <div class="zx23-progress">
+                <span id="zx23Answered">0</span> / 22 已作答
+            </div>
+            <button class="zx23-btn zx23-btn-danger" id="zx23SubmitBtn">提交试卷</button>
+        </div>
+
+        <div class="zx23-sections">
+            <!-- 选择题 -->
+            <div class="zx23-section">
+                <h2>一、选择题（10 题，每题 5 分）</h2>
+                <div class="zx23-questions" id="zx23ChoiceList"></div>
+            </div>
+            <!-- 填空题 -->
+            <div class="zx23-section">
+                <h2>二、填空题（6 题，每题 5 分）</h2>
+                <div class="zx23-questions" id="zx23FillList"></div>
+            </div>
+            <!-- 解答题 -->
+            <div class="zx23-section">
+                <h2>三、解答题（6 题，共 70 分）</h2>
+                <div class="zx23-questions" id="zx23SolveList"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 批改结果 -->
+    <div class="zx23-result" id="zx23Result" style="display:none;">
+        <h2 id="zx23ResultTitle">📊 考试结果</h2>
+        <div class="zx23-score-display">
+            <div class="zx23-score-big" id="zx23ScoreBig">0 / 150</div>
+            <div class="zx23-score-detail" id="zx23ScoreDetail"></div>
+            <div class="zx23-score-bar">
+                <div class="zx23-score-bar-fill" id="zx23ScoreBar"></div>
+            </div>
+        </div>
+        <div class="zx23-actions">
+            <button class="zx23-btn zx23-btn-primary" id="zx23ReviewBtn">📋 查看解析</button>
+            <button class="zx23-btn" id="zx23RetryBtn">🔄 再来一次</button>
+            <button class="zx23-btn" id="zx23MistakeBtn2">📕 错题本</button>
+        </div>
+    </div>
+
+    <!-- 解析展示 -->
+    <div class="zx23-review" id="zx23Review" style="display:none;">
+        <h2>📋 题目解析</h2>
+        <div id="zx23ReviewList"></div>
+    </div>
+
+    <!-- 错题本 -->
+    <div class="zx23-mistakes" id="zx23Mistakes" style="display:none;">
+        <h2>📕 错题本</h2>
+        <p class="zx23-tip" id="zx23MistakesEmpty" style="display:none;">还没有错题记录。闯关后做错的题会自动加入这里。</p>
+        <div id="zx23MistakeList"></div>
+    </div>
+</section>

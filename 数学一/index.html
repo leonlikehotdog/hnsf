@@ -7,11 +7,12 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <title>考研数学一 · 小白上岸手册 | 目标80分</title>
-    <link rel="stylesheet" href="css/style.css?v=4">
+    <link rel="stylesheet" href="css/style.css?v=5">
+    <link rel="stylesheet" href="css/zhenti_layout.css?v=9">
     <!-- KaTeX：数学公式渲染（本地化，离线可用） -->
-    <link rel="stylesheet" href="css/katex.min.css?v=4">
-    <script defer src="js/katex.min.js?v=4"></script>
-    <script defer src="js/auto-render.min.js?v=4"></script>
+    <link rel="stylesheet" href="css/katex.min.css?v=5">
+    <script defer src="js/katex.min.js?v=5"></script>
+    <script defer src="js/auto-render.min.js?v=5"></script>
     <!-- Supabase：题目掌握记录存储 -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -209,17 +210,21 @@
 <!-- ===== Back to Top ===== -->
 <button class="back-to-top" id="backToTop" aria-label="回到顶部">↑</button>
 
-<script src="js/app.js?v=5"></script>
+<script src="js/app.js?v=7"></script>
+<!-- 全局知识点分类树（window.KP_TREE / KP_INDEX / KP_TO_CHAPTER） -->
+<script defer src="chapters/kp_tree.js?v=1"></script>
 <!-- 练习题库：每章一个文件，统一挂到 window.PRACTICE_DATA 上 -->
-<script defer src="chapters/ch01_problems.js?v=5"></script>
-<script defer src="chapters/ch02_problems.js?v=5"></script>
-<script defer src="chapters/ch03_problems.js?v=5"></script>
-<script defer src="chapters/ch05_problems.js?v=5"></script>
-<script defer src="chapters/ch06_problems.js?v=5"></script>
+<script defer src="chapters/ch01_problems.js?v=6"></script>
+<script defer src="chapters/ch02_problems.js?v=6"></script>
+<script defer src="chapters/ch03_problems.js?v=6"></script>
+<script defer src="chapters/ch05_problems.js?v=6"></script>
+<script defer src="chapters/ch06_problems.js?v=6"></script>
 <!-- 公式速查数据：每章必备公式 -->
-<script defer src="chapters/formula_data.js?v=5"></script>
-<!-- 真题精练数据 + 模块逻辑 -->
-<script defer src="chapters/zhenti_data.js?v=5"></script>
-<script defer src="js/zhenti.js?v=5"></script>
+<script defer src="chapters/formula_data.js?v=6"></script>
+<!-- 真题精练：数据异步 fetch（chapters/zhenti/{year}.json），模块逻辑同步加载 -->
+<script defer src="js/zhenti.js?v=14"></script>
+<!-- 2023 真题闯关：模拟考试 -->
+<script defer src="js/zhenti_2023.js?v=1"></script>
+<script>setTimeout(function(){window.initZhentiModule && window.initZhentiModule();}, 100);</script>
 </body>
 </html>

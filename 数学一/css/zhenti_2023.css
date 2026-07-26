@@ -1,0 +1,246 @@
+/* 2023 真题闯关 样式 */
+.zx23-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+}
+
+.zx23-stat-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 12px;
+    text-align: center;
+}
+
+.zx23-stat-label { color: #64748b; font-size: 13px; }
+.zx23-stat-value { font-size: 24px; font-weight: 700; color: #1e293b; margin: 4px 0; }
+.zx23-stat-sub { color: #94a3b8; font-size: 11px; }
+
+.zx23-launch, .zx23-exam, .zx23-result, .zx23-review, .zx23-mistakes {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 12px 0;
+}
+
+.zx23-tip { color: #64748b; font-size: 13px; line-height: 1.5; }
+
+.zx23-actions { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
+
+.zx23-btn {
+    padding: 8px 16px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    background: #fff;
+    color: #1e293b;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.15s;
+}
+.zx23-btn:hover { background: #f1f5f9; border-color: #94a3b8; }
+.zx23-btn-primary {
+    background: #10b981; color: #fff; border-color: #10b981;
+}
+.zx23-btn-primary:hover { background: #059669; }
+.zx23-btn-danger {
+    background: #ef4444; color: #fff; border-color: #ef4444;
+}
+.zx23-btn-danger:hover { background: #dc2626; }
+
+.zx23-exam-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, #1e293b, #334155);
+    color: #fff;
+    padding: 14px 18px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    position: sticky;
+    top: 60px;
+    z-index: 100;
+}
+.zx23-timer { font-size: 18px; font-weight: 700; font-family: monospace; }
+.zx23-progress { font-size: 14px; }
+
+.zx23-section {
+    margin-bottom: 24px;
+}
+.zx23-section h2 {
+    font-size: 18px;
+    margin: 0 0 12px;
+    padding: 8px 14px;
+    background: linear-gradient(135deg, #2563eb, #3b82f6);
+    color: #fff;
+    border-radius: 6px;
+}
+
+.zx23-questions { display: grid; gap: 12px; }
+
+.zx23-q {
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 14px;
+    background: #fafafa;
+    transition: all 0.2s;
+}
+.zx23-q:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+.zx23-q.zx23-correct { border-color: #10b981; background: #f0fdf4; }
+.zx23-q.zx23-wrong { border-color: #ef4444; background: #fef2f2; }
+.zx23-q.zx23-unanswered { opacity: 0.85; }
+
+.zx23-q-head {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+}
+.zx23-q-num {
+    background: #1e293b;
+    color: #fff;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 13px;
+}
+.zx23-q-score {
+    background: #fef3c7;
+    color: #92400e;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 11px;
+}
+
+.zx23-q-body {
+    font-size: 15px;
+    line-height: 1.7;
+    margin-bottom: 10px;
+    color: #1e293b;
+}
+
+.zx23-q-options {
+    display: grid;
+    gap: 6px;
+    margin-bottom: 10px;
+}
+.zx23-q-opt {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 8px 12px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+.zx23-q-opt:hover { border-color: #3b82f6; background: #eff6ff; }
+.zx23-q-opt input[type="radio"] { margin-top: 2px; }
+.zx23-q-opt.zx23-selected { border-color: #3b82f6; background: #dbeafe; }
+.zx23-q-opt.zx23-correct-answer { background: #d1fae5; border-color: #10b981; }
+.zx23-q-opt.zx23-wrong-answer { background: #fee2e2; border-color: #ef4444; }
+
+.zx23-q-fill-input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    font-size: 14px;
+    font-family: monospace;
+}
+.zx23-q-fill-input:focus { outline: none; border-color: #3b82f6; }
+
+.zx23-q-solve-textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 10px;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    font-size: 14px;
+    resize: vertical;
+    font-family: monospace;
+    line-height: 1.6;
+}
+.zx23-q-solve-textarea:focus { outline: none; border-color: #3b82f6; }
+
+.zx23-result-mark {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-left: 8px;
+}
+.zx23-mark-correct { background: #d1fae5; color: #065f46; }
+.zx23-mark-wrong { background: #fee2e2; color: #991b1b; }
+
+.zx23-true-answer {
+    margin-top: 10px;
+    padding: 8px 12px;
+    background: #ecfdf5;
+    border-radius: 4px;
+    color: #065f46;
+    font-size: 13px;
+}
+
+.zx23-score-display {
+    text-align: center;
+    padding: 20px;
+    background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+    border-radius: 8px;
+    margin-bottom: 16px;
+}
+.zx23-score-big { font-size: 48px; font-weight: 800; color: #1e293b; }
+.zx23-score-detail { color: #64748b; font-size: 14px; margin: 8px 0; }
+.zx23-score-bar { background: #e2e8f0; height: 16px; border-radius: 8px; overflow: hidden; max-width: 400px; margin: 12px auto; }
+.zx23-score-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #10b981, #34d399);
+    transition: width 0.5s ease;
+}
+
+/* 结果页每题简评 */
+.zx23-result-list {
+    margin: 20px 0;
+    display: grid;
+    gap: 6px;
+}
+.zx23-result-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+}
+.zx23-result-item.zx23-correct { background: #f0fdf4; border-left: 3px solid #10b981; }
+.zx23-result-item.zx23-wrong { background: #fef2f2; border-left: 3px solid #ef4444; }
+.zx23-result-item.zx23-solved { background: #eff6ff; border-left: 3px solid #3b82f6; }
+.zx23-result-item.zx23-unsolved { background: #f8fafc; border-left: 3px solid #94a3b8; }
+.zx23-result-num {
+    flex: 0 0 80px;
+    font-weight: 700;
+    color: #1e293b;
+}
+.zx23-result-q {
+    flex: 1;
+    color: #475569;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.zx23-result-mark {
+    flex: 0 0 80px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 12px;
+}
+.zx23-correct .zx23-result-mark { color: #10b981; }
+.zx23-wrong .zx23-result-mark { color: #ef4444; }
+.zx23-solved .zx23-result-mark { color: #3b82f6; }
+.zx23-unsolved .zx23-result-mark { color: #94a3b8; }

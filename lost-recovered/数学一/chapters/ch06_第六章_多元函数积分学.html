@@ -1,0 +1,138 @@
+<section class="chapter-card" id="ch06">
+    <div class="ch-header">
+        <div class="ch-title">第六章：多元函数积分学 <span class="ch-score">| 12分</span></div>
+        <div class="ch-stars star-low">★★</div>
+    </div>
+    <div class="ch-content">
+        <p><span class="section-tag tag-core">🎯 重点掌握：二重积分</span></p>
+        <p><span class="section-tag tag-warn">⚠️ 三重积分、曲线曲面积分建议放弃</span></p>
+        <div class="must-card">
+            <div class="must-label">📖 二重积分（直角坐标）</div>
+            <div class="formula-box">∫∫<sub>D</sub> f(x,y) dσ = ∫<sub>a</sub><sup>b</sup> dx ∫<sub>y₁(x)</sub><sup>y₂(x)</sup> f(x,y) dy</div>
+            <p style="margin-top:6px;font-size:13px;color:#555;">先对 y 积分，再对 x 积分</p>
+        </div>
+        <div class="must-card">
+            <div class="must-label">📖 二重积分（极坐标）</div>
+            <div class="formula-box">∫∫<sub>D</sub> f(x,y) dσ = ∫<sub>α</sub><sup>β</sup> dθ ∫<sub>r₁(θ)</sub><sup>r₂(θ)</sup> f(r cos θ, r sin θ) r dr</div>
+            <p style="margin-top:6px;font-size:13px;color:#555;">适用于圆形、扇形区域，别忘了多乘一个 r</p>
+        </div>
+        <div class="example-card">
+            <div class="example-label">📝 例题：计算二重积分</div>
+            <div class="example-question">计算 ∫∫<sub>D</sub> (x+y) dxdy，其中区域 D：0 ≤ x ≤ 1，0 ≤ y ≤ 1</div>
+            <div class="example-hint">
+                原式 = ∫<sub>0</sub><sup>1</sup>dx ∫<sub>0</sub><sup>1</sup>(x+y)dy = ∫<sub>0</sub><sup>1</sup>[xy + y²/2]<sub>0</sub><sup>1</sup>dx<br>
+                = ∫<sub>0</sub><sup>1</sup>(x + 1/2)dx = [x²/2 + x/2]<sub>0</sub><sup>1</sup> = <strong>1</strong>
+            </div>
+        </div>
+    <!-- ====== 小白核心概念扫盲：各种积分一览 ====== -->
+    <div class="must-card">
+        <div class="must-label">📖 小白扫盲：三大类多元积分（一表分清考什么）</div>
+        <p><span class="section-tag tag-core">🎯 二重积分、三重积分、曲线/曲面积分 — 区别在"在哪积"和"积什么"</span></p>
+        <table>
+            <thead><tr><th>积分类型</th><th>积分区域</th><th>被积对象</th><th>计算方法</th><th>标记</th></tr></thead>
+            <tbody>
+                <tr>
+                    <td><strong>二重积分</strong></td>
+                    <td>平面区域 \(D\)</td>
+                    <td>二元函数 \(f(x,y)\)</td>
+                    <td>直角坐标 / 极坐标<br>先定限再求积</td>
+                    <td>\(\iint_D f(x,y)\,d\sigma\)</td>
+                </tr>
+                <tr>
+                    <td><strong>三重积分</strong></td>
+                    <td>空间区域 \(\Omega\)</td>
+                    <td>三元函数 \(f(x,y,z)\)</td>
+                    <td>直角坐标 / 柱坐标 / 球坐标</td>
+                    <td>\(\iiint_\Omega f(x,y,z)\,dV\)</td>
+                </tr>
+                <tr>
+                    <td><strong>第一类曲线积分</strong><br><small>（对弧长）</small></td>
+                    <td>平面曲线 \(L\)</td>
+                    <td>\(f(x,y)\)</td>
+                    <td>参数化：\(\int_L f\,ds = \int_a^b f(\phi(t))\,|\phi'(t)|\,dt\)</td>
+                    <td>\(\int_L f(x,y)\,ds\)</td>
+                </tr>
+                <tr>
+                    <td><strong>第二类曲线积分</strong><br><small>（对坐标）</small></td>
+                    <td>有向曲线 \(L\)</td>
+                    <td>\(P\,dx + Q\,dy\)</td>
+                    <td>参数化 / 格林公式</td>
+                    <td>\(\int_L P\,dx + Q\,dy\)</td>
+                </tr>
+                <tr>
+                    <td><strong>第一类曲面积分</strong><br><small>（对面积）</small></td>
+                    <td>曲面 \(S\)</td>
+                    <td>\(f(x,y,z)\)</td>
+                    <td>投影法：将曲面投影到坐标平面</td>
+                    <td>\(\iint_S f(x,y,z)\,dS\)</td>
+                </tr>
+                <tr>
+                    <td><strong>第二类曲面积分</strong><br><small>（对坐标）</small></td>
+                    <td>有向曲面 \(S\)</td>
+                    <td>\(P\,dy\,dz + Q\,dz\,dx + R\,dx\,dy\)</td>
+                    <td>高斯公式 / 投影法</td>
+                    <td>\(\iint_S \boldsymbol{F}\cdot\mathrm{d}\boldsymbol{S}\)</td>
+                </tr>
+            </tbody>
+        </table>
+        <p><span class="section-tag tag-tip">🧠 三大公式的关系</span></p>
+        <ul>
+            <li><strong>格林公式：</strong>通第二类曲线积分通平面二重积分 — \( \oint_L P\,dx+Q\,dy = \iint_D (\frac{\partial Q}{\partial x} - \frac{\partial P}{\partial y})\,d\sigma\)</li>
+            <li><strong>高斯公式：</strong>通第二类曲面积分通三重积分 — \( \oiint_S \boldsymbol{F}\cdot\mathrm{d}\boldsymbol{S} = \iiint_\Omega \nabla\cdot\boldsymbol{F}\,dV\)</li>
+            <li><strong>斯托克斯公式：</strong>通空间曲线积分通曲面积分 — \( \oint_L \boldsymbol{F}\cdot\mathrm{d}\boldsymbol{r} = \iint_S \nabla\times\boldsymbol{F}\cdot\mathrm{d}\boldsymbol{S}\)</li>
+            <li><strong>一句话：</strong>格林 + 高斯 + 斯托克斯 = 由简到繁的「降维」工具</li>
+        </ul>
+        <div class="tag-float t-warn">
+            <div class="tf-title">⚠️ 第一类 vs 第二类（曲线/曲面）的区分</div>
+            <div class="tf-body">
+                <strong>第一类（对弧长/对面积）：</strong>被积函数是数值，结果不依赖方向，物理意义是质量/面积<br>
+                <strong>第二类（对坐标）：</strong>被积函数是向量，结果依赖方向，物理意义是功/通量<br>
+                <strong>判断方法：</strong>看 \(\mathrm{d}s\) → 第一类；看 \(\mathrm{d}x\) 或 \(\mathrm{d}\boldsymbol{S}\) → 第二类
+            </div>
+        </div>
+    </div>
+    <!-- ====== 历年真题与考点分析 ====== -->
+<div class="part-divider pexam" id="exam-ch06">
+  <div class="pd-num">📝</div>
+  <div class="pd-text">
+    <div class="pd-name">历年真题 · 出题人考察点 · 得分点</div>
+    <div class="pd-desc">本模块整合本章高频真题，按「考什么 → 怎么答 → 易错点」拆解</div>
+  </div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 真题 1 | 2020 数一 | 解答题 · 12分</div>
+  <div class="example-question">计算 \(\iint\limits_{D}\dfrac{x^{2}}{y^{2}}\,d\sigma\)，其中 \(D\) 由 \(y=x, y=2, x=1\) 围成。</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>① 二重积分的积分次序选择；② 积分区域画图；③ 累次积分计算</p>
+  <p><span class="section-tag tag-tip">🧭 详细解析（小白逐步版）</span></p>
+  <p>**画图**：D 是梯形。\(\int_1^2 dx\int_x^2 \dfrac{x^2}{y^2}\,dy = \int_1^2 x^2(\frac{1}{x}-\frac{1}{2})\,dx = \int_1^2 (x-\frac{x^2}{2})\,dx = [\frac{x^2}{2}-\frac{x^3}{6}]_1^2 = (2-\frac{8}{6})-(\frac{1}{2}-\frac{1}{6}) = \frac{2}{3}-\frac{1}{3}=\frac{1}{3}\)。</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 画图确定区域 (3分)；② 化为累次积分 (3分)；③ 内层积分 (3分)；④ 外层积分 (3分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>⚠️ 上下限搞反；⚠️ 先 y 后 x 还是先 x 后 y 选错；⚠️ 被积函数在 y 内容易算错</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点会在本章<strong>其他例题</strong>反复出现。建议：做完本题后回头重做一遍本章前面的练习题，强化「识别信号 → 套公式」的肌肉记忆。</p>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 真题 2 | 2023 数一 | 解答题 · 12分</div>
+  <div class="example-question">计算三重积分 \(\iiint\limits_{\Omega}(x^{2}+y^{2})\,dV\)，其中 \(\Omega\) 是由 \(z=\sqrt{x^2+y^2}\) 与 \(z=1\) 围成的区域。</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>① 球坐标变换；② 锥面方程转换；③ 三重积分计算</p>
+  <p><span class="section-tag tag-tip">🧭 详细解析（小白逐步版）</span></p>
+  <p>**球坐标**：\(x^2+y^2=r^2, dV=r^2\sin\varphi\,dr\,d\varphi\,d\theta\)。\(\Omega: 0\le\theta\le 2\pi, 0\le\varphi\le \pi/4, 0\le r\le 1/\cos\varphi\)。原式 \(= \int_0^{2\pi}d\theta\int_0^{\pi/4}\sin\varphi\,d\varphi\int_0^{1/\cos\varphi} r^4\,dr\)。</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 球坐标变换 (3分)；② 确定积分限 (4分)；③ 累次积分 (4分)；④ 最终答案 (1分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>⚠️ 球坐标体积元公式记错（\(r^2\sin\varphi\)）；⚠️ 锥面方程转极坐标不熟练；⚠️ 积分限方向</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点会在本章<strong>其他例题</strong>反复出现。建议：做完本题后回头重做一遍本章前面的练习题，强化「识别信号 → 套公式」的肌肉记忆。</p>
+</div>
+<div class="must-card">
+  <div class="must-label">🎯 本章应试策略总结（80 分必备）</div>
+  <p><strong>1. 答题时间分配：</strong>选择题 2~3 分钟/题，填空题 3 分钟/题，解答题 8~12 分钟/题。</p>
+  <p><strong>2. 答题顺序：</strong>先做 5 分钟内能拿分的题，再回头啃难的。</p>
+  <p><strong>3. 关键拿分动作：</strong>写对公式 + 写出关键步骤 + 给出最终答案。每一步都对应一个得分点。</p>
+  <p><strong>4. 复盘方法：</strong>做完真题后对照「得分点」清单逐项打分，缺哪一步就回去补哪一步。</p>
+</div>
+    </div>
+</section>

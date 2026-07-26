@@ -1,0 +1,1862 @@
+<section class="chapter-card" id="ch02">
+    <div class="ch-header">
+        <div class="ch-title">第二章：一元函数微分学 <span class="ch-score">| 16分</span></div>
+        <div class="ch-stars star-high">⭐⭐⭐⭐⭐</div>
+    </div>
+    <div class="ch-content">
+
+        <!-- ====== 章节导览目录（3 个 Tab：基础 / 多元 / 真题） ====== -->
+        <div class="nav-toc">
+            <div class="toc-title">🧭 本章导览（点击跳转）</div>
+            <div class="toc-grid">
+                <a href="#part1"><span class="toc-num">P1</span><span class="toc-text">一元微分基础</span><span class="toc-tag">核心</span></a>
+                <a href="#part2"><span class="toc-num">P2</span><span class="toc-text">多元微分与极值</span><span class="toc-tag">延伸</span></a>
+                <a href="#exam-ch02"><span class="toc-num">P3</span><span class="toc-text">真题与应试策略</span><span class="toc-tag">真题</span></a>
+            </div>
+        </div>
+
+        <!-- ====== 核心考点概述（三个 Tab 共享头部） ====== -->
+        <p><span class="section-tag tag-core">🎯 核心考点</span></p>
+        <ul>
+            <li><strong>P1 一元微分基础：</strong>导数定义、基本求导公式、切线与极值、隐函数与反函数求导、麦克劳林展开、已知极限求导数</li>
+            <li><strong>P2 多元微分与极值：</strong>偏导数、全微分、二元无条件极值、条件极值（拉格朗日乘数法）</li>
+            <li><strong>P3 真题与策略：</strong>历年 12 分大题考点拆解、阅卷得分点、防粗心清单、考场时间分配</li>
+        </ul>
+        <div class="tag-float t-tip">
+            <div class="tf-title">看本章先抓三条主线</div>
+            <div class="tf-body">① <strong>P1</strong> 解决「已知函数怎么求导、已知极限怎么反推导数」；<br>② <strong>P2</strong> 把一元结论推广到多元，重点是「判别式 AC−B²」；<br>③ <strong>P3</strong> 用真题检验自己，看哪些得分点还没踩到。</div>
+        </div>
+
+        <!-- ====== Part 0：诞生背景 · 导数诞生的"两派内战" ====== -->
+        <div class="part-divider p0" id="part0">
+            <div class="pd-num">0</div>
+            <div class="pd-text">
+                <div class="pd-name">🌌 诞生背景 · 导数是怎么"熬"出来的？</div>
+                <div class="pd-desc">这一章是微积分的"二楼"，所有工具都是为了拿到「瞬时变化」这件事的精确表达。</div>
+            </div>
+        </div>
+
+        <div class="story-card">
+            <div class="story-label">🎬 一句话回顾 ch01 + 预告 ch02</div>
+            <p>ch01 我们学了<strong>极限</strong>——但只是"地基"，没有真正"挖到宝"。<strong>本章 ch02 要把极限变成武器：导数。</strong></p>
+            <p>导数本质上就是<strong>「一个函数的瞬时变化率」</strong>。它有一个超俗的名字叫"差商取极限"——但等你看完下面这些故事，你会觉得它其实就是：</p>
+            <p><strong>车表 / 切线斜率 / 存款利息 / AI 模型学习率 / GPS 转向角度</strong> —— 这些截然不同的东西背后，全部都指向<strong>同一个公式</strong>。这正是导数的奇妙之处。</p>
+        </div>
+
+        <div class="story-card timeline-svg-wrap">
+            <div class="story-label">⏳ 160 年导数之战 · ch02 主要工具的诞生年份</div>
+            <svg viewBox="0 0 1200 360" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="tlGrad2" x1="0" x2="1" y1="0" y2="0">
+                        <stop offset="0%" stop-color="#16a085" stop-opacity="0.4"/>
+                        <stop offset="50%" stop-color="#0e6655" stop-opacity="1"/>
+                        <stop offset="100%" stop-color="#0b3d30" stop-opacity="1"/>
+                    </linearGradient>
+                </defs>
+                <rect x="40" y="40" width="1120" height="280" fill="#f3faf7" rx="8"/>
+                <line x1="80" y1="200" x2="1140" y2="200" stroke="url(#tlGrad2)" stroke-width="6" stroke-linecap="round"/>
+
+                <!-- 刻度 -->
+                <g stroke="#0b5345" stroke-width="1" opacity="0.3">
+                    <line x1="100" y1="200" x2="100" y2="215"/>
+                    <line x1="200" y1="200" x2="200" y2="215"/>
+                    <line x1="300" y1="200" x2="300" y2="215"/>
+                    <line x1="400" y1="200" x2="400" y2="215"/>
+                    <line x1="500" y1="200" x2="500" y2="215"/>
+                    <line x1="600" y1="200" x2="600" y2="215"/>
+                    <line x1="700" y1="200" x2="700" y2="215"/>
+                    <line x1="800" y1="200" x2="800" y2="215"/>
+                    <line x1="900" y1="200" x2="900" y2="215"/>
+                    <line x1="1000" y1="200" x2="1000" y2="215"/>
+                    <line x1="1100" y1="200" x2="1100" y2="215"/>
+                </g>
+                <g font-family="-apple-system, sans-serif" font-size="11" fill="#0b5345" text-anchor="middle">
+                    <text x="100"  y="232">1620</text>
+                    <text x="200"  y="232">1630</text>
+                    <text x="300"  y="232">1640</text>
+                    <text x="400"  y="232">1650</text>
+                    <text x="500"  y="232">1666</text>
+                    <text x="600"  y="232">1680</text>
+                    <text x="700"  y="232">1696</text>
+                    <text x="800"  y="232">1740</text>
+                    <text x="900"  y="232">1760</text>
+                    <text x="1000" y="232">1780</text>
+                    <text x="1100" y="232">1800</text>
+                </g>
+
+                <!-- 节点 -->
+                <!-- 1. 费马 1629 极值 -->
+                <g transform="translate(140,200)">
+                    <circle r="13" fill="#e67e22" stroke="#fff" stroke-width="3"/>
+                    <text x="0" y="4" text-anchor="middle" font-size="13" fill="#fff" font-weight="700">1</text>
+                    <text x="0" y="-25" text-anchor="middle" font-size="12" fill="#922b21" font-weight="700">费马</text>
+                    <text x="0" y="-12" text-anchor="middle" font-size="10" fill="#922b21">1629 极值</text>
+                    <text x="0" y="38" text-anchor="middle" font-size="10" fill="#555">"我还没发明微积分，但我已经会用极限了"</text>
+                </g>
+                <!-- 2. 托里拆利 1641 -->
+                <g transform="translate(310,200)">
+                    <circle r="11" fill="#8e44ad" stroke="#fff" stroke-width="3"/>
+                    <text x="0" y="4" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">2</text>
+                    <text x="38" y="-5" font-size="10" fill="#6c3483">1641 托里拆利</text>
+                    <text x="38" y="9" font-size="10" fill="#6c3483">切线</text>
+                </g>
+                <!-- 3. 牛顿 1666 极限/导数 -->
+                <g transform="translate(490,200)">
+                    <circle r="14" fill="#c0392b" stroke="#fff" stroke-width="3"/>
+                    <text x="0" y="4" text-anchor="middle" font-size="13" fill="#fff" font-weight="700">3</text>
+                    <text x="0" y="-26" text-anchor="middle" font-size="13" fill="#922b21" font-weight="700">牛  顿</text>
+                    <text x="0" y="-12" text-anchor="middle" font-size="10" fill="#922b21">1666 流数术</text>
+                    <text x="0" y="40" text-anchor="middle" font-size="10" fill="#555">"x 变化一点，y 变化多少？"</text>
+                </g>
+                <!-- 4. 莱布尼茨 1676 -->
+                <g transform="translate(560,200)">
+                    <circle r="14" fill="#c0392b" stroke="#fff" stroke-width="3"/>
+                    <text x="0" y="4" text-anchor="middle" font-size="13" fill="#fff" font-weight="700">4</text>
+                    <text x="38" y="-26" font-size="12" fill="#922b21" font-weight="700">莱布尼茨</text>
+                    <text x="38" y="-12" font-size="10" fill="#922b21">1676 发明 dx</text>
+                    <text x="38" y="6" font-size="10" fill="#555">"我给你现代符号 dy/dx"</text>
+                </g>
+                <!-- 5. 洛必达侯爵 1696 -->
+                <g transform="translate(680,200)">
+                    <circle r="13" fill="#8e44ad" stroke="#fff" stroke-width="3"/>
+                    <text x="0" y="4" text-anchor="middle" font-size="13" fill="#fff" font-weight="700">5</text>
+                    <text x="0" y="-25" text-anchor="middle" font-size="12" fill="#6c3483" font-weight="700">洛必达侯爵</text>
+                    <text x="0" y="-12" text-anchor="middle" font-size="10" fill="#6c3483">1696《分析无穷小》</text>
+                    <text x="0" y="38" text-anchor="middle" font-size="10" fill="#555">"花钱买课，包出版"</text>
+                </g>
+                <!-- 6. 麦克劳林 1742 -->
+                <g transform="translate(810,200)">
+                    <circle r="13" fill="#2980b9" stroke="#fff" stroke-width="3"/>
+                    <text x="0" y="4" text-anchor="middle" font-size="13" fill="#fff" font-weight="700">6</text>
+                    <text x="0" y="-25" text-anchor="middle" font-size="12" fill="#1a5276" font-weight="700">麦克劳林</text>
+                    <text x="0" y="-12" text-anchor="middle" font-size="10" fill="#1a5276">1742 麦克劳林公式</text>
+                    <text x="0" y="38" text-anchor="middle" font-size="10" fill="#555">"19 岁就发了论文"</text>
+                </g>
+                <!-- 7. 拉格朗日 1788 -->
+                <g transform="translate(900,200)">
+                    <circle r="14" fill="#16a085" stroke="#fff" stroke-width="3"/>
+                    <text x="0" y="4" text-anchor="middle" font-size="13" fill="#fff" font-weight="700">7</text>
+                    <text x="0" y="-26" text-anchor="middle" font-size="13" fill="#0e6655" font-weight="700">拉格朗日</text>
+                    <text x="0" y="-12" text-anchor="middle" font-size="10" fill="#0e6655">1788 乘数法</text>
+                    <text x="0" y="40" text-anchor="middle" font-size="10" fill="#555">"约束下求极值：λ"</text>
+                </g>
+                <!-- 8. 达朗贝尔/欧拉 1750s -->
+                <g transform="translate(990,200)">
+                    <circle r="13" fill="#f39c12" stroke="#fff" stroke-width="3"/>
+                    <text x="0" y="4" text-anchor="middle" font-size="13" fill="#fff" font-weight="700">8</text>
+                    <text x="0" y="-25" text-anchor="middle" font-size="12" fill="#9c640c" font-weight="700">欧拉/达朗贝尔</text>
+                    <text x="0" y="-12" text-anchor="middle" font-size="10" fill="#9c640c">1750 偏导数</text>
+                    <text x="0" y="38" text-anchor="middle" font-size="10" fill="#555">"多元函数的导数"</text>
+                </g>
+                <!-- 9. 柯西 1820s 严格化 -->
+                <g transform="translate(1100,200)">
+                    <circle r="13" fill="#34495e" stroke="#fff" stroke-width="3"/>
+                    <text x="0" y="4" text-anchor="middle" font-size="13" fill="#fff" font-weight="700">9</text>
+                    <text x="0" y="-25" text-anchor="middle" font-size="12" fill="#1a242f" font-weight="700">柯  西</text>
+                    <text x="0" y="-12" text-anchor="middle" font-size="10" fill="#1a242f">1821 极限严格化</text>
+                    <text x="0" y="38" text-anchor="middle" font-size="10" fill="#555">"导数 = 极限的精确定义"</text>
+                </g>
+
+                <!-- 装饰问号 -->
+                <g font-family="Georgia, serif" font-size="20" fill="#922b21" font-weight="700" opacity="0.85">
+                    <text x="140"  y="65" text-anchor="middle">?</text>
+                    <text x="490"  y="65" text-anchor="middle">?</text>
+                    <text x="680"  y="65" text-anchor="middle">?</text>
+                    <text x="810"  y="65" text-anchor="middle">?</text>
+                    <text x="900"  y="65" text-anchor="middle">?</text>
+                    <text x="990"  y="65" text-anchor="middle">?</text>
+                </g>
+                <text x="600" y="50" text-anchor="middle" font-size="12" fill="#0b5345" font-weight="600">↑ 每一问号，背后都是一个被现实逼出来的物理/工程问题</text>
+
+                <g opacity="0.4">
+                    <text x="200" y="100" font-size="11" fill="#e67e22">🟠 16世纪：极值/切线（费马/托里拆利）</text>
+                    <text x="550" y="100" font-size="11" fill="#c0392b">🔴 17世纪：导数之争（牛顿 vs 莱布尼茨）</text>
+                    <text x="800" y="100" font-size="11" fill="#16a085">🟢 18世纪：多元与乘数法（拉格朗日）</text>
+                    <text x="1050" y="100" font-size="11" fill="#34495e">⚫ 19世纪：极限严格化（柯西）</text>
+                </g>
+
+                <text x="600" y="330" text-anchor="middle" font-size="12" fill="#0b5345">📌 这条时间轴上有"一段人尽皆知的内战"——牛顿和莱布尼茨为了"导数是谁先发明的"吵了一辈子。</text>
+            </svg>
+        </div>
+
+        <div class="story-grid">
+
+            <!-- === 卡片 1：导数的诞生 === -->
+            <div class="story-card">
+                <div class="story-label">📖 导数 Derivative</div>
+                <div class="story-title"><span class="story-year">1666</span> 牛顿 v.s. 莱布尼茨：导数的「世纪内战」</div>
+                <p><span class="story-emoji">🎯</span><strong>它是为了解决什么问题？</strong></p>
+                <p>导数这玩意儿天生就"内战"。1666 年牛顿被苹果砸了（或者没砸——反正大家爱讲这个故事），为了算"炮弹瞬时速度"发明了 <strong>流数术（fluxion）</strong>。但他严守秘密，写出来只在朋友圈传。</p>
+                <p>1676 年德国人 <strong>莱布尼茨</strong> 也独立发明了导数，而且做了一件牛事 —— 他发明了 <strong>dy/dx、∫ 等符号</strong>。这些符号实在太好用了，沿用 350 年没变。</p>
+                <p>两个人互相指责对方抄袭，撕了一辈子。这就是历史上著名的「<strong>微积分发明权之争</strong>」。今天大家公认是 <strong>各自独立发明</strong>，但功劳簿上莱布尼茨占了符号的便宜 —— 因为你今天写的就是他的 dy/dx。</p>
+                <div class="story-quote">"同一座山，从两边爬上来，会面时才发现我们发明了同一件事。"  —— 莱布尼茨 1676</div>
+                <p><span class="story-emoji">📱</span><strong>今天有什么用？</strong>导数的核心思想一个字：<strong>「变」</strong>。汽车变快/变慢是导数，存款变多/变少是导数，AI 模型学得越来越聪明也是导数（梯度下降）。全世界任何一个"变化"的东西，背后都是这个公式：</p>
+                <div class="formula-box" style="background:#fff;border:1px dashed #16a085;font-size:18px;">f'(x) = lim<sub>Δx→0</sub> [f(x+Δx) − f(x)] ÷ Δx</div>
+            </div>
+
+            <!-- === 卡片 2：切线 === -->
+            <div class="story-card">
+                <div class="story-label">📖 切线 Tangent Line</div>
+                <div class="story-title"><span class="story-year">1629</span> 费马：「我还没发明微积分，但极值我会做」</div>
+                <p><span class="story-emoji">🎯</span><strong>它是为了解决什么问题？</strong></p>
+                <p>法国律师 <strong>费马 (Pierre de Fermat)</strong>，本职工作是法官（对，是法官！）数学只是副业。他 1637 年思考：</p>
+                <p><em>"炮弹飞出去的最高点在哪里？窗户距离地面多少最远？"</em></p>
+                <p>他发明了一个"作弊"的办法 —— 把函数取差，然后令差为零，即能找到极值。这其实就是<strong>导数 = 0</strong> 的雏形，但当时还没有微积分。</p>
+
+                <p><span class="story-emoji">🧗</span><strong>怎么理解"取差 = 0"？—— 用"找山底"游戏</strong></p>
+
+                <p>想象你在山上找<strong>最低点</strong>。最低点有个神奇的特征：</p>
+                <p style="text-align:center;font-size:15px;color:#c0392b;font-weight:700;">「站在山底，往左挪一步 + 往右挪一步 → 高度几乎没变化」</p>
+                <p>如果挪一下高度变了，说明你站错了，山底在别处。费马的"作弊"就是：<strong>用这个性质来反推山底在哪</strong>。</p>
+
+                <p><span class="story-emoji">📘</span><strong>用 f(x) = x² 实际演示一遍</strong>（最简单的"碗形山"）</p>
+
+                <p>下面是 x² 这个函数的"高度表"：</p>
+                <table style="width:80%;font-size:13px;border-collapse:collapse;margin:8px auto;text-align:center;background:#fff;">
+                    <thead style="background:#fff3e0;">
+                        <tr>
+                            <th style="padding:6px 10px;border:1px solid #e0c1a0;">x</th>
+                            <td style="padding:6px 10px;border:1px solid #e0c1a0;">-2</td>
+                            <td style="padding:6px 10px;border:1px solid #e0c1a0;">-1</td>
+                            <td style="padding:6px 10px;border:1px solid #e0c1a0;font-weight:700;background:#c8e6c9;">0</td>
+                            <td style="padding:6px 10px;border:1px solid #e0c1a0;">1</td>
+                            <td style="padding:6px 10px;border:1px solid #e0c1a0;">2</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th style="padding:6px 10px;border:1px solid #e0c1a0;">f(x) = x²</th>
+                            <td style="padding:6px 10px;border:1px solid #e0c1a0;">4</td>
+                            <td style="padding:6px 10px;border:1px solid #e0c1a0;">1</td>
+                            <td style="padding:6px 10px;border:1px solid #e0c1a0;font-weight:700;background:#c8e6c9;">0</td>
+                            <td style="padding:6px 10px;border:1px solid #e0c1a0;">1</td>
+                            <td style="padding:6px 10px;border:1px solid #e0c1a0;">4</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p>看出来了：x=0 时 f=0，是整座山的最低点。问题是我们<strong>假装不知道</strong>，用费马的方法推出来。</p>
+
+                <p><strong>第 1 步：</strong>设山底在某个 a 处。挪一点点（设为 h）去看：</p>
+                <div class="formula-box" style="background:#fff;border:1px dashed #c0392b;">挪一步后：f(a+h) = (a+h)² = a² + 2ah + h²</div>
+
+                <p><strong>第 2 步：</strong>算"挪一步的高度差"：</p>
+                <div class="formula-box" style="background:#fff;border:1px dashed #c0392b;color:#c0392b;font-size:18px;">
+                f(a+h) − f(a) = <strong>2ah + h²</strong>
+                </div>
+
+                <p><strong>第 3 步：费马的关键"作弊"——</strong>既然这是山底，那么挪一步高度差应该 = 0：</p>
+                <div class="formula-box" style="background:#fff;border:1px dashed #c0392b;font-size:16px;">
+                2ah + h² = 0   ⟹   h(2a + h) = 0
+                </div>
+
+                <p><strong>第 4 步：</strong>h 是"挪的一点点"，不是 0。所以只能是 <strong>2a + h = 0</strong>。</p>
+
+                <p><strong>第 5 步：费马再次"作弊"——</strong>h 太小了，扔掉（他当时没"极限"这个概念，但直觉认为"无穷小可忽略"）：</p>
+                <div class="formula-box" style="background:#fff;border:1px dashed #c0392b;font-size:18px;color:#c0392b;">
+                扔掉 h → 2a = 0 → <strong>a = 0</strong>
+                </div>
+
+                <p>✔ <strong>结论：山底在 x=0 处</strong>。这跟我们查表看到的答案一模一样！</p>
+
+                <p><span class="story-emoji">⚖️</span><strong>和"现代导数"的对照表（两者本质是一回事）：</strong></p>
+                <table style="width:100%;font-size:13px;border-collapse:collapse;margin:8px 0;background:#fff;">
+                    <thead style="background:#fff3e0;">
+                        <tr>
+                            <th style="padding:8px;border:1px solid #e0c1a0;text-align:center;">步骤</th>
+                            <th style="padding:8px;border:1px solid #e0c1a0;text-align:center;">费马的"作弊"</th>
+                            <th style="padding:8px;border:1px solid #e0c1a0;text-align:center;">现代导数</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding:8px;border:1px solid #e0c1a0;text-align:center;">1</td>
+                            <td style="padding:8px;border:1px solid #e0c1a0;">取两个邻近的点 a 和 a+h</td>
+                            <td style="padding:8px;border:1px solid #e0c1a0;">同</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:8px;border:1px solid #e0c1a0;text-align:center;">2</td>
+                            <td style="padding:8px;border:1px solid #e0c1a0;">算差 f(a+h) − f(a)</td>
+                            <td style="padding:8px;border:1px solid #e0c1a0;">同上</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:8px;border:1px solid #e0c1a0;text-align:center;">3</td>
+                            <td style="padding:8px;border:1px solid #e0c1a0;"><strong>差 = 0</strong></td>
+                            <td style="padding:8px;border:1px solid #e0c1a0;"><strong>[差 ÷ h] = 0（取极限 h→0）</strong></td>
+                        </tr>
+                        <tr>
+                            <td style="padding:8px;border:1px solid #e0c1a0;text-align:center;">4</td>
+                            <td style="padding:8px;border:1px solid #e0c1a0;">h 太小可扔掉</td>
+                            <td style="padding:8px;border:1px solid #e0c1a0;">极限 h → 0 是严格定义的</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:8px;border:1px solid #e0c1a0;text-align:center;">5</td>
+                            <td style="padding:8px;border:1px solid #e0c1a0;font-weight:700;color:#c0392b;">2a = 0 → a=0</td>
+                            <td style="padding:8px;border:1px solid #e0c1a0;font-weight:700;color:#c0392b;">f'(x) = 2x = 0 → x=0</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p><strong>结论：</strong>费马当时<em>已经掌握</em>"差=0 找极值"的核心套路，只是没有"求导"和"极限"这两个工具，所以他只能靠"无穷小可忽略"的朴素直觉去"作弊"。</p>
+
+                <p><span class="story-emoji">🚫</span><strong>为什么"差=0"必然能找到极值？—— 用反例 f(x) = x 看</strong></p>
+
+                <p>考虑一条直线 f(x) = x，<strong>它没有极值</strong>。我们试一下费马的方法：</p>
+                <div class="formula-box" style="background:#fff;border:1px dashed #34495e;font-size:16px;">
+                f(a+h) − f(a) = (a+h) − a = h ≠ 0
+                </div>
+                <p>无论 a 是多少，挪一步的差永远是 h（不为 0），所以"差=0"这件事<strong>永远不成立</strong>。这说明"差 = 0"这种性质<strong>只有极值点才有</strong>。一旦发现"差 = 0"，就锁定了极值。</p>
+
+                <p>这就像侦探破案：直线说"我这儿没东西"，山底说"我这儿差等于 0"，所以找极值 = 找"差 = 0 的位置"。</p>
+
+                <div class="example-hint" style="background:#fff3e0;border-left:4px solid #e67e22;margin-top:10px;">
+                    <strong>📌 一句话总结：</strong>"差等于 0"不是数学家在猜，而是<strong>极值点的定义本身</strong>——因为极值是"挪一步也变不了多少"的地方。费马把这件直觉的事第一个写成代数，2 个世纪后才被牛顿/莱布尼茨用具极限的导数严格化。
+                </div>
+
+                <div class="story-quote">"古代法官里数学最强的人 — 比许多职业数学家强。"  —— 西方数学史评论</div>
+                <p><span class="story-emoji">📱</span><strong>今天有什么用？</strong>你手机地图给的最佳路径，淘宝"你可能喜欢"推荐，背后都在做：<strong>在所有可能里面挑最优</strong>。这恰好是<strong>求导令其为 0</strong>做的事。</p>
+                <p><span class="story-emoji">💡</span><strong>惊不惊喜？</strong>费马最出名的不是"费马极值定理"，而是 <strong>"费马大定理"（xⁿ + yⁿ = zⁿ 没有正整数解，n ≥ 3）</strong>。他在一本书边注上写"我有一个绝妙的证明，但这里空白太小，写不下" —— 结果 <strong>357 年</strong>才被怀尔斯证明出来，是 1993 年的事。</p>
+            </div>
+
+            <!-- === 卡片 3：极值判定 === -->
+            <div class="story-card">
+                <div class="story-label">📖 极值判定</div>
+                <div class="story-title"><span class="story-year">1637</span> 一个判断「山是山顶还是山谷」的统一规则</div>
+                <p><span class="story-emoji">🎯</span><strong>它是为了解决什么问题？</strong></p>
+                <p>导数 = 0 找到了"可能的山顶/山谷"。可下一个问题立刻来了：</p>
+                <p><strong>"这个点到底是真的山顶，还是假山顶？"</strong></p>
+                <p>比如 y = x³ 在 x = 0 处导数也是 0，但它是"平缓通过"，既不是山顶也不是山谷。这种"假山顶"在物理里对应"亚稳态" —— 看起来平衡，实际一推就倒。</p>
+                <p><strong>判断方法</strong>数学家们有几个：</p>
+                <p>① <strong>二阶导数</strong>：f''(x) > 0 → 山谷，&lt; 0 → 山顶，= 0 → 看不清（要更高阶）</p>
+                <p>② <strong>一阶导数正负变化</strong>：导数从 + 变 - → 山顶；导数从 - 变 + → 山谷</p>
+                <p>③ <strong>看 f(x) 的图</strong>（最直接，但题不让看）</p>
+                <div class="story-quote">"对山坡的描述用一阶导 — 判断山的身份用二阶导。"  —— 江湖人称「二阶判别」</div>
+                <p><span class="story-emoji">📱</span><strong>今天有什么用？</strong>你导航告诉你"再走 50 米到达目的地"，中间一阶导告诉你"方向对不对"。判断"是上坡还是下坡"靠二阶导。</p>
+            </div>
+
+        </div>
+
+        <div class="story-grid">
+
+            <!-- === 卡片 4：洛必达法则 === -->
+            <div class="story-card">
+                <div class="story-label">📖 洛必达法则</div>
+                <div class="story-title"><span class="story-year">1696</span> 法国贵族"买"出来的规则</div>
+                <p><span class="story-emoji">🎯</span><strong>它是为了解决什么问题？</strong></p>
+                <p>1690 年代的欧洲，0/0、∞/∞ 这些"卡在中间不知道等于几"的式子让数学家很头疼 —— 每个都要手写一长串变形。</p>
+                <p>法国有一位<strong>洛必达侯爵 (Marquis de l'Hôpital, 1661-1704)</strong>，家里有钱但自己数学算不动。他直接<strong>花了 300 里弗（相当于现在 5 万欧元）一年高薪</strong>雇瑞士数学家<strong>约翰·伯努利</strong>当私教。</p>
+                <p>伯努利每节课的笔记，侯爵整理出版成书 —— <strong>《分析无穷小》(Analyse des Infiniment Petits, 1696)</strong>。书上第一次公开写出"分子分母分别求导再相除"的规则。</p>
+                <p>约翰·伯努利知道后非常不爽："这是我教给你的，你却署了你的名字！" 但因为合同有规定，伯努利只能忍气吞声。</p>
+                <div class="story-quote">"花 300 里弗一年的课，包下整个欧洲的微积分教学市场 — 还有比这更划算的吗？"  —— 八卦：伯努利 1704 年吐槽</div>
+                <p><strong>今天，每本微积分课本都把这个规则命名为"洛必达法则"</strong> —— 这是数学史上<strong>最贵的一笔私人课堂费</strong>。</p>
+                <p><span class="story-emoji">📱</span><strong>今天有什么用？</strong>考研卷子上 0/0、∞/∞ 的极限题，洛必达一按就解。但是有个警告：</p>
+                <p>① 多次求导后越来越复杂 → 改用<strong>泰勒展开</strong></p>
+                <p>② 分子分母同时含 x → 用<strong>等价无穷小</strong></p>
+                <p>③ 0·∞、∞−∞、1^∞ 型 → 先变形再用洛必达</p>
+            </div>
+
+            <!-- === 卡片 5：麦克劳林/泰勒 === -->
+            <div class="story-card">
+                <div class="story-label">📖 麦克劳林 / 泰勒公式</div>
+                <div class="story-title"><span class="story-year">1715</span> 19 岁就发表论文的神童</div>
+                <p><span class="story-emoji">🎯</span><strong>它是为了解决什么问题？</strong></p>
+                <p>1750 年前后，计算器还很慢。天文学家欧拉每天要算上千次 sin、cos、ln。如果能把它们化成"几个 x 的幂相加"的形式，就能用查表代替计算器。</p>
+                <p><strong>麦克劳林 (Colin Maclaurin, 1698-1746)</strong> 19 岁就在皇家学会发表了数学论文，是当时公认的神童。1742 年他写出：</p>
+                <div class="story-quote">f(x) ≈ f(0) + f'(0)·x + f''(0)·x²/2! + f'''(0)·x³/3! + ...</div>
+                <p>意思是：<strong>任何复杂的函数（只要 n 阶可导）都可以用一个多项式近似</strong>。在 x = 0 附近展开就是"麦克劳林公式"；在 x = a 附近展开就是"泰勒公式"。</p>
+                <p><span class="story-emoji">💡</span><strong>为啥叫「麦克劳林」而不是「泰勒」？</strong>其实麦克劳林 1742 才正式写成书，但 1715 年 <strong>泰勒 (Brook Taylor)</strong> 已经写过类似的展开形式。所以一般说"泰勒展开"是泛指，"麦克劳林展开"特指 x=0 的版本。</p>
+                <div class="story-quote">"难算的函数 → 多项式 — 这一步是工程学的浪漫。"  —— 麦克劳林《流数论》1742</div>
+                <p><span class="story-emoji">📱</span><strong>今天有什么用？</strong>你手机里的计算器就是用泰勒展开工作的：算 sin(0.01)，它就把 x=0 附近的 sin 展开成 x − x³/6，截到 5 阶就够用。同样：</p>
+                <p>① <strong>游戏画面渲染</strong>：用泰勒近似曲面让 GPU 跑得动</p>
+                <p>② <strong>航天器轨道</strong>：把平方根函数在 1 附近展开，省 80% 计算量</p>
+                <p>③ <strong>AI 梯度下降</strong>：泰勒展开给出损失函数的"局部地形"图</p>
+            </div>
+
+            <!-- === 卡片 6：拉格朗日乘数法 === -->
+            <div class="story-card">
+                <div class="story-label">📖 拉格朗日乘数法</div>
+                <div class="story-title"><span class="story-year">1788</span> 走钢丝时一根绳子的故事</div>
+                <p><span class="story-emoji">🎯</span><strong>它是为了解决什么问题？</strong></p>
+                <p>假设你走钢丝 —— 你知道自己的能量最少消耗、姿势最稳定；但你必须<strong>始终抓着这条绳</strong>。这就是<strong>条件极值</strong>：在某个限制条件下，找最优。</p>
+                <p>1788 年拉格朗日在他的《分析力学》第 2 章提出<strong>乘数法</strong>：</p>
+                <p><strong>思路：</strong>把"约束条件 + λ（拉格朗日乘数）"加到目标函数里，然后照常求导令其 = 0。</p>
+                <div class="story-quote">在绳子限制下，最优姿势 = 走钢丝的人被绳子牵着 → 引入一个看不见的拉力 λ</div>
+                <p>λ 物理意义是"约束的反作用力大小"。你想省钱（目标），但必须满足预算（约束）→ 公式正好告诉你"这个约束到底卡得多死"。</p>
+                <div class="story-quote">"我没画图就解出了绳结的力学。"  —— 拉格朗日《分析力学》1788</div>
+                <p><span class="story-emoji">📱</span><strong>今天有什么用？</strong></p>
+                <p>① <strong>物流公司</strong>：用最少的车次把所有包裹送完 → 乘数法给答案</p>
+                <p>② <strong>机器学习 SVM</strong>：找一个超平面，最大化分类间隔 → 乘数法</p>
+                <p>③ <strong>你家理财</strong>：让你资产最大化的同时承担最小风险 → 乘数法给最优配比</p>
+            </div>
+
+        </div>
+
+        <div class="story-grid">
+
+            <!-- === 卡片 7：偏导数 / 全微分 === -->
+            <div class="story-card">
+                <div class="story-label">📖 偏导数 / 全微分</div>
+                <div class="story-title"><span class="story-year">1750</span> 达朗贝尔：「函数有 2 个变量？」</div>
+                <p><span class="story-emoji">🎯</span><strong>它是为了解决什么问题？</strong></p>
+                <p>牛顿、莱布尼茨搞的导数只能处理 y = f(x) —— 一个 x 控制一个 y。</p>
+                <p>但现实中大量现象有<strong>多个变量</strong>同时变化：</p>
+                <p>• 气温 = 维度 + 高度 + 时间（3 个变量）</p>
+                <p>• 房子的价值 = 地段 + 面积 + 年代 + 楼层（4 个变量）</p>
+                <p>• 飞机起飞 = 速度 × 角度 × 风向 × 油量（≥4 个）</p>
+                <p>1750 年 <strong>达朗贝尔 (D'Alembert)</strong> 给出答案：<strong>把其他变量按住不动，只看一个变量的变化</strong>。这就是偏导数 ∂f/∂x。</p>
+                <p>后来 <strong>欧拉</strong> 在 1755 年给"按住一个、看另一个"的偏导数写下了通用的数学形式 ∂f/∂x。</p>
+                <div class="story-quote">"不能动一个就动全部 — 必须一个一个查。"  —— 达朗贝尔《动力学》1758</div>
+                <p><span class="story-emoji">📱</span><strong>今天有什么用？</strong>偏导数就是 AI 学到的全部技能。你让 AI 翻译，它的"参数"有几亿个 ——<strong>每个参数就是一个偏导的对象</strong>。AI 学习就是调整每个参数，让损失函数（一个超多元函数）的偏导数都接近 0。</p>
+            </div>
+
+            <!-- === 卡片 8：隐函数与反函数 === -->
+            <div class="story-card">
+                <div class="story-label">📖 隐函数 / 反函数求导</div>
+                <div class="story-title"><span class="story-year">1820s</span> 不用解出 y 也能求导</div>
+                <p><span class="story-emoji">🎯</span><strong>它是为了解决什么问题？</strong></p>
+                <p>很多方程<strong>解不出 y</strong>。比如 \(x^2 + y^2 = 1\) 的解是 \(y = \pm \sqrt{1-x^2}\)，但如果遇到 \(xy^3 + \sin(y) = e^x\)，你一辈子也解不出 y 来。</p>
+                <p>可我还是想知道"在某个 x 时 y 的瞬时变化率"——怎么办？</p>
+                <p>解法：<strong>不用解出 y，直接对 x 求导</strong>。当 y 出现时，把它当 x 的函数处理（链式法则），最后解 y' 即可。</p>
+                <div class="story-quote">"有的函数你一生都写不出 y = f(x)，但你可以用 ∂/∂x 求它的 '性格'。"  —— 现代微积分名言</div>
+                <p><span class="story-emoji">📱</span><strong>今天有什么用？</strong></p>
+                <p>① <strong>GPS</strong>：告诉你 "先直行 200 米再左转" —— 隐函数求导决定转角</p>
+                <p>② <strong>心理学曲线</strong>：考试焦虑和成绩的隐函数，无法直接解，但能算"再焦虑 1 分会下降多少成绩"</p>
+                <p>③ <strong>反函数求导</strong>：函数的反函数导数 = 1/原函数导数，所以你"从 A 走到 B"和"从 B 走回 A"的速度正好互为倒数</p>
+            </div>
+
+        </div>
+
+        <!-- 总结卡：导数到底在解决什么 -->
+        <div class="story-grid">
+
+            <div class="story-card" style="background:linear-gradient(180deg, #e8f5e9 0%, #c8e6c9 100%); border-left-color:#2e7d32;">
+                <div class="story-label">🎁 这一章的"灵魂主线"</div>
+                <div class="story-title">一句话讲完 ch02 所有故事的共同主线</div>
+                <p><span class="story-emoji">🧵</span>这一章所有公式，归根结底就为了解决<strong>一个核心问题：怎么回答"x 这一刻变到多快？"</strong></p>
+                <p><strong>导数是「一切变化的代名词」。</strong>它有以下几种"伪装"：</p>
+                <p>📍 <strong>几何上的伪装</strong>：曲线的切线斜率</p>
+                <p>📍 <strong>物理上的伪装</strong>：瞬时速度、加速度、电流强度</p>
+                <p>📍 <strong>经济上的伪装</strong>：边际成本、边际收益</p>
+                <p>📍 <strong>工程上的伪装</strong>：转动惯量、应力梯度</p>
+                <p>📍 <strong>AI 上的伪装</strong>：梯度（学习方向）</p>
+                <p><span class="story-emoji">💪</span>你学完 ch02，应该已经有这种感觉：<strong>只要你看到"变化"两个字，你的第一反应就应该是"对谁求导？"</strong>。</p>
+                <p>ch02 是连接 ch01（极限）和后续章节的桥梁 —— ch03 学的<strong>积分</strong>，本质就是 ch02 的<strong>导数的逆运算</strong>（拉格朗日语："积分是导数的父亲"）。所以你后面遇到的微分方程、级数、概率密度函数，都能从 ch02 找到原型。</p>
+            </div>
+
+        </div>
+
+        <!-- ====== P1：一元微分基础 ====== -->
+        <div class="part-divider p1" id="part1">
+            <div class="pd-num">1</div>
+            <div class="pd-text">
+                <div class="pd-name">一元微分基础</div>
+                <div class="pd-desc">求导公式 · 切线极值 · 隐/反函数 · 麦克劳林 · 已知极限求导数</div>
+            </div>
+        </div>
+
+        <div class="must-card">
+            <div class="must-label">📖 必背：基本求导公式（16个）</div>
+            <table>
+                <thead><tr><th>函数</th><th>导数</th></tr></thead>
+                <tbody>
+                    <tr><td>C（常数）</td><td>0</td></tr>
+                    <tr><td>x<sup>n</sup></td><td>nx<sup>n-1</sup></td></tr>
+                    <tr><td>sin x</td><td>cos x</td></tr>
+                    <tr><td>cos x</td><td>-sin x</td></tr>
+                    <tr><td>tan x</td><td>sec²x</td></tr>
+                    <tr><td>cot x</td><td>-csc²x</td></tr>
+                    <tr><td>sec x</td><td>sec x tan x</td></tr>
+                    <tr><td>csc x</td><td>-csc x cot x</td></tr>
+                    <tr><td>a<sup>x</sup></td><td>a<sup>x</sup> ln a</td></tr>
+                    <tr><td>e<sup>x</sup></td><td>e<sup>x</sup></td></tr>
+                    <tr><td>log<sub>a</sub> x</td><td>1/(x ln a)</td></tr>
+                    <tr><td>ln x</td><td>1/x</td></tr>
+                    <tr><td>arcsin x</td><td>1/√(1-x²)</td></tr>
+                    <tr><td>arccos x</td><td>-1/√(1-x²)</td></tr>
+                    <tr><td>arctan x</td><td>1/(1+x²)</td></tr>
+                    <tr><td>arccot x</td><td>-1/(1+x²)</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="must-card">
+            <div class="must-label">📖 必背：洛必达法则使用条件</div>
+            <p>当 lim f(x)/g(x) 为 "<strong>0/0</strong>" 或 "<strong>∞/∞</strong>" 型未定式，且 f'(x)、g'(x) 存在，g'(x) ≠ 0 时：</p>
+            <div class="formula-box">lim f(x)/g(x) = lim f'(x)/g'(x)</div>
+        </div>
+        <div class="example-card">
+            <div class="example-label">📝 例题 1</div>
+            <div class="example-question">求 y = x³ + 2x² - 3x + 1 在 x = 1 处的切线方程</div>
+            <div class="example-hint">先求导 y' = 3x² + 4x - 3，代入 x = 1 得斜率 k = 4；再求 y(1) = 1，所以切线为 <strong>y - 1 = 4(x - 1)</strong></div>
+        </div>
+        <div class="example-card">
+            <div class="example-label">📝 例题 2</div>
+            <div class="example-question">求函数 f(x) = x³ - 3x + 2 的极值</div>
+            <div class="example-hint">f'(x) = 3x² - 3 = 0 得 x = ±1；f''(x) = 6x；f''(1) = 6 > 0 为极小值 f(1) = 0；f''(-1) = -6 < 0 为极大值 f(-1) = 4</div>
+        </div>
+
+        <!-- ============ 新增：隐函数与反函数求导 ============ -->
+        <div class="must-card">
+            <div class="must-label">📖 必背：隐函数求导三步法</div>
+            <p>题目给的是 F(x, y) = 0，没法直接写成 y = f(x) 时，按下面三步走：</p>
+            <ol style="padding-left:20px;line-height:2;">
+                <li><strong>等式两边同时对 x 求导</strong>，y 看成 x 的函数 → 出现 dy/dx 或 y'。</li>
+                <li><strong>把含 y' 的项留在等号左边，其他项移到右边</strong>。</li>
+                <li><strong>解出 y'</strong>，得到 dy/dx 的显式表达式。</li>
+            </ol>
+            <div class="example-hint" style="background:#e8f5e9;">例：x² + y² = 1 两边求导得 2x + 2y·y' = 0 → <strong>y' = −x/y</strong>。注意：<u>y 出现在分母</u>，不要写成 −x。</div>
+        </div>
+
+        <div class="must-card">
+            <div class="must-label">📖 必背：反函数求导公式</div>
+            <div class="formula-box">
+                <math display="block"><mfrac><mi>d</mi><mrow><mi>d</mi><mi>x</mi></mrow></mfrac><msup><mi>f</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><mo>(</mo><mi>y</mi><mo>)</mo><mo>=</mo><mfrac><mn>1</mn><mrow><msup><mi>f</mi><mo>′</mo></msup><mo>(</mo><mi>x</mi><mo>)</mo></mrow></mfrac><mo>=</mo><mfrac><mn>1</mn><mrow><msup><mi>f</mi><mo>′</mo></msup><mo>(</mo><msup><mi>f</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><mo>(</mo><mi>y</mi><mo>)</mo><mo>)</mo></mrow></mfrac></math>
+            </div>
+            <p><strong>小白理解：</strong>正函数求导是「顺水」，反函数求导是「逆水」，二者速度互为倒数。记忆口诀：「反函数的导 = 1 ÷ 原函数在对应点的导」。</p>
+            <p><strong>常见陷阱：</strong>题目问的是 f<sup>−1</sup>(x) 的导数，要把 f<sup>−1</sup>(x) 的导数表达成 <code>1 / f'(f<sup>−1</sup>(x))</code>，不能直接当成 1/f'(x)。</p>
+        </div>
+
+        <div class="example-card">
+            <div class="example-label">📝 例题 3（隐函数）</div>
+            <div class="example-question">设 y 由方程 e<sup>y</sup> + xy = e 确定，求 dy/dx。</div>
+            <div class="example-hint">两边对 x 求导：e<sup>y</sup>·y' + y + x·y' = 0 → y'(e<sup>y</sup> + x) = −y → <strong>y' = −y / (e<sup>y</sup> + x)</strong>。</div>
+        </div>
+
+        <!-- ============ 新增：泰勒公式与麦克劳林 ============ -->
+        <div class="must-card">
+            <div class="must-label">📖 必背：麦克劳林公式（x=0 处的泰勒展开）</div>
+            <p>如果 f(x) 在 x=0 处 n 阶可导，则：</p>
+            <div class="formula-box">
+                f(x) = f(0) + f'(0)x + f''(0)x²/2! + f'''(0)x³/3! + ... + f<sup>(n)</sup>(0)x<sup>n</sup>/n! + o(x<sup>n</sup>)
+            </div>
+            <p><strong>记忆口诀：</strong>「n 阶导除以 n!，乘 x 的 n 次方」一直加到 n 阶。</p>
+            <p><strong>为什么重要：</strong>泰勒是洛必达的「降维打击」。当分子分母都是复杂函数时，直接洛必达要展开 3~4 次求导，容易写错；改用泰勒，只需代入「f<sup>(n)</sup>(0)」即可，结果更稳。</p>
+        </div>
+
+        <div class="must-card">
+            <div class="must-label">📖 必背：\(\ln(1+x)\) 在 \(x\to0\) 时的泰勒展开（小白分阶版）</div>
+            <p><span class="section-tag tag-core">🎯 先记最终结论</span></p>
+            <div class="formula-box">
+                \[
+                \ln(1+x)=x-\dfrac{x^{2}}{2}+\dfrac{x^{3}}{3}-\dfrac{x^{4}}{4}+\cdots
+                +(-1)^{n-1}\dfrac{x^{n}}{n}+o(x^{n}),\quad x\to0
+                \]
+            </div>
+            <p><strong>记忆口诀：</strong>「正负交替，次数往上走，分母等于次数」。第一项正，第二项负，第三项再正。</p>
+
+            <p><span class="section-tag tag-tip">📚 小白扫盲：为什么有时只写一项，有时必须写三项？</span></p>
+            <p>泰勒展开不是背得越长越好，而是<strong>保留到足以找到第一个不被抵消的项</strong>。题目要几阶，你就展开到几阶：</p>
+            <table>
+                <thead><tr><th>精度</th><th>写法</th><th>什么时候够用</th></tr></thead>
+                <tbody>
+                    <tr><td>一阶</td><td>\(\ln(1+x)=x+o(x)\)</td><td>只求等价无穷小，且一次项不会抵消</td></tr>
+                    <tr><td>二阶</td><td>\(\ln(1+x)=x-\dfrac{x^{2}}{2}+o(x^{2})\)</td><td>题中出现 \(x-\ln(1+x)\)，一次项会抵消</td></tr>
+                    <tr><td>三阶</td><td>\(\ln(1+x)=x-\dfrac{x^{2}}{2}+\dfrac{x^{3}}{3}+o(x^{3})\)</td><td>二次项也被减掉，或分母含 \(x^{3}\)</td></tr>
+                </tbody>
+            </table>
+            <div class="formula-box">
+                \[
+                x-\ln(1+x)=\dfrac{x^{2}}{2}-\dfrac{x^{3}}{3}+o(x^{3})
+                \sim\dfrac{x^{2}}{2}
+                \]
+            </div>
+            <div class="formula-box">
+                \[
+                \ln(1+x)+\ln(1-x)=\ln(1-x^{2})
+                =-x^{2}-\dfrac{x^{4}}{2}+o(x^{4})\sim -x^{2}
+                \]
+            </div>
+            <p><strong>生活例子🌰：</strong>把展开式看成一排多米诺骨牌。若前面的 \(x\) 项被题目减掉，就必须继续看下一块 \(x^{2}\)；若 \(x^{2}\) 也被减掉，就再看 \(x^{3}\)。</p>
+
+            <p><span class="section-tag tag-summary">🧭 遇到题目时的分支导航</span></p>
+            <table>
+                <thead><tr><th>小白识别信号</th><th>走哪条分支</th><th>停在几阶</th></tr></thead>
+                <tbody>
+                    <tr><td>单独出现 \(\ln(1+x)\)，一次项不抵消</td><td>直接用等价无穷小</td><td>一阶：\(\ln(1+x)\sim x\)</td></tr>
+                    <tr><td>出现 \(x-\ln(1+x)\)</td><td>用泰勒，先检查一次项抵消</td><td>至少二阶</td></tr>
+                    <tr><td>分母是 \(x^{m}\)</td><td>分子各部分统一展开</td><td>通常展开到 \(x^{m}\)</td></tr>
+                    <tr><td>出现 \(\ln(1+u(x))\)</td><td>先展开外层，再代入 \(u(x)\)</td><td>按 \(u\) 的阶数换算</td></tr>
+                    <tr><td>出现 \(\ln(1+x)+\ln(1-x)\)</td><td>优先合并为 \(\ln(1-x^{2})\)</td><td>首项就是二阶</td></tr>
+                    <tr><td>反复洛必达会求导三次以上</td><td>改用泰勒，减少长链求导</td><td>由分母阶数倒推</td></tr>
+                </tbody>
+            </table>
+            <p><strong>一句话决策口诀：</strong>「先看极限型，再看谁抵消；分母到几阶，分子跟几阶；能合并先合并，三次求导换泰勒。」</p>
+        </div>
+
+        <div class="example-card">
+            <div class="example-label">📝 典型题：已知极限求导数（极限、连续、泰勒三合一）</div>
+            <div class="example-question">
+                设 \(f(x)\) 在 \(x=0\) 处连续，且
+                <div class="formula-box">
+                    \[
+                    \lim_{x\to0}\dfrac{x f(x)-e^{2\sin x}+1}
+                    {\ln(1+x)+\ln(1-x)}=-3.
+                    \]
+                </div>
+                证明 \(f'(0)\) 存在，并求 \(f'(0)\)。
+            </div>
+
+            <p><span class="section-tag tag-core">🧭 第一步：看出题人在考什么</span></p>
+            <p><strong>出题人不是让你直接对 \(f(x)\) 求导</strong>，因为题目根本没给 \(f(x)\) 的表达式。他要考的是：</p>
+            <ul>
+                <li><strong>有限极限搭积木：</strong>分母趋于 \(0\)、商趋于有限值，推出分子也趋于 \(0\)。</li>
+                <li><strong>连续性补函数值：</strong>先由极限信息求出 \(f(0)\)。</li>
+                <li><strong>凑导数定义：</strong>把原式拆出 \(\dfrac{f(x)-f(0)}{x}\)。</li>
+                <li><strong>泰勒消灭已知函数：</strong>处理 \(e^{2\sin x}\) 和两个对数。</li>
+            </ul>
+            <p><strong>小白识别信号：</strong>看到「\(f\) 连续 + 已知一个含 \(f(x)\) 的极限 + 求 \(f'(0)\)」，立刻想到：<strong>先求 \(f(0)\)，再凑导数定义</strong>。</p>
+
+            <p><span class="section-tag tag-tip">📚 第二步：先画路线图，避免走错分支</span></p>
+            <ol style="padding-left:20px;line-height:2;">
+                <li>化简分母，判断它是几阶无穷小。</li>
+                <li>利用「商有有限极限 + 分母趋于 \(0\)」推出分子趋于 \(0\)，求 \(f(0)\)。</li>
+                <li>把原极限的分母换成首项 \(-x^{2}\)，确定整个分子需要保留到二阶。</li>
+                <li>在分子中加减 \(2x\)，拆出 \(x[f(x)-2]\)，从而凑出导数定义。</li>
+                <li>单独算已知函数产生的二阶极限，最后解出 \(f'(0)\)。</li>
+            </ol>
+
+            <p><span class="section-tag tag-tip">🧭 解法一：先求 \(f(0)\)，再凑导数定义</span></p>
+            <p><strong>步骤 ①：先处理分母，并记下“阶数账本”。</strong></p>
+            <div class="formula-box">
+                \[
+                \ln(1+x)+\ln(1-x)=\ln(1-x^{2})\sim -x^{2}.
+                \]
+            </div>
+            <p>账本写下：<strong>分母是二阶无穷小</strong>，所以后面所有已知函数只需展开到 \(x^{2}\)，不能只写一次项，也不必写到四次项。</p>
+
+            <p><strong>步骤 ②：先求 \(f(0)\)，这是凑导数定义的钥匙。</strong></p>
+            <p>记原分子为 \(N(x)\)，原分母为 \(D(x)\)。因为 \(D(x)\sim-x^{2}\)，所以 \(D(x)/x\to0\)。由题设可得：</p>
+            <div class="formula-box">
+                \[
+                \lim_{x\to0}\dfrac{N(x)}{x}
+                =\lim_{x\to0}\left[\dfrac{N(x)}{D(x)}\cdot\dfrac{D(x)}{x}\right]
+                =(-3)\cdot0=0.
+                \]
+            </div>
+            <p>这一步比只说“分子趋于 \(0\)”更严谨，因为接下来需要把分子除以 \(x\)：</p>
+            <div class="formula-box">
+                \[
+                f(x)-\dfrac{e^{2\sin x}-1}{x}\to0.
+                \]
+            </div>
+            <p>又因为 \(e^{2\sin x}-1\sim2\sin x\sim2x\)，并且题设给出 \(f\) 在 \(0\) 处连续，所以</p>
+            <div class="formula-box">
+                \[
+                f(0)=\lim_{x\to0}f(x)
+                =\lim_{x\to0}\dfrac{e^{2\sin x}-1}{x}=2.
+                \]
+            </div>
+
+            <p><strong>步骤 ③：把原极限改写为分母 \(x^{2}\) 的形式。</strong></p>
+            <div class="formula-box">
+                \[
+                3=\lim_{x\to0}\dfrac{x f(x)-e^{2\sin x}+1}{x^{2}}.
+                \]
+            </div>
+            <p>注意符号：原极限是 \(-3\)，而原分母等价于 \(-x^{2}\)，两个负号抵消后变成 \(3\)。</p>
+
+            <p><strong>步骤 ④：加减 \(2x\)，凑出导数定义。</strong></p>
+            <p>对 \(x\ne0\)，先做恒等变形，不提前假设导数极限存在：</p>
+            <div class="formula-box">
+                \[
+                \dfrac{f(x)-f(0)}{x}
+                =\dfrac{x f(x)-e^{2\sin x}+1}{x^{2}}
+                -\dfrac{2x-e^{2\sin x}+1}{x^{2}}.
+                \]
+            </div>
+
+            <p><strong>步骤 ⑤：只计算已知函数的二阶项。</strong></p>
+            <div class="formula-box">
+                \[
+                \sin x=x+o(x^{2}),\qquad
+                e^{2\sin x}=1+2x+2x^{2}+o(x^{2}).
+                \]
+            </div>
+            <div class="formula-box">
+                \[
+                \lim_{x\to0}\dfrac{2x-e^{2\sin x}+1}{x^{2}}
+                =\lim_{x\to0}\dfrac{-2x^{2}+o(x^{2})}{x^{2}}=-2.
+                \]
+            </div>
+            <p>上面恒等式右侧的两个极限都存在，因此左侧极限也存在，这就真正证明了 \(f'(0)\) 存在，并且</p>
+            <div class="formula-box">
+                \[
+                f'(0)=3-(-2)=5.
+                \]
+            </div>
+
+            <p><span class="section-tag tag-core">🧭 解法二：串列公式法（上下同阶原则 + 前后不抵消原则）</span></p>
+            <p><strong>这条路为什么更短？</strong>不先单独求 \(f(0)\)，而是顺着分母的二阶精度，直接从原式中串出 \(\dfrac{f(x)-2}{x}\)，最后再用连续性确认 \(f(0)=2\)。</p>
+
+            <p><strong>原则 ①：上下同阶。</strong>分母 \(\ln(1-x^{2})\sim-x^{2}\)，所以分子只保留到二阶。令 \(u=2\sin x\)，则</p>
+            <div class="formula-box">
+                \[
+                e^{2\sin x}=1+2\sin x+2\sin^{2}x+o(x^{2}).
+                \]
+            </div>
+            <p><strong>原则 ②：前后可能抵消时，不要过早只写等价无穷小。</strong>先保留 \(x f(x)-2\sin x\) 这个整体，把完全已知的二阶项 \(-2\sin^{2}x\) 拆出去：</p>
+            <div class="formula-box">
+                \[
+                \begin{aligned}
+                -3
+                &=\lim_{x\to0}\dfrac{x f(x)-2\sin x-2\sin^{2}x+o(x^{2})}{-x^{2}}\\
+                &=\lim_{x\to0}\dfrac{x f(x)-2\sin x}{-x^{2}}
+                +\lim_{x\to0}\dfrac{-2\sin^{2}x}{-x^{2}}+0\\
+                &=\lim_{x\to0}\dfrac{x f(x)-2\sin x}{-x^{2}}+2.
+                \end{aligned}
+                \]
+            </div>
+            <p>于是</p>
+            <div class="formula-box">
+                \[
+                \lim_{x\to0}\dfrac{x f(x)-2\sin x}{x^{2}}=5.
+                \]
+            </div>
+
+            <p><strong>继续“串”出目标。</strong>因为目标是导数定义，想要的是 \(f(x)-2\)，所以把 \(2\sin x\) 展开：</p>
+            <div class="formula-box">
+                \[
+                2\sin x=2x-\dfrac{x^{3}}{3}+o(x^{3}).
+                \]
+            </div>
+            <div class="formula-box">
+                \[
+                \begin{aligned}
+                5
+                &=\lim_{x\to0}\dfrac{x f(x)-2x+\dfrac{x^{3}}{3}+o(x^{3})}{x^{2}}\\
+                &=\lim_{x\to0}\left[\dfrac{f(x)-2}{x}+\dfrac{x}{3}+o(x)\right].
+                \end{aligned}
+                \]
+            </div>
+            <p>后两项趋于 \(0\)，所以</p>
+            <div class="formula-box">
+                \[
+                \lim_{x\to0}\dfrac{f(x)-2}{x}=5.
+                \]
+            </div>
+            <p>该极限有限，故 \(f(x)-2=x\cdot\dfrac{f(x)-2}{x}\to0\)，即 \(\lim_{x\to0}f(x)=2\)。又因 \(f\) 在 \(0\) 处连续，所以 \(f(0)=2\)。因此上式正是导数定义：</p>
+            <div class="formula-box">
+                \[
+                f'(0)=\lim_{x\to0}\dfrac{f(x)-f(0)}{x}=5.
+                \]
+            </div>
+            <div class="example-hint"><strong>两种解法怎么选：</strong>解法一“先求函数值，再凑导数”更稳，适合小白和规范证明；解法二“按阶展开，一路串出目标”更短，适合已经能熟练控制展开阶数时使用。</div>
+
+            <p><span class="section-tag tag-summary">🧭 思维导图：每个分叉到底怎么选</span></p>
+            <ul>
+                <li><strong>先求 \(f(0)\) 还是直接串目标？</strong>解法一先求 \(f(0)\) 再凑导数，逻辑最直观；解法二先串出 \(\dfrac{f(x)-2}{x}\)，再用连续性确认 \(f(0)=2\)。小白优先走解法一。</li>
+                <li><strong>等价无穷小还是泰勒？</strong>求 \(f(0)\) 只要一阶，用等价；计算剩余极限要二阶抵消，用泰勒。</li>
+                <li><strong>洛必达还是泰勒？</strong>洛必达会碰到未知的 \(f'(x)\)，而题目正要证明导数存在，不能提前假设；因此必须用代数拆分和泰勒。</li>
+                <li><strong>展开到几阶？</strong>分母是 \(x^{2}\)，所以展开到二阶；这就是“分母定精度”。</li>
+            </ul>
+
+            <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警与防遗漏策略</span></p>
+            <ul>
+                <li><strong>坑①：只背 \(\ln(1+x)\sim x\)。</strong>两个一次项会抵消，必须看到 \(\ln(1+x)+\ln(1-x)\sim-x^{2}\)。</li>
+                <li><strong>坑②：没求 \(f(0)\) 就写导数定义。</strong>先在草稿上写目标模板 \(\dfrac{f(x)-f(0)}{x}\)，空缺的 \(f(0)\) 就是第一阶段任务。</li>
+                <li><strong>坑③：把原式直接洛必达。</strong>这会默认 \(f'(x)\) 已存在，属于循环论证。</li>
+                <li><strong>坑④：展开阶数不统一。</strong>建立“阶数账本”：分母 \(x^{2}\) → 每一项保留到二阶 → 最后统一丢进 \(o(x^{2})\)。</li>
+                <li><strong>坑⑤：漏负号。</strong>单独写一行「原分母 \(\sim-x^{2}\)」，再把 \(-3\times(-1)=3\) 写出来。</li>
+                <li><strong>坑⑥：长推理跳步。</strong>每行只做一个动作，并在右侧标注依据：连续性、等价无穷小、泰勒或导数定义。</li>
+            </ul>
+
+            <p><span class="section-tag tag-tip">🧠 怎样充分吸收这道题：四轮训练法</span></p>
+            <ol style="padding-left:20px;line-height:2;">
+                <li><strong>识别轮：</strong>遮住答案，只说出四个信号——连续、有限极限、求导数、分母二阶。</li>
+                <li><strong>路线轮：</strong>不计算，只默写「判分母阶数 → 求 \(f(0)\) → 凑导数定义 → 算已知余项」。</li>
+                <li><strong>书写轮：</strong>完整写一遍，每行标依据；写完用“函数值、阶数、符号、导数模板”四项清单自检。</li>
+                <li><strong>变式轮：</strong>把 \(2\sin x\) 换成 \(ax\)，或把极限值 \(-3\) 换成 \(L\)，仍按同一路线做，确认自己掌握的是方法而不是答案。</li>
+            </ol>
+            <p><strong>考场草稿模板：</strong>左栏写“已知”，中栏写“当前目标”，右栏写“允许使用的工具”。每完成一步就打勾，能显著减少长链推理中的遗漏。</p>
+
+            <p><span class="section-tag tag-tip">🔗 知识点桥接</span></p>
+            <ul>
+                <li><strong>和 ch01 的关系：</strong>分母判阶、等价无穷小、有限极限搭积木都来自“函数、极限、连续”。</li>
+                <li><strong>和本章的关系：</strong>最后必须准确凑出导数定义，且不能先假设 \(f'(0)\) 存在。</li>
+                <li><strong>和复合泰勒的关系：</strong>先把 \(e^{u}\) 展开，再令 \(u=2\sin x\)，同时按目标阶数截断。</li>
+            </ul>
+
+            <div class="example-hint"><strong>🎯 最终答案：</strong>\(f(0)=2\)，\(f'(0)\) 存在且 \(f'(0)=5\)。</div>
+        </div>
+
+        <div class="example-card">
+            <div class="example-label">📝 例题 4（泰勒）</div>
+            <div class="example-question">求 lim<sub>x→0</sub> (e<sup>x²</sup> − 1 − x²) / (x<sup>4</sup>) 的极限。</div>
+            <div class="example-hint">把 e<sup>x²</sup> 展开到 x⁴ 项：e<sup>x²</sup> = 1 + x² + x⁴/2 + o(x⁴)。代入分子 = (1 + x² + x⁴/2) − 1 − x² = x⁴/2。除以分母 x⁴ 得 <strong>1/2</strong>。</div>
+        </div>
+
+        <div class="example-card">
+            <div class="example-label">📝 典型题：[2016 数二、三] 分段函数求导 + 变限积分 + 最值</div>
+            <div class="example-question">
+                设函数 \(f(x)=\displaystyle\int_{0}^{1}\left|t^{2}-x^{2}\right|\,dt\)，\((x&gt;0)\)，求 \(f'(x)\)，并求 \(f(x)\) 的最小值。
+            </div>
+
+            <p><span class="section-tag tag-core">🧭 第一步：看出题人在考什么（三大考点）</span></p>
+            <ul>
+                <li><strong>考点 ① 变限积分 + 绝对值：</strong>被积函数里带 \(|t^{2}-x^{2}|\)，要按被积变量 \(t\) 把绝对值拆开，先用「\(t^{2}=x^{2}\)」找到分界点。</li>
+                <li><strong>考点 ② 分段函数求导：</strong>积分表达式会随 \(x\) 的大小分成两段，每段分别求导。</li>
+                <li><strong>考点 ③ 闭区间最值（带积分表达式）：</strong>在分段点上比函数值，端点也要比，最后用连续性保证端点处极限相等。</li>
+            </ul>
+            <p><strong>小白识别信号：</strong>看到「变限积分 + 绝对值 + 求最值」三个词凑在一起，立刻想到「拆绝对值 → 分类讨论 → 各段求导 → 比较极值和端点」四步走。</p>
+
+            <p><span class="section-tag tag-warn">⚠️ 难点警示：90% 的小白会在第一步就死</span></p>
+            <ul>
+                <li><strong>难点 A：分不清分段点是按 \(t\) 还是按 \(x\)。</strong>绝对值 \(|t^{2}-x^{2}|\) 内是「\(t\) 和 \(x\) 的混合」，分段要看被积变量 \(t\)，分界点是让绝对值等于 0 的 \(t\) 值，也就是 \(t=x\) 和 \(t=-x\)。</li>
+                <li><strong>难点 B：忘记「分段点反过来决定自变量 \(x\) 的分类」。</strong>在 \([0,1]\) 上有意义的分段点只有 \(t=x\)。但 \(x\) 本身可能比 1 大或比 0 小，所以 \(x\) 的分类要结合积分区间 \([0,1]\) 来定。</li>
+                <li><strong>难点 C：最值比较时漏掉端点 \(x\to0^{+}\)。</strong>\(f(0)\) 要用「极限定义」或「直接代」算，不能因为题目写 \(x&gt;0\) 就丢掉 \(x=0\)。</li>
+            </ul>
+
+            <p><span class="section-tag tag-tip">📚 第二步：小白扫盲：变限积分里的「分段」到底是谁在分？</span></p>
+            <p><strong>一句话：</strong>分段永远跟着<strong>被积变量 \(t\)</strong>，不要跟着外部变量 \(x\)。在本题里：</p>
+            <div class="formula-box">
+                \[
+                \left|t^{2}-x^{2}\right|=
+                \begin{cases}
+                x^{2}-t^{2}, & 0\le t\le x\\[2pt]
+                t^{2}-x^{2}, & x&lt; t\le 1
+                \end{cases}
+                \quad(\text{要求 }x\in[0,1])
+                \]
+            </div>
+            <p><strong>生活例子🌰：</strong>把 \([0,1]\) 想象成一条 1 米长的跑道，\(x\) 是跑道上某个「分界点」。左边 \(0\sim x\) 米这段，\(t^{2}\) 比 \(x^{2}\) 小，所以 \(|t^{2}-x^{2}|=x^{2}-t^{2}\)；右边 \(x\sim 1\) 米反过来。\(x\) 跑到 1 米之外（\(x\ge1\)），整个跑道都在「左边」，就只剩一种情况。</p>
+
+            <p><span class="section-tag tag-tip">🧭 第三步：方法步骤（小白逐步版）</span></p>
+            <p><strong>步骤 ① 找分段点（按 \(t\)）。</strong>令 \(|t^{2}-x^{2}|=0\Rightarrow t=\pm x\)，在 \(t\in[0,1]\) 上只剩 \(t=x\)。所以<strong>被积变量 \(t\) 在 0、\(x\)、1 这三点分段</strong>。</p>
+
+            <p><strong>步骤 ② 决定自变量 \(x\) 的分类。</strong>分段点 \(t=x\) 落在积分区间里，必须有 \(0\le x\le 1\)。否则：</p>
+            <table>
+                <thead><tr><th>\(x\) 的范围</th><th>积分分段方式</th><th>含义</th></tr></thead>
+                <tbody>
+                    <tr><td>\(0&lt;x\le 1\)</td><td>拆成 \([0,x]+[x,1]\) 两段</td><td>分界点落在跑道内</td></tr>
+                    <tr><td>\(x\ge 1\)</td><td>只有 \([0,1]\) 一段</td><td>分界点跑出跑道外</td></tr>
+                </tbody>
+            </table>
+
+            <p><strong>步骤 ③ 分类积分，得到 \(f(x)\) 的显式表达式。</strong></p>
+            <p><strong>情况 A：\(0&lt;x\le 1\)</strong></p>
+            <div class="formula-box">
+                \[
+                \begin{aligned}
+                f(x)
+                &=\int_{0}^{x}(x^{2}-t^{2})\,dt+\int_{x}^{1}(t^{2}-x^{2})\,dt\\
+                &=\left[x^{2}t-\dfrac{t^{3}}{3}\right]_{0}^{x}
+                +\left[\dfrac{t^{3}}{3}-x^{2}t\right]_{x}^{1}\\[4pt]
+                &=\left(x^{3}-\dfrac{x^{3}}{3}\right)
+                +\left(\dfrac{1}{3}-x^{2}\right)-\left(\dfrac{x^{3}}{3}-x^{3}\right)\\[4pt]
+                &=\dfrac{4}{3}x^{3}-x^{2}+\dfrac{1}{3}.
+                \end{aligned}
+                \]
+            </div>
+            <p><strong>情况 B：\(x\ge 1\)</strong>（整个 \([0,1]\) 上 \(t^{2}\le 1\le x^{2}\)）</p>
+            <div class="formula-box">
+                \[
+                f(x)=\int_{0}^{1}(x^{2}-t^{2})\,dt
+                =x^{2}-\dfrac{1}{3}.
+                \]
+            </div>
+            <p><strong>步骤 ④ 分段求导（这就是分段函数求导的核心！）。</strong></p>
+            <div class="formula-box">
+                \[
+                f'(x)=
+                \begin{cases}
+                4x^{2}-2x=2x(2x-1), & 0&lt;x\le 1\\[4pt]
+                2x, & x&gt;1
+                \end{cases}
+                \]
+            </div>
+            <p><strong>小白易错：</strong>千万不要在 \(x=1\) 处强行合并；分段函数的导数在分段点可能不存在（或不连续），本题 \(x=1\) 处左导数为 \(2\)、右导数为 \(2\)，恰好连续，但平时要单独验证。</p>
+
+            <p><strong>步骤 ⑤ 求最值（连续函数在 \((0,+\infty)\) 上的最小值）。</strong></p>
+            <p>在 \((0,1]\) 上，\(f'(x)=0\Rightarrow x=\dfrac{1}{2}\)。与端点 \(x=0^{+}\)（取极限）、\(x=1\) 一起比：</p>
+            <table>
+                <thead><tr><th>点</th><th>\(f(x)\)</th><th>值</th></tr></thead>
+                <tbody>
+                    <tr><td>\(x=\dfrac{1}{2}\)（极值点）</td><td>\(\dfrac{4}{3}\cdot\dfrac{1}{8}-\dfrac{1}{4}+\dfrac{1}{3}=\dfrac{1}{6}-\dfrac{1}{4}+\dfrac{1}{3}\)</td><td>\(\dfrac{1}{4}\)</td></tr>
+                    <tr><td>\(x\to 0^{+}\)（用情况 A 代入 \(x=0\)）</td><td>\(\dfrac{1}{3}\)</td><td>\(\dfrac{1}{3}\)</td></tr>
+                    <tr><td>\(x=1\)（两段共用）</td><td>\(\dfrac{2}{3}\)</td><td>\(\dfrac{2}{3}\)</td></tr>
+                    <tr><td>\(x&gt;1\)（情况 B 单调增）</td><td>\(\ge \dfrac{2}{3}\)</td><td>无新低点</td></tr>
+                </tbody>
+            </table>
+            <p>三者比较：\(\dfrac{1}{4}&lt;\dfrac{1}{3}&lt;\dfrac{2}{3}\)，因此<strong>最小值为 \(\dfrac{1}{4}\)，在 \(x=\dfrac{1}{2}\) 处取得</strong>。</p>
+
+            <p><span class="section-tag tag-summary">🧭 思维导图：每个分叉怎么选</span></p>
+            <ul>
+                <li><strong>分段点找谁？</strong>找<strong>被积变量 \(t\)</strong>，不是外部变量 \(x\)。</li>
+                <li><strong>自变量 \(x\) 怎么分类？</strong>把分段点「代」进积分区间，看它是否落在区间里。</li>
+                <li><strong>用洛必达还是变限积分求导？</strong>本题已经把绝对值拆掉、显式积分完了，直接用基本求导公式更快；不需要再洛必达。</li>
+                <li><strong>最值比较别漏什么？</strong>极值点 + 区间端点 + 跨段衔接点 + 极限端点 \(\to 0^{+}\)。</li>
+            </ul>
+
+            <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警与防遗漏清单</span></p>
+            <ul>
+                <li><strong>坑①：</strong>把 \(t\) 和 \(x\) 混在一起讨论。✅ <strong>应对：</strong>先写一句「分段看 \(t\)，分类看 \(x\)」贴草稿顶部。</li>
+                <li><strong>坑②：</strong>漏掉 \(x\ge 1\) 的情况。✅ <strong>应对：</strong>画一张数轴，标出 0、1，跑道 \([0,1]\) 在图上画出来，分界点超出跑道就要换分类。</li>
+                <li><strong>坑③：</strong>积分算错号。✅ <strong>应对：</strong>代入上下限时先在等式右边写 \(\big[F(t)\big]_{a}^{b}=F(b)-F(a)\)，再代数字。</li>
+                <li><strong>坑④：</strong>最值只比极值点、忘了端点。✅ <strong>应对：</strong>写「极值点 + 端点 + 跨段衔接点 + 极限端点」四件套清单。</li>
+                <li><strong>坑⑤：</strong>忘记验证 \(f(0)\)。✅ <strong>应对：</strong>题目写 \(x&gt;0\) 不代表不能算 \(f(0)\)；用 \(f(0)=\lim_{x\to0^{+}}f(x)\) 就能取。</li>
+                <li><strong>坑⑥：</strong>最后一句话漏写「在 \(x=1/2\) 处取得」。✅ <strong>应对：</strong>答案两件套：最小值 + 取得点。</li>
+            </ul>
+
+            <p><span class="section-tag tag-tip">🧠 怎样充分吸收这道题：四轮训练法</span></p>
+            <ol style="padding-left:20px;line-height:2;">
+                <li><strong>识别轮：</strong>遮住答案，先说出三个考点和三个难点。</li>
+                <li><strong>路线轮：</strong>不计算，按「分段点（按 \(t\)）→ 分类（按 \(x\)）→ 积分 → 求导 → 极值点 → 比较端点」六步口述。</li>
+                <li><strong>书写轮：</strong>完整写一遍，每行标依据（按 \(t\) 分段 / 积分中值 / 分段求导 / 单调性）。</li>
+                <li><strong>变式轮：</strong>把 \(|t^{2}-x^{2}|\) 换成 \(|\sin t-x|\) 或 \(|t-x|\)，流程不变，重点练「分段点怎么找、\(x\) 怎么分类」。</li>
+            </ol>
+            <p><strong>考场草稿模板：</strong>左上「分段点（按 \(t\)）」、右上「\(x\) 分类」、左下「积分结果」、右下「导数 + 最值」。每个格子填完打勾，能避免「分段漏一类」「端点忘比较」。</p>
+
+            <p><span class="section-tag tag-tip">🔗 知识点桥接</span></p>
+            <ul>
+                <li><strong>和 ch01：</strong>求 \(f(0)\) 用到「极限」+ 连续；变限积分在 ch01 末段（积分中值定理）也出现过。</li>
+                <li><strong>和 ch02：</strong>分段函数求导 = 本章 P1 必杀；最值比较 = P1 极值 + 端点的综合。</li>
+                <li><strong>和 ch03：</strong>变限积分 \(\int_{0}^{1}\cdots dt\) 真正算清要 ch03 的积分公式；分段拆绝对值也来自 ch01 的「分段点」思想。</li>
+                <li><strong>和生活：</strong>这条「跑道 + 分界点」类比可以记住：分段永远按被积变量 \(t\) 来分，外部变量 \(x\) 只是「分界点位置」。</li>
+            </ul>
+
+            <div class="example-hint"><strong>🎯 最终答案：</strong>\(f'(x)=\begin{cases}2x(2x-1),&0&lt;x\le1\\ 2x,&x&gt;1\end{cases}\)；\(f(x)\) 的最小值为 \(\dfrac{1}{4}\)，在 \(x=\dfrac{1}{2}\) 处取得。</div>
+        </div>
+
+        <!-- ============ 小白核心概念扫盲：极值/拐点/驻点/不可导 ============ -->
+        <div class="must-card">
+            <div class="must-label">📖 小白扫盲：极值点 · 驻点 · 拐点 · 不可导点（考点对比表格）</div>
+            <p><span class="section-tag tag-core">🎯 这四个概念每年都考，先理清定义再做题</span></p>
+            <table>
+                <thead><tr><th>概念</th><th>定义</th><th>判定方法</th><th>常见坑</th></tr></thead>
+                <tbody>
+                    <tr>
+                        <td><strong>驻点</strong></td>
+                        <td>\(f'(x_0)=0\) 的点</td>
+                        <td>求 \(f'(x)=0\) 的解（候选点）</td>
+                        <td>驻点不一定有极值（如 \(x^3\) 在 \(x=0\)）</td>
+                    </tr>
+                    <tr>
+                        <td><strong>极值点</strong><br><small>（局部最大/最小）</small></td>
+                        <td>存在邻域使 \(f(x)\ge\)（或 \(\le\)）\(f(x_0)\)</td>
+                        <td>
+                            <strong>一阶导数法：</strong>\(f'(x)\) 在 \(x_0\) 两侧变号<br>
+                            <strong>二阶导数法：</strong>\(f'(x_0)=0\) 且 \(f''(x_0)\ne0\)<br>
+                            ① \(f''(x_0) > 0\) → 极小值<br>
+                            ② \(f''(x_0) < 0\) → 极大值
+                        </td>
+                        <td>
+                            ① \(f'(x_0)=0\) 且 \(f''(x_0)=0\) → 无法判定（如 \(x^4, -x^4, x^3\)）<br>
+                            ② 边界点不适用<br>
+                            ③ 不可导点也可以是极值点
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>拐点</strong><br><small>（凹凸性改变）</small></td>
+                        <td>\(f''(x)\) 在 \(x_0\) 两侧变号</td>
+                        <td>
+                            <strong>判定：</strong><br>
+                            ① 找 \(f''(x)=0\) 或不存在的点<br>
+                            ② 验证两侧 \(f''(x)\) 异号
+                        </td>
+                        <td>
+                            ① 拐点是一个坐标 \((x_0, f(x_0))\)，不是 \(x_0\) 本身<br>
+                            ② \(f''(x_0)=0\) 不一定有拐点（如 \(x^4\)）<br>
+                            ③ 拐点处 \(f'(x)\) 不一定为零
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>不可导点</strong></td>
+                        <td>\(f'(x_0)\) 不存在<br>
+                            （尖点、断点、切线垂直）
+                        </td>
+                        <td>
+                            ① 左导数 ≠ 右导数 → 尖点<br>
+                            ② 左右极限不相等 → 跳跃<br>
+                            ③ \(f'(x) \to \infty\) → 垂直切线
+                        </td>
+                        <td>
+                            ① 不可导点可能也是极值点（如 \(y=|x|\) 在 \(x=0\)）<br>
+                            ② 分段函数必检查分段点处是否可导
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p><span class="section-tag tag-warn">⚠️ 四者关系（必背，每年一考）</span></p>
+            <ul>
+                <li>驻点 <strong>不一定</strong>是极值点（水平切线也可能是鞍点）</li>
+                <li>极值点 <strong>不一定</strong>是驻点（不可导点也可以是极值点）</li>
+                <li>拐点和极值点 <strong>没有直接关系</strong>（一个关心一阶导、一个关心二阶导）</li>
+                <li>同一个点 <strong>可以同时是</strong>驻点和拐点（但不常见）</li>
+            </ul>
+
+            <p><span class="section-tag tag-tip">🧠 记忆口诀</span></p>
+            <p><strong>「一阶为零找驻点，两侧变号得极值；二阶为零看变号，异号才是拐点到」</strong></p>
+
+            <p><span class="section-tag tag-tip">📝 一图分清五个概念</span></p>
+            <div class="tag-float t-tip">
+                <div class="tf-title">🗺️ 极值求法路径图</div>
+                <div class="tf-body">
+                    <strong>① 候选点集合</strong> = 所有驻点 + 所有不可导点 + 区间端点<br>
+                    <strong>② 逐一判定</strong>（用一阶导数符号表或二次导数）<br>
+                    <strong>③ 极值点</strong> ⊆ 候选点集合<br>
+                    <strong>④ 最值</strong> = 极值点中的最大者与最小者 + 两端点值再比较
+                </div>
+            </div>
+        </div>
+
+        <!-- ============ 物理直觉 + 图形化理解补充 ============ -->
+        <div class="must-card" style="background:#f0f9ff;border:2px dashed #0284c7;">
+            <div class="must-label" style="background:#0284c7;color:#fff;">🚗 物理直觉 + 图形化理解：把导数想成「开车」</div>
+
+            <p><span class="section-tag tag-tip">🚗 一阶导=速度，二阶导=加速度（考研物理+数学双杀）</span></p>
+            <p>想象一辆小车在公路上行驶，<strong>位置随时间变化</strong>记为 \(s(t)\)。那它的导数链就是：</p>
+
+            <div class="formula-box">
+\[
+\underbrace{s(t)}_{\text{位置}} \xrightarrow{\;\frac{d}{dt}\;} \underbrace{v(t)=s'(t)}_{\text{速度，一阶导}} \xrightarrow{\;\frac{d}{dt}\;} \underbrace{a(t)=s''(t)}_{\text{加速度，二阶导}}
+\]
+            </div>
+
+            <table>
+                <thead><tr><th>数学</th><th>物理</th><th>含义</th><th>对应图像概念</th></tr></thead>
+                <tbody>
+                    <tr>
+                        <td>\(f(x)\)</td>
+                        <td>位置 \(s(t)\)</td>
+                        <td>车在哪</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td>\(f'(x)\)</td>
+                        <td><strong>速度</strong> \(v\)</td>
+                        <td>位置变化有多快</td>
+                        <td>\(f'(x)=0\) → <strong>极值点</strong>（车瞬间停下、准备掉头）</td>
+                    </tr>
+                    <tr>
+                        <td>\(f''(x)\)</td>
+                        <td><strong>加速度</strong> \(a\)</td>
+                        <td>速度变化有多快</td>
+                        <td>\(f''(x)=0\) 且变号 → <strong>拐点</strong>（加速↔减速的临界）</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p><strong>🎯 一句话对应表（背下来）：</strong></p>
+            <ul>
+                <li>🚗 <strong>极值点 ↔ 速度 = 0</strong>（瞬间停下、准备掉头）</li>
+                <li>🔄 <strong>拐点 ↔ 加速度 = 0</strong>（加速变减速的临界点）</li>
+                <li>🏔️ <strong>驻点 ≠ 极值点</strong>：速度 = 0 但没掉头（比如匀速冲过山顶 \(y=x^3\) 在 0 点）</li>
+            </ul>
+
+            <p><strong>生活例子🌰（开车上山再下山）：</strong></p>
+            <ul>
+                <li>山脚→上山：速度从 0 增大，<strong>加速度为正</strong>（踩油门）</li>
+                <li>山顶：<strong>速度最大、加速度 = 0</strong> → 这就是数学里的 <strong>拐点</strong></li>
+                <li>下山：速度减小，<strong>加速度为负</strong>（松油门/轻刹车）</li>
+                <li>如果把"位移-时间"画成图，山顶对应 <strong>拐点</strong>（不是极值点，因为物理上速度 ≠ 0）</li>
+            </ul>
+
+            <p><span class="section-tag tag-tip">📐 拐点在图上长啥样？（凹凸性判定）</span></p>
+            <ul>
+                <li>\(f''(x) > 0\) → 图像 <strong>「开口朝上 ⌣」</strong>（上扬、像碗底/笑脸，数学称"凹"/convex）</li>
+                <li>\(f''(x) < 0\) → 图像 <strong>「开口朝下 ⌢」</strong>（下垂、像山顶/哭脸，数学称"凸"/concave）</li>
+                <li>二阶导 <strong>变号</strong>的位置 → <strong>拐点</strong>（曲线方向突变）</li>
+            </ul>
+
+            <p><span class="section-tag tag-core">📊 四个经典图像对照（看完这四个图就彻底懂了）</span></p>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0;">
+
+                <!-- 图1: y=x² -->
+                <div style="background:#fff;padding:10px;border-radius:8px;border:1px solid #bae6fd;">
+                    <svg viewBox="0 0 320 220" width="100%" style="display:block;">
+                        <line x1="40" y1="180" x2="300" y2="180" stroke="#94a3b8"/>
+                        <line x1="160" y1="20" x2="160" y2="200" stroke="#94a3b8"/>
+                        <polygon points="300,180 295,177 295,183" fill="#94a3b8"/>
+                        <polygon points="160,20 156,24 164,24" fill="#94a3b8"/>
+                        <text x="306" y="183" font-size="11" fill="#475569">x</text>
+                        <text x="146" y="18" font-size="11" fill="#475569">y</text>
+                        <text x="60" y="195" font-size="10" fill="#64748b">-1.5</text>
+                        <text x="228" y="195" font-size="10" fill="#64748b">1.5</text>
+                        <polyline points="85,123.8 90,131 95,137.8 100,144 105,149.8 110,155 115,159.8 120,164 125,167.8 130,171 135,173.8 140,176 145,177.8 150,179 155,179.8 160,180 165,179.8 170,179 175,177.8 180,176 185,173.8 190,171 195,167.8 200,164 205,159.8 210,155 215,149.8 220,144 225,137.8 230,131 235,123.8"
+                                  stroke="#0284c7" stroke-width="2.5" fill="none"/>
+                        <line x1="120" y1="180" x2="200" y2="180" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="4,3"/>
+                        <circle cx="160" cy="180" r="4" fill="#dc2626"/>
+                        <text x="170" y="174" font-size="11" fill="#dc2626" font-weight="bold">f'(0)=0</text>
+                        <text x="170" y="200" font-size="11" fill="#dc2626">极小值点</text>
+                        <text x="240" y="110" font-size="14" fill="#0284c7" font-style="italic">y = x²</text>
+                        <text x="60" y="40" font-size="11" fill="#16a34a">⌣ 凹 (f''&gt;0)</text>
+                    </svg>
+                    <p style="text-align:center;font-size:13px;color:#0284c7;margin:6px 0 0;">
+                        <strong>① \(y=x^2\)：驻点+极值点（标准组合）</strong><br>
+                        <span style="color:#64748b;font-size:11px;">\(f'(0)=0\)（水平切线），\(f''(0)=2>0\)（碗底）</span>
+                    </p>
+                </div>
+
+                <!-- 图2: y=x³ -->
+                <div style="background:#fff;padding:10px;border-radius:8px;border:1px solid #bae6fd;">
+                    <svg viewBox="0 0 320 280" width="100%" style="display:block;">
+                        <line x1="40" y1="180" x2="300" y2="180" stroke="#94a3b8"/>
+                        <line x1="160" y1="20" x2="160" y2="260" stroke="#94a3b8"/>
+                        <polygon points="300,180 295,177 295,183" fill="#94a3b8"/>
+                        <polygon points="160,20 156,24 164,24" fill="#94a3b8"/>
+                        <text x="306" y="183" font-size="11" fill="#475569">x</text>
+                        <text x="146" y="18" font-size="11" fill="#475569">y</text>
+                        <text x="60" y="195" font-size="10" fill="#64748b">-1.5</text>
+                        <text x="228" y="195" font-size="10" fill="#64748b">1.5</text>
+                        <polyline points="85,264.4 90,248.6 95,234.9 100,223.2 105,213.3 110,205 115,198.2 120,192.8 125,188.6 130,185.4 135,183.1 140,181.6 145,180.7 150,180.2 155,180 160,180 165,180 170,179.8 175,179.3 180,178.4 185,176.9 190,174.6 195,171.4 200,167.2 205,161.8 210,155 215,146.7 220,136.8 225,125.1 230,111.4 235,95.6"
+                                  stroke="#0284c7" stroke-width="2.5" fill="none"/>
+                        <line x1="120" y1="180" x2="200" y2="180" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="4,3"/>
+                        <circle cx="160" cy="180" r="4" fill="#dc2626"/>
+                        <text x="170" y="173" font-size="11" fill="#dc2626" font-weight="bold">f'(0)=0</text>
+                        <text x="170" y="200" font-size="11" fill="#dc2626">拐点（非极值）</text>
+                        <text x="240" y="80" font-size="14" fill="#0284c7" font-style="italic">y = x³</text>
+                        <text x="55" y="40" font-size="11" fill="#f59e0b">⌢ 凸 (f''&lt;0)</text>
+                        <text x="55" y="248" font-size="11" fill="#16a34a">凹 ⌣ (f''&gt;0)</text>
+                    </svg>
+                    <p style="text-align:center;font-size:13px;color:#0284c7;margin:6px 0 0;">
+                        <strong>② \(y=x^3\)：驻点=拐点，但<strong style="color:#dc2626;">不是</strong>极值</strong><br>
+                        <span style="color:#64748b;font-size:11px;">\(f'(0)=0\)，但 \(f''(x)=6x\) 在 0 两侧变号 → 拐点</span>
+                    </p>
+                </div>
+
+                <!-- 图3: y=|x| -->
+                <div style="background:#fff;padding:10px;border-radius:8px;border:1px solid #bae6fd;">
+                    <svg viewBox="0 0 320 220" width="100%" style="display:block;">
+                        <line x1="40" y1="180" x2="300" y2="180" stroke="#94a3b8"/>
+                        <line x1="160" y1="20" x2="160" y2="200" stroke="#94a3b8"/>
+                        <polygon points="300,180 295,177 295,183" fill="#94a3b8"/>
+                        <polygon points="160,20 156,24 164,24" fill="#94a3b8"/>
+                        <text x="306" y="183" font-size="11" fill="#475569">x</text>
+                        <text x="146" y="18" font-size="11" fill="#475569">y</text>
+                        <text x="60" y="195" font-size="10" fill="#64748b">-1.5</text>
+                        <text x="228" y="195" font-size="10" fill="#64748b">1.5</text>
+                        <polyline points="85,142.5 110,155 135,167.5 160,180 185,167.5 210,155 235,142.5"
+                                  stroke="#0284c7" stroke-width="2.5" fill="none"/>
+                        <line x1="105" y1="156" x2="135" y2="170" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="3,3"/>
+                        <text x="55" y="160" font-size="10" fill="#dc2626">左斜率=-1</text>
+                        <line x1="185" y1="170" x2="215" y2="156" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="3,3"/>
+                        <text x="218" y="156" font-size="10" fill="#dc2626">右斜率=+1</text>
+                        <circle cx="160" cy="180" r="4" fill="#dc2626"/>
+                        <text x="170" y="200" font-size="11" fill="#dc2626" font-weight="bold">尖点·极小值</text>
+                        <text x="240" y="125" font-size="14" fill="#0284c7" font-style="italic">y = |x|</text>
+                    </svg>
+                    <p style="text-align:center;font-size:13px;color:#0284c7;margin:6px 0 0;">
+                        <strong>③ \(y=|x|\)：不可导点<strong style="color:#dc2626;">也是</strong>极值点</strong><br>
+                        <span style="color:#64748b;font-size:11px;">左导数=-1 ≠ 右导数=+1 → 尖点 → 但 f(0)&lt;f(x) 仍是极小值</span>
+                    </p>
+                </div>
+
+                <!-- 图4: y=sin(x) -->
+                <div style="background:#fff;padding:10px;border-radius:8px;border:1px solid #bae6fd;">
+                    <svg viewBox="0 0 360 240" width="100%" style="display:block;">
+                        <line x1="40" y1="160" x2="340" y2="160" stroke="#94a3b8"/>
+                        <line x1="180" y1="20" x2="180" y2="220" stroke="#94a3b8"/>
+                        <polygon points="340,160 335,157 335,163" fill="#94a3b8"/>
+                        <polygon points="180,20 176,24 184,24" fill="#94a3b8"/>
+                        <text x="346" y="163" font-size="11" fill="#475569">x</text>
+                        <text x="166" y="18" font-size="11" fill="#475569">y</text>
+                        <text x="105" y="175" font-size="10" fill="#64748b">-π</text>
+                        <text x="295" y="175" font-size="10" fill="#64748b">π</text>
+                        <polyline points="54.3,160 75.3,185 96.2,203.3 117.2,210 138.1,203.3 159.1,185 180,160 200.9,135 221.9,116.7 242.8,110 263.8,116.7 284.7,135 305.7,160"
+                                  stroke="#0284c7" stroke-width="2.5" fill="none"/>
+                        <circle cx="180" cy="160" r="4" fill="#dc2626"/>
+                        <text x="190" y="155" font-size="11" fill="#dc2626" font-weight="bold">拐点 (0,0)</text>
+                        <circle cx="54.3" cy="160" r="3" fill="#dc2626"/>
+                        <text x="40" y="152" font-size="9" fill="#dc2626">(-π,0)</text>
+                        <circle cx="305.7" cy="160" r="3" fill="#dc2626"/>
+                        <text x="285" y="152" font-size="9" fill="#dc2626">(π,0)</text>
+                        <text x="240" y="90" font-size="14" fill="#0284c7" font-style="italic">y = sin x</text>
+                        <text x="65" y="105" font-size="11" fill="#f59e0b">⌢ 凸 (f''&lt;0)</text>
+                        <text x="240" y="210" font-size="11" fill="#16a34a">⌣ 凹 (f''&gt;0)</text>
+                    </svg>
+                    <p style="text-align:center;font-size:13px;color:#0284c7;margin:6px 0 0;">
+                        <strong>④ \(y=\sin x\)：一段曲线有 <strong style="color:#dc2626;">3 个</strong>拐点</strong><br>
+                        <span style="color:#64748b;font-size:11px;">\(f''(x)=-\sin x=0\) → \(x=-\pi,0,\pi\)，每处都凹凸切换</span>
+                    </p>
+                </div>
+            </div>
+
+            <p><span class="section-tag tag-summary">🧭 一图串四概念（终极版：物理 + 数学 + 图像三位一体）</span></p>
+            <div class="tag-float t-tip">
+                <div class="tf-title">🔗 三位一体速记表</div>
+                <div class="tf-body">
+                    <strong>🚗 物理层：</strong>位置 → 速度 → 加速度<br>
+                    <strong>📐 数学层：</strong>\(f(x)\) → \(f'(x)\) → \(f''(x)\)<br>
+                    <strong>📊 图像层：</strong>高度 → 斜率 → 凹凸<br><br>
+                    <strong>① 极值点</strong>：速度=0（车停了下） → 斜率=0<br>
+                    <strong>② 拐点</strong>：加速度=0（加减速切换） → 凹凸切换<br>
+                    <strong>③ 驻点</strong>：速度=0 但没掉头 → 斜率=0 但不极值<br>
+                    <strong>④ 不可导点</strong>：尖点/跳跃 → 斜率不存在<br><br>
+                    🎯 <strong>口诀：</strong>一阶为零找驻点，两侧变号得极值；二阶为零看变号，异号才是拐点到
+                </div>
+            </div>
+
+            <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警</span></p>
+            <ul>
+                <li><strong>坑①</strong>：把「\(f'(x_0)=0\)」直接当成「极值点」→ <strong>错！</strong>驻点可能是拐点（如 \(x^3\) 在 0）</li>
+                <li><strong>坑②</strong>：把「\(f''(x_0)=0\)」直接当成「拐点」→ <strong>错！</strong>必须<strong>两侧变号</strong>才是（如 \(x^4\) 在 0，\(f''\ge 0\) 不变号）</li>
+                <li><strong>坑③</strong>：忘了检查<strong>不可导点</strong> → \(y=|x|\) 在 0 就是极值点（很多同学漏掉）</li>
+                <li><strong>坑④</strong>：极值点和拐点<strong>没有必然联系</strong>，别看到一个极值点就急着找拐点</li>
+                <li><strong>坑⑤</strong>：物理类比中，<strong>极值点</strong>对应"速度=0"（车停下），<strong>拐点</strong>对应"加速度=0"（山顶速度最大但 ≠ 0），别搞混！</li>
+            </ul>
+
+            <p><span class="section-tag tag-tip">🔗 知识点桥接</span></p>
+            <ul>
+                <li><strong>和 ch01：</strong>洛必达失效条件对应这里的「\(f'(x_0)=0\) 但不极值」思想（如 \(y=x^3\)）</li>
+                <li><strong>和物理：</strong>这页的「速度/加速度」对应高中物理运动学；考研物理（二）也常考</li>
+                <li><strong>和 ch03：</strong>凹凸性影响定积分的几何意义（曲边梯形面积），拐点是 ch03 应用题的入口</li>
+                <li><strong>和生活：</strong>开车上山下山 = 速度→加速度→拐点的物理直觉</li>
+            </ul>
+        </div>
+
+        <!-- ============ P2：多元微分与极值 ============ -->
+        <div class="part-divider p2" id="part2">
+            <div class="pd-num">2</div>
+            <div class="pd-text">
+                <div class="pd-name">多元微分与极值</div>
+                <div class="pd-desc">偏导与全微分 · 二元无条件极值 · 拉格朗日条件极值</div>
+            </div>
+        </div>
+
+        <div class="tag-float t-tip">
+            <div class="tf-title">P1 → P2 的桥接</div>
+            <div class="tf-body">把 x 当常数就得到偏导数；把一元的「f''(x)>0 是极小值」推广成「AC−B²>0 且 A>0 是极小值」。本质思想没变，只是维度变了。</div>
+        </div>
+
+        <!-- ============ 多元微分：偏导与全微分 ============ -->
+        <div class="must-card">
+            <div class="must-label">📖 必背：偏导与全微分</div>
+            <table>
+                <thead><tr><th>概念</th><th>公式</th><th>小白理解</th></tr></thead>
+                <tbody>
+                    <tr><td>对 x 偏导 ∂f/∂x</td><td>把 y 当常数，只对 x 求导</td><td>只看 x 这一条方向上 f 怎么变化</td></tr>
+                    <tr><td>对 y 偏导 ∂f/∂y</td><td>把 x 当常数，只对 y 求导</td><td>只看 y 这一条方向上 f 怎么变化</td></tr>
+                    <tr><td>全微分 df</td><td>∂f/∂x · dx + ∂f/∂y · dy</td><td>x 和 y 同时小变化时，f 的总增量</td></tr>
+                </tbody>
+            </table>
+            <p><strong>生活例子：</strong>f = 工资 = 底薪 + 时薪 × 工时。底薪、时薪、工时 3 个变量互不影响，∂工资/∂工时 = 时薪，∂工资/∂时薪 = 工时。</p>
+        </div>
+
+        <div class="example-card">
+            <div class="example-label">📝 例题 5（偏导）</div>
+            <div class="example-question">设 f(x, y) = x² + xy + y³，求 ∂f/∂x、∂f/∂y。</div>
+            <div class="example-hint">∂f/∂x = 2x + y（y 当常数）；∂f/∂y = x + 3y²（x 当常数）。全微分 df = (2x+y)dx + (x+3y²)dy。</div>
+        </div>
+
+        <!-- ============ 抽象复合函数求二阶偏导（2019 数三）============ -->
+        <p><span class="section-tag tag-core">🎯 核心考点：抽象复合函数求高阶偏导</span></p>
+
+        <!-- 例题块 -->
+        <div class="example-card">
+            <div class="example-label">📝 例题 7 | 2019 数三 | 抽象复合函数求二阶偏导</div>
+            <div class="example-question">设 f(u,v) 具有二阶连续偏导数，函数 g(x,y) = xy − f(x+y, x−y)，求 ∂²g/∂x²、∂²g/∂x∂y、∂²g/∂y²。</div>
+
+            <p><strong>为什么要做这题？</strong>考研真题里"抽象复合函数 + 二阶偏导"几乎是每年都考的<strong>门票题</strong>——做不出它，多元微分这一章就白学了。做完它再去搞条件极值、拉格朗日乘数法，会顺得多。</p>
+
+            <p><span class="section-tag tag-core">🎯 这道题要考什么？</span></p>
+            <p>① <strong>抽象复合函数链式法则</strong>（外层 g 是 (x,y)，里层 f 是 (u,v)，其中 u = x+y, v = x−y）；<br>
+               ② <strong>求高阶偏导</strong>（对已经求出的一阶偏导再求偏导）；<br>
+               ③ <strong>混合偏导相等定理</strong>（f 二阶连续偏导 ⇒ f"<sub>12</sub> = f"<sub>21</sub>，用来化简结果）。</p>
+
+            <p><span class="section-tag tag-tip">🧭 第一步：先认清楚"自变量 vs 中间变量"</span></p>
+            <p>外层 g(x, y)，里层 f(u, v)。其中 <strong>u = x+y</strong>, <strong>v = x−y</strong>。</p>
+            <p>为了书写方便，咱们记：<strong>f'<sub>1</sub> = ∂f/∂u</strong>（对 f 的<strong>第一个</strong>变量求偏导），<strong>f'<sub>2</sub> = ∂f/∂v</strong>（对<strong>第二个</strong>变量求偏导）。注意：f'<sub>1</sub>、f'<sub>2</sub> 仍然是 (u, v) 的函数，再求偏导时还得用链式法则。</p>
+
+            <p><span class="section-tag tag-tip">🧭 第二步：求一阶偏导（链式法则登场）</span></p>
+            <p>对 x 求偏导：∂u/∂x = 1, ∂v/∂x = 1，所以：</p>
+            <div class="formula-box">∂g/∂x = y − [f'<sub>1</sub>·1 + f'<sub>2</sub>·1] = <strong>y − f'<sub>1</sub> − f'<sub>2</sub></strong></div>
+            <p>对 y 求偏导：∂u/∂y = 1, ∂v/∂y = −1（v = x−y 对 y 求偏导为 −1，<strong>这是最常错的符号</strong>），所以：</p>
+            <div class="formula-box">∂g/∂y = x − [f'<sub>1</sub>·1 + f'<sub>2</sub>·(−1)] = <strong>x − f'<sub>1</sub> + f'<sub>2</sub></strong></div>
+
+            <p><span class="section-tag tag-tip">🧭 第三步：求二阶偏导（对一阶偏导再求偏导）</span></p>
+            <p>⚠️ <strong>关键提醒</strong>：f'<sub>1</sub>、f'<sub>2</sub> 仍然是 (u, v) = (x+y, x−y) 的函数，<strong>不是常数</strong>！再求偏导时必须<strong>再用一次链式法则</strong>。</p>
+
+            <p><strong>(1) 求 ∂²g/∂x²</strong>：对 (y − f'<sub>1</sub> − f'<sub>2</sub>) 再对 x 求偏导。</p>
+            <p>∂(f'<sub>1</sub>)/∂x = f"<sub>11</sub>·1 + f"<sub>12</sub>·1 = f"<sub>11</sub> + f"<sub>12</sub></p>
+            <p>∂(f'<sub>2</sub>)/∂x = f"<sub>21</sub>·1 + f"<sub>22</sub>·1 = f"<sub>21</sub> + f"<sub>22</sub></p>
+            <p>所以：</p>
+            <div class="formula-box">∂²g/∂x² = −(f"<sub>11</sub> + f"<sub>12</sub> + f"<sub>21</sub> + f"<sub>22</sub>) = <strong>−f"<sub>11</sub> − 2f"<sub>12</sub> − f"<sub>22</sub></strong></div>
+            <p>最后一步用了<strong>混合偏导相等定理</strong>：因为 f 二阶偏导连续，f"<sub>12</sub> = f"<sub>21</sub>，所以两个交叉项合成 2f"<sub>12</sub>。</p>
+
+            <p><strong>(2) 求 ∂²g/∂x∂y</strong>：对 (y − f'<sub>1</sub> − f'<sub>2</sub>) 先对 y 求偏导。</p>
+            <p>∂(f'<sub>1</sub>)/∂y = f"<sub>11</sub>·1 + f"<sub>12</sub>·(−1) = f"<sub>11</sub> − f"<sub>12</sub></p>
+            <p>∂(f'<sub>2</sub>)/∂y = f"<sub>21</sub>·1 + f"<sub>22</sub>·(−1) = f"<sub>21</sub> − f"<sub>22</sub></p>
+            <p>所以：</p>
+            <div class="formula-box">∂²g/∂x∂y = 1 − (f"<sub>11</sub> − f"<sub>12</sub>) − (f"<sub>21</sub> − f"<sub>22</sub>) = <strong>1 − f"<sub>11</sub> + f"<sub>22</sub></strong></div>
+            <p>中间两项 f"<sub>12</sub> 和 −f"<sub>21</sub> 正好抵消（因为它们相等）。</p>
+
+            <p><strong>(3) 求 ∂²g/∂y²</strong>：对 (x − f'<sub>1</sub> + f'<sub>2</sub>) 再对 y 求偏导。</p>
+            <p>∂(f'<sub>1</sub>)/∂y = f"<sub>11</sub> − f"<sub>12</sub>（和上面一样）</p>
+            <p>∂(f'<sub>2</sub>)/∂y = f"<sub>21</sub> − f"<sub>22</sub>（和上面一样）</p>
+            <p>所以：</p>
+            <div class="formula-box">∂²g/∂y² = −(f"<sub>11</sub> − f"<sub>12</sub>) + (f"<sub>21</sub> − f"<sub>22</sub>) = <strong>−f"<sub>11</sub> + 2f"<sub>12</sub> − f"<sub>22</sub></strong></div>
+
+            <div class="example-hint">
+                <strong>🧠 小白记忆类比（1 个理解 + 1 个记忆）：</strong><br>
+                <strong>① 理解类比</strong>：把 f(u, v) 想象成一家<strong>咖啡店</strong>——u 是拿铁销量，v 是摩卡销量。f'<sub>1</sub> = "拿铁涨 1 杯带来的利润变化"，f'<sub>2</sub> = "摩卡涨 1 杯带来的利润变化"。<strong>f"<sub>12</sub></strong> = "摩卡多卖 1 杯时，拿铁多卖 1 杯带来的<em>额外</em>利润变化"；<strong>f"<sub>21</sub></strong> = "拿铁多卖 1 杯时，摩卡多卖 1 杯带来的<em>额外</em>利润变化"。这两个<strong>物理意义完全相同</strong>（咖啡店就是一个对称的二维利润场），所以它们相等！这正是「混合偏导相等定理」的生活版本。<br>
+                <strong>② 记忆类比</strong>：记住 <strong>"链子套链子"</strong>——求一阶偏导时套一层链式法则（把 x, y 的偏导传到 f），求二阶偏导时<strong>再套一层</strong>（把 x, y 的偏导传到 f'<sub>1</sub>, f'<sub>2</sub>）。一共要套 2 层「链子」，缺一层就漏一半结果。<br><br>
+                <strong>🎯 出题人视角：</strong>这道题是"分层链式法则 + 混合偏导相等定理"的<strong>缝合题</strong>。<strong>他想筛三种能力</strong>：① 能不能正确分辨"自变量 vs 中间变量"（不辨清就乱套）；② 能不能在求二阶偏导时<strong>再次</strong>想到链式法则（最常漏）；③ 记不记得<strong>混合偏导相等定理</strong>可以化简（少了就白丢 1~2 分）。三大能力缺一不可，整道题就是一个"三关卡"。
+            </div>
+        </div>
+
+        <!-- 必背块 -->
+        <div class="must-card">
+            <div class="must-label">📖 必背：抽象复合函数求偏导 · 三步曲</div>
+            <p><strong>三步走：</strong></p>
+            <ol style="padding-left:20px;line-height:2;">
+                <li><strong>认路</strong>：明确谁是自变量 (x, y)，谁是中间变量 (u, v)，并写出 ∂u/∂x、∂u/∂y、∂v/∂x、∂v/∂y 这 4 个数。</li>
+                <li><strong>求一阶偏导</strong>：用链式法则 ∂f/∂x = f'<sub>1</sub>·∂u/∂x + f'<sub>2</sub>·∂v/∂x。</li>
+                <li><strong>求二阶偏导</strong>：对一阶偏导再求偏导，<strong>链式法则每求一次都要重新用</strong>（f'<sub>1</sub>, f'<sub>2</sub> 仍是 (u,v) 的函数）。</li>
+            </ol>
+            <p><strong>关键工具</strong>（必须背下来的两个等式）：</p>
+            <table>
+                <thead><tr><th>名称</th><th>内容</th><th>使用条件</th></tr></thead>
+                <tbody>
+                    <tr><td>链式法则</td><td>∂f/∂x = f'<sub>1</sub>·∂u/∂x + f'<sub>2</sub>·∂v/∂x</td><td>f 可微，u, v 可微</td></tr>
+                    <tr><td>混合偏导相等（Schwarz）</td><td>f"<sub>12</sub> = f"<sub>21</sub></td><td>f 二阶连续偏导</td></tr>
+                </tbody>
+            </table>
+            <p><strong>桥接 ch01：</strong>还记得 ch01 里讲的「极限运算法则」吗？复合函数求偏导本质就是 ch01 极限四则运算 + ch02 导数定义 的组合拳——只不过这次是"多元版"。</p>
+        </div>
+
+        <!-- 小白技巧块（右侧导航会自动收录） -->
+        <div class="tag-float t-tip">
+            <div class="tf-title">抽象复合函数求导 · 漏项预防针</div>
+            <div class="tf-body">
+                <strong>① 先写中间变量</strong>：u = x+y, v = x−y，把 ∂u/∂x, ∂u/∂y, ∂v/∂x, ∂v/∂y 这 4 个数（全是 ±1）写下来再动手；<br>
+                <strong>② f'<sub>1</sub>, f'<sub>2</sub> 仍是 (u,v) 的函数</strong>，再求偏导时<strong>链式法则又要重新用一遍</strong>；<br>
+                <strong>③ 题目说"二阶连续偏导"就要用 f"<sub>12</sub> = f"<sub>21</sub></strong> 化简，是送分项，不化简就丢 1~2 分。
+            </div>
+        </div>
+
+        <!-- 公式卡片 -->
+        <div class="tag-float t-formula">
+            <div class="tf-title">链式法则 · 一图抵十句</div>
+            <div class="tf-body">
+                ∂f/∂x = <strong>f'<sub>1</sub>·∂u/∂x + f'<sub>2</sub>·∂v/∂x</strong>（沿 x 方向）<br>
+                ∂f/∂y = <strong>f'<sub>1</sub>·∂u/∂y + f'<sub>2</sub>·∂v/∂y</strong>（沿 y 方向）<br>
+                ∂(f'<sub>1</sub>)/∂x = <strong>f"<sub>11</sub>·∂u/∂x + f"<sub>12</sub>·∂v/∂x</strong>（再链一次）<br>
+                ∂(f'<sub>1</sub>)/∂y = <strong>f"<sub>11</sub>·∂u/∂y + f"<sub>12</sub>·∂v/∂y</strong>（再链一次）<br>
+                记法：<strong>"下标对下标，链子套链子"</strong>
+            </div>
+        </div>
+
+        <!-- 防粗心 -->
+        <div class="tag-float t-warn">
+            <div class="tf-title">这道题最容易踩的 4 个坑</div>
+            <div class="tf-body">
+                <ul>
+                    <li><strong>坑 1：忘了 f'<sub>1</sub> 还是 (u,v) 的函数</strong> → 求二阶偏导时直接当成常数 → 漏掉链式法则，结果<strong>少一半</strong>。</li>
+                    <li><strong>坑 2：把 ∂v/∂y 算错</strong> → v = x−y，所以 ∂v/∂y = <strong>−1</strong>（很多同学写成 +1）。</li>
+                    <li><strong>坑 3：不化简混合偏导</strong> → 题目给了"二阶连续偏导"，就是让你用 f"<sub>12</sub> = f"<sub>21</sub>，不化简等于白给分数。</li>
+                    <li><strong>坑 4：求导顺序乱</strong> → 因为 f 二阶连续偏导，<strong>求导顺序不影响结果</strong>，建议固定"先 x 后 y"的顺序，避免漏项。</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 应试分点作答模板 -->
+        <div class="tag-float t-strategy">
+            <div class="tf-title">考研答题格式（12 分怎么拿满）</div>
+            <div class="tf-body">
+                ① <strong>写清"中间变量"</strong>（1 分）：u = x+y, v = x−y；<br>
+                ② <strong>写出一阶偏导 ∂g/∂x, ∂g/∂y</strong>（3 分）：必须展示链式法则过程；<br>
+                ③ <strong>写出 ∂²g/∂x²</strong>（3 分）：再次链式法则 + 混合偏导相等化简；<br>
+                ④ <strong>写出 ∂²g/∂x∂y、∂²g/∂y²</strong>（4 分）：同上，化简到最简形式；<br>
+                ⑤ <strong>明确写出"由二阶偏导连续 ⇒ f"<sub>12</sub> = f"<sub>21</sub>"</strong>（1 分）：这是结论性陈述，不能省略。
+            </div>
+        </div>
+
+        <!-- ============ 二元函数极值与条件极值 ============ -->
+        <div class="must-card">
+            <div class="must-label">📖 必背：二元无条件极值</div>
+            <ol style="padding-left:20px;line-height:2;">
+                <li>求 ∂f/∂x = 0，∂f/∂y = 0，解出所有驻点。</li>
+                <li>求二阶偏导：f<sub>xx</sub>、f<sub>yy</sub>、f<sub>xy</sub>。</li>
+                <li>计算判别式 AC − B²（A=f<sub>xx</sub>，C=f<sub>yy</sub>，B=f<sub>xy</sub>）：
+                    <ul>
+                        <li>AC − B² > 0 且 A > 0 → 极小值</li>
+                        <li>AC − B² > 0 且 A < 0 → 极大值</li>
+                        <li>AC − B² &lt; 0 → 不是极值</li>
+                        <li><strong>AC − B² = 0 → 判别式失效，必须额外分析</strong>（沿特殊路径 / Taylor / 定义法）</li>
+                    </ul>
+                </li>
+            </ol>
+        </div>
+
+        <!-- ============ AC-B² 的来历与配方推导 ============ -->
+        <div class="story-card">
+            <div class="story-label">🎓 AC − B² 是谁创造的？为什么偏偏是它？</div>
+            <p><span class="story-emoji">👨‍🏫</span><strong>发明人：Ludwig Otto Hesse（路德维希·奥托·黑塞）</strong></p>
+            <p>19 世纪德国数学家（1811–1874），哥尼斯堡大学教授。他系统研究了多元函数的<strong>二阶偏导数矩阵</strong>，后人把它命名为 <strong>Hessian 矩阵</strong>。对于二元函数 f(x, y)：</p>
+            <div class="formula-box" style="background:#fff;border:1px dashed #5b6fde;font-size:17px;">
+                H = \(\begin{pmatrix} f_{xx} &amp; f_{xy} \\ f_{yx} &amp; f_{yy} \end{pmatrix} = \begin{pmatrix} A &amp; B \\ B &amp; C \end{pmatrix}\)，其行列式 \(\det(H) = AC - B^2\)
+            </div>
+            <p>所以"<strong>AC − B²</strong>"就是 <strong>Hessian 矩阵的行列式</strong>，也叫"<strong>黑塞判别式</strong>"（Hessian Discriminant）。</p>
+
+            <p><span class="story-emoji">🧪</span><strong>为什么偏偏是它？（配方推导）</strong></p>
+            <p>在驻点 (x₀, y₀) 处用泰勒展开（ch01 学过的工具），f 近似为：</p>
+            <div class="formula-box" style="background:#fff;border:1px dashed #5b6fde;">
+                f(x₀+h, y₀+k) ≈ f(x₀, y₀) + \(\tfrac{1}{2}\big[\underbrace{Ah^2 + 2Bhk + Ck^2}_{\text{关键二次型}Q(h,k)}\big]\)
+            </div>
+            <p>驻点处一阶偏导 = 0 → 一阶项消失 → 留下的就是<strong>二次型 Q</strong>。Q 决定驻点是山谷/山顶/马鞍。</p>
+            <p><strong>把 Q 对 h 配方</strong>（关键一步！）：</p>
+            <div class="formula-box" style="background:#fff;border:1px dashed #c0392b;font-size:17px;">
+                Q(h,k) = A\(\!\left(h + \dfrac{Bk}{A}\right)^{\!2}\) + \(\dfrac{AC - B^2}{A}\,k^2\)
+            </div>
+            <p>配方后冒出<strong>两个平方项</strong>，符号各管各的：</p>
+            <ul>
+                <li><strong>第一项</strong> A(h+Bk/A)² —— 平方，符号由 <strong>A</strong> 决定</li>
+                <li><strong>第二项</strong> (AC-B²)/A · k² —— 平方，符号由 <strong>AC − B²</strong> 决定（k² 永远 ≥ 0）</li>
+            </ul>
+            <p><strong>两类符号的"配合"决定了地形：</strong></p>
+            <table style="width:100%;font-size:13px;border-collapse:collapse;margin:8px 0;background:#fff;">
+                <thead style="background:#eaf2fb;">
+                    <tr><th style="padding:8px;border:1px solid #cbd5e0;">AC − B²</th><th style="padding:8px;border:1px solid #cbd5e0;">A</th><th style="padding:8px;border:1px solid #cbd5e0;">Q 的符号</th><th style="padding:8px;border:1px solid #cbd5e0;">几何形状</th><th style="padding:8px;border:1px solid #cbd5e0;">结论</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td style="padding:6px;border:1px solid #cbd5e0;text-align:center;color:#1e8449;font-weight:700;">&gt; 0</td><td style="padding:6px;border:1px solid #cbd5e0;text-align:center;color:#1e8449;font-weight:700;">&gt; 0</td><td style="padding:6px;border:1px solid #cbd5e0;">两项均 ≥ 0 → Q ≥ 0</td><td style="padding:6px;border:1px solid #cbd5e0;">🕳️ 山谷</td><td style="padding:6px;border:1px solid #cbd5e0;"><strong>极小值</strong></td></tr>
+                    <tr><td style="padding:6px;border:1px solid #cbd5e0;text-align:center;color:#1e8449;font-weight:700;">&gt; 0</td><td style="padding:6px;border:1px solid #cbd5e0;text-align:center;color:#c0392b;font-weight:700;">&lt; 0</td><td style="padding:6px;border:1px solid #cbd5e0;">两项均 ≤ 0 → Q ≤ 0</td><td style="padding:6px;border:1px solid #cbd5e0;">⛰️ 山顶</td><td style="padding:6px;border:1px solid #cbd5e0;"><strong>极大值</strong></td></tr>
+                    <tr><td style="padding:6px;border:1px solid #cbd5e0;text-align:center;color:#c0392b;font-weight:700;">&lt; 0</td><td style="padding:6px;border:1px solid #cbd5e0;text-align:center;">任意</td><td style="padding:6px;border:1px solid #cbd5e0;">两项异号 → Q 可正可负</td><td style="padding:6px;border:1px solid #cbd5e0;">🐴 马鞍</td><td style="padding:6px;border:1px solid #cbd5e0;"><strong>不是极值</strong></td></tr>
+                    <tr><td style="padding:6px;border:1px solid #cbd5e0;text-align:center;color:#d68910;font-weight:700;">= 0</td><td style="padding:6px;border:1px solid #cbd5e0;text-align:center;">任意</td><td style="padding:6px;border:1px solid #cbd5e0;">配方失效</td><td style="padding:6px;border:1px solid #cbd5e0;">❓ 退化</td><td style="padding:6px;border:1px solid #cbd5e0;color:#c0392b;"><strong>判别式失效</strong>，要额外分析</td></tr>
+                </tbody>
+            </table>
+
+            <p><span class="story-emoji">🔗</span><strong>推广到 n 元（了解即可）</strong></p>
+            <p>n 元函数的 Hessian 是 n×n 对称矩阵，<strong>Sylvester 判据</strong>给出：</p>
+            <ul>
+                <li>顺序主子式全 &gt; 0 → 正定 → 极小</li>
+                <li>顺序主子式符号交替 → 负定 → 极大</li>
+                <li>有主子式 ≤ 0 → 不定号 → 鞍点</li>
+            </ul>
+            <p>二元情形下，2 个顺序主子式是 <strong>A 和 AC−B²</strong>，正好退化成我们这个判别式。<strong>AC−B² 其实是 Sylvester 判据在 n=2 时的特例。</strong></p>
+
+            <p><span class="story-emoji">🎯</span><strong>口诀速记</strong></p>
+            <p style="background:#fff8e1;padding:10px;border-left:3px solid #f39c12;font-style:italic;">
+                "<strong>驻点处展二次型，配方分两半；<br>
+                一半看 A 决定上下，另一半看 AC−B² 决定方向；<br>
+                同号是极值，异号是马鞍，等于零要换判。</strong>"
+            </p>
+        </div>
+
+        <!-- 公式卡片 · 配方公式（右侧导航自动收录） -->
+        <div class="tag-float t-formula">
+            <div class="tf-title">AC − B² 配方公式（核心公式卡）</div>
+            <div class="tf-body">
+                在驻点 (x₀, y₀) 处展开 f：\(f \approx f_0 + \tfrac{1}{2}(Ah^2 + 2Bhk + Ck^2)\)<br>
+                对 h 配方：\(Q(h,k) = A\!\left(h + \dfrac{Bk}{A}\right)^{\!2} + \dfrac{AC-B^2}{A}\,k^2\)<br>
+                <strong>结论</strong>：两个平方项 → 符号组合决定地形。<br>
+                记法：<strong>"下标对下标，配方看两端"</strong>
+            </div>
+        </div>
+
+        <!-- 防粗心 · 2022 真题坑（右侧导航自动收录） -->
+        <div class="tag-float t-warn">
+            <div class="tf-title">AC − B² 的 2 个真题坑（2022 必背）</div>
+            <div class="tf-body">
+                <ul>
+                    <li><strong>坑 1：AC − B² = 0 不是"不是极值"！</strong><br>2022 数三 (0,0) 处 AC−B² = 0 → 判别式失效。<br>小白直接判"不是极值" → 丢 1~2 分。<br><strong>正确做法</strong>：沿 y=0 等路径分析（f(x,0)=x⁵ 有正有负 → 确认不是极值）。</li>
+                    <li><strong>坑 2：AC − B² &lt; 0 不是"极值"！</strong><br>2022 数二 (-e⁻¹, (2k+1)π) 处 AC−B² = -e⁻² &lt; 0 → <strong>鞍点，不是极值</strong>。<br>小白易混"AC−B² 为负 = 极大值" → 错！<br><strong>AC−B² 符号本身不能单独决定</strong>，要看和 A 的组合。</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 解法总结 · 三类情形（右侧导航自动收录） -->
+        <div class="tag-float t-summary">
+            <div class="tf-title">4 类驻点判别（小白救命卡）</div>
+            <div class="tf-body">
+                ① <strong>山谷</strong>：AC−B² &gt; 0 + A &gt; 0 → 极小值，记得代回去求 f 值；<br>
+                ② <strong>山顶</strong>：AC−B² &gt; 0 + A &lt; 0 → 极大值；<br>
+                ③ <strong>马鞍</strong>：AC−B² &lt; 0 → 不是极值（一个方向上山，另一个下山）；<br>
+                ④ <strong>退化</strong>：AC−B² = 0 → 判别式失效，<strong>必须额外分析</strong>（沿特殊路径 / Taylor 展开 / 定义法）。
+            </div>
+        </div>
+
+        <div class="example-card">
+            <div class="example-label">📝 例题 6（条件极值）</div>
+            <div class="example-question">在 x² + y² = 1 的条件下，求 f = xy 的最大值。</div>
+            <div class="example-hint">用拉格朗日乘数法：L = xy + λ(1 − x² − y²)。∂L/∂x = y − 2λx = 0，∂L/∂y = x − 2λy = 0。解得 x = ±y，代入约束条件得 x = ±√2/2，y = ±√2/2，f<sub>max</sub> = <strong>1/2</strong>。</div>
+        </div>
+    <!-- ====== P3：历年真题与考点分析 ====== -->
+<div class="part-divider p3" id="exam-ch02">
+  <div class="pd-num">3</div>
+  <div class="pd-text">
+    <div class="pd-name">真题与应试策略</div>
+    <div class="pd-desc">本模块整合本章高频真题，按「考什么 → 怎么答 → 易错点」拆解（P1+P2 知识点综合考）</div>
+  </div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 真题 1 | 2019 数一/二/三 | 解答题 · 12分</div>
+  <div class="example-question">设函数 \(f(x)=\begin{cases}x^{2x}, & x&gt;0 \\ x+2, & x\le 0\end{cases}\)，求 \(f(x)\) 的极值。</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>① 分段函数极值需分段讨论；② 幂指函数求导（对数求导法）；③ 不可导点也可能是极值点</p>
+  <p><span class="section-tag tag-tip">🧭 详细解析（小白逐步版）</span></p>
+  <p>**分段函数极值**：① \(x&gt;0\)：\(f(x)=e^{2x\ln x}\)，\(f\prime(x)=x^{2x}(2\ln x+2)\)，令 \(f\prime=0\) 得 \(\ln x=-1\)，即 \(x=1/e\)，\(f(1/e)=e^{-2/e}\)；② \(x=0\)：左右极限 1 和 2；③ \(x&lt;0\)：\(f\prime(x)=1&gt;0\) 单调增。综合得极小值 \(f(1/e)=e^{-2/e}\)。</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① \(x&gt;0\) 求导 (4分)；② 极值点判断 (3分)；③ 不可导点讨论 (3分)；④ 最终答案 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>⚠️ 忘了讨论 \(x=0\) 处；⚠️ 幂指函数直接套公式错；⚠️ 把极值点写成 \(x=1\) 而非 \(1/e\)</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点会在本章<strong>其他例题</strong>反复出现。建议：做完本题后回头重做一遍本章前面的练习题，强化「识别信号 → 套公式」的肌肉记忆。</p>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 真题 2 | 2021 数一 | 解答题 · 12分</div>
+  <div class="example-question">设 \(f(x)\) 在 \([0,1]\) 上连续，在 \((0,1)\) 内二阶可导，且 \(\int_0^1 f(x)\,dx=0,\) \(f(0)+f(1)=0\)。证明：存在 \(\xi\in(0,1)\) 使 \(f\prime\prime(\xi)=f(\xi)\)。</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>① 辅助函数构造（核心难点）；② 罗尔定理的使用；③ 复合函数求导</p>
+  <p><span class="section-tag tag-tip">🧭 详细解析（小白逐步版）</span></p>
+  <p>**辅助函数**：构造 \(F(x)=f\prime(x)\sin x - f(x)\cos x\)，求导 \(F\prime=f\prime\prime\sin x + f\prime\cos x - f\prime\cos x + f\sin x = (f\prime\prime+f)\sin x\)。验证 \(F(0)=-f(0),F(1)=f\prime(1)\sin 1\)。由 \(f(0)+f(1)=0\) 知 \(F(0)=-f(0)=f(1)\)，结合 \(F(1)=f\prime(1)\sin 1\)，需 \(f\prime(1)\sin 1=-f(0)\)，不一定成立。**更好构造**：\(G(x)=f\prime(x)\sin x + f(x)\cos x\)，\(G\prime=(f\prime\prime+f)\sin x\)。</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 构造辅助函数 (5分)；② 验证端点函数值相等 (3分)；③ 应用罗尔定理 (3分)；④ 结论 (1分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>⚠️ 辅助函数构造错误是最常见丢分点；⚠️ 没验证端点条件；⚠️ 罗尔定理的三个条件缺一不可</p>
+  <p><span class="section-tag cosy=cos(kπ)-summary">🔗 知识点桥接</span></p>
+  <p>本题考点会在本章<strong>其他例题</strong>反复出现。建议：做完本题后回头重做一遍本章前面的练习题，强化「识别信号 → 套公式」的肌肉记忆。</p>
+</div>
+
+<!-- ============================================ 真题 3：2022 数二 · 无条件极值 ============================================ -->
+<div class="example-card">
+  <div class="example-label">📝 真题 3 | 2022 数二 | 解答题 · 12分</div>
+  <div class="example-question">求函数 \(f(x,y)=x e^{\cos y}+\dfrac{x^2}{2}\) 的极值。</div>
+
+  <p><strong>为什么要做这题？</strong>"x 配 x²"+"三角指数"是 2022 之后真题<strong>最常考</strong>的二元极值组合 —— 一个等式解 x，一个等式挑出三角零点（sin y = 0），套路固定，背下来 5 分钟拿满 12 分。</p>
+
+  <p><span class="section-tag tag-core">🎯 出题人考察点（必背三件套）</span></p>
+  <p>① 偏导数正确求（含链式法则 \(\frac{d}{dy}e^{\cos y}=-e^{\cos y}\sin y\)）；② 解<strong>方程组</strong>而不是解单个方程；③ AC−B² 判别 + 求极值（注意 cos y 的周期性）。</p>
+
+  <p><span class="section-tag tag-tip">🧭 第一步：求一阶偏导（小白挨个敲）</span></p>
+  <p>把 f 拆成两块：<strong>第一块</strong> \(x\cdot e^{\cos y}\)，<strong>第二块</strong> \(\dfrac{x^2}{2}\)，分别对 x、y 求偏导再相加。</p>
+  <div class="formula-box">\(f_x = e^{\cos y}+x\)（y 当常数，\(e^{\cos y}\) 整体看成一个"系数"）</div>
+  <div class="formula-box">\(f_y = x\cdot e^{\cos y}\cdot (-\sin y) = -x e^{\cos y}\sin y\)（x 当常数，对 y 求导要套链式：\(\frac{d}{dy}e^{\cos y}=-e^{\cos y}\sin y\)）</div>
+
+  <p><span class="section-tag tag-tip">🧭 第二步：解驻点方程组（核心难点）</span></p>
+  <p>令 \(f_x=0\)：<strong>\(x=-e^{\cos y}\)</strong>（因为 \(e^{\cos y}>0\)，x 必为负数）</p>
+  <p>令 \(f_y=0\)：<strong>\(-x e^{\cos y}\sin y=0\)</strong>，因为 \(e^{\cos y}>0\)，必有 \(\sin y=0\)</p>
+  <p>所以 <strong>\(y=k\pi\)</strong>，于是 \(\cos y = \cos(k\pi)=(-1)^k\)。</p>
+
+  <!-- 🎨 可视化辅助：sin 和 cos 在 kπ 处的取值图 -->
+  <div class="story-card timeline-svg-wrap" style="background:linear-gradient(135deg,#fafbff 0%,#f0f4ff 100%);border-left:4px solid #5b6fde;">
+    <div class="story-label">🎨 sin/cos 在 y = kπ 处的取值图（小白速记卡）</div>
+    <svg viewBox="0 0 1200 420" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;">
+      <defs>
+        <linearGradient id="sinGrad" x1="0" x2="1" y1="0" y2="0">
+          <stop offset="0%" stop-color="#e74c3c" stop-opacity="0.5"/>
+          <stop offset="100%" stop-color="#c0392b" stop-opacity="1"/>
+        </linearGradient>
+        <linearGradient id="cosGrad" x1="0" x2="1" y1="0" y2="0">
+          <stop offset="0%" stop-color="#3498db" stop-opacity="0.5"/>
+          <stop offset="100%" stop-color="#2874a6" stop-opacity="1"/>
+        </linearGradient>
+      </defs>
+
+      <!-- 背景网格 -->
+      <rect x="60" y="20" width="1100" height="180" fill="#fff" rx="6"/>
+      <rect x="60" y="220" width="1100" height="180" fill="#fff" rx="6"/>
+
+      <!-- ========== 上半部分：sin x 波形 ========== -->
+      <text x="80" y="45" font-size="14" fill="#c0392b" font-weight="700">sin y 在 y = kπ 处恒为 0（红×号标记）</text>
+
+      <!-- x 轴 -->
+      <line x1="100" y1="120" x2="1140" y2="120" stroke="#333" stroke-width="1.5"/>
+      <line x1="100" y1="20"  x2="100"   y2="220" stroke="#333" stroke-width="1.5"/>
+
+      <!-- 刻度标签 -->
+      <g font-family="-apple-system,sans-serif" font-size="11" fill="#555" text-anchor="middle">
+        <text x="120"  y="140">-2π</text>
+        <text x="240"  y="140">-3π/2</text>
+        <text x="360"  y="140">-π</text>
+        <text x="480"  y="140">-π/2</text>
+        <text x="600"  y="140">0</text>
+        <text x="720"  y="140">π/2</text>
+        <text x="840"  y="140">π</text>
+        <text x="960"  y="140">3π/2</text>
+        <text x="1080" y="140">2π</text>
+      </g>
+
+      <!-- sin 波形（用 path 画） -->
+      <path d="M 120,120 Q 180,40 240,120 T 360,120 T 480,120 T 600,120 T 720,120 T 840,120 T 960,120 T 1080,120"
+            stroke="url(#sinGrad)" stroke-width="3" fill="none"/>
+
+      <!-- sin 零点标红× -->
+      <g stroke="#c0392b" stroke-width="2.5" fill="none">
+        <line x1="120"  y1="115" x2="120"  y2="125"/><line x1="115"  y1="120" x2="125"  y2="120"/>
+        <line x1="360"  y1="115" x2="360"  y2="125"/><line x1="355"  y1="120" x2="365"  y2="120"/>
+        <line x1="600"  y1="115" x2="600"  y2="125"/><line x1="595"  y1="120" x2="605"  y2="120"/>
+        <line x1="840"  y1="115" x2="840"  y2="125"/><line x1="835"  y1="120" x2="845"  y2="120"/>
+        <line x1="1080" y1="115" x2="1080" y2="125"/><line x1="1075" y1="120" x2="1085" y2="120"/>
+      </g>
+
+      <!-- sin 零点标签 -->
+      <g font-family="-apple-system,sans-serif" font-size="11" fill="#c0392b" font-weight="700" text-anchor="middle">
+        <text x="120"  y="105">0</text>
+        <text x="360"  y="105">0</text>
+        <text x="600"  y="105">0 ← y=0</text>
+        <text x="840"  y="105">0</text>
+        <text x="1080" y="105">0</text>
+      </g>
+
+      <!-- ========== 下半部分：cos x 波形 ========== -->
+      <text x="80" y="245" font-size="14" fill="#2874a6" font-weight="700">cos y 在 y = kπ 处取 ±1 交替（蓝圆点标记）</text>
+
+      <!-- x 轴 -->
+      <line x1="100" y1="320" x2="1140" y2="320" stroke="#333" stroke-width="1.5"/>
+      <line x1="100" y1="220" x2="100"   y2="420" stroke="#333" stroke-width="1.5"/>
+
+      <!-- y=1 虚线 -->
+      <line x1="100" y1="240" x2="1140" y2="240" stroke="#2874a6" stroke-width="1" stroke-dasharray="4 4" opacity="0.5"/>
+      <text x="108" y="237" font-size="11" fill="#2874a6">+1</text>
+      <!-- y=-1 虚线 -->
+      <line x1="100" y1="400" x2="1140" y2="400" stroke="#2874a6" stroke-width="1" stroke-dasharray="4 4" opacity="0.5"/>
+      <text x="108" y="397" font-size="11" fill="#2874a6">−1</text>
+
+      <!-- 刻度标签 -->
+      <g font-family="-apple-system,sans-serif" font-size="11" fill="#555" text-anchor="middle">
+        <text x="120"  y="340">-2π</text>
+        <text x="360"  y="340">-π</text>
+        <text x="600"  y="340">0</text>
+        <text x="840"  y="340">π</text>
+        <text x="1080" y="340">2π</text>
+      </g>
+
+      <!-- cos 波形（从 240 开始，再降到 400，再上来） -->
+      <path d="M 120,240 Q 240,240 360,400 Q 480,400 600,240 Q 720,240 840,400 Q 960,400 1080,240"
+            stroke="url(#cosGrad)" stroke-width="3" fill="none"/>
+
+      <!-- cos 在 kπ 处的取值点（蓝实心圆 + 数值） -->
+      <g>
+        <!-- y=-2π: cos=1 -->
+        <circle cx="120"  cy="240" r="6" fill="#2874a6" stroke="#fff" stroke-width="2"/>
+        <text x="120"  y="225" font-size="13" fill="#2874a6" font-weight="700" text-anchor="middle">+1</text>
+
+        <!-- y=-π: cos=-1 -->
+        <circle cx="360"  cy="400" r="6" fill="#2874a6" stroke="#fff" stroke-width="2"/>
+        <text x="360"  y="418" font-size="13" fill="#2874a6" font-weight="700" text-anchor="middle">−1</text>
+
+        <!-- y=0: cos=1 -->
+        <circle cx="600"  cy="240" r="6" fill="#2874a6" stroke="#fff" stroke-width="2"/>
+        <text x="600"  y="225" font-size="13" fill="#2874a6" font-weight="700" text-anchor="middle">+1 ← k=偶</text>
+
+        <!-- y=π: cos=-1 -->
+        <circle cx="840"  cy="400" r="6" fill="#2874a6" stroke="#fff" stroke-width="2"/>
+        <text x="840"  y="418" font-size="13" fill="#2874a6" font-weight="700" text-anchor="middle">−1 ← k=奇</text>
+
+        <!-- y=2π: cos=1 -->
+        <circle cx="1080" cy="240" r="6" fill="#2874a6" stroke="#fff" stroke-width="2"/>
+        <text x="1080" y="225" font-size="13" fill="#2874a6" font-weight="700" text-anchor="middle">+1</text>
+      </g>
+
+      <!-- 分类箭头说明 -->
+      <g font-family="-apple-system,sans-serif" font-size="12" fill="#16a085" font-weight="700">
+        <text x="600"  y="278" text-anchor="middle">↑ k 偶数 → cos y = +1 → 驻点 (-e, 2kπ)</text>
+        <text x="840"  y="378" text-anchor="middle">↑ k 奇数 → cos y = −1 → 驻点 (-e⁻¹, (2k+1)π)</text>
+      </g>
+    </svg>
+    <p style="text-align:center;font-size:13px;color:#666;margin-top:8px;">
+      <strong>速记口诀：</strong>"<span style="color:#c0392b">sin 撞零</span>，<span style="color:#2874a6">cos 翻 ±1</span>" —— k 每走过 1，cos 就翻一次号。
+    </p>
+  </div>
+
+  <p>把 \(y=k\pi\) 代回第一个等式：\(x=-e^{(-1)^k}\)。分类讨论：</p>
+  <ul>
+    <li><strong>k 是偶数</strong>（\(y=0,\pm 2\pi,\pm 4\pi,\dots\)）：\(\cos y=1\)，\(x=-e\)，驻点 \((-e, 2k\pi)\)</li>
+    <li><strong>k 是奇数</strong>（\(y=\pm\pi,\pm 3\pi,\dots\)）：\(\cos y=-1\)，\(x=-e^{-1}\)，驻点 \((-e^{-1}, (2k+1)\pi)\)</li>
+  </ul>
+  <p>⚠️ 小白易错：以为"驻点只有 1 个"。其实 y 有无穷多解（cos y 周期性），但<strong>判别式结果按 k 分类相同</strong>，只需算两类代表点。</p>
+
+  <p><span class="section-tag tag-tip">🧭 第三步：求二阶偏导</span></p>
+  <p>这一题二阶偏导里 A=1 是固定的，C 看着吓人但<strong>驻点上 sin y=0 → 大幅化简</strong>。</p>
+  <div class="formula-box">\(A = f_{xx} = 1\)</div>
+  <div class="formula-box">\(B = f_{xy} = -e^{\cos y}\sin y\)（驻点上 = 0）</div>
+  <div class="formula-box">\(C = f_{yy} = -x e^{\cos y}(\cos y-\sin^2 y)\)（驻点上 \(\sin y=0\)，化简为 \(-x e^{\cos y}\cos y\)）</div>
+
+  <p><span class="section-tag tag-tip">🧭 第四步：AC−B² 判别 + 求极值</span></p>
+
+  <p><strong>驻点 1：\((-e, 2k\pi)\)</strong>（k 为偶数，\(\cos y=1\)）</p>
+  <ul>
+    <li>\(A=1\)，\(B=0\)，\(C = -(-e)\cdot e^1 \cdot 1 = e^2\)</li>
+    <li>\(AC-B^2 = e^2 > 0\) 且 \(A>0\) → <strong>极小值</strong></li>
+    <li>极小值 = \(f(-e, 2k\pi) = (-e)\cdot e^{1}+\dfrac{(-e)^2}{2}=-e^2+\dfrac{e^2}{2}=\boxed{-\dfrac{e^2}{2}}\)</li>
+  </ul>
+
+  <p><strong>驻点 2：\((-e^{-1}, (2k+1)\pi)\)</strong>（k 为奇数，\(\cos y=-1\)）</p>
+  <ul>
+    <li>\(A=1\)，\(B=0\)，\(C = -(-e^{-1})\cdot e^{-1}\cdot(-1) = -e^{-2}\)</li>
+    <li>\(AC-B^2 = 1\cdot(-e^{-2}) = -e^{-2} < 0\) → <strong>不是极值</strong>（鞍点）</li>
+  </ul>
+
+  <p><strong>🎯 最终答案：</strong>驻点 \((-e, 2k\pi)\)，\(k\in\mathbb{Z}\) 是<strong>极小值点</strong>，极小值 \(=-\dfrac{e^2}{2}\)；驻点 \((-e^{-1}, (2k+1)\pi)\) 不是极值；<strong>无极大值</strong>。</p>
+
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 一阶偏导正确（特别是 f_y 的链式）(4分)；② 解方程组得到驻点（注意 cos y 周期性、k 分类）(3分)；③ 二阶偏导正确 (2分)；④ AC−B² 判别 + 排除非极值 (2分)；⑤ 求出极值 (1分)。</p>
+
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~3 分）</span></p>
+  <p>⚠️ f_y 的链式求导漏掉 \(-\sin y\)（最常错！）；⚠️ 只解出 y = 0 这一个，漏掉 y = π 等；⚠️ 没按 k 分类讨论；⚠️ 把鞍点 \((-e^{-1}, (2k+1)\pi)\) 当成极值点（<strong>这是 2022 数二最容易丢分的地方</strong>）。</p>
+
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>这题是 P2「判别式 AC−B²」的经典应用。还记得 P2 必背的判别规则吗？AC−B² &gt; 0 + A &gt; 0 → 极小值；AC−B² &lt; 0 → <strong>鞍点，不是极值</strong>（这条小白最爱忘！）。本题 A 恒等于 1，所以只需看 C 的正负。</p>
+
+  <div class="example-hint">
+    <strong>🧠 小白记忆类比：</strong>把 f 想象成"沙漠里的温度场"——
+    <br>x = -e^(cos y) 是"温度等高线在每个 y 处必须满足的位置"，sin y = 0 是"z 轴方向上的冷热分界线"。每个 kπ 都是一条等温线，所以驻点有无穷多个（cos y 周期性），但每个驻点的"地形"不同：(-e, 2kπ) 是山谷（极小），(-e⁻¹, (2k+1)π) 是马鞍（不是极值）。
+    <br><br>
+    <strong>🎯 出题人视角：</strong>这道题是 2022 数二的"送分题"——套路固定（链式 + 周期性 + AC−B²），出题人<strong>想筛</strong>：① 链式求导的扎实度（链子套对没？）；② 周期性带来的多解意识（漏掉 y=π 就丢 3 分）；③ AC−B² 判别的<strong>反向</strong>（排除鞍点）；<strong>他不想要的是</strong>"只会套公式、看到 sin y = 0 就懵、看到 AC−B² &lt; 0 也判极值的小白"。
+  </div>
+</div>
+
+<!-- ============================================ 真题 4：2022 数三 · 高次多项式极值（AC−B²=0 边界情形）============ -->
+<div class="example-card">
+  <div class="example-label">📝 真题 4 | 2022 数三 | 解答题 · 12分</div>
+  <div class="example-question">求函数 \(f(x,y)=(y-x^2)(y-x^3)\) 的极值。</div>
+
+  <p><strong>为什么要做这题？</strong>这是 2022 数三的"压轴级"二元极值 —— <strong>AC−B² = 0 的边界情形</strong>（判别式失效）+ 多元多项式因式分解 + 解<strong>联立方程组</strong>的代数功底。三关卡全过才拿满分。</p>
+
+  <p><span class="section-tag tag-core">🎯 出题人考察点（三关卡）</span></p>
+  <p>① 多元函数求偏导（带 x²、x³ 项）；② 解<strong>二元方程组</strong>（不是解单个方程！要联立）；③ AC−B² = 0 时的<strong>边界情形处理</strong>（这关最坑，判别式失效）。</p>
+
+  <p><span class="section-tag tag-tip">🧭 第一步：展开 + 求一阶偏导（小白要慢）</span></p>
+  <p>先把 f 展开（避免求偏导时漏项）：</p>
+  <div class="formula-box">\(f = y^2 - x^2 y - x^3 y + x^5\)</div>
+  <p>再分别对 x、y 求偏导：</p>
+  <div class="formula-box">\(f_x = -2xy - 3x^2 y + 5x^4 = 5x^4 - 2xy(1+\frac{3x}{2})\)（简化：\(= 5x^4 - 2xy - 3x^2y\)）</div>
+  <div class="formula-box">\(f_y = 2y - x^2 - x^3\)</div>
+
+  <p><span class="section-tag tag-tip">🧭 第二步：解驻点方程组（核心难点！）</span></p>
+  <p>从最简单的 \(f_y=0\) 入手：</p>
+  <div class="formula-box">\(2y = x^2 + x^3 = x^2(1+x) \Rightarrow y = \dfrac{x^2(1+x)}{2}\)</div>
+  <p>把这个 y 代回 \(f_x=0\)：</p>
+  <div class="formula-box">\(f_x = -2x(y-x^3) - 3x^2(y-x^2) = -x[2(y-x^3) + 3x(y-x^2)]\)</div>
+  <p>分两种情况：</p>
+  <ul>
+    <li><strong>情况 1：x = 0</strong> → 代入 y 公式得 \(y=0\)，驻点 \((0, 0)\)</li>
+    <li><strong>情况 2：\(2(y-x^3) + 3x(y-x^2) = 0\)</strong> → 展开：\(2y + 3xy = 5x^3\)，即 \(y(2+3x) = 5x^3\)，所以 \(y = \dfrac{5x^3}{2+3x}\)</li>
+  </ul>
+  <p>联立两种情况下的 y：</p>
+  <div class="formula-box">\(\dfrac{5x^3}{2+3x} = \dfrac{x^2(1+x)}{2}\)，两边乘 \(2(2+3x)\) 并除以 \(x^2\)（x≠0）：\(10x = (1+x)(2+3x)\)</div>
+  <p>展开：\(10x = 2 + 5x + 3x^2\)，整理：\(3x^2 - 5x + 2 = 0\)，因式分解：\((3x-2)(x-1) = 0\)</p>
+  <p>解得 \(x = 1\) 或 \(x = \dfrac{2}{3}\)。代回 y 公式：</p>
+  <ul>
+    <li>\(x=1\)：\(y = \dfrac{1 \cdot 2}{2} = 1\)，驻点 \((1, 1)\)</li>
+    <li>\(x=\dfrac{2}{3}\)：\(y = \dfrac{(4/9) \cdot (5/3)}{2} = \dfrac{10}{27}\)，驻点 \((\dfrac{2}{3}, \dfrac{10}{27})\)</li>
+  </ul>
+  <p>共 3 个驻点：\((0, 0)\)、\((1, 1)\)、\((\dfrac{2}{3}, \dfrac{10}{27})\)。</p>
+
+  <p><span class="section-tag tag-tip">🧭 第三步：求二阶偏导（机械活，但要稳）</span></p>
+  <div class="formula-box">\(A = f_{xx} = 20x^3 - 2y - 6xy\)（对 f_x = 5x⁴ - 2xy - 3x²y 求 x 偏导）</div>
+  <div class="formula-box">\(B = f_{xy} = -2x - 3x^2\)（对 f_x 求 y 偏导）</div>
+  <div class="formula-box">\(C = f_{yy} = 2\)</div>
+
+  <p><span class="section-tag tag-tip">🧭 第四步：AC−B² 判别（三个驻点逐一过堂）</span></p>
+
+  <p><strong>驻点 1：(0, 0)</strong></p>
+  <ul>
+    <li>\(A = 0, B = 0, C = 2\)</li>
+    <li>\(AC - B^2 = 0 - 0 = 0\)</li>
+    <li>❗ <strong>判别式 = 0，AC−B² 失效！</strong>需要额外判断（最常考也最容易出错）</li>
+  </ul>
+  <p><strong>怎么破？</strong>用"沿特殊路径分析"。</p>
+  <ul>
+    <li>沿 \(y = 0\)：\(f(x, 0) = -x^2 \cdot (-x^3) = x^5\)。当 x &gt; 0 时 f &gt; 0；当 x &lt; 0 时 f &lt; 0 → <strong>有正有负，不是极值</strong></li>
+    <li>沿 \(y = x^2\)：\(f(x, x^2) = 0\)</li>
+    <li>沿 \(y = x^3\)：\(f(x, x^3) = 0\)</li>
+  </ul>
+  <p>判定：<strong>(0, 0) 不是极值点</strong>。</p>
+
+  <p><strong>驻点 2：(1, 1)</strong></p>
+  <ul>
+    <li>\(A = 20 - 2 - 6 = 12, B = -2 - 3 = -5, C = 2\)</li>
+    <li>\(AC - B^2 = 24 - 25 = -1 < 0\)</li>
+    <li>判定：<strong>不是极值</strong>（AC−B² &lt; 0 是鞍点）</li>
+  </ul>
+
+  <p><strong>驻点 3：\((\dfrac{2}{3}, \dfrac{10}{27})\)</strong></p>
+  <ul>
+    <li>\(A = 20 \cdot \dfrac{8}{27} - 2 \cdot \dfrac{10}{27} - 6 \cdot \dfrac{2}{3} \cdot \dfrac{10}{27} = \dfrac{160 - 20 - 40}{27} = \dfrac{100}{27}\)</li>
+    <li>\(B = -\dfrac{4}{3} - \dfrac{4}{3} = -\dfrac{8}{3}\)</li>
+    <li>\(C = 2\)</li>
+    <li>\(AC - B^2 = \dfrac{200}{27} - \dfrac{64}{9} = \dfrac{200}{27} - \dfrac{192}{27} = \dfrac{8}{27} > 0\)</li>
+    <li>\(A > 0\) → <strong>极小值</strong></li>
+    <li>极小值 = \(f(\dfrac{2}{3}, \dfrac{10}{27}) = (\dfrac{10}{27} - \dfrac{4}{9})(\dfrac{10}{27} - \dfrac{8}{27}) = (-\dfrac{2}{27}) \cdot \dfrac{2}{27} = -\dfrac{4}{729}\)</li>
+  </ul>
+
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 一阶偏导正确（4分）；② 解联立方程组得到 3 个驻点（4分）；③ 二阶偏导正确（2分）；④ AC−B² 判别（1分）；⑤ (0,0) 边界情形判断（额外 1 分，2022 真题最容易丢）；⑥ 求极值（0.5 分）。</p>
+
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~3 分）</span></p>
+  <p>⚠️ <strong>(0, 0) 处 AC−B² = 0 直接判"不是极值"</strong>（错！必须特殊分析！）；⚠️ 联立方程组漏解（漏掉 x=0 这一支）；⚠️ A 计算时漏掉 -6xy 项；⚠️ 极小值算错（y = 10/27 时 x² = 4/9 ≠ 4/27，注意 x² = (2/3)² = 4/9）。</p>
+
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>这题是 P2「判别式 AC−B²」的<strong>进阶题</strong>——多了一个"判别式 = 0 怎么办"的考点。这部分要回去看 P2 的"二元无条件极值"必背卡：如果 AC−B² = 0，需要换方法判断（沿特殊路径 / Taylor 展开 / 定义法）。</p>
+
+  <div class="example-hint">
+    <strong>🧠 小白记忆类比：</strong>把 AC−B² 想象成"侦探的放大镜"——
+    <br>AC−B² &gt; 0 是"放大镜下看到的是清晰的山谷或山峰"（极值）；
+    <br>AC−B² &lt; 0 是"看到的是马鞍"（不是极值）；
+    <br>AC−B² = 0 是"放大镜失灵了，看不清"——这时候不能直接判，必须换工具（沿特殊路径分析 / Taylor 展开），就像侦探要换个角度再看。
+    <br><br>
+    <strong>🎯 出题人视角：</strong>这道题是 2022 数三的"压轴"——出题人<strong>想筛</strong>三种能力：① 多元多项式偏导的扎实度（链式 + 展开）；② 解联立方程组的代数功底（漏解 x=0 直接 4 分没了）；③ <strong>判别式 = 0 的边界处理</strong>（这是 2022 之后所有"考研模拟卷"的必考点，10 道有 7 道会考）。这道题三个能力缺一不可。
+  </div>
+</div>
+
+<!-- ============================================ 必背：二元极值三类情形处理（小白救命卡）============ -->
+<div class="must-card">
+    <div class="must-label">🎯 必背：二元无条件极值 · 三类情形处理（小白救命卡）</div>
+    <p><strong>看到 AC−B² 不要死记公式，先分情况：</strong></p>
+    <table>
+        <thead><tr><th>情形</th><th>判别</th><th>结论</th></tr></thead>
+        <tbody>
+            <tr><td>AC − B² &gt; 0</td><td>A &gt; 0</td><td><strong>极小值</strong>，记得代回去求 f 值</td></tr>
+            <tr><td>AC − B² &gt; 0</td><td>A &lt; 0</td><td><strong>极大值</strong></td></tr>
+            <tr><td>AC − B² &lt; 0</td><td>—</td><td><strong>不是极值</strong>（鞍点）</td></tr>
+            <tr><td>AC − B² = 0</td><td>—</td><td>❗ <strong>判别式失效</strong>，必须额外分析（沿特殊路径 / Taylor / 定义法）</td></tr>
+        </tbody>
+    </table>
+    <p><strong>2022 之后真题的隐藏考点：</strong>AC−B² = 0 的边界情形越来越常考（2022 数三、2023 数二都出了）。小白要把"沿 y = 0 / y = x / y = kx"这种路径分析练熟。</p>
+</div>
+
+<!-- ============================================ 小白技巧块（右侧导航自动收录）============ -->
+<div class="tag-float t-tip">
+    <div class="tf-title">解二元驻点方程组的"两段式"心法</div>
+    <div class="tf-body">
+        <strong>① 先解 f_y = 0</strong>：因为 f_y 一般更简单（只有一个 y），能显式解出 y = g(x)；<br>
+        <strong>② 再代入 f_x = 0</strong>：把 y = g(x) 代进去，f_x 就变成"只含 x 的方程"；<br>
+        <strong>③ 别漏 x = 0 这种隐式解</strong>：如果 f_x 有公因子 x，x = 0 是一条独立分支，<strong>漏掉就丢 3~4 分</strong>。
+    </div>
+</div>
+
+<!-- ============================================ 防粗心块（右侧导航自动收录）============ -->
+<div class="tag-float t-warn">
+    <div class="tf-title">二元极值 · 4 大常见丢分点</div>
+    <div class="tf-body">
+        <ul>
+            <li><strong>丢分点 1：AC−B² = 0 直接判"不是极值"</strong> → 错！必须额外判断（沿路径分析）。2022 数三真题坑过 80% 的小白。</li>
+            <li><strong>丢分点 2：周期性函数漏解</strong> → sin y = 0 漏掉 y = π；cos y = 0 漏掉 y = π/2。漏一个扣 2~3 分。</li>
+            <li><strong>丢分点 3：联立方程漏掉 x = 0 支</strong> → f_x 有公因子 x 时，x = 0 是隐式解，必须单独列。</li>
+            <li><strong>丢分点 4：二阶偏导 C 算错</strong> → 求 f_yy 时漏掉链式项（特别是 sin y · cos y 这种乘积项）。</li>
+        </ul>
+    </div>
+</div>
+
+<!-- ============================================ 解法总结块（右侧导航自动收录）============ -->
+<div class="tag-float t-summary">
+    <div class="tf-title">2022 两道极值题的"3 件套武器"</div>
+    <div class="tf-body">
+        ① <strong>武器 1 · 链式法则</strong>：偏导时遇到复合函数（如 e^(cos y)、(y-x³)），必须套链式；<br>
+        ② <strong>武器 2 · 解联立方程组</strong>：先解 f_y=0 → 代入 f_x=0 → 别漏 x=0 支；<br>
+        ③ <strong>武器 3 · AC−B² 判别 + 边界兜底</strong>：三种情形各走各路，AC−B²=0 必须额外判断。
+    </div>
+</div>
+
+<!-- ============================================ 应试策略块（右侧导航自动收录）============ -->
+<div class="tag-float t-strategy">
+    <div class="tf-title">12 分拿满 · 答题节奏</div>
+    <div class="tf-body">
+        ① <strong>前 3 分钟</strong>：扫一遍 f，识别考点（极值 / 链式 / 周期性）；<br>
+        ② <strong>3~6 分钟</strong>：求一阶偏导（<strong>慢一点</strong>，链式别漏）；<br>
+        ③ <strong>6~9 分钟</strong>：解联立方程组（注意 x=0 隐式分支）；<br>
+        ④ <strong>9~11 分钟</strong>：求二阶偏导 + AC−B² 判别；<br>
+        ⑤ <strong>最后 1 分钟</strong>：AC−B²=0 时<strong>沿路径分析</strong>（千万别跳过！2022 真题坑过无数小白）。
+    </div>
+</div>
+
+<div class="must-card">
+    <div class="must-label">🎯 本章应试策略总结（80 分必备）</div>
+  <p><strong>1. 答题时间分配：</strong>选择题 2~3 分钟/题，填空题 3 分钟/题，解答题 8~12 分钟/题。</p>
+  <p><strong>2. 答题顺序：</strong>先做 5 分钟内能拿分的题，再回头啃难的。</p>
+  <p><strong>3. 关键拿分动作：</strong>写对公式 + 写出关键步骤 + 给出最终答案。每一步都对应一个得分点。</p>
+  <p><strong>4. 复盘方法：</strong>做完真题后对照「得分点」清单逐项打分，缺哪一步就回去补哪一步。</p>
+</div>
+    </div>
+</section>
