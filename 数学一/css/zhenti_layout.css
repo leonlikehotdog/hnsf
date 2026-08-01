@@ -1077,6 +1077,55 @@
     padding-left: 12px;
 }
 
+/* 题目标题区导航按钮 */
+.q-modal-nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px solid #e2e8f0;
+}
+
+.q-nav-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 20px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    background: #fff;
+    color: #334155;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+}
+
+.q-nav-btn:hover:not(:disabled) {
+    background: #f1f5f9;
+    border-color: #94a3b8;
+}
+
+.q-nav-btn:active:not(:disabled) {
+    transform: scale(0.97);
+}
+
+.q-nav-btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    background: #f8fafc;
+}
+
+.q-nav-prev {
+    align-self: flex-start;
+}
+
+.q-nav-next {
+    align-self: flex-end;
+}
+
 /* 掌握程度侧边栏（固定在右侧，始终可见）*/
 .mastery-sidebar {
     display: flex;

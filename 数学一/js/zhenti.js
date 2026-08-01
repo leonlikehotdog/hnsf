@@ -29,6 +29,7 @@
         loading: false,           // 正在加载
         manifest: null,           // 年份清单
         activeTab: 'list',        // 当前主区域 Tab：'list' | 'progress'
+        progressFlatList: [],     // 进度总览的扁平题列表（供切题导航用）
     };
 
     /* ===== 数据加载 ===== */
@@ -755,10 +756,35 @@
                     ${renderMasterySidebar(q)}
                 </div>
             </div>
+            <div class="q-modal-nav">
+                <button type="button" class="q-nav-btn q-nav-prev" id="qNavPrev">← 上一题</button>
+                <button type="button" class="q-nav-btn q-nav-next" id="qNavNext">下一题 →</button>
+            </div>
         `;
         renderMath(document.getElementById('questionModalBody'));
         bindCollapsibleToggles();
+        bindNavButtons(q);
         document.getElementById('questionModal').hidden = false;
+    }
+
+    /* ===== 导航按钮：上一题 / 下一题 ===== */
+    function bindNavButtons(q) {
+        const flat = state.progressFlatList;
+        const idx = flat.findIndex(x => x.id === q.id);
+        if (idx < 0) return;
+        const prevBtn = document.getElementById('qNavPrev');
+        const nextBtn = document.getElementById('qNavNext');
+        if (!prevBtn || !nextBtn) return;
+
+        prevBtn.disabled = idx <= 0;
+        nextBtn.disabled = idx >= flat.length - 1;
+
+        prevBtn.onclick = () => {
+            if (idx > 0) openQuestionModal(flat[idx - 1]);
+        };
+        nextBtn.onclick = () => {
+            if (idx < flat.length - 1) openQuestionModal(flat[idx + 1]);
+        };
     }
 
     /* ===== 折叠式：答案 + 解题骨架 + 详细步骤 ===== */
@@ -1116,10 +1142,12 @@
 
         // 年份降序、年内按 qnum 升序
         const years = Object.keys(state.byYear).map(Number).sort((a, b) => b - a);
+        const flatQuestions = [];
         const yearBlocks = years.map(y => {
             const arr = (state.byYear[y] || [])
                 .slice()
                 .sort((a, b) => (a.qnum || 0) - (b.qnum || 0));
+            flatQuestions.push(...arr);
             const yMastered = arr.filter(q => {
                 const lv = (masteryData[q.id] || {}).level || 'new';
                 return lv === 'mastered' || lv === 'expert';
@@ -1155,6 +1183,8 @@
                 <div class="progress-q-grid">${boxes}</div>
             </div>`;
         }).join('');
+
+        state.progressFlatList = flatQuestions;
 
         els.progressArea.innerHTML = `
             <div class="progress-legend">

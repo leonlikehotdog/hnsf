@@ -28,7 +28,28 @@
         "anchor": "part1"
       }
     ],
-    "solution": [],
+    "solution": [
+      {
+        "step": 1,
+        "title": "先看 \\(f(x)\\) 在 0 点附近",
+        "content": "由变上限积分求导，\\(f\\prime(x)=\\mathrm e^{x^2}\\sin x\\)。当 \\(x\\to0\\) 时，\\(f\\prime(x)\\sim x\\)，所以在 0 的左侧为负、右侧为正，故 \\(x=0\\) 是 \\(f(x)\\) 的极小值点。"
+      },
+      {
+        "step": 2,
+        "title": "再看 \\(g(x)\\) 的局部展开",
+        "content": "题中 \\(g(x)=\\left(\\int_0^x \\mathrm e^{t^2}dt\\right)\\sin^2x\\)。当 \\(x\\to0\\) 时，\\(\\int_0^x\\mathrm e^{t^2}dt=x+O(x^3)\\)，而 \\(\\sin^2x=x^2+O(x^4)\\)，所以<br>\\[g(x)=x^3+O(x^5).\\]"
+      },
+      {
+        "step": 3,
+        "title": "判断极值与拐点",
+        "content": "由 \\(g(x)\\sim x^3\\) 可知 \\(g\\prime(x)\\sim3x^2\\)，在 0 两侧同号，因此 0 不是 \\(g\\) 的极值点。又 \\(g\\prime\\prime(x)\\sim6x\\)，二阶导在 0 两侧变号，所以 \\((0,0)\\) 是曲线 \\(y=g(x)\\) 的拐点。"
+      },
+      {
+        "step": 4,
+        "title": "结论",
+        "content": "因此正确选项是 B。"
+      }
+    ],
     "answer": "B",
     "commonErrors": [],
     "frequency": 1,
@@ -66,7 +87,23 @@
         "anchor": "part1"
       }
     ],
-    "solution": [],
+    "solution": [
+      {
+        "step": 1,
+        "title": "分析级数 \\(\\textcircled{1}\\)",
+        "content": "注意<br>\\[\\frac{n^3\\pi}{n^2+1}=n\\pi-\\frac{n\\pi}{n^2+1}.\\]<br>因此<br>\\[\\sin\\frac{n^3\\pi}{n^2+1}=\\sin\\left(n\\pi-\\frac{n\\pi}{n^2+1}\\right)=(-1)^{n+1}\\sin\\frac{n\\pi}{n^2+1}\\sim(-1)^{n+1}\\frac{\\pi}{n}.\\]<br>所以它像交错调和级数，只条件收敛，不绝对收敛。"
+      },
+      {
+        "step": 2,
+        "title": "分析级数 \\(\\textcircled{2}\\)",
+        "content": "令 \\(u=n^{-2/3}\\to0\\)，则 \\(\\tan u=u+\\dfrac{u^3}{3}+o(u^3)\\)，故<br>\\[u-\\tan u\\sim-\\frac{u^3}{3}=-\\frac{1}{3n^2}.\\]<br>于是 \\(\\sum (-1)^n(u-\\tan u)\\) 的绝对值级数与 \\(\\sum \\dfrac1{n^2}\\) 同阶，故绝对收敛。"
+      },
+      {
+        "step": 3,
+        "title": "结论",
+        "content": "\\(\\textcircled{1}\\) 条件收敛，\\(\\textcircled{2}\\) 绝对收敛，选 B。"
+      }
+    ],
     "answer": "B",
     "commonErrors": [],
     "frequency": 1,
@@ -104,7 +141,28 @@
         "anchor": "part1"
       }
     ],
-    "solution": [],
+    "solution": [
+      {
+        "step": 1,
+        "title": "先判断 D",
+        "content": "若 \\(\\lim_{x\\to+\\infty}f(x)=L\\) 存在，则按 Cesaro 定理<br>\\[\\lim_{x\\to+\\infty}\\frac1x\\int_0^x f(t)dt=L\\]也存在，所以 D 正确。"
+      },
+      {
+        "step": 2,
+        "title": "A、B 都不成立",
+        "content": "A 不成立，例如可取极限存在但导数振荡的函数；B 也不成立，例如 \\(f\\prime(x)\\to1\\) 时，\\(f(x)\\) 一般趋向 \\(+\\infty\\)，未必有有限极限。"
+      },
+      {
+        "step": 3,
+        "title": "C 也不成立",
+        "content": "平均值极限存在并不能推出函数本身极限存在。典型想法是让函数作有界振荡，其平均值收敛，但函数不收敛。"
+      },
+      {
+        "step": 4,
+        "title": "结论",
+        "content": "只有 D 正确。"
+      }
+    ],
     "answer": "D",
     "commonErrors": [],
     "frequency": 1,
@@ -140,7 +198,23 @@
         "anchor": "part1"
       }
     ],
-    "solution": [],
+    "solution": [
+      {
+        "step": 1,
+        "title": "先读出原积分区域",
+        "content": "原式对应区域为<br>\\[D=\\{(x,y)\\mid -2\\le x\\le2,\\ 4-x^2\\le y\\le4\\}.\\]这是一块位于抛物线 \\(y=4-x^2\\) 上方、直线 \\(y=4\\) 下方的区域。"
+      },
+      {
+        "step": 2,
+        "title": "交换积分次序",
+        "content": "固定 \\(y\\) 后，先有 \\(0\\le y\\le4\\)，再由 \\(4-x^2\\le y\\) 得 \\(x^2\\le 4-y\\)，所以<br>\\[-\\sqrt{4-y}\\le x\\le \\sqrt{4-y}.\\]"
+      },
+      {
+        "step": 3,
+        "title": "写出新的积分式",
+        "content": "故交换次序后应写成<br>\\[\\int_0^4\\int_{-\\sqrt{4-y}}^{\\sqrt{4-y}} f(x,y)\\,dx\\,dy.\\]<br>与该式对应的选项为 A。"
+      }
+    ],
     "answer": "A",
     "commonErrors": [],
     "frequency": 1,
@@ -178,7 +252,23 @@
         "anchor": "part1"
       }
     ],
-    "solution": [],
+    "solution": [
+      {
+        "step": 1,
+        "title": "把二次型配方",
+        "content": "原二次型<br>\\[f=x_1^2+2x_1x_2+2x_1x_3\\]可写成<br>\\[f=(x_1+x_2+x_3)^2-(x_2+x_3)^2.\\]"
+      },
+      {
+        "step": 2,
+        "title": "判断标准形符号个数",
+        "content": "这说明它经合同变换后可化成 \\(y_1^2-y_2^2+0\\cdot y_3^2\\) 的形式：一个正平方项、一个负平方项、一个零项。"
+      },
+      {
+        "step": 3,
+        "title": "结论",
+        "content": "因此正惯性指数为 1，选 B。"
+      }
+    ],
     "answer": "B",
     "commonErrors": [],
     "frequency": 1,
@@ -216,7 +306,28 @@
         "anchor": "part1"
       }
     ],
-    "solution": [],
+    "solution": [
+      {
+        "step": 1,
+        "title": "先化右端向量",
+        "content": "由 \\(\\alpha_1+\\alpha_2+\\alpha_4=0\\) 得 \\(\\alpha_4=-\\alpha_1-\\alpha_2\\)。又因 \\(\\alpha_1,\\alpha_2\\) 线性无关，而 \\(\\alpha_1,\\alpha_2,\\alpha_3\\) 线性相关，所以 \\(\\alpha_3\\) 一定可写成 \\(\\alpha_3=p\\alpha_1+q\\alpha_2\\)。"
+      },
+      {
+        "step": 2,
+        "title": "把向量方程化成两个独立方程",
+        "content": "原方程<br>\\[x\\alpha_1+y\\alpha_2+z\\alpha_3=\\alpha_4\\]\n代入上式后变成<br>\\[(x+pz+1)\\alpha_1+(y+qz+1)\\alpha_2=0.\\]\n由于 \\(\\alpha_1,\\alpha_2\\) 线性无关，只能有<br>\\[x+pz=-1,\\qquad y+qz=-1.\\]"
+      },
+      {
+        "step": 3,
+        "title": "看几何图形",
+        "content": "这是关于 \\((x,y,z)\\) 的两个独立一次方程，所以解集是一条直线。又原点 \\((0,0,0)\\) 不满足方程，因为右端 \\(\\alpha_4\\ne0\\)。"
+      },
+      {
+        "step": 4,
+        "title": "结论",
+        "content": "几何图形是不经过原点的一条直线，选 D。"
+      }
+    ],
     "answer": "D",
     "commonErrors": [],
     "frequency": 1,
@@ -254,7 +365,28 @@
         "anchor": "part1"
       }
     ],
-    "solution": [],
+    "solution": [
+      {
+        "step": 1,
+        "title": "连续使用秩不等式",
+        "content": "由 Sylvester 秩不等式，<br>\\[r(ABC)\\ge r(AB)+r(C)-n,\\qquad r(AB)\\ge r(A)+r(B)-n.\\]"
+      },
+      {
+        "step": 2,
+        "title": "利用题设把不等式逼成等式",
+        "content": "把第二个不等式代入第一个，可得<br>\\[r(ABC)\\ge r(A)+r(B)+r(C)-2n.\\]\n而题设正好给出 \\(r(A)+r(B)+r(C)=r(ABC)+2n\\)，所以前面所有“\\(\\ge\\)”都必须取等号。"
+      },
+      {
+        "step": 3,
+        "title": "推出正确结论",
+        "content": "于是得到<br>\\[r(ABC)+n=r(AB)+r(C),\\qquad r(AB)+n=r(A)+r(B).\\]\n即 \\(\\textcircled1\\)、\\(\\textcircled2\\) 正确。至于 \\(\\textcircled3\\)、\\(\\textcircled4\\) 不能由题设必然推出。"
+      },
+      {
+        "step": 4,
+        "title": "结论",
+        "content": "故选 A。"
+      }
+    ],
     "answer": "A",
     "commonErrors": [],
     "frequency": 1,
@@ -294,7 +426,23 @@
         "anchor": "part1"
       }
     ],
-    "solution": [],
+    "solution": [
+      {
+        "step": 1,
+        "title": "写出线性组合方差",
+        "content": "因为 \\((X,Y)\\) 服从二维标准正态相关系数为 \\(\\rho\\)，所以 \\(D(X)=D(Y)=1\\)，\\(\\operatorname{cov}(X,Y)=\\rho\\)。于是<br>\\[D(aX+bY)=a^2+b^2+2ab\\rho.\\]"
+      },
+      {
+        "step": 2,
+        "title": "利用约束 \\(a^2+b^2=1\\)",
+        "content": "题设给出 \\(a^2+b^2=1\\)，故<br>\\[D(aX+bY)=1+2ab\\rho.\\]\n在 \\(a^2+b^2=1\\) 下，\\(|ab|\\le\\dfrac12\\)。当 \\(\\rho>0\\) 时取 \\(ab=\\dfrac12\\)；当 \\(\\rho<0\\) 时取 \\(ab=-\\dfrac12\\)。"
+      },
+      {
+        "step": 3,
+        "title": "结论",
+        "content": "最大值统一写成<br>\\[1+|\\rho|.\\]\n故选 C。"
+      }
+    ],
     "answer": "C",
     "commonErrors": [],
     "frequency": 1,
@@ -332,7 +480,23 @@
         "anchor": "part1"
       }
     ],
-    "solution": [],
+    "solution": [
+      {
+        "step": 1,
+        "title": "先确定近似分布",
+        "content": "每个 \\(X_i\\sim B(1,0.1)\\)，故 \\(T=\\sum_{i=1}^{20}X_i\\sim B(20,0.1)\\)。由二项分布的泊松近似，\\(T\\) 可近似看作参数 \\(\\lambda=np=2\\) 的泊松分布。"
+      },
+      {
+        "step": 2,
+        "title": "求 \\(P\\{T\\le1\\}\\)",
+        "content": "于是<br>\\[P\\{T\\le1\\}\\approx P\\{N\\le1\\}=P\\{N=0\\}+P\\{N=1\\}=\\mathrm e^{-2}+2\\mathrm e^{-2}=\\frac{3}{\\mathrm e^2}.\\]"
+      },
+      {
+        "step": 3,
+        "title": "结论",
+        "content": "故选 C。"
+      }
+    ],
     "answer": "C",
     "commonErrors": [],
     "frequency": 1,
@@ -370,7 +534,23 @@
         "anchor": "part1"
       }
     ],
-    "solution": [],
+    "solution": [
+      {
+        "step": 1,
+        "title": "写出样本均值分布",
+        "content": "由 \\(X_i\\sim N(\\mu,2)\\) 且独立，可知<br>\\[\\overline X\\sim N\\left(\\mu,\\frac{2}{n}\\right).\\]"
+      },
+      {
+        "step": 2,
+        "title": "构造右侧检验统计量",
+        "content": "在原假设边界 \\(\\mu=1\\) 下，统计量<br>\\[Z=\\frac{\\overline X-1}{\\sqrt{2/n}}\\sim N(0,1).\\]\n对右侧检验 \\(H_0:\\mu\\le1\\) 对 \\(H_1:\\mu>1\\)，显著性水平为 \\(\\alpha\\) 的拒绝域是 \\(Z>Z_\\alpha\\)。"
+      },
+      {
+        "step": 3,
+        "title": "化回 \\(\\overline X\\)",
+        "content": "于是拒绝域等价于<br>\\[\\overline X>1+\\sqrt{\\frac{2}{n}}Z_\\alpha.\\]\n故选 D。"
+      }
+    ],
     "answer": "D",
     "commonErrors": [],
     "frequency": 1,
@@ -403,7 +583,23 @@
         "anchor": "part1"
       }
     ],
-    "solution": [],
+    "solution": [
+      {
+        "step": 1,
+        "title": "展开分子",
+        "content": "\\(x^x=\\mathrm e^{x\\ln x}\\)。当 \\(x\\to0^+\\) 时，\\(x\\ln x\\to0\\)，所以<br>\\[x^x-1=\\mathrm e^{x\\ln x}-1\\sim x\\ln x.\\]"
+      },
+      {
+        "step": 2,
+        "title": "展开分母",
+        "content": "又 \\(\\ln(1-x)\\sim-x\\)，故分母<br>\\[\\ln x\\cdot\\ln(1-x)\\sim \\ln x\\cdot(-x)=-x\\ln x.\\]"
+      },
+      {
+        "step": 3,
+        "title": "求极限",
+        "content": "因此<br>\\[\\lim_{x\\to0^+}\\frac{x^x-1}{\\ln x\\cdot\\ln(1-x)}=\\lim_{x\\to0^+}\\frac{x\\ln x}{-x\\ln x}=-1.\\]"
+      }
+    ],
     "answer": "$-1$",
     "commonErrors": [],
     "frequency": 1,
@@ -436,7 +632,23 @@
         "anchor": "part1"
       }
     ],
-    "solution": [],
+    "solution": [
+      {
+        "step": 1,
+        "title": "先用周期性化简自变量",
+        "content": "正弦级数的和函数 \\(S(x)\\) 是原函数在 \\((0,1)\\) 上的奇延拓，再作周期为 2 的周期延拓。因此 \\(S(x+2)=S(x)\\)。<br>\\(-\\dfrac72\\) 加上 4 后等于 \\(\\dfrac12\\)，所以 \\(S\\left(-\\dfrac72\\right)=S\\left(\\dfrac12\\right)\\)。"
+      },
+      {
+        "step": 2,
+        "title": "利用傅里叶级数在间断点取左右极限平均值",
+        "content": "原函数在 \\(x=\\dfrac12\\) 处左极限为 0，右极限为 \\(\\left(\\dfrac12\\right)^2=\\dfrac14\\)。因此傅里叶级数和函数在该点的值为<br>\\[S\\left(\\frac12\\right)=\\frac{0+\\frac14}{2}=\\frac18.\\]"
+      },
+      {
+        "step": 3,
+        "title": "结论",
+        "content": "所以 \\(S\\left(-\\dfrac72\\right)=\\dfrac18\\)。题目写成“\\(-\\ \\underline{\\quad}\\)”的形式时，应填 \\(\\dfrac18\\)。"
+      }
+    ],
     "answer": "$\\dfrac{1}{8}$",
     "commonErrors": [],
     "frequency": 1,
@@ -469,7 +681,23 @@
         "anchor": "part1"
       }
     ],
-    "solution": [],
+    "solution": [
+      {
+        "step": 1,
+        "title": "先求梯度",
+        "content": "\\(u(x,y,z)=xy^2z^3\\)，故<br>\\[\\nabla u=(y^2z^3,\\ 2xyz^3,\\ 3xy^2z^2).\\]<br>在 \\((1,1,1)\\) 处有 \\(\\nabla u(1,1,1)=(1,2,3)\\)。"
+      },
+      {
+        "step": 2,
+        "title": "把方向向量单位化",
+        "content": "方向向量 \\(\\mathbf n=(2,2,-1)\\) 的模为 3，所以对应单位向量是<br>\\[\\hat{\\mathbf n}=\\left(\\frac23,\\frac23,-\\frac13\\right).\\]"
+      },
+      {
+        "step": 3,
+        "title": "点乘得到方向导数",
+        "content": "所求方向导数为<br>\\[D_{\\mathbf n}u=\\nabla u\\cdot \\hat{\\mathbf n}=(1,2,3)\\cdot\\left(\\frac23,\\frac23,-\\frac13\\right)=\\frac23+\\frac43-1=1.\\]"
+      }
+    ],
     "answer": "$1$",
     "commonErrors": [],
     "frequency": 1,
@@ -502,7 +730,28 @@
         "anchor": "part1"
       }
     ],
-    "solution": [],
+    "solution": [
+      {
+        "step": 1,
+        "title": "参数化曲线",
+        "content": "曲线 \\(L\\) 是抛物线 \\(y=1-x^2\\) 从 \\((1,0)\\) 到 \\((-1,0)\\) 的一段。可取参数 \\(x=t\\)，\\(y=1-t^2\\)，其中 \\(t\\) 从 1 变到 -1。于是 \\(dy=-2t\\,dt\\)。"
+      },
+      {
+        "step": 2,
+        "title": "代入曲线积分",
+        "content": "原积分变成<br>\\[\\int_1^{-1}\\Bigl[(1-t^2+\\cos t)+\\bigl(2t+\\cos(1-t^2)\\bigr)(-2t)\\Bigr]dt.\\]整理得<br>\\[\\int_1^{-1}\\bigl(1-5t^2+\\cos t-2t\\cos(1-t^2)\\bigr)dt.\\]"
+      },
+      {
+        "step": 3,
+        "title": "利用奇偶性化简",
+        "content": "其中 \\(t\\cos(1-t^2)\\) 为奇函数，在对称区间上的积分为 0。把积分上下限改成 \\([-1,1]\\) 后，得到<br>\\[-\\int_{-1}^1(1-5t^2+\\cos t)dt=-2\\int_0^1(1-5t^2+\\cos t)dt.\\]"
+      },
+      {
+        "step": 4,
+        "title": "计算结果",
+        "content": "于是<br>\\[-2\\left[x-\\frac{5}{3}x^3+\\sin x\\right]_0^1=-2\\left(1-\\frac53+\\sin1\\right)=\\frac43-2\\sin1.\\]"
+      }
+    ],
     "answer": "$\\dfrac{4}{3} - 2\\sin 1$",
     "commonErrors": [],
     "frequency": 1,
@@ -535,7 +784,23 @@
         "anchor": "part1"
       }
     ],
-    "solution": [],
+    "solution": [
+      {
+        "step": 1,
+        "title": "先看题意对应的线性代数条件",
+        "content": "“\\(A^2x=0\\) 与 \\(Ax=0\\) 有不同解”表示 \\(N(A)\\subsetneq N(A^2)\\)，也就是存在广义特征向量。这至少要求 \\(A\\) 奇异，所以先有 \\(\\det A=0\\)。"
+      },
+      {
+        "step": 2,
+        "title": "计算行列式",
+        "content": "对<br>\\[A=\\begin{pmatrix}4&2&-3\\\\ a&3&-4\\\\ b&5&-7\\end{pmatrix}\\]\n计算行列式：<br>\\[\\det A=4(3\\cdot(-7)-5\\cdot(-4))-2(a\\cdot(-7)-b\\cdot(-4))-3(5a-3b)=b-a-4.\\]故 \\(\\det A=0\\Rightarrow a-b=-4\\)。"
+      },
+      {
+        "step": 3,
+        "title": "说明这个条件确实可行",
+        "content": "当 \\(a-b=-4\\) 时，第三行等于前两行之和，矩阵奇异且不是零矩阵，此时零特征值对应的 Jordan 结构非平凡，确有 \\(N(A)\\subsetneq N(A^2)\\) 的情形。故答案为 \\(a-b=-4\\)。"
+      }
+    ],
     "answer": "$-4$",
     "commonErrors": [],
     "frequency": 1,
@@ -568,7 +833,23 @@
         "anchor": "part1"
       }
     ],
-    "solution": [],
+    "solution": [
+      {
+        "step": 1,
+        "title": "设未知概率并列方程",
+        "content": "设 \\(P(B)=p\\)，则 \\(P(A)=2p\\)。由独立性，<br>\\[P(A\\cup B)=P(A)+P(B)-P(A)P(B)=2p+p-2p^2=\\frac58.\\]"
+      },
+      {
+        "step": 2,
+        "title": "求出 \\(P(A),P(B)\\)",
+        "content": "解方程 \\(3p-2p^2=\\dfrac58\\)，得 \\(16p^2-24p+5=0\\)，可行根为 \\(p=\\dfrac14\\)。故<br>\\[P(B)=\\frac14,\\qquad P(A)=\\frac12.\\]"
+      },
+      {
+        "step": 3,
+        "title": "计算所求条件概率",
+        "content": "“恰有一个发生”的概率是<br>\\[P(A\\triangle B)=P(A)+P(B)-2P(A)P(B)=\\frac12+\\frac14-2\\cdot\\frac18=\\frac12.\\]<br>“至少一个发生”的概率是 \\(\\dfrac58\\)。因此条件概率为<br>\\[\\frac{\\frac12}{\\frac58}=\\frac45.\\]"
+      }
+    ],
     "answer": "$\\dfrac{4}{5}$",
     "commonErrors": [],
     "frequency": 1,
@@ -604,11 +885,26 @@
     "solution": [
       {
         "step": 1,
-        "title": "解题步骤",
-        "content": "详细解答请参考《2025 数学一真题解析》"
+        "title": "先做部分分式分解",
+        "content": "设<br>\\[\\frac{1}{(x+1)(x^2-2x+2)}=\\frac{A}{x+1}+\\frac{Bx+C}{x^2-2x+2}.\\]<br>比较系数得 \\(A=\\dfrac15\\)，\\(B=-\\dfrac15\\)，\\(C=\\dfrac35\\)。"
+      },
+      {
+        "step": 2,
+        "title": "把积分拆成两类标准型",
+        "content": "于是原积分等于<br>\\[\\frac15\\int_0^1\\frac{dx}{x+1}+\\frac15\\int_0^1\\frac{-x+3}{x^2-2x+2}dx.\\]<br>又 \\(-x+3=-\\dfrac12(2x-2)+2\\)，故第二项可拆成对数项与反正切项。"
+      },
+      {
+        "step": 3,
+        "title": "逐项积分",
+        "content": "利用 \\(x^2-2x+2=(x-1)^2+1\\)，可得一个原函数为<br>\\[\\frac15\\ln(x+1)-\\frac1{10}\\ln(x^2-2x+2)+\\frac25\\arctan(x-1).\\]"
+      },
+      {
+        "step": 4,
+        "title": "代入上下限",
+        "content": "在 \\([0,1]\\) 上代入后得到<br>\\[\\int_0^1\\frac{dx}{(x+1)(x^2-2x+2)}=\\frac{3\\ln2}{10}+\\frac{\\pi}{10}.\\]"
       }
     ],
-    "answer": "$\\dfrac{1}{3}$",
+    "answer": "\\(\\dfrac{3\\ln2}{10}+\\dfrac{\\pi}{10}\\)",
     "commonErrors": [],
     "frequency": 1,
     "tags": [
@@ -643,11 +939,26 @@
     "solution": [
       {
         "step": 1,
-        "title": "解题步骤",
-        "content": "详细解答请参考《2025 数学一真题解析》"
+        "title": "先把 \\(g(x,y)=f(x/y)\\) 写成单变量形式",
+        "content": "令 \\(u=\\dfrac{x}{y}\\)，则 \\(g(x,y)=f(u)\\)。直接求偏导可得<br>\\[g_x=\\frac{f\\prime(u)}{y},\\qquad g_y=-\\frac{u f\\prime(u)}{y}.\\]进一步计算二阶偏导，代入题中的组合式后，可化成关于 \\(u\\) 的常微分方程<br>\\[u^2f\\prime\\prime(u)+uf\\prime(u)=1.\\]"
+      },
+      {
+        "step": 2,
+        "title": "解欧拉型方程",
+        "content": "设 \\(p=f\\prime(u)\\)，则<br>\\[u^2p\\prime+up=1.\\]<br>两边除以 \\(u\\) 得 \\((up)\\prime=\\dfrac1u\\)。积分得<br>\\[up=\\ln u+C_1,\\qquad f\\prime(u)=\\frac{\\ln u+C_1}{u}.\\]再积分一次，得<br>\\[f(u)=\\frac12(\\ln u)^2+C_1\\ln u+C_2.\\]"
+      },
+      {
+        "step": 3,
+        "title": "利用条件确定常数",
+        "content": "题中给出 \\(g(x,x)=f(1)=1\\)，故 \\(C_2=1\\)。又<br>\\[g_x\\big|_{(x,x)}=\\frac{f\\prime(1)}{x}=\\frac{2}{x},\\]所以 \\(f\\prime(1)=2\\)。而 \\(f\\prime(1)=C_1\\)，故 \\(C_1=2\\)。"
+      },
+      {
+        "step": 4,
+        "title": "结论",
+        "content": "最终得到<br>\\[f(u)=\\frac12(\\ln u)^2+2\\ln u+1.\\]"
       }
     ],
-    "answer": "$\\dfrac{4}{9}$",
+    "answer": "\\(f(u)=\\dfrac12(\\ln u)^2+2\\ln u+1\\)",
     "commonErrors": [],
     "frequency": 1,
     "tags": [
@@ -682,11 +993,16 @@
     "solution": [
       {
         "step": 1,
-        "title": "解题步骤",
-        "content": "详细解答请参考《2025 数学一真题解析》"
+        "title": "题面核对说明",
+        "content": "以当前 JSON 中这句“\\(\\int_{-\\infty}^{+\\infty}f(x)dx=2\\int_0^{+\\infty}f(x)dx\\) 等价于 \\(f(x)\\) 为偶函数”来看，命题本身并不成立。因为只要函数可积，其奇函数部分积分本来就可能为 0，但这并不能推出函数整体是偶函数。"
+      },
+      {
+        "step": 2,
+        "title": "为什么不能硬补全过程",
+        "content": "这说明当前题面很可能被 OCR 截断或漏掉了附加条件。为了不把错误结论写进题库，这题建议先回到原卷核对后再补严谨证明。"
       }
     ],
-    "answer": "见解析",
+    "answer": "当前题面需核对原卷",
     "commonErrors": [],
     "frequency": 1,
     "tags": [
@@ -721,11 +1037,16 @@
     "solution": [
       {
         "step": 1,
-        "title": "解题步骤",
-        "content": "详细解答请参考《2025 数学一真题解析》"
+        "title": "题面核对说明",
+        "content": "当前题干只保留了“设 \\(\\theta\\in(0,\\pi/2)\\)”与“\\(x_t=\\cos t\\)”等碎片，主体条件与求解目标均缺失。"
+      },
+      {
+        "step": 2,
+        "title": "处理建议",
+        "content": "这道题无法在不臆造题意的前提下补出详细过程。建议补充原题全文或试卷截图，我再按解答题格式完整补写。"
       }
     ],
-    "answer": "见解析",
+    "answer": "当前题面需核对原卷",
     "commonErrors": [],
     "frequency": 1,
     "tags": [
@@ -760,11 +1081,26 @@
     "solution": [
       {
         "step": 1,
-        "title": "解题步骤",
-        "content": "详细解答请参考《2025 数学一真题解析》"
+        "title": "先由特征值 0 求 \\(a\\)",
+        "content": "已知 0 是特征值，所以 \\(\\det A=0\\)。计算<br>\\[\\det\\begin{pmatrix}1&1&1\\\\1&2&3\\\\1&3&a\\end{pmatrix}=a-5,\\]故 \\(a=5\\)。"
+      },
+      {
+        "step": 2,
+        "title": "求其余特征值",
+        "content": "此时<br>\\[A=\\begin{pmatrix}1&1&1\\\\1&2&3\\\\1&3&5\\end{pmatrix},\\qquad \\chi_A(\\lambda)=\\lambda(\\lambda^2-8\\lambda+6).\\]<br>其余两个特征值为<br>\\[r=4+\\sqrt{10},\\qquad s=4-\\sqrt{10}.\\]"
+      },
+      {
+        "step": 3,
+        "title": "用特征多项式表示高次幂",
+        "content": "由于特征值互不相同，矩阵可对角化，且对任意 \\(n\\ge1\\) 可写成<br>\\[A^n=\\alpha_n A+\\beta_n A^2.\\]<br>把 \\(\\lambda=r,s\\) 代入关系 \\(\\lambda^n=\\alpha_n\\lambda+\\beta_n\\lambda^2\\)，解得<br>\\[\\beta_n=\\frac{r^{n-1}-s^{n-1}}{r-s},\\qquad \\alpha_n=-\\frac{3(r^{n-2}-s^{n-2})}{\\sqrt{10}}.\\]"
+      },
+      {
+        "step": 4,
+        "title": "代入 \\(n=100\\)",
+        "content": "于是<br>\\[A^{100}=-\\frac{3(r^{98}-s^{98})}{\\sqrt{10}}A+\\frac{r^{99}-s^{99}}{2\\sqrt{10}}A^2.\\]这就是所求。"
       }
     ],
-    "answer": "见解析",
+    "answer": "\\(a=5\\)，记 \\(r=4+\\sqrt{10},\\ s=4-\\sqrt{10}\\)，则 \\(A^{100}=-\\dfrac{3(r^{98}-s^{98})}{\\sqrt{10}}A+\\dfrac{r^{99}-s^{99}}{2\\sqrt{10}}A^2\\)",
     "commonErrors": [],
     "frequency": 1,
     "tags": [
@@ -799,11 +1135,16 @@
     "solution": [
       {
         "step": 1,
-        "title": "解题步骤",
-        "content": "详细解答请参考《2025 数学一真题解析》"
+        "title": "题面核对说明",
+        "content": "这道题当前只剩“投保人的损失事件发生时，保险公司赔偿……”的开头，后面的分布信息、问法和已知条件都不完整。"
+      },
+      {
+        "step": 2,
+        "title": "处理建议",
+        "content": "概率题对条件依赖非常强，缺一条分布或参数都没法可靠计算。建议补原卷后再补详细过程，避免把错误结论写进题库。"
       }
     ],
-    "answer": "见解析",
+    "answer": "当前题面需核对原卷",
     "commonErrors": [],
     "frequency": 1,
     "tags": [

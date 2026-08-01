@@ -248,26 +248,26 @@
     "solution": [
       {
         "step": 1,
-        "title": "正项级数",
-        "content": "由 \\(a_n < b_n\\) 知 \\(\\displaystyle\\sum_{n=1}^\\infty (b_n - a_n)\\) 为正项级数且收敛，故绝对收敛。"
+        "title": "先看真正能比较的量",
+        "content": "由 \\(a_n<b_n\\) 且两级数都收敛，可得 \\(\\sum (b_n-a_n)\\) 是收敛的正项级数。注意这里能比较的是 \\(b_n-a_n\\)，不能直接推出 \\(|a_n|<|b_n|\\)。"
       },
       {
         "step": 2,
-        "title": "充分性",
-        "content": "若 \\(\\displaystyle\\sum a_n\\) 绝对收敛，则 \\(|b_n| = |b_n - a_n + a_n| \\leq |b_n - a_n| + |a_n|\\)，由比较判别法 \\(\\displaystyle\\sum b_n\\) 绝对收敛。"
+        "title": "充分性不成立",
+        "content": "取 \\(a_n=-\\dfrac{1}{n^2}\\)，\\(b_n=\\dfrac{(-1)^n}{n}\\)。则 \\(a_n<b_n\\) 恒成立，且 \\(\\sum a_n\\) 与 \\(\\sum b_n\\) 都收敛。<br>但 \\(\\sum a_n\\) 绝对收敛，因为 \\(\\sum |a_n|=\\sum \\dfrac{1}{n^2}\\) 收敛；\\(\\sum b_n\\) 不绝对收敛，因为 \\(\\sum |b_n|=\\sum \\dfrac{1}{n}\\) 发散。故“\\(\\sum a_n\\) 绝对收敛 \\(\\Rightarrow\\) \\(\\sum b_n\\) 绝对收敛”不成立。"
       },
       {
         "step": 3,
-        "title": "必要性",
-        "content": "若 \\(\\displaystyle\\sum b_n\\) 绝对收敛，则 \\(|a_n| = |a_n - b_n + b_n| \\leq |b_n - a_n| + |b_n|\\)，由比较判别法 \\(\\displaystyle\\sum a_n\\) 绝对收敛。"
+        "title": "必要性也不成立",
+        "content": "再取 \\(a_n=-\\dfrac{(-1)^n}{n}\\)，\\(b_n=\\dfrac{1}{n^2}\\)。则仍有 \\(a_n<b_n\\)，且两级数都收敛。<br>此时 \\(\\sum b_n\\) 绝对收敛，而 \\(\\sum a_n\\) 不绝对收敛，因为 \\(\\sum |a_n|=\\sum \\dfrac{1}{n}\\) 发散。故“\\(\\sum b_n\\) 绝对收敛 \\(\\Rightarrow\\) \\(\\sum a_n\\) 绝对收敛”也不成立。"
       },
       {
         "step": 4,
         "title": "结论",
-        "content": "两者互为充分必要条件，选 A。"
+        "content": "充分性、必要性都不成立，所以应选 D：既不充分也不必要。"
       }
     ],
-    "answer": "A",
+    "answer": "D",
     "commonErrors": [
       "将正项级数条件遗忘",
       "比较判别法方向搞反"

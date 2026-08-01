@@ -28,7 +28,23 @@
         "anchor": "part1"
       }
     ],
-    "solution": [],
+    "solution": [
+      {
+        "step": 1,
+        "title": "判断 \\(f(x)\\) 的奇偶性",
+        "content": "被积函数 \\(\\mathrm e^{\\cos t}\\) 是偶函数，因为 \\(\\cos(-t)=\\cos t\\)。对偶函数作变上限积分，\\(f(-x)=\\int_0^{-x}\\mathrm e^{\\cos t}\\,dt=-\\int_0^x\\mathrm e^{\\cos t}\\,dt=-f(x)\\)，所以 \\(f(x)\\) 为奇函数。"
+      },
+      {
+        "step": 2,
+        "title": "判断 \\(g(x)\\) 的奇偶性",
+        "content": "先记 \\(F(u)=\\int_0^u \\mathrm e^{t^2}\\,dt\\)。由于 \\(\\mathrm e^{t^2}\\) 是偶函数，所以 \\(F(u)\\) 是奇函数。又 \\(\\sin x\\) 是奇函数，因此 \\(g(x)=F(\\sin x)\\) 是“奇函数复合奇函数”，仍为奇函数。"
+      },
+      {
+        "step": 3,
+        "title": "排除其余选项",
+        "content": "既然 \\(f\\) 与 \\(g\\) 都是奇函数，就只能选 C。它们都不是偶函数，也看不出有周期性。"
+      }
+    ],
     "answer": "C",
     "commonErrors": [],
     "frequency": 1,
@@ -64,7 +80,23 @@
         "anchor": "part1"
       }
     ],
-    "solution": [],
+    "solution": [
+      {
+        "step": 1,
+        "title": "把曲面写成显函数",
+        "content": "曲面上侧可写成 \\(z=z(x,y)=\\sqrt{1-x^2-y^2}\\)。于是 \\(z_x=-\\dfrac{x}{z}\\)，\\(z_y=-\\dfrac{y}{z}\\)。"
+      },
+      {
+        "step": 2,
+        "title": "套第二型曲面积分公式",
+        "content": "对上侧取向，有 \\(dy\\,dz=-z_x\\,dx\\,dy\\)，\\(dz\\,dx=-z_y\\,dx\\,dy\\)。所以<br>\\[\\iint_\\Sigma P\\,dy\\,dz+Q\\,dz\\,dx=\\iint_D\\left(-Pz_x-Qz_y\\right)dxdy.\\]"
+      },
+      {
+        "step": 3,
+        "title": "代入偏导",
+        "content": "代入 \\(z_x=-\\dfrac{x}{z}\\)，\\(z_y=-\\dfrac{y}{z}\\)，得<br>\\[\\iint_\\Sigma P\\,dy\\,dz+Q\\,dz\\,dx=\\iint_D\\left(\\frac{x}{z}P+\\frac{y}{z}Q\\right)dxdy.\\]<br>故选 A。"
+      }
+    ],
     "answer": "A",
     "commonErrors": [],
     "frequency": 1,
@@ -102,7 +134,23 @@
         "anchor": "part1"
       }
     ],
-    "solution": [],
+    "solution": [
+      {
+        "step": 1,
+        "title": "先把和函数展开",
+        "content": "\\(\\ln(2+x)=\\ln2+\\ln\\left(1+\\dfrac{x}{2}\\right)=\\ln2+\\sum_{n=1}^{\\infty}(-1)^{n-1}\\dfrac{x^n}{n2^n}\\)。"
+      },
+      {
+        "step": 2,
+        "title": "读出偶次项系数",
+        "content": "当幂次为 \\(2n\\) 时，\\(a_{2n}=(-1)^{2n-1}\\dfrac{1}{2n\\cdot 2^{2n}}=-\\dfrac{1}{n2^{2n+1}}\\)。"
+      },
+      {
+        "step": 3,
+        "title": "求目标级数",
+        "content": "于是 \\(na_{2n}=-\\dfrac{1}{2^{2n+1}}\\)，所以<br>\\[\\sum_{n=1}^{\\infty}na_{2n}=-\\sum_{n=1}^{\\infty}\\frac{1}{2\\cdot 4^n}=-\\frac12\\cdot\\frac{\\frac14}{1-\\frac14}=-\\frac16.\\]<br>故选 A。"
+      }
+    ],
     "answer": "A",
     "commonErrors": [],
     "frequency": 1,
@@ -140,7 +188,23 @@
         "anchor": "part1"
       }
     ],
-    "solution": [],
+    "solution": [
+      {
+        "step": 1,
+        "title": "抓住题目给的关键信息",
+        "content": "题设只告诉你 \\(\\lim_{x\\to0}f(x)=0\\)，并没有告诉你 \\(f(0)=0\\)。这正是判断 A、B 的分界点。"
+      },
+      {
+        "step": 2,
+        "title": "证明 B 正确",
+        "content": "若 \\(f\\prime(0)=m\\)，由导数定义<br>\\[f\\prime(0)=\\lim_{x\\to0}\\frac{f(x)-f(0)}{x}.\\]<br>又因 \\(\\lim_{x\\to0}f(x)=0\\) 且导数存在，所以必有 \\(f(0)=0\\)。于是<br>\\[m=f\\prime(0)=\\lim_{x\\to0}\\frac{f(x)}{x}.\\]"
+      },
+      {
+        "step": 3,
+        "title": "说明其余选项为什么错",
+        "content": "A 错在只知道 \\(\\lim_{x\\to0}f(x)=0\\) 并不能直接替代 \\(f(0)=0\\)；C、D 都把“导数存在”与“导函数极限存在”混为一谈，导数未必连续。故选 B。"
+      }
+    ],
     "answer": "B",
     "commonErrors": [],
     "frequency": 1,
@@ -178,7 +242,23 @@
         "anchor": "part1"
       }
     ],
-    "solution": [],
+    "solution": [
+      {
+        "step": 1,
+        "title": "先判断 \\(m\\)",
+        "content": "图中三平面并不重合，也不是三平面互相平行；它们的法向量不可能全共线，所以 \\(m\\neq1\\)。又三平面存在公共交线，因此三个法向量线性相关，只能有 \\(m=2\\)。"
+      },
+      {
+        "step": 2,
+        "title": "再判断 \\(n\\)",
+        "content": "把常数项也并入向量 \\(\\beta_i=(a_i,b_i,c_i,d_i)\\) 后，若 \\(n=3\\) 表示三平面方程组无公共解；而图中三平面有公共交线，所以增广秩与系数秩相同，仍为 2。"
+      },
+      {
+        "step": 3,
+        "title": "结论",
+        "content": "因此 \\(m=n=2\\)，选 B。"
+      }
+    ],
     "answer": "B",
     "commonErrors": [],
     "frequency": 1,
@@ -216,7 +296,23 @@
         "anchor": "part1"
       }
     ],
-    "solution": [],
+    "solution": [
+      {
+        "step": 1,
+        "title": "先用“任意两个都线性无关”排选项",
+        "content": "若 \\(a=1\\)，则 \\(\\alpha_1=(1,1,-1,1)^T\\)，\\(\\alpha_3=(1,1,-1,1)^T\\)，两向量相同，显然线性相关，所以 A、B 直接排除。"
+      },
+      {
+        "step": 2,
+        "title": "只剩 C、D，二者都要求 \\(b=2\\)",
+        "content": "把 \\(b=2\\) 代入后，再由“\\(\\alpha_1,\\alpha_2,\\alpha_3\\) 线性相关”要求矩阵 \\((\\alpha_1,\\alpha_2,\\alpha_3)\\) 的秩为 2。对相应的 3 阶子式计算，可得必须有 \\(a=-2\\)。"
+      },
+      {
+        "step": 3,
+        "title": "结论",
+        "content": "故唯一满足条件的是 \\(a=-2,b=2\\)，选 D。"
+      }
+    ],
     "answer": "D",
     "commonErrors": [],
     "frequency": 1,
@@ -254,7 +350,23 @@
         "anchor": "part1"
       }
     ],
-    "solution": [],
+    "solution": [
+      {
+        "step": 1,
+        "title": "由条件读出特征值",
+        "content": "已知 \\(A\\alpha=0\\)，所以 \\(0\\) 是矩阵 \\(A\\) 的一个特征值；又有 \\(A\\beta=\\beta\\)，所以 \\(1\\) 是矩阵 \\(A\\) 的一个特征值。"
+      },
+      {
+        "step": 2,
+        "title": "利用秩为 2 判断第三个特征值",
+        "content": "3 阶矩阵秩为 2，说明零空间维数为 1，即特征值 0 的几何重数为 1。于是其余两个特征值都非零。题目又给出一个特征值为 1，因此另外一个也只能是 1。"
+      },
+      {
+        "step": 3,
+        "title": "求迹",
+        "content": "所以 \\(A\\) 的特征值为 \\(0,1,1\\)。矩阵幂的特征值分别变成 \\(0^3,1^3,1^3\\)，故<br>\\[\\operatorname{tr}(A^3)=0+1+1=2.\\]<br>选 A。"
+      }
+    ],
     "answer": "A",
     "commonErrors": [],
     "frequency": 1,
@@ -292,7 +404,23 @@
         "anchor": "part1"
       }
     ],
-    "solution": [],
+    "solution": [
+      {
+        "step": 1,
+        "title": "把两个概率都化成正态分布函数",
+        "content": "令 \\(U=2X+Y\\)，则由独立正态变量线性组合性质，\\(U\\sim N(-2,10)\\)。因此<br>\\[P\\{2X+Y<a\\}=\\Phi\\left(\\frac{a+2}{\\sqrt{10}}\\right).\\]"
+      },
+      {
+        "step": 2,
+        "title": "化简右边概率",
+        "content": "令 \\(V=X-Y\\)，则 \\(V\\sim N(2,4)\\)。所以<br>\\[P\\{X>Y\\}=P\\{V>0\\}=P\\left\\{\\frac{V-2}{2}>-1\\right\\}=\\Phi(1).\\]"
+      },
+      {
+        "step": 3,
+        "title": "比较分位点",
+        "content": "由题意 \\(\\Phi\\left(\\dfrac{a+2}{\\sqrt{10}}\\right)=\\Phi(1)\\)，故 \\(\\dfrac{a+2}{\\sqrt{10}}=1\\)，解得 \\(a=-2+\\sqrt{10}\\)。选 B。"
+      }
+    ],
     "answer": "B",
     "commonErrors": [],
     "frequency": 1,
@@ -330,7 +458,23 @@
         "anchor": "part1"
       }
     ],
-    "solution": [],
+    "solution": [
+      {
+        "step": 1,
+        "title": "先求 \\(E(X)\\) 与 \\(E(X^2)\\)",
+        "content": "由密度 \\(f_X(x)=2(1-x)\\,(0<x<1)\\)，得<br>\\[E(X)=\\int_0^1 2x(1-x)dx=\\frac13,\\qquad E(X^2)=\\int_0^1 2x^2(1-x)dx=\\frac16.\\]"
+      },
+      {
+        "step": 2,
+        "title": "利用条件分布求 \\(E(Y)\\) 与 \\(E(XY)\\)",
+        "content": "在 \\(X=x\\) 条件下，\\(Y\\) 在 \\((x,1)\\) 上均匀分布，所以<br>\\[E(Y\\mid X=x)=\\frac{x+1}{2}.\\]<br>于是<br>\\[E(Y)=E\\left(E(Y\\mid X)\\right)=\\frac{E(X)+1}{2}=\\frac23,\\]<br>\\[E(XY)=E\\left(XE(Y\\mid X)\\right)=\\frac12E(X^2+X)=\\frac12\\left(\\frac16+\\frac13\\right)=\\frac14.\\]"
+      },
+      {
+        "step": 3,
+        "title": "计算协方差",
+        "content": "因此<br>\\[\\operatorname{cov}(X,Y)=E(XY)-E(X)E(Y)=\\frac14-\\frac13\\cdot\\frac23=\\frac1{36}.\\]<br>故选 D。"
+      }
+    ],
     "answer": "D",
     "commonErrors": [],
     "frequency": 1,
@@ -368,7 +512,23 @@
         "anchor": "part1"
       }
     ],
-    "solution": [],
+    "solution": [
+      {
+        "step": 1,
+        "title": "写出 \\(Z=|X-Y|\\) 的尾分布",
+        "content": "对 \\(z>0\\)，有<br>\\[P(Z>z)=P(|X-Y|>z)=P(X>Y+z)+P(Y>X+z).\\]"
+      },
+      {
+        "step": 2,
+        "title": "利用指数分布无记忆性",
+        "content": "由于 \\(X,Y\\) 独立且同服从参数为 \\(\\lambda\\) 的指数分布，上式两项对称，各自都等于 \\(\\dfrac12e^{-\\lambda z}\\)，故<br>\\[P(Z>z)=e^{-\\lambda z}.\\]"
+      },
+      {
+        "step": 3,
+        "title": "认出分布类型",
+        "content": "这正是参数为 \\(\\lambda\\) 的指数分布的尾分布，所以 \\(Z\\) 与 \\(X\\) 同分布，选 D。"
+      }
+    ],
     "answer": "D",
     "commonErrors": [],
     "frequency": 1,
@@ -401,7 +561,23 @@
         "anchor": "part1"
       }
     ],
-    "solution": [],
+    "solution": [
+      {
+        "step": 1,
+        "title": "先对幂式取对数",
+        "content": "设 \\(u=(1+ax^2)^{\\sin x}-1\\)。因为 \\(u\\to0\\)，可先研究<br>\\[\\ln(1+u)=\\sin x\\cdot \\ln(1+ax^2).\\]"
+      },
+      {
+        "step": 2,
+        "title": "做等价展开",
+        "content": "当 \\(x\\to0\\) 时，\\(\\sin x\\sim x\\)，\\(\\ln(1+ax^2)\\sim ax^2\\)，所以<br>\\[\\ln(1+u)\\sim ax^3.\\]"
+      },
+      {
+        "step": 3,
+        "title": "回到原极限",
+        "content": "又因 \\(\\ln(1+u)\\sim u\\)，故 \\(u\\sim ax^3\\)。于是<br>\\[\\lim_{x\\to0}\\frac{(1+ax^2)^{\\sin x}-1}{x^3}=a=6.\\]<br>所以填 \\(6\\)。"
+      }
+    ],
     "answer": "6",
     "commonErrors": [],
     "frequency": 1,
@@ -434,7 +610,23 @@
         "anchor": "part1"
       }
     ],
-    "solution": [],
+    "solution": [
+      {
+        "step": 1,
+        "title": "读出一阶偏导",
+        "content": "由 \\(df\\big|_{(1,1)}=3\\,du+4\\,dv\\)，可知 \\(f_u(1,1)=3\\)，\\(f_v(1,1)=4\\)。"
+      },
+      {
+        "step": 2,
+        "title": "设中间变量并求导",
+        "content": "令 \\(u=\\cos x\\)，\\(v=1+x^2\\)，则 \\(y=f(u,v)\\)。有<br>\\[u\\prime=-\\sin x,\\ u\\prime\\prime=-\\cos x,\\ v\\prime=2x,\\ v\\prime\\prime=2.\\]在 \\(x=0\\) 处，\\(u=1,v=1,u\\prime=0,v\\prime=0,u\\prime\\prime=-1,v\\prime\\prime=2\\)。"
+      },
+      {
+        "step": 3,
+        "title": "代入二阶链式法则",
+        "content": "因为 \\(u\\prime(0)=v\\prime(0)=0\\)，所有含二阶偏导的乘积项都消失，只剩<br>\\[y\\prime\\prime(0)=f_u(1,1)u\\prime\\prime(0)+f_v(1,1)v\\prime\\prime(0)=3\\cdot(-1)+4\\cdot2=5.\\]<br>故填 \\(5\\)。"
+      }
+    ],
     "answer": "5",
     "commonErrors": [],
     "frequency": 1,
@@ -467,7 +659,18 @@
         "anchor": "part1"
       }
     ],
-    "solution": [],
+    "solution": [
+      {
+        "step": 1,
+        "title": "题面核对说明",
+        "content": "当前这道题在 JSON 中存在明显 OCR 断裂：题干、极限式和答案字段都已损坏，现有文本无法可靠还原原题。"
+      },
+      {
+        "step": 2,
+        "title": "处理建议",
+        "content": "这题不适合硬编全过程。建议后续补一张原卷截图或把完整题面贴进来，我再按当前项目的思维导图格式补成可直接刷题的详细解析。"
+      }
+    ],
     "answer": "$-\\frac{1}{x}$",
     "commonErrors": [],
     "frequency": 1,
@@ -500,8 +703,29 @@
         "anchor": "part1"
       }
     ],
-    "solution": [],
-    "answer": "$$",
+    "solution": [
+      {
+        "step": 1,
+        "title": "作代换降阶",
+        "content": "令 \\(u=x+y\\)，则 \\(y\\prime=u\\prime-1\\)。原方程变为<br>\\[u\\prime-1=\\frac1{u^2},\\qquad u\\prime=1+\\frac1{u^2}=\\frac{u^2+1}{u^2}.\\]"
+      },
+      {
+        "step": 2,
+        "title": "分离变量积分",
+        "content": "于是<br>\\[\\frac{dx}{du}=\\frac{u^2}{u^2+1}=1-\\frac1{u^2+1}.\\]<br>积分得<br>\\[x=u-\\arctan u+C.\\]"
+      },
+      {
+        "step": 3,
+        "title": "代入初值",
+        "content": "由 \\(y(1)=0\\) 得 \\(u(1)=1\\)。因此<br>\\[1=1-\\arctan1+C\\Rightarrow C=\\frac\\pi4.\\]故<br>\\[x=u-\\arctan u+\\frac\\pi4.\\]"
+      },
+      {
+        "step": 4,
+        "title": "化成题目常见写法",
+        "content": "把 \\(u=x+y\\) 代回，得 \\(\\arctan(x+y)=y+\\dfrac\\pi4\\)，于是<br>\\[x+y=\\tan\\left(y+\\frac\\pi4\\right),\\qquad x=\\tan\\left(y+\\frac\\pi4\\right)-y.\\]"
+      }
+    ],
+    "answer": "\\(x=\\tan\\left(y+\\dfrac{\\pi}{4}\\right)-y\\)",
     "commonErrors": [],
     "frequency": 1,
     "tags": [
@@ -533,7 +757,23 @@
         "anchor": "part1"
       }
     ],
-    "solution": [],
+    "solution": [
+      {
+        "step": 1,
+        "title": "识别不等式的本质",
+        "content": "不等式 \\((\\alpha^TA\\beta)^2\\le (\\alpha^TA\\alpha)(\\beta^TA\\beta)\\) 对任意实向量都成立，本质上是“由矩阵 \\(A\\) 诱导的柯西不等式”。这要求 \\(A\\) 是实对称半正定矩阵。"
+      },
+      {
+        "step": 2,
+        "title": "写出矩阵并判半正定",
+        "content": "这里<br>\\[A=\\begin{pmatrix}a+1&a\\\\ a&a\\end{pmatrix}.\\]<br>2 阶实对称矩阵半正定的充要条件是顺序主子式非负，即<br>\\[a+1\\ge0,\\qquad \\det A=(a+1)a-a^2=a\\ge0.\\]"
+      },
+      {
+        "step": 3,
+        "title": "结论",
+        "content": "由 \\(a\\ge0\\) 自动推出 \\(a+1\\ge0\\)，所以最终取值范围是 \\(a\\ge0\\)。"
+      }
+    ],
     "answer": "$a \\geqslant 0$",
     "commonErrors": [],
     "frequency": 1,
@@ -566,7 +806,23 @@
         "anchor": "part1"
       }
     ],
-    "solution": [],
+    "solution": [
+      {
+        "step": 1,
+        "title": "写出条件概率",
+        "content": "设每次成功概率为 \\(p\\)。则“三次都成功”概率是 \\(p^3\\)，“至少成功一次”概率是 \\(1-(1-p)^3\\)。题意给出<br>\\[\\frac{p^3}{1-(1-p)^3}=\\frac4{13}.\\]"
+      },
+      {
+        "step": 2,
+        "title": "解方程",
+        "content": "化简得<br>\\[13p^3=4\\bigl(3p-3p^2+p^3\\bigr),\\]<br>即<br>\\[9p^3+12p^2-12p=0\\Rightarrow 3p(3p^2+4p-4)=0.\\]"
+      },
+      {
+        "step": 3,
+        "title": "取概率可行解",
+        "content": "解二次方程得 \\(p=\\dfrac23\\) 或 \\(-2\\)。结合概率范围 \\(0<p<1\\)，取 \\(p=\\dfrac23\\)。"
+      }
+    ],
     "answer": "$\\frac{2}{3}$",
     "commonErrors": [],
     "frequency": 1,
@@ -599,7 +855,18 @@
         "anchor": "part1"
       }
     ],
-    "solution": [],
+    "solution": [
+      {
+        "step": 1,
+        "title": "题面核对说明",
+        "content": "当前题面经过 OCR 后，积分符号后的被积函数与积分测度已经缺失，只剩“区域 \\(D\\)”和一个答案值，无法可靠还原题目。"
+      },
+      {
+        "step": 2,
+        "title": "处理建议",
+        "content": "这类解答题不适合凭答案反推全过程。建议补原卷题图或更正题干后，我再把它补成完整的“步骤 + 思维导图 + 踩坑点”版本。"
+      }
+    ],
     "answer": "$\\sqrt{2} +\\ln (1 + \\sqrt{2}) - 2$",
     "commonErrors": [],
     "frequency": 1,
@@ -632,8 +899,29 @@
         "anchor": "part1"
       }
     ],
-    "solution": [],
-    "answer": "切平面",
+    "solution": [
+      {
+        "step": 1,
+        "title": "先求切平面",
+        "content": "\\(f(x,y)=x^3+y^3-(x+y)^2+3\\)。有<br>\\[f_x=3x^2-2(x+y),\\qquad f_y=3y^2-2(x+y).\\]<br>在 \\((1,1)\\) 处，\\(f(1,1)=1\\)，\\(f_x(1,1)=f_y(1,1)=-1\\)。故切平面为<br>\\[z-1=-(x-1)-(y-1),\\]即 \\(x+y+z=3\\)。"
+      },
+      {
+        "step": 2,
+        "title": "写出投影区域 \\(D\\)",
+        "content": "切平面与三个坐标面围成有界区域，其在 \\(xOy\\) 面上的投影为<br>\\[D=\\{(x,y)\\mid x\\ge0,\\ y\\ge0,\\ x+y\\le3\\}.\\]这是第一象限内的一个三角形闭区域。"
+      },
+      {
+        "step": 3,
+        "title": "求内部驻点",
+        "content": "令 \\(f_x=f_y=0\\)，得<br>\\[3x^2-2(x+y)=0,\\qquad 3y^2-2(x+y)=0.\\]<br>相减得 \\((x-y)(3x+3y-2)=0\\)。在内部主要看 \\(x=y\\)，代回得 \\(3x^2-4x=0\\)，故 \\(x=\\dfrac43\\)。于是内部驻点为 \\(\\left(\\dfrac43,\\dfrac43\\right)\\)，对应函数值<br>\\[f\\left(\\frac43,\\frac43\\right)=\\frac{17}{27}.\\]"
+      },
+      {
+        "step": 4,
+        "title": "检查边界并比较",
+        "content": "在边界 \\(x=0\\) 或 \\(y=0\\) 上，只需研究一元函数；在边界 \\(x+y=3\\) 上令 \\(y=3-x\\) 代入。比较各边界极值与内部驻点值，可得最大值为 \\(21\\)（在 \\((3,0)\\) 或 \\((0,3)\\) 处取得），最小值为 \\(\\dfrac{17}{27}\\)。"
+      }
+    ],
+    "answer": "\\(T:x+y+z=3\\)，最大值 \\(21\\)，最小值 \\(\\dfrac{17}{27}\\)",
     "commonErrors": [],
     "frequency": 1,
     "tags": [
@@ -665,8 +953,29 @@
         "anchor": "part1"
       }
     ],
-    "solution": [],
-    "answer": "（1）泰勒公式",
+    "solution": [
+      {
+        "step": 1,
+        "title": "构造辅助函数证明第 (1) 问",
+        "content": "令<br>\\[g(x)=f(x)-f(0)(1-x)-f(1)x.\\]<br>则 \\(g(0)=g(1)=0\\)，且 \\(g\\prime\\prime(x)=f\\prime\\prime(x)\\)，所以 \\(|g\\prime\\prime(x)|\\le1\\)。"
+      },
+      {
+        "step": 2,
+        "title": "二次用罗尔定理",
+        "content": "对任意固定 \\(x\\in(0,1)\\)，构造<br>\\[h(t)=g(t)-\\frac{g(x)}{x(1-x)}t(1-t).\\]<br>则 \\(h(0)=h(x)=h(1)=0\\)。由罗尔定理连续使用两次，存在 \\(\\xi\\in(0,1)\\) 使<br>\\[h\\prime\\prime(\\xi)=0.\\]<br>而 \\(h\\prime\\prime(t)=g\\prime\\prime(t)+\\frac{2g(x)}{x(1-x)}\\)，故<br>\\[g(x)=-\\frac{x(1-x)}{2}g\\prime\\prime(\\xi).\\]"
+      },
+      {
+        "step": 3,
+        "title": "得到第 (1) 问结论",
+        "content": "由 \\(|g\\prime\\prime(\\xi)|\\le1\\)，立刻得<br>\\[|g(x)|\\le\\frac{x(1-x)}{2}.\\]<br>把 \\(g(x)\\) 换回去，就是<br>\\[\\left|f(x)-f(0)(1-x)-f(1)x\\right|\\le\\frac{x(1-x)}{2}.\\]"
+      },
+      {
+        "step": 4,
+        "title": "积分得到第 (2) 问",
+        "content": "对上式在 \\([0,1]\\) 上积分，注意<br>\\[\\int_0^1\\bigl[f(0)(1-x)+f(1)x\\bigr]dx=\\frac{f(0)+f(1)}{2},\\]<br>且<br>\\[\\int_0^1\\frac{x(1-x)}{2}dx=\\frac1{12}.\\]<br>故<br>\\[\\left|\\int_0^1f(x)dx-\\frac{f(0)+f(1)}{2}\\right|\\le\\frac1{12}.\\]"
+      }
+    ],
+    "answer": "见解析",
     "commonErrors": [],
     "frequency": 1,
     "tags": [
@@ -698,7 +1007,28 @@
         "anchor": "part1"
       }
     ],
-    "solution": [],
+    "solution": [
+      {
+        "step": 1,
+        "title": "用斯托克斯公式",
+        "content": "记向量场<br>\\[\\mathbf F=(6xyz-yz^2,\\ 2x^2z,\\ xyz).\\]<br>则所求曲线积分为 \\(\\oint_L \\mathbf F\\cdot d\\mathbf r\\)。由斯托克斯公式，等于 \\(\\iint_S (\\nabla\\times \\mathbf F)\\cdot \\mathbf n\\,dS\\)，其中 \\(S\\) 取为平面 \\(2x-z-1=0\\) 内由 \\(L\\) 围成的圆盘。"
+      },
+      {
+        "step": 2,
+        "title": "计算旋度并利用平面方程化简",
+        "content": "有<br>\\[\\nabla\\times \\mathbf F=(xz-2x^2,\\ 6xy-3yz,\\ z^2-2xz).\\]<br>在平面 \\(2x-z-1=0\\) 上，\\(2x-z=1\\)，故可化为<br>\\[\\nabla\\times \\mathbf F=(-x,\\ 3y,\\ -z).\\]<br>按题目给出的逆时针方向判断，应取法向量方向与 \\((-2,0,1)\\) 同向，此时 \\((\\nabla\\times \\mathbf F)\\cdot \\hat n=\\dfrac{2x-z}{\\sqrt5}=\\dfrac1{\\sqrt5}.\\]"
+      },
+      {
+        "step": 3,
+        "title": "求圆盘面积",
+        "content": "球面 \\(x^2+y^2+z^2=2x\\) 可写成 \\((x-1)^2+y^2+z^2=1\\)，球心为 \\((1,0,0)\\)，半径为 1。球心到平面 \\(2x-z-1=0\\) 的距离是<br>\\[d=\\frac{|2\\cdot1-0-1|}{\\sqrt{2^2+(-1)^2}}=\\frac1{\\sqrt5}.\\]<br>故截圆半径 \\(r=\\sqrt{1-d^2}=\\dfrac{2}{\\sqrt5}\\)，面积为 \\(\\pi r^2=\\dfrac{4\\pi}{5}\\)。"
+      },
+      {
+        "step": 4,
+        "title": "得到结果",
+        "content": "因此<br>\\[\\oint_L \\mathbf F\\cdot d\\mathbf r=\\frac1{\\sqrt5}\\cdot\\frac{4\\pi}{5}=\\frac{4\\pi}{5\\sqrt5}.\\]"
+      }
+    ],
     "answer": "$\\frac{4\\pi}{5\\sqrt{5}}$",
     "commonErrors": [],
     "frequency": 1,
@@ -731,8 +1061,29 @@
         "anchor": "part1"
       }
     ],
-    "solution": [],
-    "answer": "$A = \\begin{pmatrix} -2 & 0 & 2 \\\\ 0 & -2 & -2 \\\\ -6 & -3 & 3 \\end{pmatrix}, A^{\\prime \\prime} = \\begin{pmatrix} -4 + (-1)^{n+1}2^{n} & -2 + (-1)^{n+1}2^{n} & 2 \\\\ 4 + (-1)^{n+1}2^{n} & 2 + (-1)^{n}2^{n+1} & -2 \\\\ -6 & 3 & 0 \\end{pmatrix}$",
+    "solution": [
+      {
+        "step": 1,
+        "title": "先写出递推矩阵",
+        "content": "由题意可直接写出<br>\\[\\alpha_n=A\\alpha_{n-1},\\qquad A=\\begin{pmatrix}-2&0&2\\\\0&-2&-2\\\\-6&-3&3\\end{pmatrix}.\\]"
+      },
+      {
+        "step": 2,
+        "title": "求特征值并对角化",
+        "content": "计算特征多项式可得<br>\\[|\\lambda I-A|=\\lambda(\\lambda+2)(\\lambda-1).\\]<br>故特征值为 \\(0,1,-2\\)，互不相同，所以 \\(A\\) 可对角化。"
+      },
+      {
+        "step": 3,
+        "title": "写出 \\(A^n\\)",
+        "content": "由特征分解或待定系数法可得（\\(n\\ge1\\)）<br>\\[A^n=\\begin{pmatrix}-(-2)^n-4&-(-2)^n-2&2\\\\2(-2)^n+4&2(-2)^n+2&-2\\\\-6&-3&3\\end{pmatrix}.\\]"
+      },
+      {
+        "step": 4,
+        "title": "代入初值求三列数列",
+        "content": "初始向量 \\(\\alpha_0=(-1,0,2)^T\\)，所以 \\(\\alpha_n=A^n\\alpha_0\\)。计算得<br>\\[x_n=8+(-2)^n,\\qquad y_n=-8-2(-2)^n,\\qquad z_n=12\\quad(n\\ge1).\\]"
+      }
+    ],
+    "answer": "\\(A=\\begin{pmatrix}-2&0&2\\\\0&-2&-2\\\\-6&-3&3\\end{pmatrix}\\)，对 \\(n\\ge1\\)，\\(A^n=\\begin{pmatrix}-(-2)^n-4&-(-2)^n-2&2\\\\2(-2)^n+4&2(-2)^n+2&-2\\\\-6&-3&3\\end{pmatrix}\\)，\\(x_n=8+(-2)^n\\)，\\(y_n=-8-2(-2)^n\\)，\\(z_n=12\\)",
     "commonErrors": [],
     "frequency": 1,
     "tags": [
@@ -764,8 +1115,29 @@
         "anchor": "part1"
       }
     ],
-    "solution": [],
-    "answer": "（1）",
+    "solution": [
+      {
+        "step": 1,
+        "title": "写出样本最大值的分布",
+        "content": "当 \\(0<x<\\theta\\) 时，\\(X_{(n)}=\\max(X_1,\\dots,X_n)\\) 的分布函数为<br>\\[P\\{X_{(n)}\\le x\\}=\\left(\\frac{x}{\\theta}\\right)^n,\\]故密度为<br>\\[f_{X_{(n)}}(x)=\\frac{n x^{n-1}}{\\theta^n},\\quad 0<x<\\theta.\\]"
+      },
+      {
+        "step": 2,
+        "title": "求无偏常数",
+        "content": "由密度可算得<br>\\[E[X_{(n)}]=\\frac{n}{n+1}\\theta.\\]<br>令 \\(T_c=cX_{(n)}\\) 无偏，即 \\(E(T_c)=\\theta\\)，得到<br>\\[c\\cdot\\frac{n}{n+1}\\theta=\\theta\\Rightarrow c=\\frac{n+1}{n}.\\]"
+      },
+      {
+        "step": 3,
+        "title": "写出均方误差函数",
+        "content": "还需用到二阶矩<br>\\[E[X_{(n)}^2]=\\frac{n}{n+2}\\theta^2.\\]<br>于是<br>\\[h(c)=E(T_c-\\theta)^2=c^2E[X_{(n)}^2]-2c\\theta E[X_{(n)}]+\\theta^2\\]\n\\[=\\theta^2\\left(\\frac{n}{n+2}c^2-2\\frac{n}{n+1}c+1\\right).\\]"
+      },
+      {
+        "step": 4,
+        "title": "最小化 \\(h(c)\\)",
+        "content": "这是关于 \\(c\\) 的二次函数，开口向上。令导数为零：<br>\\[\\frac{d}{dc}h(c)=\\theta^2\\left(2\\frac{n}{n+2}c-2\\frac{n}{n+1}\\right)=0,\\]解得<br>\\[c=\\frac{n+2}{n+1}.\\]"
+      }
+    ],
+    "answer": "（1）\\(c=\\dfrac{n+1}{n}\\)；（2）\\(c=\\dfrac{n+2}{n+1}\\)",
     "commonErrors": [],
     "frequency": 1,
     "tags": [
