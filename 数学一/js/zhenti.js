@@ -793,6 +793,8 @@
         const hasSkeleton = hasFullSolution;
         const hasCommonErrors = q.commonErrors && q.commonErrors.length > 0;
         const answerText = q.answer || '（参考解析请查阅配套解析 PDF）';
+        const solveOverview = renderSolutionOverview(q, hasFullSolution);
+        const reviewAdvice = renderReviewAdvice(q, hasFullSolution, hasCommonErrors);
 
         // 骨架：来自 solution steps 的 title 列表
         let skeletonHtml = '';
@@ -810,16 +812,23 @@
         // 详细步骤
         let detailedHtml = '';
         if (hasFullSolution) {
-            const steps = q.solution.map(s => `
+            const totalSteps = q.solution.length;
+            const steps = q.solution.map((s, idx) => `
                 <div class="solution-step">
-                    <div class="step-num">第 ${s.step} 步</div>
+                    <div class="step-num">第 ${s.step} 步 · ${getStepRoleLabel(idx, totalSteps)}</div>
                     <div class="step-title">${escapeHtml(s.title || '')}</div>
                     <div class="step-content">${s.content || ''}</div>
                 </div>
             `).join('');
-            detailedHtml = steps;
+            detailedHtml = `
+                <div class="detail-intro">
+                    <p><strong>阅读顺序：</strong>先看骨架确认思路，再自己尝试推一遍，最后展开下面的步骤核对细节。</p>
+                    <p><strong>本题解析状态：</strong>已配置 ${totalSteps} 步详细过程，可直接按“入口 → 推导 → 结论”的顺序复盘。</p>
+                </div>
+                ${steps}
+            `;
         } else {
-            detailedHtml = '<p class="empty-tip">本题暂未配置详细解题步骤，可查阅涉及知识点章节或配套解析 PDF。</p>';
+            detailedHtml = renderFallbackDetailed(q);
         }
 
         // 常见错误
@@ -837,13 +846,16 @@
             <!-- 答案：默认折叠（防止意外看到） -->
             <details class="q-collapse q-collapse-answer">
                 <summary>【答案】<span class="collapse-hint">点击展开</span></summary>
-                <div class="answer-content">${escapeHtml(answerText)}</div>
+                <div class="answer-content">
+                    <div class="answer-main"><strong>参考答案：</strong>${escapeHtml(answerText)}</div>
+                    <div class="answer-guide">${reviewAdvice}</div>
+                </div>
             </details>
 
             <!-- 解题骨架：默认展开 -->
             <details class="q-collapse q-collapse-skeleton" open>
                 <summary>【解题骨架】<span class="collapse-hint">点击收起</span></summary>
-                <div class="skeleton-content">${skeletonHtml}</div>
+                <div class="skeleton-content">${solveOverview}${skeletonHtml}</div>
             </details>
 
             <!-- 详细步骤：默认折叠 -->
@@ -852,6 +864,105 @@
                 <div class="detail-content">${detailedHtml}${errorsHtml}</div>
             </details>
         `;
+    }
+
+    function renderSolutionOverview(q, hasFullSolution) {
+        const testPoints = (q.testPoints || []).filter(Boolean);
+        const kpNames = (q.knowledgePoints || []).map(k => k && k.name).filter(Boolean);
+        const meta = [
+            `题型：${q.type || '未标注'} / ${q.part || '未标注'}`,
+            `难度：${getDifficultyLabel(q.difficulty)}`,
+            hasFullSolution ? `解析：已配 ${q.solution.length} 步` : '解析：暂缺完整步骤',
+            q.frequency ? `近年热度：${q.frequency} 次` : '近年热度：待补充'
+        ];
+        const testPointText = testPoints.length ? testPoints.join('、') : '未单独标注考点';
+        const kpText = kpNames.length ? kpNames.join('、') : '未单独标注知识点名称';
+        return `
+            <div class="solution-overview">
+                <p><strong>本题先看什么：</strong>${inferSolveEntry(q, testPoints, kpNames)}</p>
+                <p><strong>核心考查：</strong>${escapeHtml(testPointText)}</p>
+                <p><strong>涉及知识：</strong>${escapeHtml(kpText)}</p>
+                <ul class="solution-overview-list">
+                    ${meta.map(item => `<li>${escapeHtml(item)}</li>`).join('')}
+                </ul>
+            </div>
+        `;
+    }
+
+    function inferSolveEntry(q, testPoints, kpNames) {
+        if (testPoints.length >= 2) {
+            return `先识别为“${testPoints[0]} + ${testPoints[1]}”的组合题，再顺着题目给的条件一层层往下拆。`;
+        }
+        if (testPoints.length === 1) {
+            return `先把它看成“${testPoints[0]}”这一类题，优先套这类题最常用的判定框架或公式。`;
+        }
+        if (kpNames.length) {
+            return `先回忆“${kpNames[0]}”对应的基本定义和常用公式，再决定是直接计算、判定还是构造辅助量。`;
+        }
+        if (q.type === '选择题') {
+            return '先比较选项差异，再反推题目想考的核心性质，必要时可以用特值、排除或反例加速。';
+        }
+        if (q.type === '填空题') {
+            return '先抓题目中的已知条件和目标量，优先写出定义式、通用公式或标准变形。';
+        }
+        return '先明确题目要求证什么、求什么，再把已知条件逐条翻成可计算的式子。';
+    }
+
+    function renderReviewAdvice(q, hasFullSolution, hasCommonErrors) {
+        const tips = [];
+        tips.push(hasFullSolution
+            ? `建议先看“解题骨架”，自己做一遍后再展开“详细步骤”，这样更容易真正记住。`
+            : '这题目前还没有完整分步过程，先看骨架和涉及知识点，再去对应章节补方法。');
+        if (hasCommonErrors) {
+            tips.push(`复盘时重点盯住“常见错误”部分，避免同类题在同一个地方反复失分。`);
+        }
+        if (q.type === '选择题') {
+            tips.push('选择题先求稳：能排除先排除，最后再核对答案背后的理由。');
+        } else if (q.type === '解答题') {
+            tips.push('解答题复盘时尽量按“写思路 → 写步骤 → 回收结论”的顺序重做一遍。');
+        }
+        return `<ul class="answer-guide-list">${tips.map(t => `<li>${escapeHtml(t)}</li>`).join('')}</ul>`;
+    }
+
+    function renderFallbackDetailed(q) {
+        const testPoints = (q.testPoints || []).filter(Boolean);
+        const kpNames = (q.knowledgePoints || []).map(k => k && k.name).filter(Boolean);
+        const lines = [
+            `第 1 步先审题：圈出条件、目标和限制范围，判断它属于哪一类经典题型。`,
+            `第 2 步再回忆工具：优先检查 ${testPoints[0] || kpNames[0] || '该题对应知识点'} 的定义、公式和标准套路。`,
+            `第 3 步最后复盘：把自己的推导和答案对照，补齐缺的中间式与结论句。`
+        ];
+        return `
+            <div class="detail-intro">
+                <p><strong>提示：</strong>本题暂未录入完整逐步解析，先按下面这套通用复盘顺序练一遍。</p>
+            </div>
+            <div class="solution-step">
+                <div class="step-num">复盘模板</div>
+                <div class="step-title">先自己做，再对照骨架补缺口</div>
+                <div class="step-content">
+                    <ol class="solution-fallback-list">
+                        ${lines.map(line => `<li>${escapeHtml(line)}</li>`).join('')}
+                    </ol>
+                </div>
+            </div>
+        `;
+    }
+
+    function getStepRoleLabel(index, total) {
+        if (index === 0) return '入口';
+        if (index === total - 1) return '结论';
+        return '关键推导';
+    }
+
+    function getDifficultyLabel(level) {
+        const map = {
+            1: '基础',
+            2: '偏基础',
+            3: '中等',
+            4: '偏难',
+            5: '较难'
+        };
+        return map[level] || '未标注';
     }
 
     /* ===== 折叠式：涉及知识点 ===== */
