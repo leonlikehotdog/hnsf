@@ -312,23 +312,33 @@
     "solution": [
       {
         "step": 1,
-        "title": "化简 \\(r_1\\)",
-        "content": "对第一个矩阵做初等行变换：\\(\\begin{pmatrix} O & A \\\\ BC & E \\end{pmatrix} \\to \\begin{pmatrix} -ABC & O \\\\ BC & E \\end{pmatrix} = \\begin{pmatrix} O & O \\\\ BC & E \\end{pmatrix}\\)<br>所以 \\(r_1 = r(BC) + n\\)。"
+        "title": "思维导图：分块矩阵求秩的通用框架",
+        "content": "【目标】对三个分块矩阵分别求秩，再比较大小<br>【方法】用“分块初等变换”消去一块，化成块对角 / 块三角，再数秩<br>【两条关键恒等式】由 \\(ABC=O\\) 可得<br>　├─ \\((AB)C=O\\)：\\(AB\\) 与 \\(C\\) 的关系<br>　└─ \\(A(BC)=O\\)：\\(A\\) 与 \\(BC\\) 的关系<br>【常用结论】\\(r(XY)\\leq r(X)\\) 且 \\(r(XY)\\leq r(Y)\\)<br>【易错点】块下三角 \\(\\begin{pmatrix} O & O \\\\ X & E \\end{pmatrix}\\) 的秩不是 \\(r(X)+n\\)，而是 \\(n\\)（因为 \\(E\\) 满秩，下两块行已线性无关）<br><br>【口诀】先消块，再数秩；上三角里加满秩。"
       },
       {
         "step": 2,
-        "title": "化简 \\(r_2\\)",
-        "content": "\\(\\begin{pmatrix} AB & C \\\\ O & E \\end{pmatrix} \\to \\begin{pmatrix} AB & O \\\\ O & E \\end{pmatrix}\\)，所以 \\(r_2 = r(AB) + n\\)。"
+        "title": "化简 \\(r_1\\)",
+        "content": "记 \\(M_1 = \\begin{pmatrix} O & A \\\\ BC & E \\end{pmatrix}\\)。<br>对块行做初等变换：第一块行 \\(\\leftarrow\\) 第一块行 \\(- A \\times\\)（第二块行）<br>\\((O,\\;A) - A(BC,\\;E) = (-ABC,\\; A-A) = (O,\\;O)\\)（用到 \\(ABC=O\\)）<br>所以 \\(M_1 \\to \\begin{pmatrix} O & O \\\\ BC & E \\end{pmatrix}\\)，初等变换保秩。<br>由于 \\(E\\) 是单位矩阵（满秩），矩阵下 \\(n\\) 行 \\([BC,\\;E]\\) 线性无关，上 \\(n\\) 行为零，故<br>\\(\\boxed{r_1 = n}\\)。<br><br>【纠错】不能写成 \\(r_1 = r(BC)+n\\)：\\(\\begin{pmatrix} O & O \\\\ BC & E \\end{pmatrix}\\) 是块下三角，左下块 \\(BC\\) 与右下 \\(E\\) 的行有耦合，必须用“\\(E\\) 满秩 → 下 \\(n\\) 行无关”来判断。"
       },
       {
         "step": 3,
-        "title": "化简 \\(r_3\\)",
-        "content": "\\(\\begin{pmatrix} E & AB \\\\ AB & O \\end{pmatrix} \\to \\begin{pmatrix} E & O \\\\ AB & -ABAB \\end{pmatrix} \\to \\begin{pmatrix} E & O \\\\ O & -ABAB \\end{pmatrix}\\)<br>所以 \\(r_3 = r(ABAB) + n\\)。"
+        "title": "化简 \\(r_2\\)",
+        "content": "记 \\(M_2 = \\begin{pmatrix} AB & C \\\\ O & E \\end{pmatrix}\\)。<br>第一块行 \\(\\leftarrow\\) 第一块行 \\(- C \\times\\)（第二块行）：<br>\\((AB,\\;C) - C(O,\\;E) = (AB,\\; C-CE) = (AB,\\;O)\\)（因 \\(E=I\\)）<br>所以 \\(M_2 \\to \\begin{pmatrix} AB & O \\\\ O & E \\end{pmatrix}\\)，已是块对角，秩相加：<br>\\(\\boxed{r_2 = r(AB) + n}\\)。"
       },
       {
         "step": 4,
-        "title": "比较",
-        "content": "由 \\(r(ABAB) \\leq r(AB)\\)，且 \\(r(AB)\\) 与 \\(r(BC)\\) 的大小关系不确定（题目条件 \\(ABC = O\\)）。<br>注意 \\(r(ABAB) \\leq r(AB)\\)，所以 \\(r_3 \\leq r_2\\)。<br>同时 \\(r_1 = r(BC) + n\\)，与 \\(r(AB)\\) 无固定大小关系；但通常 \\(r_1, r_2, r_3\\) 满足 \\(r_1 \\leq r_3 \\leq r_2\\)，选 B。"
+        "title": "化简 \\(r_3\\)",
+        "content": "记 \\(M_3 = \\begin{pmatrix} E & AB \\\\ AB & O \\end{pmatrix}\\)。<br>第二块行 \\(\\leftarrow\\) 第二块行 \\(- AB \\times\\)（第一块行）：<br>\\((AB,\\;O) - AB(E,\\;AB) = (AB-AB,\\; -ABAB) = (O,\\; -ABAB)\\)<br>所以 \\(M_3 \\to \\begin{pmatrix} E & AB \\\\ O & -ABAB \\end{pmatrix}\\)，块上三角（对角块为 \\(E\\) 与 \\(-ABAB\\)），秩相加：<br>\\(\\boxed{r_3 = n + r(ABAB)}\\)。"
+      },
+      {
+        "step": 5,
+        "title": "比较大小",
+        "content": "由 \\(r(XY)\\leq r(X)\\) 取 \\(X=AB,\\;Y=AB\\)：\\(r(ABAB) \\leq r(AB)\\)。<br>于是<br>\\(r_3 = n + r(ABAB) \\leq n + r(AB) = r_2\\)，即 \\(r_3 \\leq r_2\\)；<br>又 \\(r_1 = n \\leq n + r(ABAB) = r_3\\)（秩恒非负），即 \\(r_1 \\leq r_3\\)。<br>所以 \\(\\boxed{r_1 \\leq r_3 \\leq r_2}\\)，选 B。"
+      },
+      {
+        "step": 6,
+        "title": "本题代表的题型",
+        "content": "识别信号：题干给矩阵乘积为零（\\(ABC=O\\)），问三个分块矩阵的秩大小。<br>解题路径：①分块初等变换消块 ②对块三角按对角块数秩 ③用 \\(r(XY)\\leq r(X)\\) 比较。<br>必背结论：\\(r(AB)\\leq \\min\\{r(A),r(B)\\}\\)；分块初等变换与普通初等变换一样保秩；\\(ABC=O\\) 可拆成 \\((AB)C=O\\) 或 \\(A(BC)=O\\) 两种角度。<br>常见失分点：误把块下三角的秩写成“两块秩相加”，漏用 \\(ABC=O\\) 做消元。"
       }
     ],
     "answer": "B",
@@ -376,28 +386,33 @@
     "solution": [
       {
         "step": 1,
-        "title": "选项 A",
-        "content": "特征值 1, 2, 3 两两不同，必可对角化。"
+        "title": "思维导图：判断“能否相似于对角矩阵”",
+        "content": "【翻译】相似于对角矩阵 = 可对角化<br>【判定流程】<br>└─ ① 是不是上三角矩阵？<br>　　├─ 是 → 特征值直接看对角线<br>　　└─ 否 → 是否实对称矩阵？<br>　　　　├─ 实对称 → 必可对角化（一级结论）<br>　　　　└─ 非上三角非对称 → 老老实实算特征值<br>└─ ② 看特征值<br>　　├─ n 个特征值互不相同 → 必可对角化（不同特征值的特征向量必线性无关）<br>　　└─ 有重特征值 \\(\\lambda\\)（代数重数 \\(m\\)）→ 关键判据：<br>　　　　├─ 解 \\((A-\\lambda E)x=0\\)，看自由量个数 = 几何重数<br>　　　　└─ 几何重数 = \\(m\\) → 可对角化；几何重数 < \\(m\\) → 不可对角化<br>　　　　（秩等价写法：\\(r(A-\\lambda E)=n-m\\) 才可对角化）<br><br>【口诀】特征互异必可化，实对称也必可化，重根数秩看几何。"
       },
       {
         "step": 2,
-        "title": "选项 B",
-        "content": "实对称矩阵必相似对角化。"
+        "title": "选项 A",
+        "content": "\\(A = \\begin{pmatrix} 1 & 1 & a \\\\ 0 & 2 & 2 \\\\ 0 & 0 & 3 \\end{pmatrix}\\) 是上三角矩阵，特征值即对角线：\\(1, 2, 3\\)。<br>三个特征值互不相同 → 一定可对角化。排除 A。"
       },
       {
         "step": 3,
-        "title": "选项 C",
-        "content": "特征值 1, 2, 2，二重特征值：\\(r(C - 2E) = r\\begin{pmatrix} -1 & 1 & a \\\\ 0 & 0 & 0 \\\\ 0 & 0 & 0 \\end{pmatrix} = 1 = 3 - 2\\)，可对角化。"
+        "title": "选项 B",
+        "content": "\\(B = \\begin{pmatrix} 1 & 1 & a \\\\ 1 & 2 & 0 \\\\ a & 0 & 3 \\end{pmatrix}\\)。<br>验证实对称：\\(b_{12}=b_{21}=1\\)，\\(b_{13}=b_{31}=a\\)，\\(b_{23}=b_{32}=0\\)，且元素均为实数。<br>实对称矩阵必可对角化。排除 B。"
       },
       {
         "step": 4,
-        "title": "选项 D",
-        "content": "特征值 1, 2, 2，二重特征值：\\(r(D - 2E) = r\\begin{pmatrix} -1 & 1 & a \\\\ 0 & 0 & 2 \\\\ 0 & 0 & 0 \\end{pmatrix} = 2 \\neq 3 - 2 = 1\\)，不可对角化。"
+        "title": "选项 C",
+        "content": "\\(C = \\begin{pmatrix} 1 & 1 & a \\\\ 0 & 2 & 0 \\\\ 0 & 0 & 2 \\end{pmatrix}\\)，上三角，特征值 \\(1, 2, 2\\)，\\(\\lambda=2\\) 是二重根（代数重数 2）。<br>作 \\(C - 2E = \\begin{pmatrix} -1 & 1 & a \\\\ 0 & 0 & 0 \\\\ 0 & 0 & 0 \\end{pmatrix}\\)。<br>解 \\((C-2E)x=0\\)：只有一个方程 \\(-x_1+x_2+ax_3=0\\)，即 \\(x_1=x_2+ax_3\\)。<br>自由变量是 \\(x_2, x_3\\) 共 2 个 → 几何重数 = 2 = 代数重数 2。<br>（等价地 \\(r(C-2E)=1=3-2\\)）→ 可对角化。排除 C。"
       },
       {
         "step": 5,
-        "title": "结论",
-        "content": "选 D。"
+        "title": "选项 D",
+        "content": "\\(D = \\begin{pmatrix} 1 & 1 & a \\\\ 0 & 2 & 2 \\\\ 0 & 0 & 2 \\end{pmatrix}\\)，上三角，特征值 \\(1, 2, 2\\)，\\(\\lambda=2\\) 是二重根。<br>作 \\(D - 2E = \\begin{pmatrix} -1 & 1 & a \\\\ 0 & 0 & 2 \\\\ 0 & 0 & 0 \\end{pmatrix}\\)。<br>解 \\((D-2E)x=0\\)，得到两个方程：<br>\\(-x_1+x_2+ax_3=0\\) 与 \\(2x_3=0\\)。<br>由 \\(2x_3=0\\) 得 \\(x_3=0\\)，代回得 \\(x_1=x_2\\)。<br>自由变量只有 \\(x_2\\) 一个 → 几何重数 = 1 < 代数重数 2。<br>（等价地 \\(r(D-2E)=2 \\neq 3-2=1\\)）→ 不可对角化。选 D。"
+      },
+      {
+        "step": 6,
+        "title": "本题代表的题型",
+        "content": "识别信号：问“不能相似于对角矩阵 / 不能对角化”。<br>秒杀顺序：①上三角看对角线特征值；②特征值互异 → 直接可对角化；③实对称 → 直接可对角化；④剩重根 → 算 \\(r(A-\\lambda E)\\) 是否等于 \\(n-m\\)。<br>必背：二重根 \\(\\lambda\\) 要求 \\(r(A-\\lambda E)=n-2\\)；\\(\\lambda=2\\) 时自由变量个数就是几何重数。<br>常见失分点：忘了“实对称必可对角化”；重根只数特征值不数特征向量。"
       }
     ],
     "answer": "D",
@@ -443,23 +458,33 @@
     "solution": [
       {
         "step": 1,
-        "title": "建立方程",
-        "content": "设 \\(\\gamma = x_1\\alpha_1 + x_2\\alpha_2 = y_1\\beta_1 + y_2\\beta_2\\)，<br>即 \\(x_1\\alpha_1 + x_2\\alpha_2 - y_1\\beta_1 - y_2\\beta_2 = 0\\)。"
+        "title": "思维导图：线性表示 / 公共生成空间",
+        "content": "【翻译】\\(\\gamma\\) 可由 \\(\\alpha_1,\\alpha_2\\) 线性表示 ⟺ \\(\\gamma = x_1\\alpha_1+x_2\\alpha_2\\)<br>【题型本质】\\(\\gamma \\in \\text{span}\\{\\alpha_1,\\alpha_2\\} \\cap \\text{span}\\{\\beta_1,\\beta_2\\}\\)，即求两组向量生成空间的交<br>【解题框架】<br>└─ ① 设 \\(\\gamma = x_1\\alpha_1+x_2\\alpha_2 = y_1\\beta_1+y_2\\beta_2\\)<br>└─ ② 移项 → 齐次方程组 \\((\\alpha_1,\\alpha_2,-\\beta_1,-\\beta_2)\\cdot(x_1,x_2,y_1,y_2)^T=0\\)<br>└─ ③ 初等行变换求通解<br>└─ ④ 代回任一侧，求 \\(\\gamma\\) 的方向向量<br>└─ ⑤ 写成 \\(k \\times\\)（方向向量）<br><br>【口诀】能由谁表示，就设谁的组合；两组都能表示，就列齐次方程。"
       },
       {
         "step": 2,
-        "title": "解齐次方程组",
-        "content": "系数矩阵 \\((\\alpha_1, \\alpha_2, -\\beta_1, -\\beta_2) = \\begin{pmatrix} 1 & 2 & -2 & -1 \\\\ 2 & 1 & -5 & 0 \\\\ 3 & 1 & -9 & -1 \\end{pmatrix}\\)<br>化简得 \\(\\begin{pmatrix} 1 & 0 & 0 & 3 \\\\ 0 & 1 & 0 & -1 \\\\ 0 & 0 & 1 & 1 \\end{pmatrix}\\)。<br>通解 \\((x_1, x_2, y_1, y_2)^T = c(-3, 1, -1, 1)^T\\)。"
+        "title": "建立方程",
+        "content": "设 \\(\\gamma = x_1\\alpha_1 + x_2\\alpha_2 = y_1\\beta_1 + y_2\\beta_2\\)，<br>移项得 \\(x_1\\alpha_1 + x_2\\alpha_2 - y_1\\beta_1 - y_2\\beta_2 = 0\\)。<br>即未知数 \\((x_1, x_2, y_1, y_2)\\) 满足齐次方程组。"
       },
       {
         "step": 3,
-        "title": "求 \\(\\gamma\\)",
-        "content": "\\(\\gamma = -c\\beta_1 + c\\beta_2 = c(-1, -5, -8)^T = k(1, 5, 8)^T, k \\in \\mathbb{R}\\)。"
+        "title": "初等行变换解齐次方程组",
+        "content": "系数矩阵 \\((\\alpha_1, \\alpha_2, -\\beta_1, -\\beta_2) = \\begin{pmatrix} 1 & 2 & -2 & -1 \\\\ 2 & 1 & -5 & 0 \\\\ 3 & 1 & -9 & -1 \\end{pmatrix}\\)<br>第一步：\\(R_2 \\leftarrow R_2-2R_1\\)，\\(R_3 \\leftarrow R_3-3R_1\\)，得 <br>\\(\\begin{pmatrix} 1 & 2 & -2 & -1 \\\\ 0 & -3 & -1 & 2 \\\\ 0 & -5 & -3 & 2 \\end{pmatrix}\\)<br>第二步：\\(R_2 \\leftarrow -\\dfrac{1}{3}R_2\\)，\\(R_3 \\leftarrow R_3 - \\dfrac{5}{3}R_2\\)，得<br>\\(\\begin{pmatrix} 1 & 2 & -2 & -1 \\\\ 0 & 1 & \\tfrac{1}{3} & -\\tfrac{2}{3} \\\\ 0 & 0 & -\\tfrac{4}{3} & -\\tfrac{4}{3} \\end{pmatrix}\\)<br>第三步：\\(R_3 \\leftarrow -\\dfrac{3}{4}R_3\\)，再回代化简，得最简形<br>\\(\\begin{pmatrix} 1 & 0 & 0 & 3 \\\\ 0 & 1 & 0 & -1 \\\\ 0 & 0 & 1 & 1 \\end{pmatrix}\\)。<br><br>回代：令 \\(y_2=c\\)，则 \\(y_1=-c\\)，\\(x_2=c\\)，\\(x_1=-3c\\)。<br>通解 \\((x_1, x_2, y_1, y_2)^T = c(-3, 1, -1, 1)^T\\)。"
       },
       {
         "step": 4,
+        "title": "求 \\(\\gamma\\)",
+        "content": "取 \\(y_1=-c,\\; y_2=c\\) 代入右侧：<br>\\(\\gamma = y_1\\beta_1 + y_2\\beta_2 = -c\\begin{pmatrix} 2 \\\\ 5 \\\\ 9 \\end{pmatrix} + c\\begin{pmatrix} 1 \\\\ 0 \\\\ 1 \\end{pmatrix} = c\\begin{pmatrix} -1 \\\\ -5 \\\\ -8 \\end{pmatrix}\\)<br>令 \\(k=-c\\)，得 \\(\\gamma = k\\begin{pmatrix} 1 \\\\ 5 \\\\ 8 \\end{pmatrix},\\; k \\in \\mathbb{R}\\)。"
+      },
+      {
+        "step": 5,
         "title": "结论",
         "content": "选 D。"
+      },
+      {
+        "step": 6,
+        "title": "本题代表的题型",
+        "content": "识别信号：“\\(\\gamma\\) 既可由 A 组线性表示，也可由 B 组线性表示” → 交空间问题。<br>解题路径：设两组组合相等 → 齐次方程 → 行变换 → 通解 → 代回求方向。<br>必背：线性表示 ⟺ 属于生成空间；通解的自由变量个数 = 交空间维数（本题为 1，是直线方向）。<br>常见失分点：系数矩阵的列顺序放错（\\(-\\beta_1,-\\beta_2\\) 要带负号）；回代时选错一侧。"
       }
     ],
     "answer": "D",
@@ -506,23 +531,38 @@
     "solution": [
       {
         "step": 1,
-        "title": "基础量",
-        "content": "泊松分布参数 \\(\\lambda = 1\\)，\\(EX = 1\\)，\\(P\\{X = k\\} = \\dfrac{\\mathrm{e}^{-1}}{k!}\\)。"
+        "title": "思维导图：泊松分布 + 绝对值期望",
+        "content": "【必背】\\(X\\sim P(\\lambda)\\)：\\(P\\{X=k\\}=\\dfrac{\\lambda^k e^{-\\lambda}}{k!}\\)，\\(E(X)=\\lambda\\)，\\(D(X)=\\lambda\\)<br>【本题框架】<br>└─ ① 求 \\(E(X)\\)：泊松 \\(P(1)\\) 直接 \\(=1\\)<br>└─ ② 改写：\\(E|X-E(X)|=E|X-1|\\)<br>└─ ③ 按离散型期望定义展开：\\(E|X-1|=\\sum_{k=0}^\\infty |k-1|\\cdot P\\{X=k\\}\\)<br>└─ ④ 绝对值分段：\\(k=0\\) 时为 1，\\(k=1\\) 时为 0，\\(k\\ge2\\) 时为 \\(k-1\\)<br>└─ ⑤ 关键裂项：\\(\\dfrac{k-1}{k!}=\\dfrac{1}{(k-1)!}-\\dfrac{1}{k!}\\)（因为 \\(\\dfrac{1}{(k-1)!}=\\dfrac{k}{k!}\\)）<br>└─ ⑥ 错位相消求和<br><br>【口诀】先求期望再拆项，\\(k!\\) 裂成相邻阶乘差。"
       },
       {
         "step": 2,
-        "title": "分段计算",
-        "content": "\\(|X - EX| = \\begin{cases} 1, & X = 0 \\\\ X - 1, & X = 1, 2, \\ldots \\end{cases}\\)。"
+        "title": "基础量",
+        "content": "参数 \\(\\lambda=1\\)，所以 \\(E(X)=1\\)，\\(P\\{X=k\\}=\\dfrac{\\mathrm{e}^{-1}}{k!}\\;(k=0,1,2,\\dots)\\)。<br>原式变为 \\(E(|X-1|)\\)。"
       },
       {
         "step": 3,
-        "title": "求期望",
-        "content": "\\(E|X - 1| = 1 \\cdot P\\{X = 0\\} + \\displaystyle\\sum_{k=1}^\\infty (k-1)P\\{X = k\\}\\)<br>\\(= \\dfrac{1}{\\mathrm{e}} + \\displaystyle\\sum_{k=0}^\\infty (k-1)P\\{X = k\\} - (0 - 1)P\\{X = 0\\}\\)<br>\\(= \\dfrac{1}{\\mathrm{e}} + E(X-1) + \\dfrac{1}{\\mathrm{e}} = \\dfrac{1}{\\mathrm{e}} + 0 + \\dfrac{1}{\\mathrm{e}} = \\dfrac{2}{\\mathrm{e}}\\)。"
+        "title": "分段并展开",
+        "content": "绝对值分段：<br>\\(|k-1|=\\begin{cases} 1, & k=0 \\\\ 0, & k=1 \\\\ k-1, & k\\ge 2 \\end{cases}\\)<br>所以<br>\\(E|X-1| = 1\\cdot\\dfrac{1}{e} + 0\\cdot\\dfrac{1}{e} + \\sum_{k=2}^\\infty (k-1)\\dfrac{e^{-1}}{k!}\\)<br>\\(= \\dfrac{1}{e} + \\dfrac{1}{e}\\sum_{k=2}^\\infty \\dfrac{k-1}{k!}\\)。"
       },
       {
         "step": 4,
+        "title": "裂项与错位相消",
+        "content": "关键裂项（验证）：\\(\\dfrac{k-1}{k!}=\\dfrac{1}{(k-1)!}-\\dfrac{1}{k!}\\)。<br>代入求和（\\(k\\) 从 2 开始）：<br>\\(\\sum_{k=2}^\\infty \\left(\\dfrac{1}{(k-1)!}-\\dfrac{1}{k!}\\right)\\)<br>\\(= \\left(\\dfrac{1}{1!}-\\dfrac{1}{2!}\\right)+\\left(\\dfrac{1}{2!}-\\dfrac{1}{3!}\\right)+\\left(\\dfrac{1}{3!}-\\dfrac{1}{4!}\\right)+\\cdots\\)<br>中间项全部抵消，只剩第一项：\\(=1\\)。"
+      },
+      {
+        "step": 5,
+        "title": "合并结果",
+        "content": "\\(E|X-1| = \\dfrac{1}{e} + \\dfrac{1}{e}\\cdot 1 = \\dfrac{2}{e}\\)。"
+      },
+      {
+        "step": 6,
         "title": "结论",
-        "content": "选 C。"
+        "content": "选 C：\\(\\dfrac{2}{e}\\)。"
+      },
+      {
+        "step": 7,
+        "title": "本题代表的题型",
+        "content": "识别信号：泊松分布（或其他离散分布）+ 绝对值期望 \\(E|X-a|\\)。<br>解题路径：\\(E(X)\\to\\) 分段 \\(\\to\\) 裂项 \\(\\to\\) 错位相消。<br>必背：泊松 \\(E(X)=D(X)=\\lambda\\)；\\(\\dfrac{k}{k!}=\\dfrac{1}{(k-1)!}\\)；\\(\\sum\\limits_{k=0}^\\infty \\dfrac{\\lambda^k}{k!}=e^\\lambda\\)。<br>常见失分点：\\(k=0\\) 那项 \\(|0-1|=1\\) 漏掉；裂项方向写反。"
       }
     ],
     "answer": "C",
@@ -569,18 +609,28 @@
     "solution": [
       {
         "step": 1,
-        "title": "回忆卡方分布",
-        "content": "\\(\\dfrac{(n-1)S_1^2}{\\sigma^2} \\sim \\chi^2(n-1)\\)，\\(\\dfrac{(m-1)S_2^2}{2\\sigma^2} \\sim \\chi^2(m-1)\\)。"
+        "title": "思维导图：样本方差比 → F 分布",
+        "content": "【必背公式】正态总体样本方差：<br>\\(\\dfrac{(n-1)S^2}{\\sigma^2}\\sim\\chi^2(n-1)\\)<br>【F 分布定义】\\(F=\\dfrac{\\chi^2(n_1)/n_1}{\\chi^2(n_2)/n_2}\\sim F(n_1,n_2)\\)<br>【本题框架】<br>└─ ① 写出两个样本方差各自的卡方形式<br>└─ ② 注意第二个总体方差是 \\(2\\sigma^2\\)，不是 \\(\\sigma^2\\)！<br>└─ ③ 作商，凑成 F 分布<br>└─ ④ 自由度分别是 \\(n-1, m-1\\)<br><br>【口诀】两个样本方差比，分子分母各减一；方差不同先归一。"
       },
       {
         "step": 2,
-        "title": "F 统计量",
-        "content": "两样本独立，故 \\(\\dfrac{(n-1)S_1^2/\\sigma^2 / (n-1)}{(m-1)S_2^2/(2\\sigma^2) / (m-1)} = \\dfrac{S_1^2 / \\sigma^2}{S_2^2 / (2\\sigma^2)} = \\dfrac{2S_1^2}{S_2^2} \\sim F(n-1, m-1)\\)。"
+        "title": "回忆卡方分布",
+        "content": "第一个总体 \\(N(\\mu_1,\\sigma^2)\\)：\\(\\dfrac{(n-1)S_1^2}{\\sigma^2}\\sim\\chi^2(n-1)\\)。<br>第二个总体 \\(N(\\mu_2,2\\sigma^2)\\)：\\(\\dfrac{(m-1)S_2^2}{2\\sigma^2}\\sim\\chi^2(m-1)\\)。<br>（这里 \\(S_2^2\\) 对应方差 \\(2\\sigma^2\\)，分母必须写 \\(2\\sigma^2\\)，这是本题最大陷阱。）"
       },
       {
         "step": 3,
+        "title": "构造 F 统计量",
+        "content": "两样本独立，对应的两个 \\(\\chi^2\\) 也独立，作商：<br>\\(F=\\dfrac{\\frac{(n-1)S_1^2}{\\sigma^2}/(n-1)}{\\frac{(m-1)S_2^2}{2\\sigma^2}/(m-1)}=\\dfrac{S_1^2/\\sigma^2}{S_2^2/(2\\sigma^2)}=\\dfrac{2S_1^2}{S_2^2}\\sim F(n-1,m-1)\\)。"
+      },
+      {
+        "step": 4,
         "title": "结论",
-        "content": "选 D。"
+        "content": "选 D：\\(\\dfrac{2S_1^2}{S_2^2}\\sim F(n-1,m-1)\\)。"
+      },
+      {
+        "step": 5,
+        "title": "本题代表的题型",
+        "content": "识别信号：两个正态总体的样本方差之比 → 问服从什么分布。<br>必背：\\(\\dfrac{(n-1)S^2}{\\sigma^2}\\sim\\chi^2(n-1)\\)；\\(F\\) 分布分子分母自由度分别是两个样本容量减一；作商时先把两个统计量化成“各自除以自身方差”的标准形式。<br>常见失分点：忘记第二个总体的方差是 \\(2\\sigma^2\\) 而直接得 \\(S_1^2/S_2^2\\)；自由度写反。"
       }
     ],
     "answer": "D",
@@ -626,23 +676,33 @@
     "solution": [
       {
         "step": 1,
-        "title": "求 \\(Y = X_1 - X_2\\) 的分布",
-        "content": "\\(X_1 - X_2 \\sim N(0, 2\\sigma^2)\\)，密度 \\(f(y) = \\dfrac{1}{\\sqrt{2\\pi}\\sqrt{2}\\sigma}\\mathrm{e}^{-\\frac{y^2}{4\\sigma^2}}\\)。"
+        "title": "思维导图：无偏估计",
+        "content": "【无偏定义】\\(\\hat\\sigma\\) 是 \\(\\sigma\\) 的无偏估计 ⟺ \\(E(\\hat\\sigma)=\\sigma\\)<br>【本题框架】<br>└─ ① 设 \\(Y=X_1-X_2\\)，先求 \\(Y\\) 的分布<br>└─ ② 求 \\(E|Y|\\)（正态分布绝对值期望）<br>└─ ③ 令 \\(aE|Y|=\\sigma\\) 解出 \\(a\\)<br><br>【必背结论】\\(X\\sim N(\\mu,\\sigma^2)\\Rightarrow E|X-\\mu|=\\sqrt{\\dfrac{2}{\\pi}}\\sigma\\)<br>【口诀】无偏估计令期望等于参数；正态绝对值期望背公式。"
       },
       {
         "step": 2,
-        "title": "求 \\(E|Y|\\)",
-        "content": "\\(E|Y| = \\displaystyle\\int_{-\\infty}^{+\\infty} |y| f(y) dy = \\dfrac{2}{\\sqrt{2\\pi}\\sqrt{2}\\sigma} \\int_0^{+\\infty} y \\mathrm{e}^{-\\frac{y^2}{4\\sigma^2}} dy\\)<br>\\(= \\dfrac{2\\sigma}{\\sqrt{\\pi}}\\)。"
+        "title": "求 \\(Y = X_1 - X_2\\) 的分布",
+        "content": "\\(X_1,X_2\\) 独立同分布 \\(N(\\mu,\\sigma^2)\\)。<br>差仍为正态：\\(E(Y)=\\mu-\\mu=0\\)，\\(D(Y)=\\sigma^2+\\sigma^2=2\\sigma^2\\)。<br>所以 \\(Y=X_1-X_2\\sim N(0,2\\sigma^2)\\)，密度 <br>\\(f_Y(y)=\\dfrac{1}{\\sqrt{2\\pi}\\cdot\\sqrt{2}\\sigma}\\mathrm{e}^{-\\frac{y^2}{2\\cdot 2\\sigma^2}}=\\dfrac{1}{2\\sqrt{\\pi}\\sigma}\\mathrm{e}^{-\\frac{y^2}{4\\sigma^2}}\\)。"
       },
       {
         "step": 3,
-        "title": "求 \\(a\\)",
-        "content": "由 \\(E(\\hat{\\sigma}) = aE|Y| = a \\cdot \\dfrac{2\\sigma}{\\sqrt{\\pi}} = \\sigma\\)，得 \\(a = \\dfrac{\\sqrt{\\pi}}{2}\\)。"
+        "title": "求 \\(E|Y|\\)",
+        "content": "用偶函数对称性（\\(|y|\\cdot f_Y(y)\\) 是偶函数）：<br>\\(E|Y|=\\displaystyle\\int_{-\\infty}^{+\\infty}|y|f_Y(y)dy=2\\int_0^{+\\infty}y\\cdot\\dfrac{1}{2\\sqrt{\\pi}\\sigma}\\mathrm{e}^{-\\frac{y^2}{4\\sigma^2}}dy\\)<br>令 \\(u=\\dfrac{y^2}{4\\sigma^2}\\)，则 \\(du=\\dfrac{y}{2\\sigma^2}dy\\)，即 \\(y\\,dy=2\\sigma^2 du\\)：<br>\\(=2\\cdot\\dfrac{1}{2\\sqrt{\\pi}\\sigma}\\cdot 2\\sigma^2\\int_0^{+\\infty}\\mathrm{e}^{-u}du=\\dfrac{2\\sigma}{\\sqrt{\\pi}}\\)。<br>（也可直接用必背结论：\\(E|Y|=\\sqrt{\\dfrac{2}{\\pi}}\\cdot\\sqrt{2}\\sigma=\\dfrac{2\\sigma}{\\sqrt{\\pi}}\\)。）"
       },
       {
         "step": 4,
+        "title": "求 \\(a\\)",
+        "content": "由无偏：\\(E(\\hat\\sigma)=aE|Y|=a\\cdot\\dfrac{2\\sigma}{\\sqrt{\\pi}}=\\sigma\\)。<br>解出 \\(a=\\dfrac{\\sqrt{\\pi}}{2}\\)。"
+      },
+      {
+        "step": 5,
         "title": "结论",
-        "content": "选 A。"
+        "content": "选 A：\\(a=\\dfrac{\\sqrt{\\pi}}{2}\\)。"
+      },
+      {
+        "step": 6,
+        "title": "本题代表的题型",
+        "content": "识别信号：“\\(\\hat\\theta=a\\cdot\\text{统计量}\\) 为参数的无偏估计，求 \\(a\\)”。<br>解题路径：求统计量的期望（含参数）→ 令 \\(E=\\text{参数}\\) → 解 \\(a\\)。<br>必背：\\(E|X-\\mu|=\\sqrt{2/\\pi}\\sigma\\)（正态）；\\(X_1-X_2\\sim N(0,2\\sigma^2)\\)；\\(\\int_0^\\infty e^{-u}du=1\\)。<br>常见失分点：\\(D(Y)=\\sigma^2+\\sigma^2=2\\sigma^2\\) 漏了“加”（不是 \\(0\\)）；\\(\\sqrt{2\\pi}\\) 与 \\(\\sqrt{\\pi}\\) 换算出错。"
       }
     ],
     "answer": "A",
@@ -683,18 +743,28 @@
     "solution": [
       {
         "step": 1,
-        "title": "泰勒展开",
-        "content": "分子 \\(f(x) = ax + bx^2 + x - \\dfrac{1}{2}x^2 + o(x^2) = (a+1)x + \\left(b - \\dfrac{1}{2}\\right)x^2 + o(x^2)\\)。<br>分母 \\(g(x) = \\mathrm{e}^{x^2} - \\cos x = (1 + x^2 + \\ldots) - (1 - \\dfrac{1}{2}x^2 + \\ldots) = \\dfrac{3}{2}x^2 + o(x^2)\\)。"
+        "title": "思维导图：等价无穷小 + 泰勒展开",
+        "content": "【等价无穷小的本质】\\(f(x)\\sim g(x)\\) 当 \\(x\\to0\\) ⟺ 两者的最低阶项相同（阶数、系数都相同）<br>【本题框架】<br>└─ ① 把分子、分母分别做泰勒展开<br>└─ ② 找出各自的最低阶非零项<br>└─ ③ 阶数必须相同（否则不可能等价）<br>└─ ④ 同阶项系数相等，列方程<br><br>【必背泰勒】\\(\\ln(1+x)=x-\\dfrac{x^2}{2}+o(x^2)\\)；\\(e^x=1+x+\\dfrac{x^2}{2}+o(x^2)\\)；\\(\\cos x=1-\\dfrac{x^2}{2}+o(x^2)\\)<br>【口诀】等价就是比最低阶，阶数系数都要一样。"
       },
       {
         "step": 2,
-        "title": "建立方程",
-        "content": "要使 \\(f(x) \\sim g(x)\\)（当 \\(x \\to 0\\)），必须有：<br>\\(a + 1 = 0 \\Rightarrow a = -1\\)，且 \\(b - \\dfrac{1}{2} = \\dfrac{3}{2} \\Rightarrow b = 2\\)。"
+        "title": "泰勒展开",
+        "content": "分子：\\(f(x)=ax+bx^2+\\ln(1+x)\\)<br>\\(=ax+bx^2+\\left(x-\\dfrac{x^2}{2}+o(x^2)\\right)=\\boxed{(a+1)x+\\left(b-\\dfrac{1}{2}\\right)x^2+o(x^2)}\\)。<br>分母：\\(g(x)=e^{x^2}-\\cos x\\)<br>\\(e^{x^2}=1+x^2+o(x^2)\\)，\\(\\cos x=1-\\dfrac{x^2}{2}+o(x^2)\\)<br>\\(=(1+x^2)-\\left(1-\\dfrac{x^2}{2}\\right)+o(x^2)=\\boxed{\\dfrac{3}{2}x^2+o(x^2)}\\)。"
       },
       {
         "step": 3,
+        "title": "建立方程",
+        "content": "分母最低阶是 \\(x^2\\)，所以分子最低阶也必须是 \\(x^2\\)：<br>① 一次项必须消失：\\(a+1=0\\Rightarrow a=-1\\)。<br>② 二次项系数相等：\\(b-\\dfrac{1}{2}=\\dfrac{3}{2}\\Rightarrow b=2\\)。"
+      },
+      {
+        "step": 4,
         "title": "结论",
-        "content": "\\(ab = -1 \\times 2 = -2\\)。"
+        "content": "\\(ab=-1\\times2=\\boxed{-2}\\)。"
+      },
+      {
+        "step": 5,
+        "title": "本题代表的题型",
+        "content": "识别信号：“\\(f(x)\\) 与 \\(g(x)\\) 是等价无穷小，求参数之积”。<br>解题路径：泰勒展开到分母最低阶 → 分子最低阶与其同阶 → 低阶项系数为零 + 同阶系数相等。<br>必背：\\(\\ln(1+x)\\sim x\\)，\\(e^x-1\\sim x\\)，\\(1-\\cos x\\sim \\dfrac{x^2}{2}\\)；等价无穷小必须 \\(u\\to0\\) 才能代换。<br>常见失分点：只展开一阶（\\(\\ln(1+x)\\approx x\\) 不够，因为分母是 \\(x^2\\)）；忘记分子还有 \\(ax+bx^2\\) 本身两项。"
       }
     ],
     "answer": "\\(-2\\)",
@@ -735,18 +805,28 @@
     "solution": [
       {
         "step": 1,
-        "title": "求梯度",
-        "content": "令 \\(F(x,y,z) = x + 2y + \\ln(1 + x^2 + y^2) - z\\)，<br>\\(\\mathbf{n} = \\left(1 + \\dfrac{2x}{1+x^2+y^2}, 2 + \\dfrac{2y}{1+x^2+y^2}, -1\\right)\\)。"
+        "title": "思维导图：曲面切平面的求法",
+        "content": "【核心思想】求曲面的切平面，本质是求曲面在这一点的**法向量**<br>【计算框架】<br>└─ ① 构造隐函数：将曲面方程移项，写成 \\\\(F(x,y,z)=0\\\\) 的形式<br>└─ ② 求梯度向量：计算偏导数 \\\\(\\nabla F = (F'_x, F'_y, F'_z)\\\\)<br>└─ ③ 代入已知点：将点 \\\\((x_0, y_0, z_0)\\\\) 代入梯度，得到该点的法向量 \\\\(\\mathbf{n} = (A, B, C)\\\\)<br>└─ ④ 写点法式方程：\\\\(A(x-x_0) + B(y-y_0) + C(z-z_0) = 0\\\\)<br><br>【口诀】移项变隐函，求导得法向，代点写法式。"
       },
       {
         "step": 2,
-        "title": "代入原点",
-        "content": "在 \\((0,0,0)\\) 处法向量 \\((1, 2, -1)\\)。"
+        "title": "构造隐函数并求偏导",
+        "content": "将原方程移项，构造隐函数：\\\\(F(x,y,z) = x + 2y + \\ln(1 + x^2 + y^2) - z = 0\\\\)。<br>分别对 \\\\(x, y, z\\\\) 求偏导：<br>\\\\(F'_x = 1 + \\dfrac{2x}{1+x^2+y^2}\\\\)<br>\\\\(F'_y = 2 + \\dfrac{2y}{1+x^2+y^2}\\\\)<br>\\\\(F'_z = -1\\\\)"
       },
       {
         "step": 3,
-        "title": "切平面方程",
-        "content": "切平面 \\(1 \\cdot (x - 0) + 2 \\cdot (y - 0) - 1 \\cdot (z - 0) = 0\\)，<br>即 \\(x + 2y - z = 0\\)。"
+        "title": "代入原点求法向量",
+        "content": "将已知点 \\\\((0,0,0)\\\\) 代入上述偏导数中：<br>\\\\(F'_x(0,0,0) = 1 + 0 = 1\\\\)<br>\\\\(F'_y(0,0,0) = 2 + 0 = 2\\\\)<br>\\\\(F'_z(0,0,0) = -1\\\\)<br>因此，切平面的法向量为 \\\\(\\mathbf{n} = (1, 2, -1)\\\\)。"
+      },
+      {
+        "step": 4,
+        "title": "写出切平面方程",
+        "content": "利用点法式方程公式：\\\\(A(x-x_0) + B(y-y_0) + C(z-z_0) = 0\\\\)。<br>代入点 \\\\((0,0,0)\\\\) 和法向量 \\\\((1,2,-1)\\\\)：<br>\\\\(1 \\cdot (x - 0) + 2 \\cdot (y - 0) - 1 \\cdot (z - 0) = 0\\\\)<br>化简得：\\\\(x + 2y - z = 0\\\\)。"
+      },
+      {
+        "step": 5,
+        "title": "易错点与技巧",
+        "content": "【易错点】如果曲面方程给出的是显函数 \\\\(z = f(x,y)\\\\)，可以直接使用公式：法向量 \\\\(\\mathbf{n} = (f'_x, f'_y, -1)\\\\)。本题中 \\\\(f'_x(0,0)=1\\\\), \\\\(f'_y(0,0)=2\\\\)，法向量直接就是 \\\\((1, 2, -1)\\\\)计算更快捷。"
       }
     ],
     "answer": "\\(x + 2y - z = 0\\)",
@@ -787,18 +867,28 @@
     "solution": [
       {
         "step": 1,
-        "title": "求傅里叶系数",
-        "content": "偶延拓后 \\(a_n = 2\\displaystyle\\int_0^1 (1 - x) \\cos n\\pi x , dx = \\dfrac{-2}{n^2\\pi^2}(\\cos n\\pi - 1)\\)。"
+        "title": "思维导图：傅里叶级数的两种解法",
+        "content": "【题目特征】已知局部表达式，求傅里叶级数特定项的无穷和<br>【解法一：暴力积分（常规法）】<br>└─ ① 判断奇偶性：只有余弦项说明是偶函数，周期为2（半周期 \\\\(l=1\\\\)）<br>└─ ② 套用系数公式：\\\\(a_n = \\dfrac{2}{l}\\int_0^l f(x)\\cos\\dfrac{n\\pi x}{l}dx\\\\)<br>└─ ③ 分部积分求出 \\\\(a_n\\\\) 的表达式，直接看 \\\\(a_{2n}\\\\) 的值<br><br>【解法二：赋特殊值法（邪修秒杀法）】<br>└─ ① 利用级数收敛定理（狄利克雷定理），代入特殊的 \\\\(x\\\\) 凑出要求的求和形式<br>└─ ② 找 \\\\(a_{2n}\\\\)：利用 \\\\(1+(-1)^n\\\\) 可以把奇数项消掉的特性<br>└─ ③ 分别代入 \\\\(x=0\\\\) 和 \\\\(x=1\\\\)，两式相加即可解出<br><br>【口诀】余弦级数偶函数，求和代点最快速；奇偶分离用加减，算错积分最痛苦。"
       },
       {
         "step": 2,
-        "title": "代入 \\(n = 2n\\)",
-        "content": "\\(a_{2n} = \\dfrac{-2}{(2n)^2\\pi^2}(\\cos 2n\\pi - 1) = \\dfrac{-2}{4n^2\\pi^2}(1 - 1) = 0\\)。"
+        "title": "邪修秒杀法（推荐）",
+        "content": "原级数为 \\\\(f(x) = \\dfrac{a_0}{2} + \\sum_{n=1}^\\infty a_n \\cos n\\pi x\\\\)。<br>令 \\\\(x=0\\\\)：\\\\(f(0) = \\dfrac{a_0}{2} + \\sum_{n=1}^\\infty a_n = 1\\\\)（因为 \\\\(f(0)=1-0=1\\\\)）。<br>令 \\\\(x=1\\\\)：\\\\(f(1) = \\dfrac{a_0}{2} + \\sum_{n=1}^\\infty a_n \\cos n\\pi = \\dfrac{a_0}{2} + \\sum_{n=1}^\\infty a_n (-1)^n = 0\\\\)（因为 \\\\(f(1)=1-1=0\\\\)）。<br>将两式相加：\\\\(f(0) + f(1) = a_0 + \\sum_{n=1}^\\infty a_n[1 + (-1)^n]\\\\)。<br>注意 \\\\(1+(-1)^n\\\\) 的神奇性质：当 \\\\(n\\\\) 为奇数时为0，当 \\\\(n\\\\) 为偶数（\\\\(n=2k\\\\)）时为2。<br>所以式子变成：\\\\(1 + 0 = a_0 + 2\\sum_{k=1}^\\infty a_{2k}\\\\)。"
       },
       {
         "step": 3,
-        "title": "结论",
-        "content": "\\(\\displaystyle\\sum_{n=1}^\\infty a_{2n} = 0\\)。"
+        "title": "计算 a_0",
+        "content": "\\\\(a_0 = \\dfrac{2}{1} \\int_0^1 f(x) dx = 2 \\int_0^1 (1-x) dx = 2 \\left[x - \\dfrac{1}{2}x^2\\right]_0^1 = 2 \\times \\dfrac{1}{2} = 1\\\\)。<br>代入上式：\\\\(1 = 1 + 2\\sum a_{2n}\\\\)，得出 \\\\(\\sum a_{2n} = 0\\\\)。"
+      },
+      {
+        "step": 4,
+        "title": "常规法（备用）",
+        "content": "套用公式 \\\\(a_n = 2\\int_0^1 (1 - x) \\cos n\\pi x dx\\\\)。<br>使用分部积分法：<br>\\\\(= \\dfrac{2}{n\\pi}\\int_0^1 (1-x)d(\\sin n\\pi x)\\\\)<br>\\\\(= \\dfrac{2}{n\\pi} \\left[ (1-x)\\sin n\\pi x \\Big|_0^1 - \\int_0^1 \\sin n\\pi x d(1-x) \\right]\\\\)<br>\\\\(= \\dfrac{2}{n\\pi} \\left[ 0 + \\int_0^1 \\sin n\\pi x dx \\right] = -\\dfrac{2}{n^2\\pi^2} \\cos n\\pi x \\Big|_0^1 = \\dfrac{2}{n^2\\pi^2}[1 - (-1)^n]\\\\)。<br>当 \\\\(n\\\\) 为偶数时，\\\\((-1)^n = 1\\\\)，所以 \\\\(a_{2n} = 0\\\\)。<br>既然每一项 \\\\(a_{2n}\\\\) 都是0，它们的和必然是 \\\\(0\\\\)。"
+      },
+      {
+        "step": 5,
+        "title": "易错点提示",
+        "content": "【易错点】用常规法时分部积分符号搞错；忘记 \\\\(a_0\\\\) 的公式前面还有个 \\\\(\\dfrac{2}{l}\\\\)；不明白 \\\\(1+(-1)^n\\\\) 可以用来提取偶数项。"
       }
     ],
     "answer": "0",
@@ -838,28 +928,28 @@
     "solution": [
       {
         "step": 1,
-        "title": "拆分积分",
-        "content": "\\(\\displaystyle\\int_1^3 f(x),dx = \\displaystyle\\int_1^2 f(x),dx + \\displaystyle\\int_2^3 f(x),dx\\)。"
+        "title": "思维导图：积分区间平移",
+        "content": "【题目特征】已知区间积分值，求另一个区间的积分，且函数满足递推关系（如平移）<br>【解题框架】<br>└─ ① 拆分区间：将要求的目标区间 \\\\([1, 3]\\\\) 拆分为与已知条件相关的区间段<br>└─ ② 换元平移：对不熟悉的区间段做平移换元，把自变量拉回已知区间<br>└─ ③ 运用函数方程：代入题目给定的 \\\\(f(x+2)\\\\) 关系式，化简积分<br>└─ ④ 整体合并：把拆分的积分重新拼合，利用已知条件得出结果<br><br>【口诀】求哪拆哪，不在区间就换元，递推关系来降维。"
       },
       {
         "step": 2,
-        "title": "换元",
-        "content": "对 \\(\\displaystyle\\int_2^3 f(x),dx\\)，令 \\(x = t + 2\\)，得 \\(\\displaystyle\\int_0^1 f(t+2),dt\\)。"
+        "title": "拆分目标积分",
+        "content": "要求的积分为 \\\\(\\displaystyle\\int_1^3 f(x)dx\\\\)。<br>根据已知条件有 \\\\(\\int_0^2\\\\)，我们把 \\\\([1,3]\\\\) 在中间断开，拆成：<br>\\\\(\\displaystyle\\int_1^3 f(x)dx = \\displaystyle\\int_1^2 f(x)dx + \\displaystyle\\int_2^3 f(x)dx\\\\)。<br>前一部分 \\\\([1,2]\\\\) 已经在 \\\\([0,2]\\\\) 范围内，保留不动；后一部分 \\\\([2,3]\\\\) 超出了范围，需要处理。"
       },
       {
         "step": 3,
-        "title": "代入函数方程",
-        "content": "利用 \\(f(x+2) = f(x) + x\\)：\\(\\displaystyle\\int_0^1 f(t+2),dt = \\displaystyle\\int_0^1 f(t),dt + \\displaystyle\\int_0^1 t,dt = \\displaystyle\\int_0^1 f(t),dt + \\dfrac{1}{2}\\)。"
+        "title": "平移换元与递推降维",
+        "content": "对超出的部分 \\\\(\\displaystyle\\int_2^3 f(x)dx\\\\) 进行换元：<br>令 \\\\(t = x - 2\\\\)（即 \\\\(x = t + 2\\\\)），当 \\\\(x=2\\\\) 时 \\\\(t=0\\\\)，当 \\\\(x=3\\\\) 时 \\\\(t=1\\\\)。<br>积分变为：\\\\(\\displaystyle\\int_0^1 f(t+2)dt\\\\)。<br>利用题目给定的递推关系 \\\\(f(x+2) = f(x) + x\\\\)：<br>\\\\(\\displaystyle\\int_0^1 f(t+2)dt = \\displaystyle\\int_0^1 [f(t) + t] dt = \\displaystyle\\int_0^1 f(t)dt + \\displaystyle\\int_0^1 t dt\\\\)<br>后面部分可以直接算出来：\\\\(\\displaystyle\\int_0^1 t dt = \\dfrac{1}{2}t^2\\Big|_0^1 = \\dfrac{1}{2}\\\\)。"
       },
       {
         "step": 4,
-        "title": "合并",
-        "content": "原式 \\(= \\displaystyle\\int_1^2 f(x),dx + \\displaystyle\\int_0^1 f(x),dx + \\dfrac{1}{2} = \\displaystyle\\int_0^2 f(x),dx + \\dfrac{1}{2} = 0 + \\dfrac{1}{2} = \\dfrac{1}{2}\\)。"
+        "title": "合并得出结论",
+        "content": "把处理好的两部分拼回去：<br>原式 \\\\(= \\displaystyle\\int_1^2 f(x)dx + \\left( \\displaystyle\\int_0^1 f(x)dx + \\dfrac{1}{2} \\right)\\\\)<br>\\\\(= \\left[ \\displaystyle\\int_0^1 f(x)dx + \\displaystyle\\int_1^2 f(x)dx \\right] + \\dfrac{1}{2}\\\\)<br>根据积分区间的可加性，方括号内刚好就是 \\\\(\\displaystyle\\int_0^2 f(x)dx\\\\)，题目已知它等于 0。<br>所以结果 \\\\(= 0 + \\dfrac{1}{2} = \\dfrac{1}{2}\\\\)。"
       },
       {
         "step": 5,
-        "title": "结论",
-        "content": "\\(\\displaystyle\\int_1^3 f(x),dx = \\dfrac{1}{2}\\)。"
+        "title": "易错点提示",
+        "content": "【易错点】换元时上下限没有跟着变，或者平移方向搞反（令成了 \\\\(x=t-2\\\\)）；将积分区间的加法与被积函数的加法混淆。"
       }
     ],
     "answer": "\\(\\dfrac{1}{2}\\)",
@@ -900,18 +990,28 @@
     "solution": [
       {
         "step": 1,
-        "title": "建立方程",
-        "content": "由 \\(\\gamma^T\\alpha_i = (k_1\\alpha_1 + k_2\\alpha_2 + k_3\\alpha_3)^T\\alpha_i = \\beta^T\\alpha_i\\)，得：<br>\\(k_1 \\alpha_1^T\\alpha_i + k_2 \\alpha_2^T\\alpha_i + k_3 \\alpha_3^T\\alpha_i = \\beta^T\\alpha_i\\)。"
+        "title": "思维导图：正交向量组与坐标求法",
+        "content": "【题目特征】给了一堆具体向量，让求一个向量在它们基下的系数（坐标）<br>【解题直觉】考研数学里，如果给了3个及以上的四维具体向量，它们极大概率是**两两正交**的！<br>【解题框架】<br>└─ ① 验证正交性：快速抽查 \\\\(\\alpha_1^T\\alpha_2\\\\)，发现等于0，确信它们是正交基<br>└─ ② 利用正交性解耦方程：对 \\\\(\\gamma = k_1\\alpha_1 + k_2\\alpha_2 + k_3\\alpha_3\\\\) 两边同时左乘 \\\\(\\alpha_1^T\\\\)<br>　　└─ 因为正交，\\\\(\\alpha_1^T\\alpha_2=0, \\alpha_1^T\\alpha_3=0\\\\)<br>　　└─ 剩下：\\\\(\\alpha_1^T\\gamma = k_1\\alpha_1^T\\alpha_1\\\\)<br>└─ ③ 结合已知条件：题目说 \\\\(\\alpha_1^T\\gamma = \\alpha_1^T\\beta\\\\)<br>└─ ④ 得出系数公式：\\\\(k_1 = \\dfrac{\\alpha_1^T\\beta}{\\alpha_1^T\\alpha_1}\\\\)（这其实就是投影公式！）<br><br>【口诀】遇到一堆长向量，先猜正交准没错；左右同乘挑一个，其他全消只剩它。"
       },
       {
         "step": 2,
-        "title": "计算内积",
-        "content": "\\(\\alpha_1^T\\alpha_1 = 3, \\alpha_2^T\\alpha_1 = 0, \\alpha_3^T\\alpha_1 = 0\\)，\\(\\beta^T\\alpha_1 = 1\\)，所以 \\(3k_1 = 1\\)，\\(k_1 = \\dfrac{1}{3}\\)。<br>类似地 \\(k_2 = -1\\)，\\(k_3 = -\\dfrac{1}{3}\\)。"
+        "title": "验证正交性并建立方程",
+        "content": "快速心算点乘：<br>\\\\(\\alpha_1^T\\alpha_2 = 1\\times(-1) + 0 + 0 + 1\\times1 = 0\\\\)<br>\\\\(\\alpha_1^T\\alpha_3 = 0 + 0 + (-1) + 1 = 0\\\\)<br>\\\\(\\alpha_2^T\\alpha_3 = 0 - 1 + 0 + 1 = 0\\\\)<br>果不其然，\\\\(\\alpha_1, \\alpha_2, \\alpha_3\\\\) 是两两正交的！<br>根据已知 \\\\(\\gamma^T\\alpha_i = \\beta^T\\alpha_i\\\\)（即内积相等 \\\\(\\alpha_i^T\\gamma = \\alpha_i^T\\beta\\\\)），将 \\\\(\\gamma = k_1\\alpha_1 + k_2\\alpha_2 + k_3\\alpha_3\\\\) 代入左边：<br>\\\\(\\alpha_i^T(k_1\\alpha_1 + k_2\\alpha_2 + k_3\\alpha_3) = \\alpha_i^T\\beta\\\\)<br>由于正交性，展开后除了第 \\\\(i\\\\) 项，其他全为 0：<br>\\\\(k_i (\\alpha_i^T\\alpha_i) = \\alpha_i^T\\beta\\\\)。"
       },
       {
         "step": 3,
-        "title": "求和",
-        "content": "\\(k_1^2 + k_2^2 + k_3^2 = \\dfrac{1}{9} + 1 + \\dfrac{1}{9} = \\dfrac{11}{9}\\)。"
+        "title": "分别计算每个系数",
+        "content": "计算长度平方（自己乘自己）和与 \\\\(\\beta\\\\) 的内积：<br>对 \\\\(\\alpha_1\\\\)：\\\\(\\alpha_1^T\\alpha_1 = 1^2+0+1^2+1^2 = 3\\\\)<br>　　　　\\\\(\\alpha_1^T\\beta = 1\\times1 + 0 + 1\\times1 + 1\\times(-1) = 1\\\\)  $\\\\Rightarrow 3k_1 = 1 \\\\Rightarrow k_1 = 1/3$<br><br>对 \\\\(\\alpha_2\\\\)：\\\\(\\alpha_2^T\\alpha_2 = (-1)^2+(-1)^2+0+1^2 = 3\\\\)<br>　　　　\\\\(\\alpha_2^T\\beta = -1\\times1 + (-1)\\times1 + 0 + 1\\times(-1) = -3\\\\)  $\\\\Rightarrow 3k_2 = -3 \\\\Rightarrow k_2 = -1$<br><br>对 \\\\(\\alpha_3\\\\)：\\\\(\\alpha_3^T\\alpha_3 = 0+1^2+(-1)^2+1^2 = 3\\\\)<br>　　　　\\\\(\\alpha_3^T\\beta = 0 + 1\\times1 + (-1)\\times1 + 1\\times(-1) = -1\\\\)  $\\\\Rightarrow 3k_3 = -1 \\\\Rightarrow k_3 = -1/3$"
+      },
+      {
+        "step": 4,
+        "title": "求和得出结论",
+        "content": "\\\\(k_1^2 + k_2^2 + k_3^2 = (1/3)^2 + (-1)^2 + (-1/3)^2 = 1/9 + 1 + 1/9 = 11/9\\\\)。"
+      },
+      {
+        "step": 5,
+        "title": "易错点提示",
+        "content": "【易错点】如果没有发现正交性，硬解一个三元一次方程组会耗费大量时间且容易算错。记住：**具体数字的长向量，90% 都在考正交**。"
       }
     ],
     "answer": "\\(\\dfrac{11}{9}\\)",
@@ -951,18 +1051,28 @@
     "solution": [
       {
         "step": 1,
-        "title": "列出可能取值",
-        "content": "\\(X \\in \\{0, 1\\}\\)，\\(Y \\in \\{0, 1, 2\\}\\)。"
+        "title": "思维导图：离散型独立变量的联合概率",
+        "content": "【题目特征】求两个独立随机变量相等的概率 \\\\(P(X=Y)\\\\)<br>【解题框架】<br>└─ ① 确定取值范围：列出 \\\\(X\\\\) 和 \\\\(Y\\\\) 各自所有可能的取值<br>└─ ② 找交集：找出它们能取到相同值的那些点<br>└─ ③ 利用全概率展开：\\\\(P(X=Y) = \\sum P(X=k, Y=k)\\\\)<br>└─ ④ 利用独立性拆分：由于独立，\\\\(P(X=k, Y=k) = P(X=k) \\times P(Y=k)\\\\)<br>└─ ⑤ 查表/代公式计算并求和<br><br>【口诀】求相等就是找交集，独立相乘再相加。"
       },
       {
         "step": 2,
-        "title": "计算联合概率",
-        "content": "\\(P\\{X = Y\\} = P\\{X = 0, Y = 0\\} + P\\{X = 1, Y = 1\\}\\)<br>\\(= P\\{X = 0\\}P\\{Y = 0\\} + P\\{X = 1\\}P\\{Y = 1\\}\\)（独立性）<br>\\(= \\dfrac{2}{3} \\cdot \\dfrac{1}{4} + \\dfrac{1}{3} \\cdot \\dfrac{1}{2} = \\dfrac{1}{6} + \\dfrac{1}{6} = \\dfrac{1}{3}\\)。"
+        "title": "确定取值范围与找交集",
+        "content": "\\\\(X \\sim B(1, 1/3)\\\\) 是两点分布（抛1次硬币），可能取值为 \\\\(0, 1\\\\)。<br>\\\\(Y \\sim B(2, 1/2)\\\\) 是二项分布（抛2次硬币），可能取值为 \\\\(0, 1, 2\\\\)。<br>要使 \\\\(X = Y\\\\)，它们只能在交集 \\\\(\\{0, 1\\}\\\\) 处相等。即事件 \\\\(X=Y\\\\) 包含两种互斥情况：<br>情况一：\\\\(X=0\\\\) 且 \\\\(Y=0\\\\)<br>情况二：\\\\(X=1\\\\) 且 \\\\(Y=1\\\\)"
       },
       {
         "step": 3,
-        "title": "结论",
-        "content": "\\(P\\{X = Y\\} = \\dfrac{1}{3}\\)。"
+        "title": "利用独立性拆分并计算",
+        "content": "由于 \\\\(X, Y\\\\) 独立，概率可以拆分为乘积：<br>\\\\(P(X=Y) = P(X=0)P(Y=0) + P(X=1)P(Y=1)\\\\)。<br><br>分别计算各自的概率：<br>对 \\\\(X\\\\)：\\\\(P(X=1) = 1/3\\\\)，\\\\(P(X=0) = 1 - 1/3 = 2/3\\\\)。<br>对 \\\\(Y\\\\)：利用公式 \\\\(C_n^k p^k (1-p)^{n-k}\\\\)<br>\\\\(P(Y=0) = C_2^0 (1/2)^0 (1/2)^2 = 1/4\\\\)<br>\\\\(P(Y=1) = C_2^1 (1/2)^1 (1/2)^1 = 2/4 = 1/2\\\\)"
+      },
+      {
+        "step": 4,
+        "title": "求和得出结论",
+        "content": "代入前面的式子：<br>\\\\(P(X=Y) = (2/3 \\times 1/4) + (1/3 \\times 1/2)\\\\)<br>\\\\(= 2/12 + 1/6 = 1/6 + 1/6 = 1/3\\\\)。"
+      },
+      {
+        "step": 5,
+        "title": "易错点提示",
+        "content": "【易错点】在全概率展开时，错误地加上了 \\\\(P(X=2)P(Y=2)\\\\) 的项（注意 \\\\(X\\\\) 根本取不到 2，所以 \\\\(P(X=2)=0\\\\)）；或者二项分布的系数 \\\\(C_2^1\\\\) 忘记乘导致 \\\\(P(Y=1)\\\\) 算错。"
       }
     ],
     "answer": "\\(\\dfrac{1}{3}\\)",
@@ -1010,23 +1120,28 @@
     "solution": [
       {
         "step": 1,
-        "title": "建立微分方程",
-        "content": "点 \\((x, y)\\) 处切线方程 \\(Y - y = y^{\\prime}(X - x)\\)，\\(y\\) 轴截距为 \\(y - y^{\\prime}x\\)。<br>由题意 \\(x = y - y^{\\prime}x\\)，即 \\(y = x + xy^{\\prime}\\)，化为 \\(y^{\\prime} = \\dfrac{y - x}{x} = \\dfrac{y}{x} - 1\\)。"
+        "title": "思维导图：微分方程几何建模",
+        "content": "【核心思想】将几何语言翻译成微分方程，求解后求极值<br>【解题框架】<br>└─ 第一问：求曲线方程<br>　　├─ ① 写切线方程：\\(Y - y = y'(X - x)\\)<br>　　├─ ② 求 \\(y\\) 轴截距：令 \\(X=0\\)，得 \\(Y = y - xy'\\)<br>　　├─ ③ 依题意列方程：截距 = 到 \\(y\\) 轴距离（即 \\(x\\)）<br>　　└─ ④ 解一阶线性微分方程，代入初始点求特解<br>└─ 第二问：求变上限积分的最大值<br>　　├─ ① 求导找驻点：\\(f'(x) = y(x) = 0\\)<br>　　├─ ② 判断单调性：确认是极大值点<br>　　└─ ③ 分部积分计算该点处的定积分值<br><br>【口诀】切线截距公式背，列出方程套公式；求导找零判极值，分部积分要仔细。"
       },
       {
         "step": 2,
-        "title": "解方程",
-        "content": "\\(\\dfrac{dy}{dx} = \\dfrac{y}{x} - 1\\)，\\(\\dfrac{dy}{dx} - \\dfrac{1}{x}y = -1\\)，<br>积分因子 \\(\\mu = \\mathrm{e}^{-\\int \\frac{1}{x}dx} = \\dfrac{1}{x}\\)。<br>通解 \\(\\dfrac{y}{x} = -\\ln x + C\\)，即 \\(y = x(C - \\ln x)\\)。"
+        "title": "(1) 翻译几何条件，列微分方程",
+        "content": "曲线上点 \\(P(x, y)\\) 处的切线方程为 \\(Y - y = y'(X - x)\\)。<br>求在 \\(y\\) 轴上的截距，令 \\(X = 0\\)，得到 \\(Y = y - xy'\\)。<br>点 \\(P(x,y)\\) 到 \\(y\\) 轴的距离为 \\(|x|\\)，因为题目已知 \\(x > 0\\)，距离就是 \\(x\\)。<br>根据题意：\\(y - xy' = x\\)。<br>整理成标准一阶线性微分方程形式：\\(y' - \\dfrac{1}{x}y = -1\\)。"
       },
       {
         "step": 3,
-        "title": "求特解",
-        "content": "由 \\(y(1) = 2\\)，得 \\(C = 2\\)，故 \\(y(x) = x(2 - \\ln x)\\)。"
+        "title": "求解一阶线性微分方程",
+        "content": "套用公式 \\(y = e^{-\\int P(x)dx} \\left[ \\int Q(x)e^{\\int P(x)dx} dx + C \\right]\\)。<br>这里 \\(P(x) = -\\dfrac{1}{x}, Q(x) = -1\\)。<br>积分因子 \\(e^{\\int P(x)dx} = e^{-\\ln x} = \\dfrac{1}{x}\\)；\\(e^{-\\int P(x)dx} = x\\)。<br>代入公式：\\(y = x \\left[ \\int (-1) \\cdot \\dfrac{1}{x} dx + C \\right] = x(-\\ln x + C)\\)。<br>由初始条件曲线过点 \\((1, 2)\\)，代入 \\(x=1, y=2\\)：\\(2 = 1 \\cdot (-\\ln 1 + C) \\Rightarrow C = 2\\)。<br>所以曲线方程为 \\(y = x(2 - \\ln x)\\) 。"
       },
       {
         "step": 4,
-        "title": "(2) 求最大值",
-        "content": "\\(f(x) = \\displaystyle\\int_1^x t(2 - \\ln t),dt\\)，\\(f^{\\prime}(x) = x(2 - \\ln x)\\)。<br>令 \\(f^{\\prime}(x) = 0\\)，得 \\(x = \\mathrm{e}^2\\)。<br>当 \\(0 < x < \\mathrm{e}^2\\) 时 \\(f^{\\prime}(x) > 0\\)，\\(x > \\mathrm{e}^2\\) 时 \\(f^{\\prime}(x) < 0\\)，<br>故 \\(f(x)\\) 在 \\(x = \\mathrm{e}^2\\) 取最大值：<br>\\(f(\\mathrm{e}^2) = \\displaystyle\\int_1^{\\mathrm{e}^2} x(2 - \\ln x),dx = \\dfrac{1}{4}\\mathrm{e}^4 - \\dfrac{5}{4}\\)。"
+        "title": "(2) 求变上限积分函数的驻点",
+        "content": "目标函数 \\(f(x) = \\displaystyle\\int_1^x t(2 - \\ln t)dt\\)。<br>求导：\\(f'(x) = x(2 - \\ln x)\\)。<br>令 \\(f'(x) = 0\\)，因为 \\(x>0\\)，只能是 \\(2 - \\ln x = 0\\)，解得驻点 \\(x = e^2\\)。<br>当 \\(0 < x < e^2\\) 时，\\(2 - \\ln x > 0\\)，\\(f'(x) > 0\\)（函数递增）；<br>当 \\(x > e^2\\) 时，\\(2 - \\ln x < 0\\)，\\(f'(x) < 0\\)（函数递减）。<br>所以 \\(x = e^2\\) 是唯一极大值点，也是全局最大值点。"
+      },
+      {
+        "step": 5,
+        "title": "计算最大值（分部积分）",
+        "content": "计算 \\(f(e^2) = \\displaystyle\\int_1^{e^2} t(2 - \\ln t)dt\\)。<br>使用分部积分法（反对幂指三，对数当 \\(u\\)，多项式当 \\(v'\\)）：<br>\\(\\displaystyle\\int t(2 - \\ln t)dt = \\int (2 - \\ln t) d\\left(\\dfrac{t^2}{2}\\right)\\)<br>\\(= \\dfrac{t^2}{2}(2 - \\ln t) - \\int \\dfrac{t^2}{2} d(2 - \\ln t)\\)<br>\\(= \\dfrac{t^2}{2}(2 - \\ln t) - \\int \\dfrac{t^2}{2} \\left(-\\dfrac{1}{t}\\right) dt\\)<br>\\(= \\dfrac{t^2}{2}(2 - \\ln t) + \\int \\dfrac{t}{2} dt = \\dfrac{t^2}{2}(2 - \\ln t) + \\dfrac{t^2}{4}\\)。<br>代入上下限 1 到 \\(e^2\\)：<br>上限代入：\\(\\dfrac{e^4}{2}(2 - 2) + \\dfrac{e^4}{4} = \\dfrac{e^4}{4}\\)<br>下限代入：\\(\\dfrac{1}{2}(2 - 0) + \\dfrac{1}{4} = 1 + \\dfrac{1}{4} = \\dfrac{5}{4}\\)<br>相减得到最大值：\\(\\dfrac{e^4}{4} - \\dfrac{5}{4}\\) 。"
       }
     ],
     "answer": "(1) \\(y = x(2 - \\ln x)\\)，(2) 最大值 \\(\\dfrac{1}{4}\\mathrm{e}^4 - \\dfrac{5}{4}\\)",
@@ -1068,23 +1183,28 @@
     "solution": [
       {
         "step": 1,
-        "title": "求驻点",
-        "content": "\\(f_x^{\\prime} = -x(2y + 3xy - 5x^3) = 0\\)，\\(f_y^{\\prime} = 2y - x^2 - x^3 = 0\\)。<br>得驻点 \\((0, 0), (1, 1), \\left(\\dfrac{2}{3}, \\dfrac{10}{27}\\right)\\)。"
+        "title": "思维导图：多元函数极值常规流程与反例判断",
+        "content": "【解题框架】<br>└─ ① 求一阶偏导数：\\(f'_x=0, f'_y=0\\) 解出所有驻点<br>└─ ② 求二阶偏导数：计算 Hesse 矩阵的三项 \\(A=f''_{xx}, B=f''_{xy}, C=f''_{yy}\\)<br>└─ ③ 判别式 \\(AC-B^2\\)：<br>　　├─ \\(>0\\)：是极值点（\\(A>0\\) 极小，\\(A<0\\) 极大）<br>　　├─ \\(<0\\)：不是极值点（鞍点）<br>　　└─ \\(=0\\)：失效，需用定义法或找特殊路径验证<br>└─ ④ 失效点的定义法：如果能找到两条趋于该点的路径，一条函数值大于0，一条小于0，则不是极值。<br><br>【口诀】一阶找驻点，二阶算ABC；大于零看A定极值，等于零找路径举反例。"
       },
       {
         "step": 2,
-        "title": "求 Hesse 矩阵",
-        "content": "\\(A = f_{xx}^{\\prime\\prime} = -(2y + 3xy - 5x^3) - x(3y - 15x^2)\\)<br>\\(B = f_{xy}^{\\prime\\prime} = -x(2 + 3x)\\)<br>\\(C = f_{yy}^{\\prime\\prime} = 2\\)"
+        "title": "求一阶偏导解驻点",
+        "content": "将 \\(f(x, y) = (y - x^2)(y - x^3)\\) 展开为 \\(y^2 - x^2y - x^3y + x^5\\)。<br>求偏导并令为 0：<br>\\(f'_x = -2xy - 3x^2y + 5x^4 = -x(2y + 3xy - 5x^3) = 0\\)<br>\\(f'_y = 2y - x^2 - x^3 = 0\\)<br>由第二式得 \\(y = \\dfrac{x^2 + x^3}{2}\\)。<br>代入第一式的括号中：\\((x^2 + x^3) + \\dfrac{3x(x^2 + x^3)}{2} - 5x^3 = 0\\)<br>化简得：\\(x^2(3x^2 - 5x + 2) = 0\\)，即 \\(x^2(3x - 2)(x - 1) = 0\\)。<br>解得 \\(x_1=0, x_2=1, x_3=2/3\\)。对应的 \\(y\\) 值分别为：<br>当 \\(x=0\\) 时 \\(y=0\\)；<br>当 \\(x=1\\) 时 \\(y=1\\)；<br>当 \\(x=2/3\\) 时 \\(y=10/27\\)。<br>所以驻点为：\\(P_1(0, 0), P_2(1, 1), P_3(2/3, 10/27)\\) 。"
       },
       {
         "step": 3,
-        "title": "判断驻点",
-        "content": "在 \\((0,0)\\)：\\(A = 0, B = 0, C = 2\\)，\\(AC - B^2 = 0\\)，充分条件失效。取 \\(y = x^2 + kx^3 (k > 0)\\) 代入分析，\\((0,0)\\) 不是极值点。<br>在 \\((1, 1)\\)：\\(A = 12, B = -5, C = 2\\)，\\(AC - B^2 < 0\\)，不是极值点。<br>在 \\(\\left(\\dfrac{2}{3}, \\dfrac{10}{27}\\right)\\)：\\(A = \\dfrac{100}{27}, B = -\\dfrac{8}{3}, C = 2\\)，\\(AC - B^2 > 0\\) 且 \\(A > 0\\)，是极小值点。"
+        "title": "求二阶偏导数 (Hesse矩阵参数)",
+        "content": "\\(A = f''_{xx} = -2y - 6xy + 20x^3\\)<br>\\(B = f''_{xy} = -2x - 3x^2\\)<br>\\(C = f''_{yy} = 2\\)"
       },
       {
         "step": 4,
-        "title": "结论",
-        "content": "极小值 \\(f\\left(\\dfrac{2}{3}, \\dfrac{10}{27}\\right) = \\left(\\dfrac{10}{27} - \\dfrac{4}{9}\\right)\\left(\\dfrac{10}{27} - \\dfrac{8}{27}\\right) = -\\dfrac{2}{27} \\cdot \\dfrac{2}{27} = -\\dfrac{4}{729}\\)。"
+        "title": "分别判别各个驻点",
+        "content": "【点 \\(P_2(1,1)\\)】：<br>\\(A = -2-6+20=12\\)，\\(B = -2-3=-5\\)，\\(C = 2\\)。<br>\\(AC - B^2 = 24 - 25 = -1 < 0\\)，所以不是极值点。<br><br>【点 \\(P_3(2/3, 10/27)\\)】：<br>\\(A = -20/27 - 40/27 + 160/27 = 100/27\\)，\\(B = -4/3 - 4/3 = -8/3\\)，\\(C = 2\\)。<br>\\(AC - B^2 = 200/27 - 64/9 = 8/27 > 0\\)。<br>因为 \\(AC - B^2 > 0\\) 且 \\(A > 0\\)，所以该点是**极小值点**。<br><br>【点 \\(P_1(0,0)\\)】：<br>\\(A=0, B=0, C=2\\)，\\(AC - B^2 = 0\\)，判别法失效。此时需要用定义：<br>考察函数在 \\((0,0)\\) 附近的符号（注意 \\(f(0,0)=0\\)）：<br>如果沿路径 \\(y=0\\) 趋近于原点，\\(f(x,0) = x^5\\)，当 \\(x>0\\) 时 \\(f>0\\)，当 \\(x<0\\) 时 \\(f<0\\)。<br>函数在原点附近既有正又有负，所以 \\((0,0)\\) 不是极值点。"
+      },
+      {
+        "step": 5,
+        "title": "计算极小值",
+        "content": "将极小值点 \\((2/3, 10/27)\\) 代入原函数：<br>\\(f(2/3, 10/27) = \\left(\\dfrac{10}{27} - \\dfrac{4}{9}\\right)\\left(\\dfrac{10}{27} - \\dfrac{8}{27}\\right) = \\left(-\\dfrac{2}{27}\\right) \\times \\left(\\dfrac{2}{27}\\right) = -\\dfrac{4}{729}\\) 。"
       }
     ],
     "answer": "极小值 \\(-\\dfrac{4}{729}\\)，点 \\(\\left(\\dfrac{2}{3}, \\dfrac{10}{27}\\right)\\)",
@@ -1125,28 +1245,28 @@
     "solution": [
       {
         "step": 1,
-        "title": "应用高斯公式",
-        "content": "由高斯公式：\\(I = \\iiint_\\Omega (2z - xz\\sin y + 3y\\sin x),dV\\)。"
+        "title": "思维导图：高斯公式与对称性",
+        "content": "【题目特征】出现封闭曲面的外侧（或内侧加负号），被积函数复杂<br>【解题框架】<br>└─ ① 高斯公式化三重积分：\\(\\iint Pdydz + Qdzdx + Rdxdy = \\iiint (P'_x + Q'_y + R'_z)dV\\)<br>└─ ② 对称性消项：观察积分区域的对称性，把奇函数项直接干掉<br>　　└─ 本题区域关于 \\(y=0\\)（\\(xz\\) 面）对称<br>└─ ③ 投影降维：把剩下的积分化为“先一后二”<br>　　└─ 先算 \\(z\\) 的一重积分，再算 \\(xy\\) 平面的二重积分<br>└─ ④ 极坐标计算：二重积分区域是圆，转极坐标秒杀<br><br>【口诀】封闭曲面用高斯，偏导算对第一步；区域对称找奇偶，降维化简极坐标。"
       },
       {
         "step": 2,
-        "title": "利用对称性",
-        "content": "由对称性：\\(\\iiint_\\Omega xz\\sin y,dV = 0\\)，\\(\\iiint_\\Omega 3y\\sin x,dV = 0\\)。<br>故 \\(I = \\iiint_\\Omega 2z,dV\\)。"
+        "title": "应用高斯公式",
+        "content": "记 \\(P = 2xz, Q = xz\\cos y, R = 3yz\\sin x\\)（原题的 \\(dzdy\\) 实际应为标准形式的 \\(dzdx\\)）。<br>计算散度（分别对 \\(x, y, z\\) 求偏导）：<br>\\(P'_x = 2z\\)<br>\\(Q'_y = -xz\\sin y\\)<br>\\(R'_z = 3y\\sin x\\)<br>利用高斯公式，原曲面积分化为三重积分：<br>\\(I = \\iiint_\\Omega (2z - xz\\sin y + 3y\\sin x) dV\\)。"
       },
       {
         "step": 3,
-        "title": "化为二重积分",
-        "content": "投影到 \\(D_{xy} : x^2 + y^2 \\leq 1\\)：<br>\\(I = \\iint_{D_{xy}} dx,dy \\displaystyle\\int_0^{1-x} 2z,dz = \\iint_{D_{xy}} (1 - x)^2 dx,dy = \\iint_{D_{xy}} (1 - 2x + x^2) dx,dy\\)。"
+        "title": "利用对称性大幅化简",
+        "content": "观察积分区域 \\(\\Omega\\)：由圆柱面 \\(x^2 + y^2 = 1\\) 与上下平面围成。<br>这个区域关于 \\(xz\\) 面（即 \\(y = 0\\)）是**对称**的！<br>考察被积函数中的后两项：<br>\\(-xz\\sin y\\) 是关于 \\(y\\) 的奇函数（因为 \\(\\sin(-y) = -\\sin y\\)）；<br>\\(3y\\sin x\\) 也是关于 \\(y\\) 的奇函数。<br>根据“奇函数在对称区间积分为0”的性质，这两项的三重积分直接为 0！<br>所以积分被暴降为：\\(I = \\iiint_\\Omega 2z dV\\)。"
       },
       {
         "step": 4,
-        "title": "极坐标计算",
-        "content": "\\(= \\pi + \\dfrac{1}{2}\\iint_{D_{xy}}(x^2 + y^2) dx,dy = \\pi + \\dfrac{1}{2}\\int_0^{2\\pi} d\\theta \\int_0^1 r^3 dr = \\pi + \\dfrac{\\pi}{4} = \\dfrac{5\\pi}{4}\\)。"
+        "title": "化为先一后二的积分",
+        "content": "区域 \\(\\Omega\\) 在 \\(xy\\) 平面的投影 \\(D\\) 为圆盘 \\(x^2 + y^2 \\leq 1\\)。<br>对于圆盘上的任意一点 \\((x,y)\\) ，\\(z\\) 的穿入面是 \\(z=0\\)，穿出面是 \\(z=1-x\\)。<br>将三重积分化为“先 \\(z\\) 后 \\(xy\\)”：<br>\\(I = \\iint_D dxdy \\displaystyle\\int_0^{1-x} 2z dz\\)。<br>内部积分很容易：\\(\\displaystyle\\int_0^{1-x} 2z dz = z^2 \\Big|_0^{1-x} = (1-x)^2 = 1 - 2x + x^2\\)。<br>于是：\\(I = \\iint_D (1 - 2x + x^2) dxdy\\)。"
       },
       {
         "step": 5,
-        "title": "结论",
-        "content": "\\(I = \\dfrac{5\\pi}{4}\\)。"
+        "title": "圆盘区域极坐标计算",
+        "content": "将二重积分拆成三项：\\(I = \\iint_D 1 dxdy - 2\\iint_D x dxdy + \\iint_D x^2 dxdy\\)。<br>第一项：圆面积 = \\(\\pi \\times 1^2 = \\pi\\)。<br>第二项：被积函数 \\(x\\) 是奇函数，区域关于 \\(y\\) 轴（即 \\(x=0\\)）对称，积分直接为 0。<br>第三项：转极坐标（或利用轮换对称性 \\(\\iint x^2 = \\dfrac{1}{2}\\iint (x^2+y^2)\\)）：<br>\\(\\iint_D x^2 dxdy = \\displaystyle\\int_0^{2\\pi} \\cos^2\\theta d\\theta \\displaystyle\\int_0^1 r^3 dr = \\pi \\times \\dfrac{1}{4} = \\dfrac{\\pi}{4}\\)。<br>相加得出结论：\\(I = \\pi - 0 + \\dfrac{\\pi}{4} = \\dfrac{5\\pi}{4}\\) 。"
       }
     ],
     "answer": "\\(\\dfrac{5\\pi}{4}\\)",
@@ -1193,28 +1313,28 @@
     "solution": [
       {
         "step": 1,
-        "title": "(1) 一阶泰勒展开",
-        "content": "由泰勒公式：\\(f(a) = f(0) + f^{\\prime}(0) a + \\dfrac{f^{\\prime\\prime}(\\eta_1)}{2} a^2 = f^{\\prime}(0)a + \\dfrac{f^{\\prime\\prime}(\\eta_1)}{2}a^2\\)（\\(0 < \\eta_1 < a\\)）。<br>同理 \\(f(-a) = -f^{\\prime}(0)a + \\dfrac{f^{\\prime\\prime}(\\eta_2)}{2}a^2\\)（\\(-a < \\eta_2 < 0\\)）。"
+        "title": "思维导图：泰勒公式证明题",
+        "content": "【题目特征】出现区间端点函数值加减，且求二阶导数的存在性或不等式<br>【解题框架】<br>└─ 第一问：用泰勒展开凑等式<br>　　├─ ① 选展开点：条件里有 \\(f(0)=0\\)，果断在 \\(x_0=0\\) 处展开<br>　　├─ ② 代端点：把 \\(x=a\\) 和 \\(x=-a\\) 代入，写出两个带二阶拉格朗日余项的式子<br>　　├─ ③ 消一阶导：把两式相加，正好消掉 \\(f'(0)a\\)<br>　　└─ ④ 用介值定理：两个二阶导的平均值，必等于中间某一点的二阶导<br>└─ 第二问：用泰勒展开凑不等式<br>　　├─ ① 选展开点：条件里说在某点取极值，假设该点为 \\(x_0\\)，有 \\(f'(x_0)=0\\)<br>　　├─ ② 代端点：同样把 \\(a\\) 和 \\(-a\\) 代入在 \\(x_0\\) 展开的式子<br>　　├─ ③ 相减放缩：题目求 \\(|f(a)-f(-a)|\\)，所以两式相减并加绝对值<br>　　└─ ④ 统一最大值：把两个不同的二阶导数用它们的最大值代替，化简即得<br><br>【口诀】看条件定中心点，代端点求和或减；等式就用介值定，不等就用最大值。"
       },
       {
         "step": 2,
-        "title": "(1) 介值定理",
-        "content": "两式相加：\\(f(a) + f(-a) = \\dfrac{a^2}{2}[f^{\\prime\\prime}(\\eta_1) + f^{\\prime\\prime}(\\eta_2)]\\)。<br>由介值定理，存在 \\(\\xi \\in (\\eta_2, \\eta_1) \\subset (-a, a)\\)，使得 \\(f^{\\prime\\prime}(\\xi) = \\dfrac{f^{\\prime\\prime}(\\eta_1) + f^{\\prime\\prime}(\\eta_2)}{2}\\)。<br>代入得 \\(f^{\\prime\\prime}(\\xi) = \\dfrac{f(a) + f(-a)}{a^2}\\)。"
+        "title": "(1) 在 x=0 处泰勒展开并相加",
+        "content": "因为已知 \\(f(0)=0\\)，我们在 \\(x_0 = 0\\) 处使用带有拉格朗日余项的一阶泰勒公式展开：<br>对 \\(x = a\\)：\\(f(a) = f(0) + f'(0)a + \\dfrac{f''(\\eta_1)}{2}a^2 = f'(0)a + \\dfrac{f''(\\eta_1)}{2}a^2\\) （其中 \\(0 < \\eta_1 < a\\)）<br>对 \\(x = -a\\)：\\(f(-a) = f(0) + f'(0)(-a) + \\dfrac{f''(\\eta_2)}{2}(-a)^2 = -f'(0)a + \\dfrac{f''(\\eta_2)}{2}a^2\\) （其中 \\(-a < \\eta_2 < 0\\)）<br>为了消去未知的一阶导数 \\(f'(0)\\)，将两式相加：<br>\\(f(a) + f(-a) = \\dfrac{a^2}{2}[f''(\\eta_1) + f''(\\eta_2)]\\)。"
       },
       {
         "step": 3,
-        "title": "(2) 设极值点",
-        "content": "设 \\(f\\) 在 \\(x_0 \\in (-a, a)\\) 取极值，则 \\(f^{\\prime}(x_0) = 0\\)。"
+        "title": "(1) 利用介值定理得出结论",
+        "content": "变形得到：\\(\\dfrac{f''(\\eta_1) + f''(\\eta_2)}{2} = \\dfrac{f(a) + f(-a)}{a^2}\\)。<br>由于 \\(f(x)\\) 具有二阶连续导数，\\(f''(x)\\) 是连续函数。<br>在闭区间 \\([\\eta_2, \\eta_1]\\) 上，连续函数必能取到其两个函数值的平均值（介值定理）。<br>所以，必定存在一点 \\(\\xi \\in (\\eta_2, \\eta_1) \\subset (-a, a)\\)，使得：<br>\\(f''(\\xi) = \\dfrac{f''(\\eta_1) + f''(\\eta_2)}{2}\\)。<br>代入即证：\\(f''(\\xi) = \\dfrac{1}{a^2}[f(a) + f(-a)]\\)。"
       },
       {
         "step": 4,
-        "title": "(2) 二阶展开",
-        "content": "\\(f(a) = f(x_0) + \\dfrac{f^{\\prime\\prime}(\\gamma_1)}{2}(a - x_0)^2\\)，\\(f(-a) = f(x_0) + \\dfrac{f^{\\prime\\prime}(\\gamma_2)}{2}(a + x_0)^2\\)。"
+        "title": "(2) 在极值点处泰勒展开",
+        "content": "设函数在 \\(x_0 \\in (-a, a)\\) 处取得极值。由费马引理知，极值点处导数为零：\\(f'(x_0) = 0\\)。<br>这次我们在 \\(x_0\\) 处展开：<br>\\(f(a) = f(x_0) + f'(x_0)(a-x_0) + \\dfrac{f''(\\gamma_1)}{2}(a-x_0)^2 = f(x_0) + \\dfrac{f''(\\gamma_1)}{2}(a-x_0)^2\\)<br>\\(f(-a) = f(x_0) + f'(x_0)(-a-x_0) + \\dfrac{f''(\\gamma_2)}{2}(-a-x_0)^2 = f(x_0) + \\dfrac{f''(\\gamma_2)}{2}(a+x_0)^2\\)"
       },
       {
         "step": 5,
-        "title": "(2) 放缩",
-        "content": "\\(|f(a) - f(-a)| \\leq \\dfrac{1}{2}|f^{\\prime\\prime}(\\gamma_2)|(a - x_0)^2 + \\dfrac{1}{2}|f^{\\prime\\prime}(\\gamma_1)|(a + x_0)^2\\)。<br>设 \\(M = \\max(|f^{\\prime\\prime}(\\gamma_1)|, |f^{\\prime\\prime}(\\gamma_2)|)\\)，则 \\(|f(a) - f(-a)| \\leq M(a^2 + x_0^2) \\leq 2Ma^2\\)，<br>即 \\(M \\geq \\dfrac{|f(a) - f(-a)|}{2a^2}\\)，取 \\(\\eta = \\gamma_1\\) 或 \\(\\gamma_2\\) 即得结论。"
+        "title": "(2) 相减并绝对值放缩",
+        "content": "题目要求 \\(|f(a) - f(-a)|\\)，所以我们将两式相减：<br>\\(f(a) - f(-a) = \\dfrac{f''(\\gamma_1)}{2}(a-x_0)^2 - \\dfrac{f''(\\gamma_2)}{2}(a+x_0)^2\\)。<br>两边取绝对值，利用三角不等式 \\(|A - B| \\leq |A| + |B|\\)：<br>\\(|f(a) - f(-a)| \\leq \\dfrac{1}{2}|f''(\\gamma_1)|(a-x_0)^2 + \\dfrac{1}{2}|f''(\\gamma_2)|(a+x_0)^2\\)。<br>令 \\(M = \\max\\{|f''(\\gamma_1)|, |f''(\\gamma_2)|\\}\\)，则：<br>\\(|f(a) - f(-a)| \\leq \\dfrac{1}{2} M [(a-x_0)^2 + (a+x_0)^2]\\)<br>展开方括号：\\((a^2 - 2ax_0 + x_0^2) + (a^2 + 2ax_0 + x_0^2) = 2a^2 + 2x_0^2\\)。<br>所以 \\(|f(a) - f(-a)| \\leq M(a^2 + x_0^2)\\)。<br>因为 \\(x_0 \\in (-a, a)\\)，所以 \\(x_0^2 < a^2\\)，因此 \\(a^2 + x_0^2 < 2a^2\\)。<br>于是得到 \\(|f(a) - f(-a)| < M(2a^2)\\)。<br>整理得：\\(M > \\dfrac{|f(a) - f(-a)|}{2a^2}\\)（显然满足 \\(\\geq\\)）。<br>由于 \\(M\\) 是 \\(|f''(\\gamma_1)|\\) 和 \\(|f''(\\gamma_2)|\\) 中的较大者，设取到较大值的点为 \\(\\eta\\)，则 \\(\\eta \\in (-a, a)\\)，且满足：<br>\\(|f''(\\eta)| \\geq \\dfrac{1}{2a^2}|f(a) - f(-a)|\\)。证明完毕。"
       }
     ],
     "answer": "证明见解析",
@@ -1264,28 +1384,28 @@
     "solution": [
       {
         "step": 1,
-        "title": "配方法化 f",
-        "content": "\\(f = (x_1 + x_2 - x_3)^2 + x_2^2 + x_3^2 + 2x_2 x_3 = (x_1 + x_2 - x_3)^2 + (x_2 + x_3)^2\\)。"
+        "title": "思维导图：二次型的线性变换",
+        "content": "【核心考点】配方法求可逆变换、正交变换保迹性质<br>【解题框架】<br>└─ 第一问：找可逆变换 \\(P\\)<br>　　├─ ① 配方法化简 \\(f\\)：将 \\(f\\) 配成规范型（或对角型），得到变换矩阵 \\(C_1\\)，即 \\(z = C_1 x\\)<br>　　├─ ② 配方法化简 \\(g\\)：将 \\(g\\) 配成同样的标准形式，得到变换矩阵 \\(C_2\\)，即 \\(z = C_2 y\\)<br>　　└─ ③ 联立求解：令两边的 \\(z\\) 相等，即 \\(C_1 x = C_2 y\\)，反解出 \\(x = C_1^{-1}C_2 y = P y\\)<br>└─ 第二问：判断是否存在正交变换<br>　　├─ ① 写出两者的二次型矩阵 \\(A\\) 和 \\(B\\)<br>　　├─ ② 抓核心性质：正交变换不仅是合同，还是**相似**！<br>　　└─ ③ 相似必保迹（主对角线元素之和相等）、保行列式。算一下迹就能秒杀。<br><br>【口诀】配方搭桥求可逆，正交相似先看迹。"
       },
       {
         "step": 2,
-        "title": "配方法化 g",
-        "content": "\\(g = y_1^2 + (y_2 + y_3)^2\\)。"
+        "title": "(1) 用配方法化简二次型 f 和 g",
+        "content": "对 \\(f\\) 配方：<br>先把包含 \\(x_1\\) 的项放在一起：\\(x_1^2 + 2x_1 x_2 - 2x_1 x_3\\)。<br>配成完全平方：\\((x_1 + x_2 - x_3)^2\\)。展开后多出了 \\(x_2^2 + x_3^2 - 2x_2x_3\\)。<br>所以在原式中减去多出的部分：<br>\\(f = (x_1 + x_2 - x_3)^2 - (x_2^2 + x_3^2 - 2x_2x_3) + 2x_2^2 + 2x_3^2\\)<br>\\(= (x_1 + x_2 - x_3)^2 + x_2^2 + x_3^2 + 2x_2x_3\\)<br>\\(= (x_1 + x_2 - x_3)^2 + (x_2 + x_3)^2\\)。<br><br>对 \\(g\\) 配方：<br>\\(g = y_1^2 + y_2^2 + y_3^2 + 2y_2 y_3 = y_1^2 + (y_2 + y_3)^2\\)。"
       },
       {
         "step": 3,
-        "title": "求可逆变换",
-        "content": "令 \\(\\begin{cases} z_1 = x_1 + x_2 - x_3 \\\\ z_2 = x_2 + x_3 \\\\ z_3 = x_3 \\end{cases}\\) 与 \\(\\begin{cases} z_1 = y_1 \\\\ z_2 = y_2 + y_3 \\\\ z_3 = y_3 \\end{cases}\\)。<br>可解出 \\(\\mathbf{x} = P\\mathbf{y}\\)，其中 \\(P = \\begin{pmatrix} 1 & -1 & 1 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1 \\end{pmatrix}\\)。"
+        "title": "(1) 构造中间变量联立求 P",
+        "content": "为了让 \\(f\\) 和 \\(g\\) 形式一样（都变成 \\(z_1^2 + z_2^2\\)），我们令：<br>\\(\\begin{cases} z_1 = x_1 + x_2 - x_3 \\\\ z_2 = x_2 + x_3 \\\\ z_3 = x_3 \\end{cases}\\)  以及  \\(\\begin{cases} z_1 = y_1 \\\\ z_2 = y_2 + y_3 \\\\ z_3 = y_3 \\end{cases}\\)。<br>强制让它们相等，直接反解出 \\(x\\) 关于 \\(y\\) 的表达式：<br>由第3式：\\(x_3 = y_3\\)<br>由第2式：\\(x_2 + y_3 = y_2 + y_3 \\Rightarrow x_2 = y_2\\)<br>由第1式：\\(x_1 + y_2 - y_3 = y_1 \\Rightarrow x_1 = y_1 - y_2 + y_3\\)<br>写成矩阵形式就是：<br>\\(\\begin{pmatrix} x_1 \\\\ x_2 \\\\ x_3 \\end{pmatrix} = \\begin{pmatrix} 1 & -1 & 1 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1 \\end{pmatrix} \\begin{pmatrix} y_1 \\\\ y_2 \\\\ y_3 \\end{pmatrix}\\)。<br>所以 \\(P = \\begin{pmatrix} 1 & -1 & 1 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1 \\end{pmatrix}\\)。"
       },
       {
         "step": 4,
-        "title": "判断正交变换",
-        "content": "\\(f\\) 的矩阵 \\(A = \\begin{pmatrix} 1 & 1 & -1 \\\\ 1 & 2 & 0 \\\\ -1 & 0 & 2 \\end{pmatrix}\\)，\\(\\mathrm{tr}(A) = 5\\)。<br>\\(g\\) 的矩阵 \\(B = \\begin{pmatrix} 1 & 0 & 0 \\\\ 0 & 1 & 1 \\\\ 0 & 1 & 1 \\end{pmatrix}\\)，\\(\\mathrm{tr}(B) = 3\\)。<br>若存在正交变换，则 \\(A, B\\) 相似，从而迹相等。矛盾，故不存在正交变换。"
+        "title": "(2) 邪修秒杀法判断正交变换",
+        "content": "写出二次型 \\(f\\) 对应的实对称矩阵 \\(A\\) 和 \\(g\\) 对应的矩阵 \\(B\\)：<br>\\(A = \\begin{pmatrix} 1 & 1 & -1 \\\\ 1 & 2 & 0 \\\\ -1 & 0 & 2 \\end{pmatrix}\\)，\\(B = \\begin{pmatrix} 1 & 0 & 0 \\\\ 0 & 1 & 1 \\\\ 0 & 1 & 1 \\end{pmatrix}\\)。<br>如果存在正交变换 \\(x = Qy\\)，即 \\(Q^T Q = E\\)，则 \\(g\\) 的矩阵 \\(B = Q^T A Q = Q^{-1} A Q\\)。<br>这意味着：**正交变换不仅让矩阵合同，而且让矩阵相似**！<br>相似矩阵必有相同的迹（主对角线元素之和）：<br>\\(Tr(A) = 1 + 2 + 2 = 5\\)<br>\\(Tr(B) = 1 + 1 + 1 = 3\\)<br>因为 \\(5 \\neq 3\\)，所以 \\(A\\) 和 \\(B\\) 根本不可能相似，自然也不存在正交变换将其转化。"
       },
       {
         "step": 5,
-        "title": "结论",
-        "content": "(1) \\(P = \\begin{pmatrix} 1 & -1 & 1 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1 \\end{pmatrix}\\)，(2) 不存在。"
+        "title": "易错点提示",
+        "content": "【易错点】配方时漏加补上的项导致完全错乱；第二问傻傻去求特征值。记住：判断相似或者正交变换，第一步永远是**看迹**，第二步看行列式，往往能秒杀。"
       }
     ],
     "answer": "(1) \\(P = \\begin{pmatrix} 1 & -1 & 1 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1 \\end{pmatrix}\\)；(2) 不存在正交变换",
@@ -1340,23 +1460,28 @@
     "solution": [
       {
         "step": 1,
-        "title": "(1) 求 E(X), D(X)",
-        "content": "由对称性 \\(E(X) = \\displaystyle\\iint_D x \\cdot \\dfrac{2}{\\pi}(x^2+y^2) d\\sigma = 0\\)。<br>\\(E(X^2) = \\displaystyle\\iint_D x^2 \\cdot \\dfrac{2}{\\pi}(x^2+y^2) d\\sigma = \\dfrac{1}{3}\\)，所以 \\(D(X) = \\dfrac{1}{3}\\)。<br>同理 \\(D(Y) = \\dfrac{1}{3}\\)。"
+        "title": "思维导图：二维随机变量全面考核",
+        "content": "【解题框架】<br>└─ 第一问：求方差<br>　　├─ ① 期望 \\(E(X)\\)：利用对称性，奇函数在对称区域积分为0，直接秒杀<br>　　├─ ② 求 \\(E(X^2)\\)：转极坐标计算二重积分<br>　　└─ ③ 套公式：\\(D(X) = E(X^2) - [E(X)]^2\\)<br>└─ 第二问：判断独立性<br>　　├─ 技巧法：看积分区域是不是矩形。如果联合密度区域是圆（非矩形），变量必定不独立！<br>　　└─ 严谨法：求出边缘密度 \\(f_X(x)\\)，说明 \\(f(x,y) \\neq f_X(x)f_Y(y)\\)<br>└─ 第三问：求函数分布（求 \\(Z=X^2+Y^2\\) 的密度）<br>　　├─ ① 求分布函数法：写出 \\(F_Z(z) = P(X^2+Y^2 \\leq z)\\)<br>　　├─ ② 化为二重积分：区域就是半径为 \\(\\sqrt{z}\\) 的圆<br>　　└─ ③ 求导得密度：算出积分后对 \\(z\\) 求导。<br><br>【口诀】求期望找奇偶，区域非矩必不独；函数分布先写F，极坐标里转圈圈。"
       },
       {
         "step": 2,
-        "title": "(2) 判断独立性",
-        "content": "\\(f_X(x) = \\begin{cases} \\dfrac{4}{3\\pi}(1 + 2x^2)\\sqrt{1 - x^2}, & -1 < x < 1 \\\\ 0, & \\text{其他} \\end{cases}\\)。<br>同理 \\(f_Y(y) = \\begin{cases} \\dfrac{4}{3\\pi}(1 + 2y^2)\\sqrt{1 - y^2}, & -1 < y < 1 \\\\ 0, & \\text{其他} \\end{cases}\\)。<br>因 \\(f_X(x)f_Y(y) \\neq f(x,y)\\)，所以 \\(X\\) 与 \\(Y\\) 不独立。"
+        "title": "(1) 对称性求期望，极坐标求方差",
+        "content": "求 \\(E(X) = \\displaystyle\\iint_D x \\cdot \\dfrac{2}{\\pi}(x^2+y^2) dxdy\\)。<br>积分区域 \\(D\\) 是单位圆，关于 \\(y\\) 轴对称。被积函数中的 \\(x\\) 是奇函数，\\((x^2+y^2)\\) 是偶函数，乘起来是奇函数。<br>根据对称性，奇函数积分直接为 0！所以 \\(E(X) = 0\\)。同理 \\(E(Y) = 0\\)。<br>求 \\(E(X^2) = \\displaystyle\\iint_D x^2 \\cdot \\dfrac{2}{\\pi}(x^2+y^2) dxdy\\)。<br>转极坐标：\\(x = r\\cos\\theta, y = r\\sin\\theta, dxdy = rdrd\\theta\\)，\\(x^2+y^2 = r^2\\)。<br>\\(= \\dfrac{2}{\\pi} \\displaystyle\\int_0^{2\\pi} \\cos^2\\theta d\\theta \\displaystyle\\int_0^1 (r^2)(r^2) r dr\\)<br>\\(\\int_0^{2\\pi} \\cos^2\\theta d\\theta = \\pi\\)。后半部分积分：\\(\\int_0^1 r^5 dr = \\dfrac{1}{6}\\)。<br>所以 \\(E(X^2) = \\dfrac{2}{\\pi} \\cdot \\pi \\cdot \\dfrac{1}{6} = \\dfrac{1}{3}\\)。<br>方差 \\(D(X) = E(X^2) - [E(X)]^2 = \\dfrac{1}{3} - 0 = \\dfrac{1}{3}\\)。由对称性，\\(D(Y) = \\dfrac{1}{3}\\)。"
       },
       {
         "step": 3,
-        "title": "(3) 求 Z 的分布",
-        "content": "当 \\(0 \\leq z < 1\\)：\\(F_Z(z) = P\\{X^2 + Y^2 \\leq z\\} = \\displaystyle\\iint_{x^2+y^2 \\leq z} \\dfrac{2}{\\pi}(x^2+y^2) d\\sigma\\)<br>\\(= \\dfrac{2}{\\pi} \\int_0^{2\\pi} d\\theta \\int_0^{\\sqrt{z}} r^3 dr = \\dfrac{2}{\\pi} \\cdot 2\\pi \\cdot \\dfrac{z^2}{4} = z^2\\)。"
+        "title": "(2) 严谨判断独立性",
+        "content": "【邪修判断】联合密度的非零区域是 \\(x^2+y^2 \\leq 1\\)，不是一个形如 \\(a \\leq x \\leq b, c \\leq y \\leq d\\) 的矩形。非矩形区域的两个变量绝对**不可能**相互独立。但在解答题里需要严密证明。<br>求边缘密度 \\(f_X(x)\\)：<br>当 \\(-1 < x < 1\\) 时，对 \\(y\\) 积分，边界是 \\(-\\sqrt{1-x^2}\\) 到 \\(\\sqrt{1-x^2}\\)。<br>\\(f_X(x) = \\displaystyle\\int_{-\\sqrt{1-x^2}}^{\\sqrt{1-x^2}} \\dfrac{2}{\\pi}(x^2+y^2) dy = \\dfrac{2}{\\pi} \\left[ x^2y + \\dfrac{1}{3}y^3 \\right]_{-\\sqrt{1-x^2}}^{\\sqrt{1-x^2}}\\<br>= \\dfrac{4}{\\pi}\\sqrt{1-x^2} \\left(x^2 + \\dfrac{1-x^2}{3}\\right) = \\dfrac{4}{3\\pi}(1+2x^2)\\sqrt{1-x^2}\\)。<br>同理 \\(f_Y(y) = \\dfrac{4}{3\\pi}(1+2y^2)\\sqrt{1-y^2}\\)。<br>很显然，\\(f_X(x)f_Y(y)\\) 里面有根号相乘，而 \\(f(x,y)\\) 是简单的多项式，两者绝不相等。<br>所以 \\(X\\) 与 \\(Y\\) 不独立。"
       },
       {
         "step": 4,
-        "title": "(3) 求密度",
-        "content": "\\(f_Z(z) = F_Z^{\\prime}(z) = \\begin{cases} 2z, & 0 < z < 1 \\\\ 0, & \\text{其他} \\end{cases}\\)。"
+        "title": "(3) 求 Z=X^2+Y^2 的分布函数并求导",
+        "content": "先求分布函数 \\(F_Z(z) = P(Z \\leq z) = P(X^2+Y^2 \\leq z)\\)。<br>因为 \\(X^2+Y^2\\) 是到原点的距离平方，区域最大为1，所以 \\(Z\\) 的取值范围是 \\([0, 1]\\)。<br>当 \\(0 < z < 1\\) 时：<br>积分区域变为一个小圆：\\(x^2+y^2 \\leq z\\)。<br>\\(F_Z(z) = \\displaystyle\\iint_{x^2+y^2 \\leq z} \\dfrac{2}{\\pi}(x^2+y^2) dxdy\\)。<br>极坐标化：边界半径变为 \\(\\sqrt{z}\\)。<br>\\(F_Z(z) = \\dfrac{2}{\\pi} \\displaystyle\\int_0^{2\\pi} d\\theta \\displaystyle\\int_0^{\\sqrt{z}} r^2 \\cdot r dr = \\dfrac{2}{\\pi} \\cdot 2\\pi \\cdot \\left[ \\dfrac{1}{4}r^4 \\right]_0^{\\sqrt{z}} = 4 \\cdot \\dfrac{1}{4} (\\sqrt{z})^4 = z^2\\)。<br>最后求导得到概率密度：<br>\\(f_Z(z) = F_Z'(z) = 2z\\) (当 \\(0 < z < 1\\) 时)。<br>所以 \\(f_Z(z) = \\begin{cases} 2z, & 0 < z < 1 \\\\ 0, & \\text{其他} \\end{cases}\\)。"
+      },
+      {
+        "step": 5,
+        "title": "易错点提示",
+        "content": "【易错点】求边缘概率密度时，积分上下限写成了 -1 到 1，忽略了圆的边界必须依赖于 \\(x\\)（即 \\(y\\) 的界是 \\(\\pm\\sqrt{1-x^2}\\)）；求分布函数 \\(F_Z(z)\\) 极坐标的半径上限写成了 \\(z\\) 而不是 \\(\\sqrt{z}\\) 导致算错。"
       }
     ],
     "answer": "(1) \\(D(X) = D(Y) = \\dfrac{1}{3}\\)；(2) 不独立；(3) \\(f_Z(z) = \\begin{cases} 2z, & 0 < z < 1 \\\\ 0, & \\text{其他} \\end{cases}\\)",
