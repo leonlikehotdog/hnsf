@@ -39,6 +39,115 @@
   <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
   <p>本题考点会在本章<strong>其他例题</strong>反复出现。建议：做完本题后回头重做一遍本章前面的练习题，强化「识别信号 → 套公式」的肌肉记忆。</p>
 </div>
+
+<div class="example-card">
+  <div class="example-label">📝 近五年真题 1 | 2021 数一 | 选择题 · 5分</div>
+  <div class="example-question">设 \((X_{1},Y_{1}),(X_{2},Y_{2}),\dots ,(X_{n},Y_{n})\) 为来自总体 \(N(\mu_1,\mu_2;\sigma_1^2,\sigma_2^2;\rho)\) 的简单随机样本，
+令 \(\theta = \mu_1 - \mu_2, \overline{X} = \frac{1}{n}\sum_{i=1}^{n} X_i, \overline{Y} = \frac{1}{n}\sum_{i=1}^{n} Y_i, \hat{\theta} = \overline{X} - \overline{Y}\) , 则（ ）.<br>A. \(\hat{\theta}\) 是 \(\theta\) 的无偏估计， \(D(\hat{\theta}) = \frac{\sigma_1^2 + \sigma_2^2}{n}\)<br>B. \(\hat{\theta}\) 不是 \(\theta\) 的无偏估计， \(D(\hat{\theta}) = \frac{\sigma_1^2 + \sigma_2^2}{n}\)<br>C. \(\hat{\theta}\) 是 \(\theta\) 的无偏估计， \(D(\hat{\theta}) = \frac{\sigma_1^2 + \sigma_2^2 - 2\rho\sigma_1\sigma_2}{n}\)<br>D. \(\hat{\theta}\) 不是 \(\theta\) 的无偏估计， \(D(\hat{\theta}) = \frac{\sigma_1^2 + \sigma_2^2 - 2\rho\sigma_1\sigma_2}{n}\) 10）</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>点估计、无偏估计、协方差</p>
+  <p><span class="section-tag tag-tip">🧭 解题思路（小白逐步版）</span></p>
+  <p><strong>步骤 1 · $\overline{X} \sim N\left(\mu_1, \frac{\sigma_1^2}{n}\right)</strong></p><p>\(\overline{X} \sim N\left(\mu_1, \frac{\sigma_1^2}{n}\right), \overline{Y} \sim N\left(\mu_2, \frac{\sigma_2^2}{n}\right)\)</p><p><strong>步骤 2 · 则 $E(\hat{\theta}) = E(\overline{X}) - E(\overline{Y}) = \mu</strong></p><p>则 \(E(\hat{\theta}) = E(\overline{X}) - E(\overline{Y}) = \mu_1 - \mu_2 = \theta\)</p><p><strong>步骤 3 · $$</strong></p><p>\[
+\begin{array}{l} D (\hat {\theta}) = D (\bar {X} - \bar {Y}) = D (\bar {X}) + D (\bar {Y}) - 2 \operatorname {C o v} (\bar {X}, \bar {Y}) \\ = \frac {\sigma_ {1} ^ {2}}{n} + \frac {\sigma_ {2} ^ {2}}{n} - \frac {2}{n} \left[ \operatorname {C o v} \left(X _ {1}, \bar {Y}\right) + \operatorname {C o v} \left(X _ {2}, \bar {Y}\right) + \dots + \operatorname {C o v} \left(X _ {n}, \bar {Y}\right) \right] \\ = \frac {\sigma_ {1} ^ {2}}{n} + \frac {\sigma_ {2} ^ {2}}{n} - \frac {2}{n ^ {2}} \left[ \operatorname {C o v} \left(X _ {1}, Y _ {1}\right) + \operatorname {C o v} \left(X _ {2}, Y _ {2}\right) + \dots + \operatorname {C o v} \left(X _ {n}, Y _ {n}\right) \right] \\ = \frac {\sigma_ {1} ^ {2}}{n} + \frac {\sigma_ {2} ^ {2}}{n} - \frac {2}{n ^ {2}} \cdot n \rho \sigma_ {1} \sigma_ {2} = \frac {\sigma_ {1} ^ {2} + \sigma_ {2} ^ {2} - 2 \rho \sigma_ {1} \sigma_ {2}}{n}, \text {应 选 (C)}. \\ \end{array}
+\]</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 写出关键思路 (3分)；② 计算正确 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>⚠️ 记住核心考点「点估计、无偏估计、协方差」的适用条件，避免想当然套公式</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点「点估计、无偏估计、协方差」属于点估计、无偏估计、协方差。建议做完后回到本章前面的例题重做一遍，强化「识别信号 → 套方法」的肌肉记忆。</p>
+  <div class="example-hint"><strong>🎯 最终答案：</strong>(C).</div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 近五年真题 2 | 2021 数一 | 选择题 · 5分</div>
+  <div class="example-question">设 \(X_{1}, X_{2}, \dots, X_{16}\) 是来自总体 \(N(\mu, 4)\) 的简单随机样本，考虑假设检验问题： \(H_{0}:\mu \leqslant 10\) ， \(H_{1}:\mu > 10, \Phi(x)\) 表示标准正态分布函数，若该检验问题的拒绝域为 \(W = \{\overline{X} \geqslant 11\}\) ，其中 \(\overline{X} = \frac{1}{16}\sum_{i=1}^{16} X_{i}\) ，则 \(\mu = 11.5\) 时，该检验犯第二类错误的概率为（ ）.<br>A. \(1 - \Phi (0.5)\)<br>B. \(1 - \Phi (1)\)<br>C. \(1 - \Phi (1.5)\)<br>D. \(1 - \Phi (2)\) 二、填空题（11～16小题，每小题5分，共30分.请将答案写在题中的横线上.） 11)</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>假设检验、第二类错误</p>
+  <p><span class="section-tag tag-tip">🧭 解题思路（小白逐步版）</span></p>
+  <p><strong>步骤 1 · 由题 $\overline{X}\sim N\left(11.5,\frac{1}{4}\right)$ ，或 $\fr</strong></p><p>由题 \(\overline{X}\sim N\left(11.5,\frac{1}{4}\right)\) ，或 \(\frac{\overline{X} - 11.5}{\frac{1}{2}}\sim N(0,1),\)</p><p><strong>步骤 2 · 犯第二类错误的概率为</strong></p><p>犯第二类错误的概率为</p><p><strong>步骤 3 · $$</strong></p><p>\[
+P \{\overline {{X}} <   1 1 \} = P \left\{\frac {\overline {{X}} - 1 1 . 5}{\frac {1}{2}} <   - 1 \right\} = \Phi (- 1) = 1 - \Phi (1),
+\]</p><p><strong>步骤 4 · 应选（B）.</strong></p><p>应选（B）.</p><p><strong>步骤 5 · # 二、填空题</strong></p><p># 二、填空题</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 写出关键思路 (3分)；② 计算正确 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>⚠️ 记住核心考点「假设检验、第二类错误」的适用条件，避免想当然套公式</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点「假设检验、第二类错误」属于假设检验、第二类错误。建议做完后回到本章前面的例题重做一遍，强化「识别信号 → 套方法」的肌肉记忆。</p>
+  <div class="example-hint"><strong>🎯 最终答案：</strong>(B).</div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 近五年真题 3 | 2023 数一 | 选择题 · 5分</div>
+  <div class="example-question">设 \(X_1, X_2, \ldots, X_n\) 为来自总体 \(N(\mu_1, \sigma^2)\) 的简单随机样本，\(Y_1, Y_2, \ldots, Y_m\) 为来自总体 \(N(\mu_2, 2\sigma^2)\) 的简单随机样本，且两样本相互独立。记 \(\overline{X}, \overline{Y}, S_1^2, S_2^2\) 为样本均值与样本方差，则<br>A. \(\dfrac{S_1^2}{S_2^2} \sim F(n, m)\)<br>B. \(\dfrac{S_1^2}{S_2^2} \sim F(n-1, m-1)\)<br>C. \(\dfrac{2S_1^2}{S_2^2} \sim F(n, m)\)<br>D. \(\dfrac{2S_1^2}{S_2^2} \sim F(n-1, m-1)\)</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>F 分布；样本方差的性质</p>
+  <p><span class="section-tag tag-tip">🧭 解题思路（小白逐步版）</span></p>
+  <p><strong>步骤 1 · 思维导图：样本方差比 → F 分布</strong></p><p>【必背公式】正态总体样本方差：<br>\(\dfrac{(n-1)S^2}{\sigma^2}\sim\chi^2(n-1)\)<br>【F 分布定义】\(F=\dfrac{\chi^2(n_1)/n_1}{\chi^2(n_2)/n_2}\sim F(n_1,n_2)\)<br>【本题框架】<br>└─ ① 写出两个样本方差各自的卡方形式<br>└─ ② 注意第二个总体方差是 \(2\sigma^2\)，不是 \(\sigma^2\)！<br>└─ ③ 作商，凑成 F 分布<br>└─ ④ 自由度分别是 \(n-1, m-1\)<br><br>【口诀】两个样本方差比，分子分母各减一；方差不同先归一。</p><p><strong>步骤 2 · 回忆卡方分布</strong></p><p>第一个总体 \(N(\mu_1,\sigma^2)\)：\(\dfrac{(n-1)S_1^2}{\sigma^2}\sim\chi^2(n-1)\)。<br>第二个总体 \(N(\mu_2,2\sigma^2)\)：\(\dfrac{(m-1)S_2^2}{2\sigma^2}\sim\chi^2(m-1)\)。<br>（这里 \(S_2^2\) 对应方差 \(2\sigma^2\)，分母必须写 \(2\sigma^2\)，这是本题最大陷阱。）</p><p><strong>步骤 3 · 构造 F 统计量</strong></p><p>两样本独立，对应的两个 \(\chi^2\) 也独立，作商：<br>\(F=\dfrac{\frac{(n-1)S_1^2}{\sigma^2}/(n-1)}{\frac{(m-1)S_2^2}{2\sigma^2}/(m-1)}=\dfrac{S_1^2/\sigma^2}{S_2^2/(2\sigma^2)}=\dfrac{2S_1^2}{S_2^2}\sim F(n-1,m-1)\)。</p><p><strong>步骤 4 · 结论</strong></p><p>选 D：\(\dfrac{2S_1^2}{S_2^2}\sim F(n-1,m-1)\)。</p><p><strong>步骤 5 · 本题代表的题型</strong></p><p>识别信号：两个正态总体的样本方差之比 → 问服从什么分布。<br>必背：\(\dfrac{(n-1)S^2}{\sigma^2}\sim\chi^2(n-1)\)；\(F\) 分布分子分母自由度分别是两个样本容量减一；作商时先把两个统计量化成“各自除以自身方差”的标准形式。<br>常见失分点：忘记第二个总体的方差是 \(2\sigma^2\) 而直接得 \(S_1^2/S_2^2\)；自由度写反。</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 写出关键思路 (3分)；② 计算正确 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>忘记第二个总体方差是 \(2\sigma^2\)；自由度搞反</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点「F 分布；样本方差的性质」属于F 分布。建议做完后回到本章前面的例题重做一遍，强化「识别信号 → 套方法」的肌肉记忆。</p>
+  <div class="example-hint"><strong>🎯 最终答案：</strong>D</div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 近五年真题 4 | 2023 数一 | 选择题 · 5分</div>
+  <div class="example-question">设 \(X_1, X_2\) 为来自总体 \(N(\mu, \sigma^2)\) 的简单随机样本，其中 \(\sigma(\sigma > 0)\) 是未知参数。若 \(\hat{\sigma} = a|X_1 - X_2|\) 为 \(\sigma\) 的无偏估计，则 \(a =\)<br>A. \(\dfrac{\sqrt{\pi}}{2}\)<br>B. \(\dfrac{\sqrt{2\pi}}{2}\)<br>C. \(\sqrt{\pi}\)<br>D. \(\sqrt{2\pi}\)</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>无偏估计；正态分布期望</p>
+  <p><span class="section-tag tag-tip">🧭 解题思路（小白逐步版）</span></p>
+  <p><strong>步骤 1 · 思维导图：无偏估计</strong></p><p>【无偏定义】\(\hat\sigma\) 是 \(\sigma\) 的无偏估计 ⟺ \(E(\hat\sigma)=\sigma\)<br>【本题框架】<br>└─ ① 设 \(Y=X_1-X_2\)，先求 \(Y\) 的分布<br>└─ ② 求 \(E|Y|\)（正态分布绝对值期望）<br>└─ ③ 令 \(aE|Y|=\sigma\) 解出 \(a\)<br><br>【必背结论】\(X\sim N(\mu,\sigma^2)\Rightarrow E|X-\mu|=\sqrt{\dfrac{2}{\pi}}\sigma\)<br>【口诀】无偏估计令期望等于参数；正态绝对值期望背公式。</p><p><strong>步骤 2 · 求 \(Y = X_1 - X_2\) 的分布</strong></p><p>\(X_1,X_2\) 独立同分布 \(N(\mu,\sigma^2)\)。<br>差仍为正态：\(E(Y)=\mu-\mu=0\)，\(D(Y)=\sigma^2+\sigma^2=2\sigma^2\)。<br>所以 \(Y=X_1-X_2\sim N(0,2\sigma^2)\)，密度 <br>\(f_Y(y)=\dfrac{1}{\sqrt{2\pi}\cdot\sqrt{2}\sigma}\mathrm{e}^{-\frac{y^2}{2\cdot 2\sigma^2}}=\dfrac{1}{2\sqrt{\pi}\sigma}\mathrm{e}^{-\frac{y^2}{4\sigma^2}}\)。</p><p><strong>步骤 3 · 求 \(E|Y|\)</strong></p><p>用偶函数对称性（\(|y|\cdot f_Y(y)\) 是偶函数）：<br>\(E|Y|=\displaystyle\int_{-\infty}^{+\infty}|y|f_Y(y)dy=2\int_0^{+\infty}y\cdot\dfrac{1}{2\sqrt{\pi}\sigma}\mathrm{e}^{-\frac{y^2}{4\sigma^2}}dy\)<br>令 \(u=\dfrac{y^2}{4\sigma^2}\)，则 \(du=\dfrac{y}{2\sigma^2}dy\)，即 \(y\,dy=2\sigma^2 du\)：<br>\(=2\cdot\dfrac{1}{2\sqrt{\pi}\sigma}\cdot 2\sigma^2\int_0^{+\infty}\mathrm{e}^{-u}du=\dfrac{2\sigma}{\sqrt{\pi}}\)。<br>（也可直接用必背结论：\(E|Y|=\sqrt{\dfrac{2}{\pi}}\cdot\sqrt{2}\sigma=\dfrac{2\sigma}{\sqrt{\pi}}\)。）</p><p><strong>步骤 4 · 求 \(a\)</strong></p><p>由无偏：\(E(\hat\sigma)=aE|Y|=a\cdot\dfrac{2\sigma}{\sqrt{\pi}}=\sigma\)。<br>解出 \(a=\dfrac{\sqrt{\pi}}{2}\)。</p><p><strong>步骤 5 · 结论</strong></p><p>选 A：\(a=\dfrac{\sqrt{\pi}}{2}\)。</p><p><strong>步骤 6 · 本题代表的题型</strong></p><p>识别信号：“\(\hat\theta=a\cdot\text{统计量}\) 为参数的无偏估计，求 \(a\)”。<br>解题路径：求统计量的期望（含参数）→ 令 \(E=\text{参数}\) → 解 \(a\)。<br>必背：\(E|X-\mu|=\sqrt{2/\pi}\sigma\)（正态）；\(X_1-X_2\sim N(0,2\sigma^2)\)；\(\int_0^\infty e^{-u}du=1\)。<br>常见失分点：\(D(Y)=\sigma^2+\sigma^2=2\sigma^2\) 漏了“加”（不是 \(0\)）；\(\sqrt{2\pi}\) 与 \(\sqrt{\pi}\) 换算出错。</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 写出关键思路 (3分)；② 计算正确 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>\(E|Y|\) 计算错误；无偏估计定义不清</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点「无偏估计；正态分布期望」属于无偏估计。建议做完后回到本章前面的例题重做一遍，强化「识别信号 → 套方法」的肌肉记忆。</p>
+  <div class="example-hint"><strong>🎯 最终答案：</strong>A</div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 近五年真题 5 | 2024 数一 | 解答题 · 12分</div>
+  <div class="example-question">,
+\[
+x _ {n} = 8 + (- 2) ^ {n}, y _ {n} = - 8 + (- 2) ^ {n}, z _ {n} = 1 2.
+\]
+22.
+设总体 \(X \sim U(0, \theta)\) ， \(\theta\) 未知， \(X_1, X_2, \dots, X_n\) 为简单随机样本，
+\[
+X _ {(n)} = \max  \left(X _ {1}, X _ {2} \dots X _ {n}\right), T _ {c} = c X _ {(n)}.
+\]
+（1）求c时，使得T为θ的无偏估计
+记 \(h(c) = E(T_c - \theta)^2\) ，求c使得h(c)取最小值</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>联合密度</p>
+  <p><span class="section-tag tag-tip">🧭 解题思路（小白逐步版）</span></p>
+  <p><strong>步骤 1 · 写出样本最大值的分布</strong></p><p>当 \(0<x<\theta\) 时，\(X_{(n)}=\max(X_1,\dots,X_n)\) 的分布函数为<br>\[P\{X_{(n)}\le x\}=\left(\frac{x}{\theta}\right)^n,\]故密度为<br>\[f_{X_{(n)}}(x)=\frac{n x^{n-1}}{\theta^n},\quad 0<x<\theta.\]</p><p><strong>步骤 2 · 求无偏常数</strong></p><p>由密度可算得<br>\[E[X_{(n)}]=\frac{n}{n+1}\theta.\]<br>令 \(T_c=cX_{(n)}\) 无偏，即 \(E(T_c)=\theta\)，得到<br>\[c\cdot\frac{n}{n+1}\theta=\theta\Rightarrow c=\frac{n+1}{n}.\]</p><p><strong>步骤 3 · 写出均方误差函数</strong></p><p>还需用到二阶矩<br>\[E[X_{(n)}^2]=\frac{n}{n+2}\theta^2.\]<br>于是<br>\[h(c)=E(T_c-\theta)^2=c^2E[X_{(n)}^2]-2c\theta E[X_{(n)}]+\theta^2\]
+\[=\theta^2\left(\frac{n}{n+2}c^2-2\frac{n}{n+1}c+1\right).\]</p><p><strong>步骤 4 · 最小化 \(h(c)\)</strong></p><p>这是关于 \(c\) 的二次函数，开口向上。令导数为零：<br>\[\frac{d}{dc}h(c)=\theta^2\left(2\frac{n}{n+2}c-2\frac{n}{n+1}\right)=0,\]解得<br>\[c=\frac{n+2}{n+1}.\]</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 识别题型/写对公式 (3分)；② 方法步骤 (4分)；③ 计算化简 (3分)；④ 结论 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>⚠️ 记住核心考点「联合密度」的适用条件，避免想当然套公式</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点「联合密度」属于联合密度。建议做完后回到本章前面的例题重做一遍，强化「识别信号 → 套方法」的肌肉记忆。</p>
+  <div class="example-hint"><strong>🎯 最终答案：</strong>（1）\(c=\dfrac{n+1}{n}\)；（2）\(c=\dfrac{n+2}{n+1}\)</div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 近五年真题 6 | 2025 数一 | 选择题 · 5分</div>
+  <div class="example-question">设\(X_1, X_2, \cdots, X_n\)为来自正态总体\(N(\mu, 2)\)的简单随机样本.记\(\overline{X} = \frac{1}{n}\sum_{i=1}^n X_i\)，\(Z_\alpha\)表示标准正态分布的上侧\(\alpha\)分位数.假设检验问题：\(H_0\)：\(\mu \leq 1\)，\(H_1\)：\(\mu > 1\)的显著性水平为\(\alpha\)的检验的拒绝域为<br>A. \(\left\{ \left( X_1, X_2, \cdots, X_n \right) \middle| \overline{X} > 1 + \dfrac{2}{n} Z_\alpha \right\}\)<br>B. \(\left\{ \left( X_1, X_2, \cdots, X_n \right) \middle| \overline{X} > 1 + \dfrac{\sqrt{2}}{n} Z_\alpha \right\}\)<br>C. \(\left\{ \left( X_1, X_2, \cdots, X_n \right) \middle| \overline{X} > 1 + \dfrac{2}{\sqrt{n}} Z_\alpha \right\}\)<br>D. \(\left\{ \left( X_1, X_2, \cdots, X_n \right) \middle| \overline{X} > 1 + \sqrt{\dfrac{2}{n}} Z_\alpha \right\}\)</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>相关系数</p>
+  <p><span class="section-tag tag-tip">🧭 解题思路（小白逐步版）</span></p>
+  <p><strong>步骤 1 · 写出样本均值分布</strong></p><p>由 \(X_i\sim N(\mu,2)\) 且独立，可知<br>\[\overline X\sim N\left(\mu,\frac{2}{n}\right).\]</p><p><strong>步骤 2 · 构造右侧检验统计量</strong></p><p>在原假设边界 \(\mu=1\) 下，统计量<br>\[Z=\frac{\overline X-1}{\sqrt{2/n}}\sim N(0,1).\]
+对右侧检验 \(H_0:\mu\le1\) 对 \(H_1:\mu>1\)，显著性水平为 \(\alpha\) 的拒绝域是 \(Z>Z_\alpha\)。</p><p><strong>步骤 3 · 化回 \(\overline X\)</strong></p><p>于是拒绝域等价于<br>\[\overline X>1+\sqrt{\frac{2}{n}}Z_\alpha.\]
+故选 D。</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 写出关键思路 (3分)；② 计算正确 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>⚠️ 记住核心考点「相关系数」的适用条件，避免想当然套公式</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点「相关系数」属于相关系数。建议做完后回到本章前面的例题重做一遍，强化「识别信号 → 套方法」的肌肉记忆。</p>
+  <div class="example-hint"><strong>🎯 最终答案：</strong>D</div>
+</div>
 <div class="must-card">
   <div class="must-label">🎯 本章应试策略总结（80 分必备）</div>
   <p><strong>1. 答题时间分配：</strong>选择题 2~3 分钟/题，填空题 3 分钟/题，解答题 8~12 分钟/题。</p>

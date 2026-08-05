@@ -56,6 +56,79 @@
   <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
   <p>本题考点会在本章<strong>其他例题</strong>反复出现。建议：做完本题后回头重做一遍本章前面的练习题，强化「识别信号 → 套公式」的肌肉记忆。</p>
 </div>
+
+<div class="example-card">
+  <div class="example-label">📝 近五年真题 1 | 2021 数一 | 选择题 · 5分</div>
+  <div class="example-question">设 \(A, B\) 为 \(n\) 阶实矩阵，下列结论不成立的是（ ）.<br>A. \(r\begin{pmatrix} \mathbf{A} & \mathbf{O}\\ \mathbf{O} & \mathbf{A}^{\mathrm{T}}\mathbf{A} \end{pmatrix} = 2r(\mathbf{A})\)<br>B. \(r\begin{pmatrix} \mathbf{A} & \mathbf{AB}\\ \mathbf{O} & \mathbf{A}^{\mathrm{T}} \end{pmatrix} = 2r(\mathbf{A})\)<br>C. \(r\begin{pmatrix} \mathbf{A} & \mathbf{B}\mathbf{A}\\ \mathbf{O} & \mathbf{A}\mathbf{A}^{\mathrm{T}} \end{pmatrix} = 2r(\mathbf{A})\)<br>D. \(r\begin{pmatrix} \mathbf{A} & \mathbf{O}\\ \mathbf{B}\mathbf{A} & \mathbf{A}^{\mathrm{T}} \end{pmatrix} = 2r(\mathbf{A})\) 8）</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>分块矩阵的秩</p>
+  <p><span class="section-tag tag-tip">🧭 解题思路（小白逐步版）</span></p>
+  <p><strong>步骤 1 · $r\begin{pmatrix} \mathbf{A} & \mathbf{O}\\ \mathbf{O} & \ma</strong></p><p>\(r\begin{pmatrix} \mathbf{A} & \mathbf{O}\\ \mathbf{O} & \mathbf{A}^{\mathrm{T}}\mathbf{A} \end{pmatrix} = r(\mathbf{A}) + r(\mathbf{A}^{\mathrm{T}}\mathbf{A}) = 2r(\mathbf{A});\)</p><p><strong>步骤 2 · 由 $\left( \begin{array}{ll}A & AB\\ O & A^{\mathrm{T}} \end{</strong></p><p>由 \(\left( \begin{array}{ll}A & AB\\ O & A^{\mathrm{T}} \end{array} \right)\xrightarrow{\text{列}}\left( \begin{array}{ll}A & O\\ O & A^{\mathrm{T}} \end{array} \right)\) 得 \(r\left( \begin{array}{ll}A & AB\\ O & A^{\mathrm{T}} \end{array} \right) = 2r(A)\)</p><p><strong>步骤 3 · 由 $r\left(\begin{array}{cc}\mathbf{A}&\mathbf{O}\\ \mathbf{B</strong></p><p>由 \(r\left(\begin{array}{cc}\mathbf{A}&\mathbf{O}\\ \mathbf{B}\mathbf{A}&\mathbf{A}^{\mathrm{T}}\end{array}\right)\xrightarrow{\text{行}}r\left(\begin{array}{cc}\mathbf{A}&\mathbf{O}\\ \mathbf{O}&\mathbf{A}^{\mathrm{T}}\end{array}\right)\) 得 \(r\left(\begin{array}{cc}\mathbf{A}&\mathbf{O}\\ \mathbf{B}\mathbf{A}&\mathbf{A}^{\mathrm{T}}\end{array}\right)=2r(\mathbf{A})\) ，应选(C).</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 写出关键思路 (3分)；② 计算正确 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>⚠️ 记住核心考点「分块矩阵的秩」的适用条件，避免想当然套公式</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点「分块矩阵的秩」属于分块矩阵的秩。建议做完后回到本章前面的例题重做一遍，强化「识别信号 → 套方法」的肌肉记忆。</p>
+  <div class="example-hint"><strong>🎯 最终答案：</strong>(C).</div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 近五年真题 2 | 2023 数一 | 选择题 · 5分</div>
+  <div class="example-question">已知 \(n\) 阶矩阵 \(A, B, C\) 满足 \(ABC = O\)，\(E\) 为 \(n\) 阶单位矩阵。记矩阵 \(\begin{pmatrix} O & A \\ BC & E \end{pmatrix}, \begin{pmatrix} AB & C \\ O & E \end{pmatrix}, \begin{pmatrix} E & AB \\ AB & O \end{pmatrix}\) 的秩分别为 \(r_1, r_2, r_3\)，则<br>A. \(r_1 \leq r_2 \leq r_3\)<br>B. \(r_1 \leq r_3 \leq r_2\)<br>C. \(r_3 \leq r_1 \leq r_2\)<br>D. \(r_2 \leq r_1 \leq r_3\)</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>矩阵的秩；初等变换保秩；分块矩阵</p>
+  <p><span class="section-tag tag-tip">🧭 解题思路（小白逐步版）</span></p>
+  <p><strong>步骤 1 · 思维导图：分块矩阵求秩的通用框架</strong></p><p>【目标】对三个分块矩阵分别求秩，再比较大小<br>【方法】用“分块初等变换”消去一块，化成块对角 / 块三角，再数秩<br>【两条关键恒等式】由 \(ABC=O\) 可得<br>　├─ \((AB)C=O\)：\(AB\) 与 \(C\) 的关系<br>　└─ \(A(BC)=O\)：\(A\) 与 \(BC\) 的关系<br>【常用结论】\(r(XY)\leq r(X)\) 且 \(r(XY)\leq r(Y)\)<br>【易错点】块下三角 \(\begin{pmatrix} O & O \\ X & E \end{pmatrix}\) 的秩不是 \(r(X)+n\)，而是 \(n\)（因为 \(E\) 满秩，下两块行已线性无关）<br><br>【口诀】先消块，再数秩；上三角里加满秩。</p><p><strong>步骤 2 · 化简 \(r_1\)</strong></p><p>记 \(M_1 = \begin{pmatrix} O & A \\ BC & E \end{pmatrix}\)。<br>对块行做初等变换：第一块行 \(\leftarrow\) 第一块行 \(- A \times\)（第二块行）<br>\((O,\;A) - A(BC,\;E) = (-ABC,\; A-A) = (O,\;O)\)（用到 \(ABC=O\)）<br>所以 \(M_1 \to \begin{pmatrix} O & O \\ BC & E \end{pmatrix}\)，初等变换保秩。<br>由于 \(E\) 是单位矩阵（满秩），矩阵下 \(n\) 行 \([BC,\;E]\) 线性无关，上 \(n\) 行为零，故<br>\(\boxed{r_1 = n}\)。<br><br>【纠错】不能写成 \(r_1 = r(BC)+n\)：\(\begin{pmatrix} O & O \\ BC & E \end{pmatrix}\) 是块下三角，左下块 \(BC\) 与右下 \(E\) 的行有耦合，必须用“\(E\) 满秩 → 下 \(n\) 行无关”来判断。</p><p><strong>步骤 3 · 化简 \(r_2\)</strong></p><p>记 \(M_2 = \begin{pmatrix} AB & C \\ O & E \end{pmatrix}\)。<br>第一块行 \(\leftarrow\) 第一块行 \(- C \times\)（第二块行）：<br>\((AB,\;C) - C(O,\;E) = (AB,\; C-CE) = (AB,\;O)\)（因 \(E=I\)）<br>所以 \(M_2 \to \begin{pmatrix} AB & O \\ O & E \end{pmatrix}\)，已是块对角，秩相加：<br>\(\boxed{r_2 = r(AB) + n}\)。</p><p><strong>步骤 4 · 化简 \(r_3\)</strong></p><p>记 \(M_3 = \begin{pmatrix} E & AB \\ AB & O \end{pmatrix}\)。<br>第二块行 \(\leftarrow\) 第二块行 \(- AB \times\)（第一块行）：<br>\((AB,\;O) - AB(E,\;AB) = (AB-AB,\; -ABAB) = (O,\; -ABAB)\)<br>所以 \(M_3 \to \begin{pmatrix} E & AB \\ O & -ABAB \end{pmatrix}\)，块上三角（对角块为 \(E\) 与 \(-ABAB\)），秩相加：<br>\(\boxed{r_3 = n + r(ABAB)}\)。</p><p><strong>步骤 5 · 比较大小</strong></p><p>由 \(r(XY)\leq r(X)\) 取 \(X=AB,\;Y=AB\)：\(r(ABAB) \leq r(AB)\)。<br>于是<br>\(r_3 = n + r(ABAB) \leq n + r(AB) = r_2\)，即 \(r_3 \leq r_2\)；<br>又 \(r_1 = n \leq n + r(ABAB) = r_3\)（秩恒非负），即 \(r_1 \leq r_3\)。<br>所以 \(\boxed{r_1 \leq r_3 \leq r_2}\)，选 B。</p><p><strong>步骤 6 · 本题代表的题型</strong></p><p>识别信号：题干给矩阵乘积为零（\(ABC=O\)），问三个分块矩阵的秩大小。<br>解题路径：①分块初等变换消块 ②对块三角按对角块数秩 ③用 \(r(XY)\leq r(X)\) 比较。<br>必背结论：\(r(AB)\leq \min\{r(A),r(B)\}\)；分块初等变换与普通初等变换一样保秩；\(ABC=O\) 可拆成 \((AB)C=O\) 或 \(A(BC)=O\) 两种角度。<br>常见失分点：误把块下三角的秩写成“两块秩相加”，漏用 \(ABC=O\) 做消元。</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 写出关键思路 (3分)；② 计算正确 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>初等变换过程出错；分块矩阵秩的公式记错</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点「矩阵的秩；初等变换保秩；分块矩阵」属于分块矩阵的秩。建议做完后回到本章前面的例题重做一遍，强化「识别信号 → 套方法」的肌肉记忆。</p>
+  <div class="example-hint"><strong>🎯 最终答案：</strong>B</div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 近五年真题 3 | 2024 数一 | 选择题 · 5分</div>
+  <div class="example-question">3阶矩阵A的秩为2非零向量满足Aα=0，任意向量β，使得βα=0且Aβ=β，则下列结论正确的是<br>A. \(A^{3}\) 的迹为 2<br>B. \(A^{3}\) 的迹为 5<br>C. \(A^{5}\) 的迹为 7<br>D. \(A^{5}\) 的迹为 9</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>估计量</p>
+  <p><span class="section-tag tag-tip">🧭 解题思路（小白逐步版）</span></p>
+  <p><strong>步骤 1 · 由条件读出特征值</strong></p><p>已知 \(A\alpha=0\)，所以 \(0\) 是矩阵 \(A\) 的一个特征值；又有 \(A\beta=\beta\)，所以 \(1\) 是矩阵 \(A\) 的一个特征值。</p><p><strong>步骤 2 · 利用秩为 2 判断第三个特征值</strong></p><p>3 阶矩阵秩为 2，说明零空间维数为 1，即特征值 0 的几何重数为 1。于是其余两个特征值都非零。题目又给出一个特征值为 1，因此另外一个也只能是 1。</p><p><strong>步骤 3 · 求迹</strong></p><p>所以 \(A\) 的特征值为 \(0,1,1\)。矩阵幂的特征值分别变成 \(0^3,1^3,1^3\)，故<br>\[\operatorname{tr}(A^3)=0+1+1=2.\]<br>选 A。</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 写出关键思路 (3分)；② 计算正确 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>⚠️ 记住核心考点「估计量」的适用条件，避免想当然套公式</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点「估计量」属于估计量。建议做完后回到本章前面的例题重做一遍，强化「识别信号 → 套方法」的肌肉记忆。</p>
+  <div class="example-hint"><strong>🎯 最终答案：</strong>A</div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 近五年真题 4 | 2025 数一 | 选择题 · 5分</div>
+  <div class="example-question">设 \(n\) 阶矩阵 \(A , B , C\) 满足 \(r \left( A \right) + r \left( B \right) + r \left( C \right) = r \left( A B C \right) + 2 n\) ，给出下列四个结论：
+
+\[
+\begin{array}{l} ① r (A B C) + n = r (A B) + r (C); \\ ② r (A B) + n = r (A) + r (B); \\ ③ r (\boldsymbol {A}) = r (\boldsymbol {B}) = r (\boldsymbol {C}) = n; \\ \end{array}
+\]
+
+\[
+④ r (A B) = r (B C) = n.
+\]
+
+其中正确结论的序号是<br>A. \(\textcircled{1} \textcircled{2}\)<br>B. \(\textcircled{1} \textcircled{3}\)<br>C. \(\textcircled{2} \textcircled{4}\)<br>D. \(\textcircled{3} \textcircled{4}\)</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>特征值</p>
+  <p><span class="section-tag tag-tip">🧭 解题思路（小白逐步版）</span></p>
+  <p><strong>步骤 1 · 连续使用秩不等式</strong></p><p>由 Sylvester 秩不等式，<br>\[r(ABC)\ge r(AB)+r(C)-n,\qquad r(AB)\ge r(A)+r(B)-n.\]</p><p><strong>步骤 2 · 利用题设把不等式逼成等式</strong></p><p>把第二个不等式代入第一个，可得<br>\[r(ABC)\ge r(A)+r(B)+r(C)-2n.\]
+而题设正好给出 \(r(A)+r(B)+r(C)=r(ABC)+2n\)，所以前面所有“\(\ge\)”都必须取等号。</p><p><strong>步骤 3 · 推出正确结论</strong></p><p>于是得到<br>\[r(ABC)+n=r(AB)+r(C),\qquad r(AB)+n=r(A)+r(B).\]
+即 \(\textcircled1\)、\(\textcircled2\) 正确。至于 \(\textcircled3\)、\(\textcircled4\) 不能由题设必然推出。</p><p><strong>步骤 4 · 结论</strong></p><p>故选 A。</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 写出关键思路 (3分)；② 计算正确 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>⚠️ 记住核心考点「特征值」的适用条件，避免想当然套公式</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点「特征值」属于特征值。建议做完后回到本章前面的例题重做一遍，强化「识别信号 → 套方法」的肌肉记忆。</p>
+  <div class="example-hint"><strong>🎯 最终答案：</strong>A</div>
+</div>
 <div class="must-card">
   <div class="must-label">🎯 本章应试策略总结（80 分必备）</div>
   <p><strong>1. 答题时间分配：</strong>选择题 2~3 分钟/题，填空题 3 分钟/题，解答题 8~12 分钟/题。</p>

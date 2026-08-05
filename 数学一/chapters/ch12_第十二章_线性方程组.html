@@ -54,6 +54,23 @@
   <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
   <p>本题考点会在本章<strong>其他例题</strong>反复出现。建议：做完本题后回头重做一遍本章前面的练习题，强化「识别信号 → 套公式」的肌肉记忆。</p>
 </div>
+
+<div class="example-card">
+  <div class="example-label">📝 近五年真题 1 | 2025 数一 | 填空题 · 5分</div>
+  <div class="example-question">设矩阵 \(A = { \left( \begin{array} { l l l } { 4 } & { 2 } & { - 3 } \\ { a } & { 3 } & { - 4 } \\ { b } & { 5 } & { - 7 } \end{array} \right) } ,\) 若方程组 \(A ^ { 2 } x = \mathbf { 0 }\) 与 \(\pmb { A } \pmb { x } = \pmb { 0 }\) 不同 解， 则 \(a - b =\)</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>齐次线性方程组</p>
+  <p><span class="section-tag tag-tip">🧭 解题思路（小白逐步版）</span></p>
+  <p><strong>步骤 1 · 先看题意对应的线性代数条件</strong></p><p>“\(A^2x=0\) 与 \(Ax=0\) 有不同解”表示 \(N(A)\subsetneq N(A^2)\)，也就是存在广义特征向量。这至少要求 \(A\) 奇异，所以先有 \(\det A=0\)。</p><p><strong>步骤 2 · 计算行列式</strong></p><p>对<br>\[A=\begin{pmatrix}4&2&-3\\ a&3&-4\\ b&5&-7\end{pmatrix}\]
+计算行列式：<br>\[\det A=4(3\cdot(-7)-5\cdot(-4))-2(a\cdot(-7)-b\cdot(-4))-3(5a-3b)=b-a-4.\]故 \(\det A=0\Rightarrow a-b=-4\)。</p><p><strong>步骤 3 · 说明这个条件确实可行</strong></p><p>当 \(a-b=-4\) 时，第三行等于前两行之和，矩阵奇异且不是零矩阵，此时零特征值对应的 Jordan 结构非平凡，确有 \(N(A)\subsetneq N(A^2)\) 的情形。故答案为 \(a-b=-4\)。</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 写出关键思路 (3分)；② 计算正确 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>⚠️ 记住核心考点「齐次线性方程组」的适用条件，避免想当然套公式</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点「齐次线性方程组」属于曲面积分。建议做完后回到本章前面的例题重做一遍，强化「识别信号 → 套方法」的肌肉记忆。</p>
+  <div class="example-hint"><strong>🎯 最终答案：</strong>\(-4\)</div>
+</div>
 <div class="must-card">
   <div class="must-label">🎯 本章应试策略总结（80 分必备）</div>
   <p><strong>1. 答题时间分配：</strong>选择题 2~3 分钟/题，填空题 3 分钟/题，解答题 8~12 分钟/题。</p>

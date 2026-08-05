@@ -269,6 +269,114 @@
   <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
   <p>本题考点会在本章<strong>其他例题</strong>反复出现。建议：做完本题后回头重做一遍本章前面的练习题，强化「识别信号 → 套公式」的肌肉记忆。</p>
 </div>
+
+<div class="example-card">
+  <div class="example-label">📝 近五年真题 1 | 2021 数一 | 解答题 · 12分</div>
+  <div class="example-question">本题满分12分）
+设 \(u_{n}(x) = \mathrm{e}^{-nx} + \frac{x^{n + 1}}{n(n + 1)} (n = 1,2,\dots)\) ，求级数 \(\sum_{n = 1}^{\infty}u_n(x)\) 的收敛域及和函数.
+（19）（</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>幂级数收敛域、和函数</p>
+  <p><span class="section-tag tag-tip">🧭 解题思路（小白逐步版）</span></p>
+  <p><strong>步骤 1 · 先判断逐项收敛</strong></p><p>\(u_n(x)=e^{-nx}+\frac{x^{n+1}}{n(n+1)}\)。第一部分是等比级数 \(\sum e^{-nx}\)，收敛当且仅当 \(e^{-x}<1\) 即 \(x>0\)；第二部分是幂级数 \(\sum \frac{x^{n+1}}{n(n+1)}\)，收敛半径 \(R=\lim \frac{n(n+1)}{(n+1)(n+2)}=1\)，端点 \(x=\pm1\) 分别讨论。</p><p><strong>步骤 2 · 并集求收敛域</strong></p><p>两部分收敛域取交集：\(x>0\) 且 \(|x|\le1\)，端点 \(x=1\) 处两部分都收敛，故收敛域 \((0,1]\)。</p><p><strong>步骤 3 · 分别求和函数</strong></p><p>\(\sum_{n=1}^\infty e^{-nx}=\frac{e^{-x}}{1-e^{-x}}=\frac{1}{e^x-1}\)；\(\sum_{n=1}^\infty \frac{x^{n+1}}{n(n+1)}=(1-x)\ln(1-x)+x\)（利用 \(\frac{1}{n(n+1)}=\frac{1}{n}-\frac{1}{n+1}\) 裂项）。</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 写对方法 (4分)；② 计算过程 (5分)；③ 最终答案 (4分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>⚠️ 求收敛域忘记端点 \(x=1\) 的单独讨论；⚠️ 裂项求和 \(\sum\frac{x^{n+1}}{n(n+1)}\) 时忘记平移下标</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点「幂级数收敛域、和函数」属于幂级数求和、收敛域。建议做完后回到本章前面的例题重做一遍，强化「识别信号 → 套方法」的肌肉记忆。</p>
+  <div class="example-hint"><strong>🎯 最终答案：</strong>\(S(x) = \dfrac{1}{e^{x} - 1} + (1-x)\ln(1-x) + x\), 收敛域 \((0, 1]\)</div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 近五年真题 2 | 2022 数一 | 填空题 · 5分</div>
+  <div class="example-question">已知 \(a_n = \int_0^1 x^n \sqrt{1 - x^2}, dx\)，求 \(\displaystyle \sum_{n=0}^{\infty} a_n x^n\) 的收敛域及和函数。</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>幂级数的收敛域；逐项积分；函数项级数求和</p>
+  <p><span class="section-tag tag-tip">🧭 解题思路（小白逐步版）</span></p>
+  <p><strong>步骤 1 · 求收敛域</strong></p><p>\(a_n\) 是 \(\int_0^1 x^n \sqrt{1 - x^2}, dx\) 形式，当 \(|x| < 1\) 时 \(\int_0^1 x^n \sqrt{1 - x^2}, dx < \int_0^1 x^n, dx = \dfrac{1}{n+1}\)。<br>更精细地，用比值审敛法：<br>\(\lim_{n \to \infty} \left|\dfrac{a_{n+1} x^{n+1}}{a_n x^n}\right| = |x|\) <br>当 \(|x| < 1\) 时收敛。检查端点 \(x = \pm 1\)：<br>\(x = 1\)：\(\sum a_n\) 中 \(a_n \to 0\) 但 \(\sum\) 收敛性需进一步验证，由积分放缩可知 \(a_n \leq \dfrac{1}{n+1}\)，且 \(\sum \dfrac{1}{n+1}\) 发散（不能直接说发散），但 \(a_n = O\left(\dfrac{1}{n}\right)\) 时 \(\sum\) 发散。综合验证：\(|x| \leq 1\) 收敛，\(|x| > 1\) 发散。<br>收敛域 \([ -1, 1 ]\)。</p><p><strong>步骤 2 · 求和函数</strong></p><p>\(S(x) = \sum_{n=0}^{\infty} a_n x^n = \sum_{n=0}^{\infty} \left(\int_0^1 x^n \sqrt{1-t^2}, dt\right) x^n\) <br>注意：上面 \(x\) 是积分变量，下面 \(x\) 是幂级数变量——区分一下，设积分变量为 \(t\)：<br>\(a_n = \int_0^1 t^n \sqrt{1-t^2}, dt\)，则 \(S(x) = \int_0^1 \sqrt{1-t^2} \sum_{n=0}^{\infty} (xt)^n, dt = \int_0^1 \dfrac{\sqrt{1-t^2}}{1 - xt}, dt\)（当 \(|xt| < 1\)）。</p><p><strong>步骤 3 · 化简</strong></p><p>在 \([-1, 1]\) 上，\(|xt| \leq |x| \leq 1\)，且 \(t < 1\) 时 \(|xt| < 1\)。<br>\(S(x) = \int_0^1 \dfrac{\sqrt{1-t^2}}{1-xt}, dt\)。</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 写出关键思路 (3分)；② 计算正确 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>积分变量与幂级数变量混淆；逐项积分前提条件不满足（一致收敛未验证）；漏掉 \(x = \pm 1\) 端点检查</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点「幂级数的收敛域；逐项积分；函数项级数求和」属于幂级数的收敛半径、逐项积分定理、常见函数的幂级数展开。建议做完后回到本章前面的例题重做一遍，强化「识别信号 → 套方法」的肌肉记忆。</p>
+  <div class="example-hint"><strong>🎯 最终答案：</strong>收敛域 \([ -1, 1 ]\)，和函数 \(S(x) = \int_0^1 \dfrac{\sqrt{1-t^2}}{1-xt}, dt\)</div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 近五年真题 3 | 2023 数一 | 选择题 · 5分</div>
+  <div class="example-question">已知 \(a_n < b_n(n = 1, 2, \cdots)\)，若级数 \(\displaystyle\sum_{n=1}^\infty a_n\) 与 \(\displaystyle\sum_{n=1}^\infty b_n\) 均收敛，则" \(\displaystyle\sum_{n=1}^\infty a_n\) 绝对收敛"是" \(\displaystyle\sum_{n=1}^\infty b_n\) 绝对收敛"的<br>A. 充分必要条件<br>B. 充分不必要条件<br>C. 必要不充分条件<br>D. 既不充分也不必要条件</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>正项级数；比较判别法；绝对收敛</p>
+  <p><span class="section-tag tag-tip">🧭 解题思路（小白逐步版）</span></p>
+  <p><strong>步骤 1 · 先看真正能比较的量</strong></p><p>由 \(a_n<b_n\) 且两级数都收敛，可得 \(\sum (b_n-a_n)\) 是收敛的正项级数。注意这里能比较的是 \(b_n-a_n\)，不能直接推出 \(|a_n|<|b_n|\)。</p><p><strong>步骤 2 · 充分性不成立</strong></p><p>取 \(a_n=-\dfrac{1}{n^2}\)，\(b_n=\dfrac{(-1)^n}{n}\)。则 \(a_n<b_n\) 恒成立，且 \(\sum a_n\) 与 \(\sum b_n\) 都收敛。<br>但 \(\sum a_n\) 绝对收敛，因为 \(\sum |a_n|=\sum \dfrac{1}{n^2}\) 收敛；\(\sum b_n\) 不绝对收敛，因为 \(\sum |b_n|=\sum \dfrac{1}{n}\) 发散。故“\(\sum a_n\) 绝对收敛 \(\Rightarrow\) \(\sum b_n\) 绝对收敛”不成立。</p><p><strong>步骤 3 · 必要性也不成立</strong></p><p>再取 \(a_n=-\dfrac{(-1)^n}{n}\)，\(b_n=\dfrac{1}{n^2}\)。则仍有 \(a_n<b_n\)，且两级数都收敛。<br>此时 \(\sum b_n\) 绝对收敛，而 \(\sum a_n\) 不绝对收敛，因为 \(\sum |a_n|=\sum \dfrac{1}{n}\) 发散。故“\(\sum b_n\) 绝对收敛 \(\Rightarrow\) \(\sum a_n\) 绝对收敛”也不成立。</p><p><strong>步骤 4 · 结论</strong></p><p>充分性、必要性都不成立，所以应选 D：既不充分也不必要。</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 写出关键思路 (3分)；② 计算正确 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>将正项级数条件遗忘；比较判别法方向搞反</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点「正项级数；比较判别法；绝对收敛」属于绝对收敛与条件收敛。建议做完后回到本章前面的例题重做一遍，强化「识别信号 → 套方法」的肌肉记忆。</p>
+  <div class="example-hint"><strong>🎯 最终答案：</strong>D</div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 近五年真题 4 | 2023 数一 | 填空题 · 5分</div>
+  <div class="example-question">设 \(f(x)\) 为周期为 2 的周期函数，且 \(f(x) = 1 - x, x \in [0, 1]\)。若 \(f(x) = \dfrac{a_0}{2} + \displaystyle\sum_{n=1}^\infty a_n \cos n\pi x\)，则 \(\displaystyle\sum_{n=1}^\infty a_{2n} =\) ______。</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>傅里叶级数；余弦级数</p>
+  <p><span class="section-tag tag-tip">🧭 解题思路（小白逐步版）</span></p>
+  <p><strong>步骤 1 · 思维导图：傅里叶级数的两种解法</strong></p><p>【题目特征】已知局部表达式，求傅里叶级数特定项的无穷和<br>【解法一：暴力积分（常规法）】<br>└─ ① 判断奇偶性：只有余弦项说明是偶函数，周期为2（半周期 \\(l=1\\)）<br>└─ ② 套用系数公式：\\(a_n = \dfrac{2}{l}\int_0^l f(x)\cos\dfrac{n\pi x}{l}dx\\)<br>└─ ③ 分部积分求出 \\(a_n\\) 的表达式，直接看 \\(a_{2n}\\) 的值<br><br>【解法二：赋特殊值法（邪修秒杀法）】<br>└─ ① 利用级数收敛定理（狄利克雷定理），代入特殊的 \\(x\\) 凑出要求的求和形式<br>└─ ② 找 \\(a_{2n}\\)：利用 \\(1+(-1)^n\\) 可以把奇数项消掉的特性<br>└─ ③ 分别代入 \\(x=0\\) 和 \\(x=1\\)，两式相加即可解出<br><br>【口诀】余弦级数偶函数，求和代点最快速；奇偶分离用加减，算错积分最痛苦。</p><p><strong>步骤 2 · 邪修秒杀法（推荐）</strong></p><p>原级数为 \\(f(x) = \dfrac{a_0}{2} + \sum_{n=1}^\infty a_n \cos n\pi x\\)。<br>令 \\(x=0\\)：\\(f(0) = \dfrac{a_0}{2} + \sum_{n=1}^\infty a_n = 1\\)（因为 \\(f(0)=1-0=1\\)）。<br>令 \\(x=1\\)：\\(f(1) = \dfrac{a_0}{2} + \sum_{n=1}^\infty a_n \cos n\pi = \dfrac{a_0}{2} + \sum_{n=1}^\infty a_n (-1)^n = 0\\)（因为 \\(f(1)=1-1=0\\)）。<br>将两式相加：\\(f(0) + f(1) = a_0 + \sum_{n=1}^\infty a_n[1 + (-1)^n]\\)。<br>注意 \\(1+(-1)^n\\) 的神奇性质：当 \\(n\\) 为奇数时为0，当 \\(n\\) 为偶数（\\(n=2k\\)）时为2。<br>所以式子变成：\\(1 + 0 = a_0 + 2\sum_{k=1}^\infty a_{2k}\\)。</p><p><strong>步骤 3 · 计算 a_0</strong></p><p>\\(a_0 = \dfrac{2}{1} \int_0^1 f(x) dx = 2 \int_0^1 (1-x) dx = 2 \left[x - \dfrac{1}{2}x^2\right]_0^1 = 2 \times \dfrac{1}{2} = 1\\)。<br>代入上式：\\(1 = 1 + 2\sum a_{2n}\\)，得出 \\(\sum a_{2n} = 0\\)。</p><p><strong>步骤 4 · 常规法（备用）</strong></p><p>套用公式 \\(a_n = 2\int_0^1 (1 - x) \cos n\pi x dx\\)。<br>使用分部积分法：<br>\\(= \dfrac{2}{n\pi}\int_0^1 (1-x)d(\sin n\pi x)\\)<br>\\(= \dfrac{2}{n\pi} \left[ (1-x)\sin n\pi x \Big|_0^1 - \int_0^1 \sin n\pi x d(1-x) \right]\\)<br>\\(= \dfrac{2}{n\pi} \left[ 0 + \int_0^1 \sin n\pi x dx \right] = -\dfrac{2}{n^2\pi^2} \cos n\pi x \Big|_0^1 = \dfrac{2}{n^2\pi^2}[1 - (-1)^n]\\)。<br>当 \\(n\\) 为偶数时，\\((-1)^n = 1\\)，所以 \\(a_{2n} = 0\\)。<br>既然每一项 \\(a_{2n}\\) 都是0，它们的和必然是 \\(0\\)。</p><p><strong>步骤 5 · 易错点提示</strong></p><p>【易错点】用常规法时分部积分符号搞错；忘记 \\(a_0\\) 的公式前面还有个 \\(\dfrac{2}{l}\\)；不明白 \\(1+(-1)^n\\) 可以用来提取偶数项。</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 写出关键思路 (3分)；② 计算正确 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>傅里叶系数公式记错；积分上下限处理错</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点「傅里叶级数；余弦级数」属于傅里叶级数。建议做完后回到本章前面的例题重做一遍，强化「识别信号 → 套方法」的肌肉记忆。</p>
+  <div class="example-hint"><strong>🎯 最终答案：</strong>0</div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 近五年真题 5 | 2024 数一 | 选择题 · 5分</div>
+  <div class="example-question">已知幂函数 \(\sum_{n=0}^{\infty} a_n x^n\) 的和函数为 \(\ln (2 + x)\) ，则 \(\sum_{n=0}^{\infty} n a_{2n} =\)<br>A. \(-\frac{1}{6}\)<br>B. \(-\frac{1}{3}\)<br>C. \(\frac{1}{6}\)<br>D. \(\frac{1}{3}\)</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>幂级数</p>
+  <p><span class="section-tag tag-tip">🧭 解题思路（小白逐步版）</span></p>
+  <p><strong>步骤 1 · 先把和函数展开</strong></p><p>\(\ln(2+x)=\ln2+\ln\left(1+\dfrac{x}{2}\right)=\ln2+\sum_{n=1}^{\infty}(-1)^{n-1}\dfrac{x^n}{n2^n}\)。</p><p><strong>步骤 2 · 读出偶次项系数</strong></p><p>当幂次为 \(2n\) 时，\(a_{2n}=(-1)^{2n-1}\dfrac{1}{2n\cdot 2^{2n}}=-\dfrac{1}{n2^{2n+1}}\)。</p><p><strong>步骤 3 · 求目标级数</strong></p><p>于是 \(na_{2n}=-\dfrac{1}{2^{2n+1}}\)，所以<br>\[\sum_{n=1}^{\infty}na_{2n}=-\sum_{n=1}^{\infty}\frac{1}{2\cdot 4^n}=-\frac12\cdot\frac{\frac14}{1-\frac14}=-\frac16.\]<br>故选 A。</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 写出关键思路 (3分)；② 计算正确 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>⚠️ 记住核心考点「幂级数」的适用条件，避免想当然套公式</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点「幂级数」属于幂级数。建议做完后回到本章前面的例题重做一遍，强化「识别信号 → 套方法」的肌肉记忆。</p>
+  <div class="example-hint"><strong>🎯 最终答案：</strong>A</div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 近五年真题 6 | 2025 数一 | 选择题 · 5分</div>
+  <div class="example-question">已知级数： \(\textcircled { 1 } \sum _ { n = 1 } ^ { \infty } \sin \frac { n ^ { 3 } \pi } { n ^ { 2 } + 1 }\) ； \(\textcircled { 2 } \sum _ { n = 1 } ^ { \infty } ( - 1 ) ^ { n } \left( \frac { 1 } { \sqrt [ 3 ] { n ^ { 2 } } } - \tan \frac { 1 } { \sqrt [ 3 ] { n ^ { 2 } } } \right) ;\) \(\frac { 1 } { \sqrt [ 3 ] { n ^ { 2 } } }\) ，则 ，<br>A. \(\textcircled{1}\) 与 \(\textcircled{2}\) 均条件收敛<br>B. \(\textcircled{1}\) 条件收敛， \(\textcircled{2}\) 绝对收敛<br>C. \(\textcircled{1}\) 绝对收敛， \(\textcircled{2}\) 条件收敛<br>D. \(\textcircled{1}\) 与 \(\textcircled{2}\) 均绝对收敛</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>级数收敛</p>
+  <p><span class="section-tag tag-tip">🧭 解题思路（小白逐步版）</span></p>
+  <p><strong>步骤 1 · 分析级数 \(\textcircled{1}\)</strong></p><p>注意<br>\[\frac{n^3\pi}{n^2+1}=n\pi-\frac{n\pi}{n^2+1}.\]<br>因此<br>\[\sin\frac{n^3\pi}{n^2+1}=\sin\left(n\pi-\frac{n\pi}{n^2+1}\right)=(-1)^{n+1}\sin\frac{n\pi}{n^2+1}\sim(-1)^{n+1}\frac{\pi}{n}.\]<br>所以它像交错调和级数，只条件收敛，不绝对收敛。</p><p><strong>步骤 2 · 分析级数 \(\textcircled{2}\)</strong></p><p>令 \(u=n^{-2/3}\to0\)，则 \(\tan u=u+\dfrac{u^3}{3}+o(u^3)\)，故<br>\[u-\tan u\sim-\frac{u^3}{3}=-\frac{1}{3n^2}.\]<br>于是 \(\sum (-1)^n(u-\tan u)\) 的绝对值级数与 \(\sum \dfrac1{n^2}\) 同阶，故绝对收敛。</p><p><strong>步骤 3 · 结论</strong></p><p>\(\textcircled{1}\) 条件收敛，\(\textcircled{2}\) 绝对收敛，选 B。</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 写出关键思路 (3分)；② 计算正确 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>⚠️ 记住核心考点「级数收敛」的适用条件，避免想当然套公式</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点「级数收敛」属于级数收敛。建议做完后回到本章前面的例题重做一遍，强化「识别信号 → 套方法」的肌肉记忆。</p>
+  <div class="example-hint"><strong>🎯 最终答案：</strong>B</div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 近五年真题 7 | 2025 数一 | 填空题 · 5分</div>
+  <div class="example-question">已知函数 \(f ( x ) = \left\{ { \begin{array} { l l } { 0 , } & { 0 \leq x < { \frac { 1 } { 2 } } , } \\ { } & { } \\ { x ^ { 2 } , } & { { \frac { 1 } { 2 } } \leq x \leq 1 } \end{array} } \right.\) , 的傅里叶级数为 \(\sum _ { n = 1 } ^ { \infty } b _ { n }\) sin π ,n x S (x) 为 \(\sum _ { n = 1 } ^ { \infty } b _ { n }\) sin πn x的和函数，则 \(S \left( - { \frac { 7 } { 2 } } \right) = - \qquad \)</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>傅里叶级数</p>
+  <p><span class="section-tag tag-tip">🧭 解题思路（小白逐步版）</span></p>
+  <p><strong>步骤 1 · 先用周期性化简自变量</strong></p><p>正弦级数的和函数 \(S(x)\) 是原函数在 \((0,1)\) 上的奇延拓，再作周期为 2 的周期延拓。因此 \(S(x+2)=S(x)\)。<br>\(-\dfrac72\) 加上 4 后等于 \(\dfrac12\)，所以 \(S\left(-\dfrac72\right)=S\left(\dfrac12\right)\)。</p><p><strong>步骤 2 · 利用傅里叶级数在间断点取左右极限平均值</strong></p><p>原函数在 \(x=\dfrac12\) 处左极限为 0，右极限为 \(\left(\dfrac12\right)^2=\dfrac14\)。因此傅里叶级数和函数在该点的值为<br>\[S\left(\frac12\right)=\frac{0+\frac14}{2}=\frac18.\]</p><p><strong>步骤 3 · 结论</strong></p><p>所以 \(S\left(-\dfrac72\right)=\dfrac18\)。题目写成“\(-\ \underline{\quad}\)”的形式时，应填 \(\dfrac18\)。</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 写出关键思路 (3分)；② 计算正确 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>⚠️ 记住核心考点「傅里叶级数」的适用条件，避免想当然套公式</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点「傅里叶级数」属于微分方程。建议做完后回到本章前面的例题重做一遍，强化「识别信号 → 套方法」的肌肉记忆。</p>
+  <div class="example-hint"><strong>🎯 最终答案：</strong>\(\dfrac{1}{8}\)</div>
+</div>
 <div class="must-card">
   <div class="must-label">🎯 本章应试策略总结（80 分必备）</div>
   <p><strong>1. 答题时间分配：</strong>选择题 2~3 分钟/题，填空题 3 分钟/题，解答题 8~12 分钟/题。</p>

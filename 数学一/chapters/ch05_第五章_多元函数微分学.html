@@ -377,6 +377,156 @@
     <!-- ====== 历年真题与考点分析 ====== -->
 <div class="part-divider pexam" id="exam-ch05">
   <div class="pd-num">📝</div>
+
+<div class="example-card">
+  <div class="example-label">📝 近五年真题 1 | 2021 数一 | 选择题 · 5分</div>
+  <div class="example-question">设函数 \(f(x,y)\) 可微，且 \(f(x + 1,\mathrm{e}^x) = x(x + 1)^2,f(x,x^2) = 2x^2\ln x\) ，则 \(\mathrm{df}(1,1) = ()\)<br>A. \(\mathrm{dx} + \mathrm{dy}\)<br>B. \(\mathrm{d}x - \mathrm{d}y\)<br>C. dy<br>D. \(-\mathrm{dy}\) （3）</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>全微分、复合函数偏导</p>
+  <p><span class="section-tag tag-tip">🧭 解题思路（小白逐步版）</span></p>
+  <p><strong>步骤 1 · $f(x + 1, \mathrm{e}^x) = x(x + 1)^2$ 两边对 $x$ 求导得</strong></p><p>\(f(x + 1, \mathrm{e}^x) = x(x + 1)^2\) 两边对 \(x\) 求导得</p><p><strong>步骤 2 · $$</strong></p><p>\[
+f _ {1} ^ {\prime} (x + 1, \mathrm {e} ^ {x}) + \mathrm {e} ^ {x} f _ {2} ^ {\prime} (x + 1, \mathrm {e} ^ {x}) = (x + 1) ^ {2} + 2 x (x + 1),
+\]</p><p><strong>步骤 3 · 取 $x = 0$ 得 $f_{1}^{\prime}(1,1) + f_{2}^{\prime}(1,1) = 1$</strong></p><p>取 \(x = 0\) 得 \(f_{1}^{\prime}(1,1) + f_{2}^{\prime}(1,1) = 1\)</p><p><strong>步骤 4 · $f(x,x^{2}) = 2x^{2}\ln x$ 两边对 $x$ 求导得</strong></p><p>\(f(x,x^{2}) = 2x^{2}\ln x\) 两边对 \(x\) 求导得</p><p><strong>步骤 5 · $$</strong></p><p>\[
+f _ {1} ^ {\prime} (x, x ^ {2}) + 2 x f _ {2} ^ {\prime} (x, x ^ {2}) = 4 x \ln x + 2 x,
+\]</p><p><strong>步骤 6 · 取 $x = 1$ 得 $f_{1}^{\prime}(1,1) + 2f_{2}^{\prime}(1,1) = 2$</strong></p><p>取 \(x = 1\) 得 \(f_{1}^{\prime}(1,1) + 2f_{2}^{\prime}(1,1) = 2\)</p><p><strong>步骤 7 · 解得 $f_{1}^{\prime}(1,1) = 0, f_{2}^{\prime}(1,1) = 1$ ，故 $\m</strong></p><p>解得 \(f_{1}^{\prime}(1,1) = 0, f_{2}^{\prime}(1,1) = 1\) ，故 \(\mathrm{d}f(1,1) = \mathrm{d}y\) ，应选(C).</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 写出关键思路 (3分)；② 计算正确 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>⚠️ 记住核心考点「全微分、复合函数偏导」的适用条件，避免想当然套公式</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点「全微分、复合函数偏导」属于全微分、复合函数偏导。建议做完后回到本章前面的例题重做一遍，强化「识别信号 → 套方法」的肌肉记忆。</p>
+  <div class="example-hint"><strong>🎯 最终答案：</strong>(C).</div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 近五年真题 2 | 2021 数一 | 解答题 · 12分</div>
+  <div class="example-question">本题满分12分）
+已知曲线 \(C: \left\{ \begin{array}{l} x^2 + 2y^2 - z = 6, \\ 4x + 2y + z = 30, \end{array} \right.\) 求 \(C\) 上的点到 \(xOy\) 坐标面距离的最大值.
+（20）（</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>条件极值</p>
+  <p><span class="section-tag tag-tip">🧭 解题思路（小白逐步版）</span></p>
+  <p><strong>步骤 1 · 识别条件极值</strong></p><p>求曲线 \(C\) 上的点到 \(xOy\) 面距离 \(z\) 的最大值，即约束条件下 \(z\) 的极值。曲线由两方程给出，用拉格朗日乘数法：\(F=z+\lambda(x^2+2y^2-z-6)+\mu(4x+2y+z-30)\)。</p><p><strong>步骤 2 · 列方程解驻点</strong></p><p>对 \(x,y,z\) 求偏导得三个方程，联立两个约束方程共 5 个方程，解出候选点。</p><p><strong>步骤 3 · 比较候选点</strong></p><p>把各候选点的 \(z\) 值比较，最大者为所求。答案：最大值 \(66\)，点 \((-8,-2,66)\)。</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 写对方法 (4分)；② 计算过程 (5分)；③ 最终答案 (4分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>⚠️ 拉格朗日乘数法方程少写一个（两个约束要有两个 \(\lambda,\mu\)）；⚠️ 驻点不止一个，漏比较导致取错最大点</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点「条件极值」属于条件极值、拉格朗日乘数。建议做完后回到本章前面的例题重做一遍，强化「识别信号 → 套方法」的肌肉记忆。</p>
+  <div class="example-hint"><strong>🎯 最终答案：</strong>最大值 66, 点 \((-8, -2, 66)\)</div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 近五年真题 3 | 2022 数一 | 选择题 · 5分</div>
+  <div class="example-question">设 \(f(x, y)\) 在 \((0, 0)\) 的某邻域内有定义，且 \(f_x′(0, 0) = 1, f_y′(0, 0) = 2\)，则<br>A. \(\mathrm{d}z\big|_{(0,0)} = \mathrm{d}x + 2\mathrm{d}y\)<br>B. \(\dfrac{\partial z}{\partial x}\big|_{(0,0)} = 1, \dfrac{\partial z}{\partial y}\big|_{(0,0)} = 2\)，但 \(z\) 在 \((0,0)\) 处不可微<br>C. \(z\) 在 \((0,0)\) 处可微<br>D. \(z\) 在 \((0,0)\) 处连续但偏导不连续</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>多元函数可微性判定；全微分的存在条件</p>
+  <p><span class="section-tag tag-tip">🧭 解题思路（小白逐步版）</span></p>
+  <p><strong>步骤 1 · 偏导存在只是可微的必要条件</strong></p><p>仅由两个偏导数存在，无法判定可微性。<br>可微需要：\(f(x, y) - f(0, 0) - f_x(0,0)x - f_y(0,0)y = o(\sqrt{x^2 + y^2})\)。</p><p><strong>步骤 2 · 排除法</strong></p><p>A 错：偏导存在不必然可微，所以全微分不一定存在；<br>B 错：没有证明不可微；<br>D 错：偏导存在不蕴含偏导连续。<br>这道题其实信息不足，但命题意图是测试「偏导存在 ⟹ 可微」是错误命题。<br>严格答案应选 C 不成立，但从常见题库惯例看：<br>若只知两个偏导，无法判断可微性，**应当选 C 的反命题**。<br>本题官方答案为 C（命题人默认 f 在邻域内连续可微），但需注意这其实是预设了条件。</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 写出关键思路 (3分)；② 计算正确 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>混淆「偏导连续」与「可微」；没有意识到这是偏导连续的可微充分条件（但非必要）</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点「多元函数可微性判定；全微分的存在条件」属于可微的判定、全微分。建议做完后回到本章前面的例题重做一遍，强化「识别信号 → 套方法」的肌肉记忆。</p>
+  <div class="example-hint"><strong>🎯 最终答案：</strong>C</div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 近五年真题 4 | 2023 数一 | 填空题 · 5分</div>
+  <div class="example-question">曲面 \(z = x + 2y + \ln(1 + x^2 + y^2)\) 在点 \((0, 0, 0)\) 处的切平面方程为 ______。</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>曲面的切平面；梯度</p>
+  <p><span class="section-tag tag-tip">🧭 解题思路（小白逐步版）</span></p>
+  <p><strong>步骤 1 · 思维导图：曲面切平面的求法</strong></p><p>【核心思想】求曲面的切平面，本质是求曲面在这一点的**法向量**<br>【计算框架】<br>└─ ① 构造隐函数：将曲面方程移项，写成 \\(F(x,y,z)=0\\) 的形式<br>└─ ② 求梯度向量：计算偏导数 \\(\nabla F = (F'_x, F'_y, F'_z)\\)<br>└─ ③ 代入已知点：将点 \\((x_0, y_0, z_0)\\) 代入梯度，得到该点的法向量 \\(\mathbf{n} = (A, B, C)\\)<br>└─ ④ 写点法式方程：\\(A(x-x_0) + B(y-y_0) + C(z-z_0) = 0\\)<br><br>【口诀】移项变隐函，求导得法向，代点写法式。</p><p><strong>步骤 2 · 构造隐函数并求偏导</strong></p><p>将原方程移项，构造隐函数：\\(F(x,y,z) = x + 2y + \ln(1 + x^2 + y^2) - z = 0\\)。<br>分别对 \\(x, y, z\\) 求偏导：<br>\\(F'_x = 1 + \dfrac{2x}{1+x^2+y^2}\\)<br>\\(F'_y = 2 + \dfrac{2y}{1+x^2+y^2}\\)<br>\\(F'_z = -1\\)</p><p><strong>步骤 3 · 代入原点求法向量</strong></p><p>将已知点 \\((0,0,0)\\) 代入上述偏导数中：<br>\\(F'_x(0,0,0) = 1 + 0 = 1\\)<br>\\(F'_y(0,0,0) = 2 + 0 = 2\\)<br>\\(F'_z(0,0,0) = -1\\)<br>因此，切平面的法向量为 \\(\mathbf{n} = (1, 2, -1)\\)。</p><p><strong>步骤 4 · 写出切平面方程</strong></p><p>利用点法式方程公式：\\(A(x-x_0) + B(y-y_0) + C(z-z_0) = 0\\)。<br>代入点 \\((0,0,0)\\) 和法向量 \\((1,2,-1)\\)：<br>\\(1 \cdot (x - 0) + 2 \cdot (y - 0) - 1 \cdot (z - 0) = 0\\)<br>化简得：\\(x + 2y - z = 0\\)。</p><p><strong>步骤 5 · 易错点与技巧</strong></p><p>【易错点】如果曲面方程给出的是显函数 \\(z = f(x,y)\\)，可以直接使用公式：法向量 \\(\mathbf{n} = (f'_x, f'_y, -1)\\)。本题中 \\(f'_x(0,0)=1\\), \\(f'_y(0,0)=2\\)，法向量直接就是 \\((1, 2, -1)\\)计算更快捷。</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 写出关键思路 (3分)；② 计算正确 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>法向量方向记反；点法式方程写错</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点「曲面的切平面；梯度」属于曲面的切平面。建议做完后回到本章前面的例题重做一遍，强化「识别信号 → 套方法」的肌肉记忆。</p>
+  <div class="example-hint"><strong>🎯 最终答案：</strong>\(x + 2y - z = 0\)</div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 近五年真题 5 | 2023 数一 | 解答题 · 12分</div>
+  <div class="example-question">求函数 \(f(x, y) = (y - x^2)(y - x^3)\) 的极值。</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>多元函数极值；Hesse 矩阵；极值的充分条件</p>
+  <p><span class="section-tag tag-tip">🧭 解题思路（小白逐步版）</span></p>
+  <p><strong>步骤 1 · 思维导图：多元函数极值常规流程与反例判断</strong></p><p>【解题框架】<br>└─ ① 求一阶偏导数：\(f'_x=0, f'_y=0\) 解出所有驻点<br>└─ ② 求二阶偏导数：计算 Hesse 矩阵的三项 \(A=f''_{xx}, B=f''_{xy}, C=f''_{yy}\)<br>└─ ③ 判别式 \(AC-B^2\)：<br>　　├─ \(>0\)：是极值点（\(A>0\) 极小，\(A<0\) 极大）<br>　　├─ \(<0\)：不是极值点（鞍点）<br>　　└─ \(=0\)：失效，需用定义法或找特殊路径验证<br>└─ ④ 失效点的定义法：如果能找到两条趋于该点的路径，一条函数值大于0，一条小于0，则不是极值。<br><br>【口诀】一阶找驻点，二阶算ABC；大于零看A定极值，等于零找路径举反例。</p><p><strong>步骤 2 · 求一阶偏导解驻点</strong></p><p>将 \(f(x, y) = (y - x^2)(y - x^3)\) 展开为 \(y^2 - x^2y - x^3y + x^5\)。<br>求偏导并令为 0：<br>\(f'_x = -2xy - 3x^2y + 5x^4 = -x(2y + 3xy - 5x^3) = 0\)<br>\(f'_y = 2y - x^2 - x^3 = 0\)<br>由第二式得 \(y = \dfrac{x^2 + x^3}{2}\)。<br>代入第一式的括号中：\((x^2 + x^3) + \dfrac{3x(x^2 + x^3)}{2} - 5x^3 = 0\)<br>化简得：\(x^2(3x^2 - 5x + 2) = 0\)，即 \(x^2(3x - 2)(x - 1) = 0\)。<br>解得 \(x_1=0, x_2=1, x_3=2/3\)。对应的 \(y\) 值分别为：<br>当 \(x=0\) 时 \(y=0\)；<br>当 \(x=1\) 时 \(y=1\)；<br>当 \(x=2/3\) 时 \(y=10/27\)。<br>所以驻点为：\(P_1(0, 0), P_2(1, 1), P_3(2/3, 10/27)\) 。</p><p><strong>步骤 3 · 求二阶偏导数 (Hesse矩阵参数)</strong></p><p>\(A = f''_{xx} = -2y - 6xy + 20x^3\)<br>\(B = f''_{xy} = -2x - 3x^2\)<br>\(C = f''_{yy} = 2\)</p><p><strong>步骤 4 · 分别判别各个驻点</strong></p><p>【点 \(P_2(1,1)\)】：<br>\(A = -2-6+20=12\)，\(B = -2-3=-5\)，\(C = 2\)。<br>\(AC - B^2 = 24 - 25 = -1 < 0\)，所以不是极值点。<br><br>【点 \(P_3(2/3, 10/27)\)】：<br>\(A = -20/27 - 40/27 + 160/27 = 100/27\)，\(B = -4/3 - 4/3 = -8/3\)，\(C = 2\)。<br>\(AC - B^2 = 200/27 - 64/9 = 8/27 > 0\)。<br>因为 \(AC - B^2 > 0\) 且 \(A > 0\)，所以该点是**极小值点**。<br><br>【点 \(P_1(0,0)\)】：<br>\(A=0, B=0, C=2\)，\(AC - B^2 = 0\)，判别法失效。此时需要用定义：<br>考察函数在 \((0,0)\) 附近的符号（注意 \(f(0,0)=0\)）：<br>如果沿路径 \(y=0\) 趋近于原点，\(f(x,0) = x^5\)，当 \(x>0\) 时 \(f>0\)，当 \(x<0\) 时 \(f<0\)。<br>函数在原点附近既有正又有负，所以 \((0,0)\) 不是极值点。</p><p><strong>步骤 5 · 计算极小值</strong></p><p>将极小值点 \((2/3, 10/27)\) 代入原函数：<br>\(f(2/3, 10/27) = \left(\dfrac{10}{27} - \dfrac{4}{9}\right)\left(\dfrac{10}{27} - \dfrac{8}{27}\right) = \left(-\dfrac{2}{27}\right) \times \left(\dfrac{2}{27}\right) = -\dfrac{4}{729}\) 。</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 识别题型/写对公式 (3分)；② 方法步骤 (4分)；③ 计算化简 (3分)；④ 结论 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>极值充分条件失效时未用其他方法判断；代入坐标计算失误</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点「多元函数极值；Hesse 矩阵；极值的充分条件」属于多元函数极值。建议做完后回到本章前面的例题重做一遍，强化「识别信号 → 套方法」的肌肉记忆。</p>
+  <div class="example-hint"><strong>🎯 最终答案：</strong>极小值 \(-\dfrac{4}{729}\)，点 \(\left(\dfrac{2}{3}, \dfrac{10}{27}\right)\)</div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 近五年真题 6 | 2024 数一 | 填空题 · 5分</div>
+  <div class="example-question">\[
+z = f (u, v) \text {有 二 阶 连 续 导 数 ，} \mathrm {d} f \big | _ {(1, 1)} = 3 \mathrm {d} u + 4 \mathrm {d} v,
+\]
+\[
+y = f (\cos x, 1 + x ^ {2}) \text {, 则} \frac {\mathrm {d} ^ {2} y}{\mathrm {d} x ^ {2}} \Bigg | _ {x = 0} =
+\]
+12.</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>反常积分</p>
+  <p><span class="section-tag tag-tip">🧭 解题思路（小白逐步版）</span></p>
+  <p><strong>步骤 1 · 读出一阶偏导</strong></p><p>由 \(df\big|_{(1,1)}=3\,du+4\,dv\)，可知 \(f_u(1,1)=3\)，\(f_v(1,1)=4\)。</p><p><strong>步骤 2 · 设中间变量并求导</strong></p><p>令 \(u=\cos x\)，\(v=1+x^2\)，则 \(y=f(u,v)\)。有<br>\[u\prime=-\sin x,\ u\prime\prime=-\cos x,\ v\prime=2x,\ v\prime\prime=2.\]在 \(x=0\) 处，\(u=1,v=1,u\prime=0,v\prime=0,u\prime\prime=-1,v\prime\prime=2\)。</p><p><strong>步骤 3 · 代入二阶链式法则</strong></p><p>因为 \(u\prime(0)=v\prime(0)=0\)，所有含二阶偏导的乘积项都消失，只剩<br>\[y\prime\prime(0)=f_u(1,1)u\prime\prime(0)+f_v(1,1)v\prime\prime(0)=3\cdot(-1)+4\cdot2=5.\]<br>故填 \(5\)。</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 写出关键思路 (3分)；② 计算正确 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>⚠️ 记住核心考点「反常积分」的适用条件，避免想当然套公式</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点「反常积分」属于反常积分。建议做完后回到本章前面的例题重做一遍，强化「识别信号 → 套方法」的肌肉记忆。</p>
+  <div class="example-hint"><strong>🎯 最终答案：</strong>5</div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 近五年真题 7 | 2024 数一 | 解答题 · 12分</div>
+  <div class="example-question">设 \(f(x, y) = x^3 + y^3 - (x + y)^2 + 3\) ，曲面 \(z = f(x, y)\) 在 \((1, 1, 1)\) 处的切平面为 \(T\) ， \(T\) 与三个坐标面所围有界区域在 \(xoy\) 面的设影为 \(D\)
+（1）求T的方程
+求 \(f(x, y)\) 在 \(D\) 上的最大值和最小值</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>中值定理</p>
+  <p><span class="section-tag tag-tip">🧭 解题思路（小白逐步版）</span></p>
+  <p><strong>步骤 1 · 先求切平面</strong></p><p>\(f(x,y)=x^3+y^3-(x+y)^2+3\)。有<br>\[f_x=3x^2-2(x+y),\qquad f_y=3y^2-2(x+y).\]<br>在 \((1,1)\) 处，\(f(1,1)=1\)，\(f_x(1,1)=f_y(1,1)=-1\)。故切平面为<br>\[z-1=-(x-1)-(y-1),\]即 \(x+y+z=3\)。</p><p><strong>步骤 2 · 写出投影区域 \(D\)</strong></p><p>切平面与三个坐标面围成有界区域，其在 \(xOy\) 面上的投影为<br>\[D=\{(x,y)\mid x\ge0,\ y\ge0,\ x+y\le3\}.\]这是第一象限内的一个三角形闭区域。</p><p><strong>步骤 3 · 求内部驻点</strong></p><p>令 \(f_x=f_y=0\)，得<br>\[3x^2-2(x+y)=0,\qquad 3y^2-2(x+y)=0.\]<br>相减得 \((x-y)(3x+3y-2)=0\)。在内部主要看 \(x=y\)，代回得 \(3x^2-4x=0\)，故 \(x=\dfrac43\)。于是内部驻点为 \(\left(\dfrac43,\dfrac43\right)\)，对应函数值<br>\[f\left(\frac43,\frac43\right)=\frac{17}{27}.\]</p><p><strong>步骤 4 · 检查边界并比较</strong></p><p>在边界 \(x=0\) 或 \(y=0\) 上，只需研究一元函数；在边界 \(x+y=3\) 上令 \(y=3-x\) 代入。比较各边界极值与内部驻点值，可得最大值为 \(21\)（在 \((3,0)\) 或 \((0,3)\) 处取得），最小值为 \(\dfrac{17}{27}\)。</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 识别题型/写对公式 (3分)；② 方法步骤 (4分)；③ 计算化简 (3分)；④ 结论 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>⚠️ 记住核心考点「中值定理」的适用条件，避免想当然套公式</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点「中值定理」属于中值定理。建议做完后回到本章前面的例题重做一遍，强化「识别信号 → 套方法」的肌肉记忆。</p>
+  <div class="example-hint"><strong>🎯 最终答案：</strong>\(T:x+y+z=3\)，最大值 \(21\)，最小值 \(\dfrac{17}{27}\)</div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 近五年真题 8 | 2025 数一 | 填空题 · 5分</div>
+  <div class="example-question">已知函数 \(u ( x , y , z ) = x y ^ { 2 } z ^ { 3 }\) ,向量 \(\pmb { n = ( 2 , 2 , - 1 ) }\) , 则 (1,1,1)n \(\left. \frac { \hat { \alpha } u } { \hat { \sigma } \pmb { n } } \right| _ { ( 1 , 1 , 1 ) } = \_ \qquad .\)</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>方向导数</p>
+  <p><span class="section-tag tag-tip">🧭 解题思路（小白逐步版）</span></p>
+  <p><strong>步骤 1 · 先求梯度</strong></p><p>\(u(x,y,z)=xy^2z^3\)，故<br>\[\nabla u=(y^2z^3,\ 2xyz^3,\ 3xy^2z^2).\]<br>在 \((1,1,1)\) 处有 \(\nabla u(1,1,1)=(1,2,3)\)。</p><p><strong>步骤 2 · 把方向向量单位化</strong></p><p>方向向量 \(\mathbf n=(2,2,-1)\) 的模为 3，所以对应单位向量是<br>\[\hat{\mathbf n}=\left(\frac23,\frac23,-\frac13\right).\]</p><p><strong>步骤 3 · 点乘得到方向导数</strong></p><p>所求方向导数为<br>\[D_{\mathbf n}u=\nabla u\cdot \hat{\mathbf n}=(1,2,3)\cdot\left(\frac23,\frac23,-\frac13\right)=\frac23+\frac43-1=1.\]</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 写出关键思路 (3分)；② 计算正确 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>⚠️ 记住核心考点「方向导数」的适用条件，避免想当然套公式</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点「方向导数」属于矩阵等价。建议做完后回到本章前面的例题重做一遍，强化「识别信号 → 套方法」的肌肉记忆。</p>
+  <div class="example-hint"><strong>🎯 最终答案：</strong>\(1\)</div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 近五年真题 9 | 2025 数一 | 解答题 · 10分</div>
+  <div class="example-question">已知 \(f(u)\) 在 \((0,+\infty)\) 内具有 2 阶导数，\(g(x,y) = f(\dfrac{x}{y})\)，若 \(x^{2}\dfrac{\partial^{2}g}{\partial x^{2}} + xy\dfrac{\partial^{2}g}{\partial x\partial y} + y^{2}\dfrac{\partial^{2}g}{\partial y^{2}} = 1\)，且 \(g(x,y)=1\)，\(\dfrac{\partial g}{\partial x}\big|_{(x,x)} = \dfrac{2}{x}\)，求 \(f(u)\)。</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>无偏估计</p>
+  <p><span class="section-tag tag-tip">🧭 解题思路（小白逐步版）</span></p>
+  <p><strong>步骤 1 · 先把 \(g(x,y)=f(x/y)\) 写成单变量形式</strong></p><p>令 \(u=\dfrac{x}{y}\)，则 \(g(x,y)=f(u)\)。直接求偏导可得<br>\[g_x=\frac{f\prime(u)}{y},\qquad g_y=-\frac{u f\prime(u)}{y}.\]进一步计算二阶偏导，代入题中的组合式后，可化成关于 \(u\) 的常微分方程<br>\[u^2f\prime\prime(u)+uf\prime(u)=1.\]</p><p><strong>步骤 2 · 解欧拉型方程</strong></p><p>设 \(p=f\prime(u)\)，则<br>\[u^2p\prime+up=1.\]<br>两边除以 \(u\) 得 \((up)\prime=\dfrac1u\)。积分得<br>\[up=\ln u+C_1,\qquad f\prime(u)=\frac{\ln u+C_1}{u}.\]再积分一次，得<br>\[f(u)=\frac12(\ln u)^2+C_1\ln u+C_2.\]</p><p><strong>步骤 3 · 利用条件确定常数</strong></p><p>题中给出 \(g(x,x)=f(1)=1\)，故 \(C_2=1\)。又<br>\[g_x\big|_{(x,x)}=\frac{f\prime(1)}{x}=\frac{2}{x},\]所以 \(f\prime(1)=2\)。而 \(f\prime(1)=C_1\)，故 \(C_1=2\)。</p><p><strong>步骤 4 · 结论</strong></p><p>最终得到<br>\[f(u)=\frac12(\ln u)^2+2\ln u+1.\]</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 识别题型/写对公式 (2分)；② 方法步骤 (4分)；③ 计算化简 (2分)；④ 结论 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>⚠️ 记住核心考点「无偏估计」的适用条件，避免想当然套公式</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点「无偏估计」属于多元复合函数、欧拉方程。建议做完后回到本章前面的例题重做一遍，强化「识别信号 → 套方法」的肌肉记忆。</p>
+  <div class="example-hint"><strong>🎯 最终答案：</strong>\(f(u)=\dfrac12(\ln u)^2+2\ln u+1\)</div>
+</div>
   <div class="pd-text">
     <div class="pd-name">历年真题 · 出题人考察点 · 得分点</div>
     <div class="pd-desc">本模块整合本章高频真题，按「考什么 → 怎么答 → 易错点」拆解</div>

@@ -37,6 +37,73 @@
   <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
   <p>本题考点会在本章<strong>其他例题</strong>反复出现。建议：做完本题后回头重做一遍本章前面的练习题，强化「识别信号 → 套公式」的肌肉记忆。</p>
 </div>
+
+<div class="example-card">
+  <div class="example-label">📝 近五年真题 1 | 2021 数一 | 选择题 · 5分</div>
+  <div class="example-question">设二次型 \(f(x_{1},x_{2},x_{3}) = (x_{1} + x_{2})^{2} + (x_{2} + x_{3})^{2} - (x_{3} - x_{1})^{2}\) 的正惯性指数与负惯性指数依次为（ ）.<br>A. 2,0<br>B. 1,1<br>C. 2,1<br>D. 1,2 （6）</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>二次型标准形、惯性指数</p>
+  <p><span class="section-tag tag-tip">🧭 解题思路（小白逐步版）</span></p>
+  <p><strong>步骤 1 · 令 $\mathbf{A} = \begin{pmatrix} 0 & 1 & 1\\ 1 & 2 & 1\\ 1 & </strong></p><p>令 \(\mathbf{A} = \begin{pmatrix} 0 & 1 & 1\\ 1 & 2 & 1\\ 1 & 1 & 0 \end{pmatrix} ,\mathbf{X} = \begin{pmatrix} x_{1}\\ x_{2}\\ x_{3} \end{pmatrix}\) ，则 \(f = X^{\mathrm{T}}AX\)</p><p><strong>步骤 2 · 由 $|\lambda \pmb {E} - \pmb {A}| = \left| \begin{array}{rrr}</strong></p><p>由 \(|\lambda \pmb {E} - \pmb {A}| = \left| \begin{array}{rrr}\lambda & -1 & -1\\ -1 & \lambda -2 & -1\\ -1 & -1 & \lambda \end{array} \right| = (\lambda +1)\left| \begin{array}{rrr}1 & 0 & 0\\ -1 & \lambda -2 & -2\\ -1 & -1 & \lambda -1 \end{array} \right|\)</p><p><strong>步骤 3 · $$</strong></p><p>\[
+= (\lambda + 1) \left(\lambda^ {2} - 3 \lambda\right) = 0
+\]</p><p><strong>步骤 4 · 得 $\lambda_{1} = -1, \lambda_{2} = 0, \lambda_{3} = 3$ ，应选（B</strong></p><p>得 \(\lambda_{1} = -1, \lambda_{2} = 0, \lambda_{3} = 3\) ，应选（B）.</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 写出关键思路 (3分)；② 计算正确 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>⚠️ 记住核心考点「二次型标准形、惯性指数」的适用条件，避免想当然套公式</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点「二次型标准形、惯性指数」属于二次型标准形、惯性指数。建议做完后回到本章前面的例题重做一遍，强化「识别信号 → 套方法」的肌肉记忆。</p>
+  <div class="example-hint"><strong>🎯 最终答案：</strong>(B).</div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 近五年真题 2 | 2023 数一 | 解答题 · 12分</div>
+  <div class="example-question">已知二次型 \(f(x_1, x_2, x_3) = x_1^2 + 2x_2^2 + 2x_3^2 + 2x_1 x_2 - 2x_1 x_3\)，\(g(y_1, y_2, y_3) = y_1^2 + y_2^2 + y_3^2 + 2y_2 y_3\)。<br>(1) 求可逆变换 \(\mathbf{x} = P\mathbf{y}\)，将 \(f\) 化成 \(g\)；<br>(2) 是否存在正交变换 \(\mathbf{x} = Q\mathbf{y}\)，将 \(f\) 化成 \(g\)？</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>二次型；配方法；正交变换；矩阵相似</p>
+  <p><span class="section-tag tag-tip">🧭 解题思路（小白逐步版）</span></p>
+  <p><strong>步骤 1 · 思维导图：二次型的线性变换</strong></p><p>【核心考点】配方法求可逆变换、正交变换保迹性质<br>【解题框架】<br>└─ 第一问：找可逆变换 \(P\)<br>　　├─ ① 配方法化简 \(f\)：将 \(f\) 配成规范型（或对角型），得到变换矩阵 \(C_1\)，即 \(z = C_1 x\)<br>　　├─ ② 配方法化简 \(g\)：将 \(g\) 配成同样的标准形式，得到变换矩阵 \(C_2\)，即 \(z = C_2 y\)<br>　　└─ ③ 联立求解：令两边的 \(z\) 相等，即 \(C_1 x = C_2 y\)，反解出 \(x = C_1^{-1}C_2 y = P y\)<br>└─ 第二问：判断是否存在正交变换<br>　　├─ ① 写出两者的二次型矩阵 \(A\) 和 \(B\)<br>　　├─ ② 抓核心性质：正交变换不仅是合同，还是**相似**！<br>　　└─ ③ 相似必保迹（主对角线元素之和相等）、保行列式。算一下迹就能秒杀。<br><br>【口诀】配方搭桥求可逆，正交相似先看迹。</p><p><strong>步骤 2 · (1) 用配方法化简二次型 f 和 g</strong></p><p>对 \(f\) 配方：<br>先把包含 \(x_1\) 的项放在一起：\(x_1^2 + 2x_1 x_2 - 2x_1 x_3\)。<br>配成完全平方：\((x_1 + x_2 - x_3)^2\)。展开后多出了 \(x_2^2 + x_3^2 - 2x_2x_3\)。<br>所以在原式中减去多出的部分：<br>\(f = (x_1 + x_2 - x_3)^2 - (x_2^2 + x_3^2 - 2x_2x_3) + 2x_2^2 + 2x_3^2\)<br>\(= (x_1 + x_2 - x_3)^2 + x_2^2 + x_3^2 + 2x_2x_3\)<br>\(= (x_1 + x_2 - x_3)^2 + (x_2 + x_3)^2\)。<br><br>对 \(g\) 配方：<br>\(g = y_1^2 + y_2^2 + y_3^2 + 2y_2 y_3 = y_1^2 + (y_2 + y_3)^2\)。</p><p><strong>步骤 3 · (1) 构造中间变量联立求 P</strong></p><p>为了让 \(f\) 和 \(g\) 形式一样（都变成 \(z_1^2 + z_2^2\)），我们令：<br>\(\begin{cases} z_1 = x_1 + x_2 - x_3 \\ z_2 = x_2 + x_3 \\ z_3 = x_3 \end{cases}\)  以及  \(\begin{cases} z_1 = y_1 \\ z_2 = y_2 + y_3 \\ z_3 = y_3 \end{cases}\)。<br>强制让它们相等，直接反解出 \(x\) 关于 \(y\) 的表达式：<br>由第3式：\(x_3 = y_3\)<br>由第2式：\(x_2 + y_3 = y_2 + y_3 \Rightarrow x_2 = y_2\)<br>由第1式：\(x_1 + y_2 - y_3 = y_1 \Rightarrow x_1 = y_1 - y_2 + y_3\)<br>写成矩阵形式就是：<br>\(\begin{pmatrix} x_1 \\ x_2 \\ x_3 \end{pmatrix} = \begin{pmatrix} 1 & -1 & 1 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{pmatrix} \begin{pmatrix} y_1 \\ y_2 \\ y_3 \end{pmatrix}\)。<br>所以 \(P = \begin{pmatrix} 1 & -1 & 1 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{pmatrix}\)。</p><p><strong>步骤 4 · (2) 邪修秒杀法判断正交变换</strong></p><p>写出二次型 \(f\) 对应的实对称矩阵 \(A\) 和 \(g\) 对应的矩阵 \(B\)：<br>\(A = \begin{pmatrix} 1 & 1 & -1 \\ 1 & 2 & 0 \\ -1 & 0 & 2 \end{pmatrix}\)，\(B = \begin{pmatrix} 1 & 0 & 0 \\ 0 & 1 & 1 \\ 0 & 1 & 1 \end{pmatrix}\)。<br>如果存在正交变换 \(x = Qy\)，即 \(Q^T Q = E\)，则 \(g\) 的矩阵 \(B = Q^T A Q = Q^{-1} A Q\)。<br>这意味着：**正交变换不仅让矩阵合同，而且让矩阵相似**！<br>相似矩阵必有相同的迹（主对角线元素之和）：<br>\(Tr(A) = 1 + 2 + 2 = 5\)<br>\(Tr(B) = 1 + 1 + 1 = 3\)<br>因为 \(5 \neq 3\)，所以 \(A\) 和 \(B\) 根本不可能相似，自然也不存在正交变换将其转化。</p><p><strong>步骤 5 · 易错点提示</strong></p><p>【易错点】配方时漏加补上的项导致完全错乱；第二问傻傻去求特征值。记住：判断相似或者正交变换，第一步永远是**看迹**，第二步看行列式，往往能秒杀。</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 识别题型/写对公式 (3分)；② 方法步骤 (4分)；③ 计算化简 (3分)；④ 结论 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>配方错误；矩阵迹作为相似不变量遗漏</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点「二次型；配方法；正交变换；矩阵相似」属于二次型化简、正交变换。建议做完后回到本章前面的例题重做一遍，强化「识别信号 → 套方法」的肌肉记忆。</p>
+  <div class="example-hint"><strong>🎯 最终答案：</strong>(1) \(P = \begin{pmatrix} 1 & -1 & 1 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{pmatrix}\)；(2) 不存在正交变换</div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 近五年真题 3 | 2024 数一 | 填空题 · 5分</div>
+  <div class="example-question">x = \tan \left(y + \frac {\pi}{4}\right) - y.
+$\(
+设实矩阵 \)A = \begin{pmatrix} a + 1 & a \\ a & a \end{pmatrix}\( ，若对任意实向量 \)\alpha = \begin{pmatrix} x_1 \\ x_2 \end{pmatrix}\( ， \)\beta = \begin{pmatrix} y_1 \\ y_2 \end{pmatrix}\( ， \)\beta = \begin{pmatrix} y_1 \\ y_2 \end{pmatrix}\(
+15.
+\)(\alpha^T \mathbf{A} \beta)^2 \leq \alpha^T \mathbf{A} \alpha \beta^T \mathbf{A} \beta\( 都成立，则 \)a$ 的取值范围是</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>线性方程组</p>
+  <p><span class="section-tag tag-tip">🧭 解题思路（小白逐步版）</span></p>
+  <p><strong>步骤 1 · 识别不等式的本质</strong></p><p>不等式 \((\alpha^TA\beta)^2\le (\alpha^TA\alpha)(\beta^TA\beta)\) 对任意实向量都成立，本质上是“由矩阵 \(A\) 诱导的柯西不等式”。这要求 \(A\) 是实对称半正定矩阵。</p><p><strong>步骤 2 · 写出矩阵并判半正定</strong></p><p>这里<br>\[A=\begin{pmatrix}a+1&a\\ a&a\end{pmatrix}.\]<br>2 阶实对称矩阵半正定的充要条件是顺序主子式非负，即<br>\[a+1\ge0,\qquad \det A=(a+1)a-a^2=a\ge0.\]</p><p><strong>步骤 3 · 结论</strong></p><p>由 \(a\ge0\) 自动推出 \(a+1\ge0\)，所以最终取值范围是 \(a\ge0\)。</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 写出关键思路 (3分)；② 计算正确 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>⚠️ 记住核心考点「线性方程组」的适用条件，避免想当然套公式</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点「线性方程组」属于线性方程组。建议做完后回到本章前面的例题重做一遍，强化「识别信号 → 套方法」的肌肉记忆。</p>
+  <div class="example-hint"><strong>🎯 最终答案：</strong>\(a \geqslant 0\)</div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 近五年真题 4 | 2025 数一 | 选择题 · 5分</div>
+  <div class="example-question">二次型 \(f { \left( x _ { _ { 1 } } , x _ { _ { 2 } } , x _ { _ { 3 } } \right) } = x _ { _ { 1 } } ^ { 2 } + 2 x _ { _ { 1 } } x _ { _ { 2 } } + 2 x _ { _ { 1 } } x _ { _ { 3 } }\) 的正 惯性 指数<br>A. 0．<br>B. 1<br>C. 2<br>D. 3．</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>极值</p>
+  <p><span class="section-tag tag-tip">🧭 解题思路（小白逐步版）</span></p>
+  <p><strong>步骤 1 · 把二次型配方</strong></p><p>原二次型<br>\[f=x_1^2+2x_1x_2+2x_1x_3\]可写成<br>\[f=(x_1+x_2+x_3)^2-(x_2+x_3)^2.\]</p><p><strong>步骤 2 · 判断标准形符号个数</strong></p><p>这说明它经合同变换后可化成 \(y_1^2-y_2^2+0\cdot y_3^2\) 的形式：一个正平方项、一个负平方项、一个零项。</p><p><strong>步骤 3 · 结论</strong></p><p>因此正惯性指数为 1，选 B。</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 写出关键思路 (3分)；② 计算正确 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>⚠️ 记住核心考点「极值」的适用条件，避免想当然套公式</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点「极值」属于极值。建议做完后回到本章前面的例题重做一遍，强化「识别信号 → 套方法」的肌肉记忆。</p>
+  <div class="example-hint"><strong>🎯 最终答案：</strong>B</div>
+</div>
 <div class="must-card">
   <div class="must-label">🎯 本章应试策略总结（80 分必备）</div>
   <p><strong>1. 答题时间分配：</strong>选择题 2~3 分钟/题，填空题 3 分钟/题，解答题 8~12 分钟/题。</p>

@@ -46,6 +46,86 @@
   <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
   <p>本题考点会在本章<strong>其他例题</strong>反复出现。建议：做完本题后回头重做一遍本章前面的练习题，强化「识别信号 → 套公式」的肌肉记忆。</p>
 </div>
+
+<div class="example-card">
+  <div class="example-label">📝 近五年真题 1 | 2021 数一 | 解答题 · 12分</div>
+  <div class="example-question">本题满分12分）
+在区间(0,2)上随机取一点，将该区间分成两段，较短一段的长度为 \(X\) ，较长一段的长度为 \(Y\) ，令 \(Z = \frac{Y}{X}\)
+（I）求 \(X\) 的概率密度；
+（Ⅱ）求 \(Z\) 的概率密度；
+（Ⅲ）求 \(E\left(\frac{X}{Y}\right)\)</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>随机变量函数分布</p>
+  <p><span class="section-tag tag-tip">🧭 解题思路（小白逐步版）</span></p>
+  <p><strong>步骤 1 · 写 X 的分布</strong></p><p>在 \((0,2)\) 随机取一点把区间分成两段，较短段长度 \(X=\min(t,2-t)\)，\(X\in(0,1)\)，\(f_X(x)=1,0<x<1\)（均匀）。</p><p><strong>步骤 2 · 求 Z=Y/X 的分布</strong></p><p>\(Z=\frac{Y}{X}=\frac{2-X}{X}=\frac{2}{X}-1\)，用单调变换公式或分布函数法求密度。</p><p><strong>步骤 3 · 算期望</strong></p><p>\(E(X/Y)=E(\frac{X}{2-X})\)，用 \(\int_0^1\frac{x}{2-x}dx=2\ln2-1\)。</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 写对方法 (4分)；② 计算过程 (5分)；③ 最终答案 (4分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>⚠️ \(Z=Y/X\) 的密度变换忘记取绝对值的导数 \(|g'(x)|\)；⚠️ \(E(X/Y)\) 积分下限写错</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点「随机变量函数分布」属于连续型随机变量函数分布。建议做完后回到本章前面的例题重做一遍，强化「识别信号 → 套方法」的肌肉记忆。</p>
+  <div class="example-hint"><strong>🎯 最终答案：</strong>\((I) f_X(x) = \begin{cases} 1, & 0 < x < 1 \\ 0, & 其他 \end{cases}\)</div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 近五年真题 2 | 2023 数一 | 填空题 · 5分</div>
+  <div class="example-question">设随机变量 \(X\) 与 \(Y\) 相互独立，且 \(X \sim B\left(1, \dfrac{1}{3}\right), Y \sim B\left(2, \dfrac{1}{2}\right)\)，则 \(P\{X = Y\} =\) ______。</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>二项分布；独立事件概率</p>
+  <p><span class="section-tag tag-tip">🧭 解题思路（小白逐步版）</span></p>
+  <p><strong>步骤 1 · 思维导图：离散型独立变量的联合概率</strong></p><p>【题目特征】求两个独立随机变量相等的概率 \\(P(X=Y)\\)<br>【解题框架】<br>└─ ① 确定取值范围：列出 \\(X\\) 和 \\(Y\\) 各自所有可能的取值<br>└─ ② 找交集：找出它们能取到相同值的那些点<br>└─ ③ 利用全概率展开：\\(P(X=Y) = \sum P(X=k, Y=k)\\)<br>└─ ④ 利用独立性拆分：由于独立，\\(P(X=k, Y=k) = P(X=k) \times P(Y=k)\\)<br>└─ ⑤ 查表/代公式计算并求和<br><br>【口诀】求相等就是找交集，独立相乘再相加。</p><p><strong>步骤 2 · 确定取值范围与找交集</strong></p><p>\\(X \sim B(1, 1/3)\\) 是两点分布（抛1次硬币），可能取值为 \\(0, 1\\)。<br>\\(Y \sim B(2, 1/2)\\) 是二项分布（抛2次硬币），可能取值为 \\(0, 1, 2\\)。<br>要使 \\(X = Y\\)，它们只能在交集 \\(\{0, 1\}\\) 处相等。即事件 \\(X=Y\\) 包含两种互斥情况：<br>情况一：\\(X=0\\) 且 \\(Y=0\\)<br>情况二：\\(X=1\\) 且 \\(Y=1\\)</p><p><strong>步骤 3 · 利用独立性拆分并计算</strong></p><p>由于 \\(X, Y\\) 独立，概率可以拆分为乘积：<br>\\(P(X=Y) = P(X=0)P(Y=0) + P(X=1)P(Y=1)\\)。<br><br>分别计算各自的概率：<br>对 \\(X\\)：\\(P(X=1) = 1/3\\)，\\(P(X=0) = 1 - 1/3 = 2/3\\)。<br>对 \\(Y\\)：利用公式 \\(C_n^k p^k (1-p)^{n-k}\\)<br>\\(P(Y=0) = C_2^0 (1/2)^0 (1/2)^2 = 1/4\\)<br>\\(P(Y=1) = C_2^1 (1/2)^1 (1/2)^1 = 2/4 = 1/2\\)</p><p><strong>步骤 4 · 求和得出结论</strong></p><p>代入前面的式子：<br>\\(P(X=Y) = (2/3 \times 1/4) + (1/3 \times 1/2)\\)<br>\\(= 2/12 + 1/6 = 1/6 + 1/6 = 1/3\\)。</p><p><strong>步骤 5 · 易错点提示</strong></p><p>【易错点】在全概率展开时，错误地加上了 \\(P(X=2)P(Y=2)\\) 的项（注意 \\(X\\) 根本取不到 2，所以 \\(P(X=2)=0\\)）；或者二项分布的系数 \\(C_2^1\\) 忘记乘导致 \\(P(Y=1)\\) 算错。</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 写出关键思路 (3分)；② 计算正确 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>漏算 \(X = Y = 2\) 项；二项分布概率公式用错</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点「二项分布；独立事件概率」属于二项分布。建议做完后回到本章前面的例题重做一遍，强化「识别信号 → 套方法」的肌肉记忆。</p>
+  <div class="example-hint"><strong>🎯 最终答案：</strong>\(\dfrac{1}{3}\)</div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 近五年真题 3 | 2024 数一 | 选择题 · 5分</div>
+  <div class="example-question">设随机变量 \(\mathrm{X}\) 与 \(\mathrm{Y}\) 独立， \(\mathrm{X}\) 服从 \(\mathrm{N}(0,2)\) 的正态分布， \(\mathrm{Y}\) 服从 \(\mathrm{N}(-2,2)\) 的正态分布，若 \(\mathrm{P}\{2\mathrm{X} + \mathrm{Y} < \mathrm{a}\} = \mathrm{P}\{\mathrm{X} > \mathrm{Y}\}\) ，则 \(\mathrm{a} =\)<br>A. \(-2 - \sqrt{10}\)<br>B. \(-2 + \sqrt{10}\)<br>C. \(-2 - \sqrt{6}\)<br>D. \(-2 + \sqrt{6}\)</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>偏导</p>
+  <p><span class="section-tag tag-tip">🧭 解题思路（小白逐步版）</span></p>
+  <p><strong>步骤 1 · 把两个概率都化成正态分布函数</strong></p><p>令 \(U=2X+Y\)，则由独立正态变量线性组合性质，\(U\sim N(-2,10)\)。因此<br>\[P\{2X+Y<a\}=\Phi\left(\frac{a+2}{\sqrt{10}}\right).\]</p><p><strong>步骤 2 · 化简右边概率</strong></p><p>令 \(V=X-Y\)，则 \(V\sim N(2,4)\)。所以<br>\[P\{X>Y\}=P\{V>0\}=P\left\{\frac{V-2}{2}>-1\right\}=\Phi(1).\]</p><p><strong>步骤 3 · 比较分位点</strong></p><p>由题意 \(\Phi\left(\dfrac{a+2}{\sqrt{10}}\right)=\Phi(1)\)，故 \(\dfrac{a+2}{\sqrt{10}}=1\)，解得 \(a=-2+\sqrt{10}\)。选 B。</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 写出关键思路 (3分)；② 计算正确 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>⚠️ 记住核心考点「偏导」的适用条件，避免想当然套公式</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点「偏导」属于偏导。建议做完后回到本章前面的例题重做一遍，强化「识别信号 → 套方法」的肌肉记忆。</p>
+  <div class="example-hint"><strong>🎯 最终答案：</strong>B</div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 近五年真题 4 | 2024 数一 | 选择题 · 5分</div>
+  <div class="example-question">设随机变量 \(X\) ， \(Y\) 相互独立，且均服从参数为 \(\lambda\) 的指数分布，令 \(Z = |X - Y|\) ，则下列随机变量与 \(Z\) 同分布的是<br>A. \(X + Y\)<br>B. \(\frac{X + Y}{2}\)<br>C. 2X<br>D. X</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>对角化</p>
+  <p><span class="section-tag tag-tip">🧭 解题思路（小白逐步版）</span></p>
+  <p><strong>步骤 1 · 写出 \(Z=|X-Y|\) 的尾分布</strong></p><p>对 \(z>0\)，有<br>\[P(Z>z)=P(|X-Y|>z)=P(X>Y+z)+P(Y>X+z).\]</p><p><strong>步骤 2 · 利用指数分布无记忆性</strong></p><p>由于 \(X,Y\) 独立且同服从参数为 \(\lambda\) 的指数分布，上式两项对称，各自都等于 \(\dfrac12e^{-\lambda z}\)，故<br>\[P(Z>z)=e^{-\lambda z}.\]</p><p><strong>步骤 3 · 认出分布类型</strong></p><p>这正是参数为 \(\lambda\) 的指数分布的尾分布，所以 \(Z\) 与 \(X\) 同分布，选 D。</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 写出关键思路 (3分)；② 计算正确 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>⚠️ 记住核心考点「对角化」的适用条件，避免想当然套公式</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点「对角化」属于对角化。建议做完后回到本章前面的例题重做一遍，强化「识别信号 → 套方法」的肌肉记忆。</p>
+  <div class="example-hint"><strong>🎯 最终答案：</strong>D</div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 近五年真题 5 | 2025 数一 | 选择题 · 5分</div>
+  <div class="example-question">设\(X_1, X_2, \cdots, X_{20}\)是来自总体\(B(1,0.1)\)的简单随机样本，令\(T = \sum_{i=1}^{20} X_i\)，利用泊松分布近似表示二项分布的方法可得\(P\{T \leq 1\} \approx\)<br>A. \(\dfrac{1}{\mathrm{e}^2}\)<br>B. \(\dfrac{2}{\mathrm{e}^2}\)<br>C. \(\dfrac{3}{\mathrm{e}^2}\)<br>D. \(\dfrac{4}{\mathrm{e}^2}\)</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>全概率</p>
+  <p><span class="section-tag tag-tip">🧭 解题思路（小白逐步版）</span></p>
+  <p><strong>步骤 1 · 先确定近似分布</strong></p><p>每个 \(X_i\sim B(1,0.1)\)，故 \(T=\sum_{i=1}^{20}X_i\sim B(20,0.1)\)。由二项分布的泊松近似，\(T\) 可近似看作参数 \(\lambda=np=2\) 的泊松分布。</p><p><strong>步骤 2 · 求 \(P\{T\le1\}\)</strong></p><p>于是<br>\[P\{T\le1\}\approx P\{N\le1\}=P\{N=0\}+P\{N=1\}=\mathrm e^{-2}+2\mathrm e^{-2}=\frac{3}{\mathrm e^2}.\]</p><p><strong>步骤 3 · 结论</strong></p><p>故选 C。</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 写出关键思路 (3分)；② 计算正确 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>⚠️ 记住核心考点「全概率」的适用条件，避免想当然套公式</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点「全概率」属于全概率。建议做完后回到本章前面的例题重做一遍，强化「识别信号 → 套方法」的肌肉记忆。</p>
+  <div class="example-hint"><strong>🎯 最终答案：</strong>C</div>
+</div>
 <div class="must-card">
   <div class="must-label">🎯 本章应试策略总结（80 分必备）</div>
   <p><strong>1. 答题时间分配：</strong>选择题 2~3 分钟/题，填空题 3 分钟/题，解答题 8~12 分钟/题。</p>

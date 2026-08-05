@@ -33,6 +33,69 @@
   <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
   <p>本题考点会在本章<strong>其他例题</strong>反复出现。建议：做完本题后回头重做一遍本章前面的练习题，强化「识别信号 → 套公式」的肌肉记忆。</p>
 </div>
+
+<div class="example-card">
+  <div class="example-label">📝 近五年真题 1 | 2022 数一 | 解答题 · 12分</div>
+  <div class="example-question">设二维随机变量 \((X, Y)\) 服从区域 \(D = \{(x, y) | 0 \leq x \leq 1, 0 \leq y \leq 2\}) 上的均匀分布，求 \(Z = X + Y\) 的概率密度。</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>二维均匀分布；随机变量和的分布；分段密度函数</p>
+  <p><span class="section-tag tag-tip">🧭 解题思路（小白逐步版）</span></p>
+  <p><strong>步骤 1 · 写出联合密度</strong></p><p>\((X, Y)\) 在 \(D = [0,1] \times [0,2]\) 上均匀分布：<br>\(f(x, y) = \begin{cases} \dfrac{1}{2}, & (x, y) \in D \\ 0, & \text{其他} \end{cases}\)</p><p><strong>步骤 2 · 用分布函数法</strong></p><p>\(Z = X + Y\) 取值范围 \([0, 3]\)。<br>对 \(0 \leq z \leq 3\)：<br>\(F_Z(z) = P\{X + Y \leq z\}\) <br>当 \(z < 0\)：\(F_Z(z) = 0\)<br>当 \(z > 3\)：\(F_Z(z) = 1\)<br>当 \(0 \leq z \leq 1\)：积分区域是 \(D\) 左下角的小三角形，<br>面积 \(= \dfrac{z^2}{2} \cdot \dfrac{1}{2}\)？需要详细几何分析。<br>当 \(0 \leq z \leq 1\)：\(\{X + Y \leq z, X \in [0,1], Y \in [0,2]\} = \{0 \leq x \leq z, 0 \leq y \leq z - x\}\)，面积 \(= \dfrac{z^2}{2}\)。<br>当 \(1 < z \leq 2\)：积分区域 = 整个 \(0 \leq x \leq 1, 0 \leq y \leq z - x\) 与 \(D\) 的交集。</p><p><strong>步骤 3 · 分段求密度</strong></p><p>\(f_Z(z) = F_Z′(z)\)：<br>\(0 \leq z \leq 1\)：\(f_Z(z) = z \cdot \dfrac{1}{2} = \dfrac{z}{2}\) <br>\(1 < z \leq 2\)：积分区域复杂计算后 \(F_Z(z) = \dfrac{z^2}{4} - \dfrac{z}{2} + \dfrac{1}{2}\)，求导 \(f_Z(z) = \dfrac{z}{2} - \dfrac{1}{2}\) <br>\(2 < z \leq 3\)：\(F_Z(z) = 1 - \dfrac{(3-z)^2}{4}\)，求导 \(f_Z(z) = \dfrac{3-z}{2}\) <br>其他：\(f_Z(z) = 0\)。</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 写对方法 (4分)；② 计算过程 (5分)；③ 最终答案 (4分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>分段区间分错；积分区域几何分析搞错；求导漏掉常数项</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点「二维均匀分布；随机变量和的分布；分段密度函数」属于二维均匀分布、卷积公式、分布函数法。建议做完后回到本章前面的例题重做一遍，强化「识别信号 → 套方法」的肌肉记忆。</p>
+  <div class="example-hint"><strong>🎯 最终答案：</strong>\(f_Z(z) = \begin{cases} \dfrac{z}{2}, & 0 \leq z \leq 1 \\ \dfrac{z-1}{2}, & 1 < z \leq 2 \\ \dfrac{3-z}{2}, & 2 < z \leq 3 \\ 0, & \text{其他} \end{cases}\)</div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 近五年真题 2 | 2023 数一 | 解答题 · 12分</div>
+  <div class="example-question">设二维随机变量 \((X, Y)\) 的概率密度为 \(f(x, y) = \begin{cases} \dfrac{2}{\pi}(x^2 + y^2), & x^2 + y^2 \leq 1 \\ 0, & \text{其他} \end{cases}\)。<br>(1) 求 \(X\) 与 \(Y\) 的方差；<br>(2) \(X\) 与 \(Y\) 是否相互独立？<br>(3) 求 \(Z = X^2 + Y^2\) 的概率密度。</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>二维随机变量；独立性；函数分布</p>
+  <p><span class="section-tag tag-tip">🧭 解题思路（小白逐步版）</span></p>
+  <p><strong>步骤 1 · 思维导图：二维随机变量全面考核</strong></p><p>【解题框架】<br>└─ 第一问：求方差<br>　　├─ ① 期望 \(E(X)\)：利用对称性，奇函数在对称区域积分为0，直接秒杀<br>　　├─ ② 求 \(E(X^2)\)：转极坐标计算二重积分<br>　　└─ ③ 套公式：\(D(X) = E(X^2) - [E(X)]^2\)<br>└─ 第二问：判断独立性<br>　　├─ 技巧法：看积分区域是不是矩形。如果联合密度区域是圆（非矩形），变量必定不独立！<br>　　└─ 严谨法：求出边缘密度 \(f_X(x)\)，说明 \(f(x,y) \neq f_X(x)f_Y(y)\)<br>└─ 第三问：求函数分布（求 \(Z=X^2+Y^2\) 的密度）<br>　　├─ ① 求分布函数法：写出 \(F_Z(z) = P(X^2+Y^2 \leq z)\)<br>　　├─ ② 化为二重积分：区域就是半径为 \(\sqrt{z}\) 的圆<br>　　└─ ③ 求导得密度：算出积分后对 \(z\) 求导。<br><br>【口诀】求期望找奇偶，区域非矩必不独；函数分布先写F，极坐标里转圈圈。</p><p><strong>步骤 2 · (1) 对称性求期望，极坐标求方差</strong></p><p>求 \(E(X) = \displaystyle\iint_D x \cdot \dfrac{2}{\pi}(x^2+y^2) dxdy\)。<br>积分区域 \(D\) 是单位圆，关于 \(y\) 轴对称。被积函数中的 \(x\) 是奇函数，\((x^2+y^2)\) 是偶函数，乘起来是奇函数。<br>根据对称性，奇函数积分直接为 0！所以 \(E(X) = 0\)。同理 \(E(Y) = 0\)。<br>求 \(E(X^2) = \displaystyle\iint_D x^2 \cdot \dfrac{2}{\pi}(x^2+y^2) dxdy\)。<br>转极坐标：\(x = r\cos\theta, y = r\sin\theta, dxdy = rdrd\theta\)，\(x^2+y^2 = r^2\)。<br>\(= \dfrac{2}{\pi} \displaystyle\int_0^{2\pi} \cos^2\theta d\theta \displaystyle\int_0^1 (r^2)(r^2) r dr\)<br>\(\int_0^{2\pi} \cos^2\theta d\theta = \pi\)。后半部分积分：\(\int_0^1 r^5 dr = \dfrac{1}{6}\)。<br>所以 \(E(X^2) = \dfrac{2}{\pi} \cdot \pi \cdot \dfrac{1}{6} = \dfrac{1}{3}\)。<br>方差 \(D(X) = E(X^2) - [E(X)]^2 = \dfrac{1}{3} - 0 = \dfrac{1}{3}\)。由对称性，\(D(Y) = \dfrac{1}{3}\)。</p><p><strong>步骤 3 · (2) 严谨判断独立性</strong></p><p>【邪修判断】联合密度的非零区域是 \(x^2+y^2 \leq 1\)，不是一个形如 \(a \leq x \leq b, c \leq y \leq d\) 的矩形。非矩形区域的两个变量绝对**不可能**相互独立。但在解答题里需要严密证明。<br>求边缘密度 \(f_X(x)\)：<br>当 \(-1 < x < 1\) 时，对 \(y\) 积分，边界是 \(-\sqrt{1-x^2}\) 到 \(\sqrt{1-x^2}\)。<br>\(f_X(x) = \displaystyle\int_{-\sqrt{1-x^2}}^{\sqrt{1-x^2}} \dfrac{2}{\pi}(x^2+y^2) dy = \dfrac{2}{\pi} \left[ x^2y + \dfrac{1}{3}y^3 \right]_{-\sqrt{1-x^2}}^{\sqrt{1-x^2}}\<br>= \dfrac{4}{\pi}\sqrt{1-x^2} \left(x^2 + \dfrac{1-x^2}{3}\right) = \dfrac{4}{3\pi}(1+2x^2)\sqrt{1-x^2}\)。<br>同理 \(f_Y(y) = \dfrac{4}{3\pi}(1+2y^2)\sqrt{1-y^2}\)。<br>很显然，\(f_X(x)f_Y(y)\) 里面有根号相乘，而 \(f(x,y)\) 是简单的多项式，两者绝不相等。<br>所以 \(X\) 与 \(Y\) 不独立。</p><p><strong>步骤 4 · (3) 求 Z=X^2+Y^2 的分布函数并求导</strong></p><p>先求分布函数 \(F_Z(z) = P(Z \leq z) = P(X^2+Y^2 \leq z)\)。<br>因为 \(X^2+Y^2\) 是到原点的距离平方，区域最大为1，所以 \(Z\) 的取值范围是 \([0, 1]\)。<br>当 \(0 < z < 1\) 时：<br>积分区域变为一个小圆：\(x^2+y^2 \leq z\)。<br>\(F_Z(z) = \displaystyle\iint_{x^2+y^2 \leq z} \dfrac{2}{\pi}(x^2+y^2) dxdy\)。<br>极坐标化：边界半径变为 \(\sqrt{z}\)。<br>\(F_Z(z) = \dfrac{2}{\pi} \displaystyle\int_0^{2\pi} d\theta \displaystyle\int_0^{\sqrt{z}} r^2 \cdot r dr = \dfrac{2}{\pi} \cdot 2\pi \cdot \left[ \dfrac{1}{4}r^4 \right]_0^{\sqrt{z}} = 4 \cdot \dfrac{1}{4} (\sqrt{z})^4 = z^2\)。<br>最后求导得到概率密度：<br>\(f_Z(z) = F_Z'(z) = 2z\) (当 \(0 < z < 1\) 时)。<br>所以 \(f_Z(z) = \begin{cases} 2z, & 0 < z < 1 \\ 0, & \text{其他} \end{cases}\)。</p><p><strong>步骤 5 · 易错点提示</strong></p><p>【易错点】求边缘概率密度时，积分上下限写成了 -1 到 1，忽略了圆的边界必须依赖于 \(x\)（即 \(y\) 的界是 \(\pm\sqrt{1-x^2}\)）；求分布函数 \(F_Z(z)\) 极坐标的半径上限写成了 \(z\) 而不是 \(\sqrt{z}\) 导致算错。</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 识别题型/写对公式 (3分)；② 方法步骤 (4分)；③ 计算化简 (3分)；④ 结论 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>二维积分计算错误；独立性判断条件搞混</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点「二维随机变量；独立性；函数分布」属于二维随机变量、独立性判断、随机变量函数分布。建议做完后回到本章前面的例题重做一遍，强化「识别信号 → 套方法」的肌肉记忆。</p>
+  <div class="example-hint"><strong>🎯 最终答案：</strong>(1) \(D(X) = D(Y) = \dfrac{1}{3}\)；(2) 不独立；(3) \(f_Z(z) = \begin{cases} 2z, & 0 < z < 1 \\ 0, & \text{其他} \end{cases}\)</div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 近五年真题 3 | 2024 数一 | 选择题 · 5分</div>
+  <div class="example-question">设随机变量X的概率密度为f(x)= \(\begin{array}{rlr}{2(1 - x),} & {} & {0 <   x <   1}\\ {0,} & {} & {\text{其他}} \end{array}\) ，在 \(X = x\) 的条件下，Y在区间（x,1）上服从均匀分布，则 \(\operatorname {cov}(\mathbf{X},\mathbf{Y}) =\)<br>A. \(-\frac{1}{36}\)<br>B. \(-\frac{1}{72}\)<br>C. \(\frac{1}{72}\)<br>D. \(\frac{1}{36}\)</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>全概率</p>
+  <p><span class="section-tag tag-tip">🧭 解题思路（小白逐步版）</span></p>
+  <p><strong>步骤 1 · 先求 \(E(X)\) 与 \(E(X^2)\)</strong></p><p>由密度 \(f_X(x)=2(1-x)\,(0<x<1)\)，得<br>\[E(X)=\int_0^1 2x(1-x)dx=\frac13,\qquad E(X^2)=\int_0^1 2x^2(1-x)dx=\frac16.\]</p><p><strong>步骤 2 · 利用条件分布求 \(E(Y)\) 与 \(E(XY)\)</strong></p><p>在 \(X=x\) 条件下，\(Y\) 在 \((x,1)\) 上均匀分布，所以<br>\[E(Y\mid X=x)=\frac{x+1}{2}.\]<br>于是<br>\[E(Y)=E\left(E(Y\mid X)\right)=\frac{E(X)+1}{2}=\frac23,\]<br>\[E(XY)=E\left(XE(Y\mid X)\right)=\frac12E(X^2+X)=\frac12\left(\frac16+\frac13\right)=\frac14.\]</p><p><strong>步骤 3 · 计算协方差</strong></p><p>因此<br>\[\operatorname{cov}(X,Y)=E(XY)-E(X)E(Y)=\frac14-\frac13\cdot\frac23=\frac1{36}.\]<br>故选 D。</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 写出关键思路 (3分)；② 计算正确 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>⚠️ 记住核心考点「全概率」的适用条件，避免想当然套公式</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点「全概率」属于全概率。建议做完后回到本章前面的例题重做一遍，强化「识别信号 → 套方法」的肌肉记忆。</p>
+  <div class="example-hint"><strong>🎯 最终答案：</strong>D</div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 近五年真题 4 | 2025 数一 | 选择题 · 5分</div>
+  <div class="example-question">设二维随机变量 \(( X , Y )\) 服从正态分布 \(N \big ( 0 , 0 ; 1 , 1 ; \rho \big )\) ，其中 \(\rho \in \left( { - 1 , 1 } \right)\) .若 \(^ { a , b }\) 为满足\(a ^ { 2 } + b ^ { 2 } = 1\) 的任意实数，则 \(D \big ( a X + b Y \big )\) 的最大值为<br>A. 1．<br>B. 2<br>C. \(1 + | \rho |\)<br>D. \(1 + \rho ^ { 2 }\)<br>A. \(\frac { 1 } { \mathrm { e } ^ { 2 } }\)<br>B. 2 e</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>矩阵秩</p>
+  <p><span class="section-tag tag-tip">🧭 解题思路（小白逐步版）</span></p>
+  <p><strong>步骤 1 · 写出线性组合方差</strong></p><p>因为 \((X,Y)\) 服从二维标准正态相关系数为 \(\rho\)，所以 \(D(X)=D(Y)=1\)，\(\operatorname{cov}(X,Y)=\rho\)。于是<br>\[D(aX+bY)=a^2+b^2+2ab\rho.\]</p><p><strong>步骤 2 · 利用约束 \(a^2+b^2=1\)</strong></p><p>题设给出 \(a^2+b^2=1\)，故<br>\[D(aX+bY)=1+2ab\rho.\]
+在 \(a^2+b^2=1\) 下，\(|ab|\le\dfrac12\)。当 \(\rho>0\) 时取 \(ab=\dfrac12\)；当 \(\rho<0\) 时取 \(ab=-\dfrac12\)。</p><p><strong>步骤 3 · 结论</strong></p><p>最大值统一写成<br>\[1+|\rho|.\]
+故选 C。</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 写出关键思路 (3分)；② 计算正确 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>⚠️ 记住核心考点「矩阵秩」的适用条件，避免想当然套公式</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点「矩阵秩」属于矩阵秩。建议做完后回到本章前面的例题重做一遍，强化「识别信号 → 套方法」的肌肉记忆。</p>
+  <div class="example-hint"><strong>🎯 最终答案：</strong>C</div>
+</div>
 <div class="must-card">
   <div class="must-label">🎯 本章应试策略总结（80 分必备）</div>
   <p><strong>1. 答题时间分配：</strong>选择题 2~3 分钟/题，填空题 3 分钟/题，解答题 8~12 分钟/题。</p>

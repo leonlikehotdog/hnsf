@@ -33,7 +33,7 @@
     ];
 
     // 真题刷题模块（特殊入口）
-    const ZHENTI_MODULE = { id: 'zhenti', title: '🎯 近5年真题刷题', part: '真题', score: '精选' };
+    const ZHENTI_MODULE = { id: 'zhenti', title: '🎯 近4年真题刷题', part: '真题', score: '精选' };
 
     const PART_NAMES = {
         '数据结构': '数据结构（约45分）',
@@ -56,7 +56,7 @@
 
         // 顶部：真题刷题特殊入口（高亮）
         html += '<div class="nav-part nav-part-zhenti">🔥 真题实战</div>';
-        html += '<a href="#" data-target="zhenti" class="nav-zhenti-link"><span class="ch-num">★</span>🎯 近5年真题刷题</a>';
+        html += '<a href="#" data-target="zhenti" class="nav-zhenti-link"><span class="ch-num">★</span>🎯 近4年真题刷题</a>';
 
         parts.forEach(function(p) {
             html += '<div class="nav-part">' + PART_NAMES[p] + '</div>';

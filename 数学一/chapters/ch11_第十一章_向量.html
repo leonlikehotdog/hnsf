@@ -40,6 +40,85 @@
   <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
   <p>本题考点会在本章<strong>其他例题</strong>反复出现。建议：做完本题后回头重做一遍本章前面的练习题，强化「识别信号 → 套公式」的肌肉记忆。</p>
 </div>
+
+<div class="example-card">
+  <div class="example-label">📝 近五年真题 1 | 2021 数一 | 选择题 · 5分</div>
+  <div class="example-question">已知 \(\pmb{\alpha}_{1} = \begin{pmatrix} 1 \\ 0 \\ 1 \end{pmatrix}, \pmb{\alpha}_{2} = \begin{pmatrix} 1 \\ 2 \\ 1 \end{pmatrix}, \pmb{\alpha}_{3} = \begin{pmatrix} 3 \\ 1 \\ 2 \end{pmatrix}, \pmb{\beta}_{1} = \pmb{\alpha}_{1}, \pmb{\beta}_{2} = \pmb{\alpha}_{2} - k\pmb{\beta}_{1}, \pmb{\beta}_{3} = \pmb{\alpha}_{3} - l_{1}\pmb{\beta}_{1} - l_{2}\pmb{\beta}_{2}\) ，若 \(\pmb{\beta}_{1}, \pmb{\beta}_{2}, \pmb{\beta}_{3}\) 两两相交，则 \(l_{1}, l_{2}\) 依次为（ ）.<br>A. \(\frac{5}{2}, \frac{1}{2}\)<br>B. \(-\frac{5}{2}, \frac{1}{2}\)<br>C. \(\frac{5}{2}, -\frac{1}{2}\)<br>D. \(-\frac{5}{2}, - \frac{1}{2}\) 7）</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>施密特正交化</p>
+  <p><span class="section-tag tag-tip">🧭 解题思路（小白逐步版）</span></p>
+  <p><strong>步骤 1 · 由施密特正交化得 $l_{1} = \frac{(\pmb{\alpha}_{3},\pmb{\beta}_{1})}{</strong></p><p>由施密特正交化得 \(l_{1} = \frac{(\pmb{\alpha}_{3},\pmb{\beta}_{1})}{(\pmb{\beta}_{1},\pmb{\beta}_{1})} = \frac{5}{2}, l_{2} = \frac{(\pmb{\alpha}_{3},\pmb{\beta}_{2})}{(\pmb{\beta}_{2},\pmb{\beta}_{2})} = \frac{2}{4} = \frac{1}{2}\) 应选(A).</p><p><strong>步骤 2 · 方法点评：将线性无关的向量组化为两两正交的规范向量组即施密特正交规范化，实对称矩阵的对角化的正交变换法需要将线性无关的特</strong></p><p>方法点评：将线性无关的向量组化为两两正交的规范向量组即施密特正交规范化，实对称矩阵的对角化的正交变换法需要将线性无关的特征向量进行正交化和单位化.设 \(\pmb{\alpha}_{1},\pmb{\alpha}_{2},\pmb{\alpha}_{3}\) 线性无关， \(\pmb {\beta}_1 = \pmb {\alpha}_1,\pmb {\beta}_2 = \pmb {\alpha}_2 - l_1\pmb {\beta}_1,\pmb {\beta}_3 = \pmb {\alpha}_3 - k_1\pmb {\beta}_1 - k_2\pmb {\beta}_2\) ，且 \(\pmb {\beta}_1,\pmb {\beta}_2,\pmb {\beta}_3\) 线性无关，则 \(l_{1} = \frac{(\pmb{\alpha}_{2},\pmb{\beta}_{1})}{(\pmb{\beta}_{1},\pmb{\beta}_{1})},k_{1} = \frac{(\pmb{\alpha}_{3},\pmb{\beta}_{1})}{(\pmb{\beta}_{1},\pmb{\beta}_{1})},k_{2} = \frac{(\pmb{\alpha}_{3},\pmb{\beta}_{2})}{(\pmb{\beta}_{2},\pmb{\beta}_{2})}.\)</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 写出关键思路 (3分)；② 计算正确 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>⚠️ 记住核心考点「施密特正交化」的适用条件，避免想当然套公式</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点「施密特正交化」属于施密特正交化。建议做完后回到本章前面的例题重做一遍，强化「识别信号 → 套方法」的肌肉记忆。</p>
+  <div class="example-hint"><strong>🎯 最终答案：</strong>（A）.</div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 近五年真题 2 | 2023 数一 | 选择题 · 5分</div>
+  <div class="example-question">已知向量 \(\alpha_1 = \begin{pmatrix} 1 \\ 2 \\ 3 \end{pmatrix}, \alpha_2 = \begin{pmatrix} 2 \\ 1 \\ 1 \end{pmatrix}, \beta_1 = \begin{pmatrix} 2 \\ 5 \\ 9 \end{pmatrix}, \beta_2 = \begin{pmatrix} 1 \\ 0 \\ 1 \end{pmatrix}\)，若 \(\gamma\) 既可由 \(\alpha_1, \alpha_2\) 线性表示，也可由 \(\beta_1, \beta_2\) 线性表示，则 \(\gamma =\)<br>A. \(k\begin{pmatrix} 3 \\ 3 \\ 4 \end{pmatrix}, k \in \mathbb{R}\)<br>B. \(k\begin{pmatrix} 3 \\ 5 \\ 10 \end{pmatrix}, k \in \mathbb{R}\)<br>C. \(k\begin{pmatrix} 1 \\ 2 \\ 3 \end{pmatrix}, k \in \mathbb{R}\)<br>D. \(k\begin{pmatrix} 1 \\ 5 \\ 8 \end{pmatrix}, k \in \mathbb{R}\)</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>线性表示；向量组的等价</p>
+  <p><span class="section-tag tag-tip">🧭 解题思路（小白逐步版）</span></p>
+  <p><strong>步骤 1 · 思维导图：线性表示 / 公共生成空间</strong></p><p>【翻译】\(\gamma\) 可由 \(\alpha_1,\alpha_2\) 线性表示 ⟺ \(\gamma = x_1\alpha_1+x_2\alpha_2\)<br>【题型本质】\(\gamma \in \text{span}\{\alpha_1,\alpha_2\} \cap \text{span}\{\beta_1,\beta_2\}\)，即求两组向量生成空间的交<br>【解题框架】<br>└─ ① 设 \(\gamma = x_1\alpha_1+x_2\alpha_2 = y_1\beta_1+y_2\beta_2\)<br>└─ ② 移项 → 齐次方程组 \((\alpha_1,\alpha_2,-\beta_1,-\beta_2)\cdot(x_1,x_2,y_1,y_2)^T=0\)<br>└─ ③ 初等行变换求通解<br>└─ ④ 代回任一侧，求 \(\gamma\) 的方向向量<br>└─ ⑤ 写成 \(k \times\)（方向向量）<br><br>【口诀】能由谁表示，就设谁的组合；两组都能表示，就列齐次方程。</p><p><strong>步骤 2 · 建立方程</strong></p><p>设 \(\gamma = x_1\alpha_1 + x_2\alpha_2 = y_1\beta_1 + y_2\beta_2\)，<br>移项得 \(x_1\alpha_1 + x_2\alpha_2 - y_1\beta_1 - y_2\beta_2 = 0\)。<br>即未知数 \((x_1, x_2, y_1, y_2)\) 满足齐次方程组。</p><p><strong>步骤 3 · 初等行变换解齐次方程组</strong></p><p>系数矩阵 \((\alpha_1, \alpha_2, -\beta_1, -\beta_2) = \begin{pmatrix} 1 & 2 & -2 & -1 \\ 2 & 1 & -5 & 0 \\ 3 & 1 & -9 & -1 \end{pmatrix}\)<br>第一步：\(R_2 \leftarrow R_2-2R_1\)，\(R_3 \leftarrow R_3-3R_1\)，得 <br>\(\begin{pmatrix} 1 & 2 & -2 & -1 \\ 0 & -3 & -1 & 2 \\ 0 & -5 & -3 & 2 \end{pmatrix}\)<br>第二步：\(R_2 \leftarrow -\dfrac{1}{3}R_2\)，\(R_3 \leftarrow R_3 - \dfrac{5}{3}R_2\)，得<br>\(\begin{pmatrix} 1 & 2 & -2 & -1 \\ 0 & 1 & \tfrac{1}{3} & -\tfrac{2}{3} \\ 0 & 0 & -\tfrac{4}{3} & -\tfrac{4}{3} \end{pmatrix}\)<br>第三步：\(R_3 \leftarrow -\dfrac{3}{4}R_3\)，再回代化简，得最简形<br>\(\begin{pmatrix} 1 & 0 & 0 & 3 \\ 0 & 1 & 0 & -1 \\ 0 & 0 & 1 & 1 \end{pmatrix}\)。<br><br>回代：令 \(y_2=c\)，则 \(y_1=-c\)，\(x_2=c\)，\(x_1=-3c\)。<br>通解 \((x_1, x_2, y_1, y_2)^T = c(-3, 1, -1, 1)^T\)。</p><p><strong>步骤 4 · 求 \(\gamma\)</strong></p><p>取 \(y_1=-c,\; y_2=c\) 代入右侧：<br>\(\gamma = y_1\beta_1 + y_2\beta_2 = -c\begin{pmatrix} 2 \\ 5 \\ 9 \end{pmatrix} + c\begin{pmatrix} 1 \\ 0 \\ 1 \end{pmatrix} = c\begin{pmatrix} -1 \\ -5 \\ -8 \end{pmatrix}\)<br>令 \(k=-c\)，得 \(\gamma = k\begin{pmatrix} 1 \\ 5 \\ 8 \end{pmatrix},\; k \in \mathbb{R}\)。</p><p><strong>步骤 5 · 结论</strong></p><p>选 D。</p><p><strong>步骤 6 · 本题代表的题型</strong></p><p>识别信号：“\(\gamma\) 既可由 A 组线性表示，也可由 B 组线性表示” → 交空间问题。<br>解题路径：设两组组合相等 → 齐次方程 → 行变换 → 通解 → 代回求方向。<br>必背：线性表示 ⟺ 属于生成空间；通解的自由变量个数 = 交空间维数（本题为 1，是直线方向）。<br>常见失分点：系数矩阵的列顺序放错（\(-\beta_1,-\beta_2\) 要带负号）；回代时选错一侧。</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 写出关键思路 (3分)；② 计算正确 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>齐次方程组系数矩阵列错位；化简出错</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点「线性表示；向量组的等价」属于向量的线性表示。建议做完后回到本章前面的例题重做一遍，强化「识别信号 → 套方法」的肌肉记忆。</p>
+  <div class="example-hint"><strong>🎯 最终答案：</strong>D</div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 近五年真题 3 | 2023 数一 | 填空题 · 5分</div>
+  <div class="example-question">已知向量 \(\alpha_1 = \begin{pmatrix} 1 \\ 0 \\ 1 \\ 1 \end{pmatrix}, \alpha_2 = \begin{pmatrix} -1 \\ -1 \\ 0 \\ 1 \end{pmatrix}, \alpha_3 = \begin{pmatrix} 0 \\ 1 \\ -1 \\ 1 \end{pmatrix}, \beta = \begin{pmatrix} 1 \\ 1 \\ 1 \\ -1 \end{pmatrix}\)，\(\gamma = k_1\alpha_1 + k_2\alpha_2 + k_3\alpha_3\)。若 \(\gamma^T\alpha_i = \beta^T\alpha_i (i = 1, 2, 3)\)，则 \(k_1^2 + k_2^2 + k_3^2 =\) ______。</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>向量内积；线性方程组</p>
+  <p><span class="section-tag tag-tip">🧭 解题思路（小白逐步版）</span></p>
+  <p><strong>步骤 1 · 思维导图：正交向量组与坐标求法</strong></p><p>【题目特征】给了一堆具体向量，让求一个向量在它们基下的系数（坐标）<br>【解题直觉】考研数学里，如果给了3个及以上的四维具体向量，它们极大概率是**两两正交**的！<br>【解题框架】<br>└─ ① 验证正交性：快速抽查 \\(\alpha_1^T\alpha_2\\)，发现等于0，确信它们是正交基<br>└─ ② 利用正交性解耦方程：对 \\(\gamma = k_1\alpha_1 + k_2\alpha_2 + k_3\alpha_3\\) 两边同时左乘 \\(\alpha_1^T\\)<br>　　└─ 因为正交，\\(\alpha_1^T\alpha_2=0, \alpha_1^T\alpha_3=0\\)<br>　　└─ 剩下：\\(\alpha_1^T\gamma = k_1\alpha_1^T\alpha_1\\)<br>└─ ③ 结合已知条件：题目说 \\(\alpha_1^T\gamma = \alpha_1^T\beta\\)<br>└─ ④ 得出系数公式：\\(k_1 = \dfrac{\alpha_1^T\beta}{\alpha_1^T\alpha_1}\\)（这其实就是投影公式！）<br><br>【口诀】遇到一堆长向量，先猜正交准没错；左右同乘挑一个，其他全消只剩它。</p><p><strong>步骤 2 · 验证正交性并建立方程</strong></p><p>快速心算点乘：<br>\\(\alpha_1^T\alpha_2 = 1\times(-1) + 0 + 0 + 1\times1 = 0\\)<br>\\(\alpha_1^T\alpha_3 = 0 + 0 + (-1) + 1 = 0\\)<br>\\(\alpha_2^T\alpha_3 = 0 - 1 + 0 + 1 = 0\\)<br>果不其然，\\(\alpha_1, \alpha_2, \alpha_3\\) 是两两正交的！<br>根据已知 \\(\gamma^T\alpha_i = \beta^T\alpha_i\\)（即内积相等 \\(\alpha_i^T\gamma = \alpha_i^T\beta\\)），将 \\(\gamma = k_1\alpha_1 + k_2\alpha_2 + k_3\alpha_3\\) 代入左边：<br>\\(\alpha_i^T(k_1\alpha_1 + k_2\alpha_2 + k_3\alpha_3) = \alpha_i^T\beta\\)<br>由于正交性，展开后除了第 \\(i\\) 项，其他全为 0：<br>\\(k_i (\alpha_i^T\alpha_i) = \alpha_i^T\beta\\)。</p><p><strong>步骤 3 · 分别计算每个系数</strong></p><p>计算长度平方（自己乘自己）和与 \\(\beta\\) 的内积：<br>对 \\(\alpha_1\\)：\\(\alpha_1^T\alpha_1 = 1^2+0+1^2+1^2 = 3\\)<br>　　　　\\(\alpha_1^T\beta = 1\times1 + 0 + 1\times1 + 1\times(-1) = 1\\)  \(\\Rightarrow 3k_1 = 1 \\Rightarrow k_1 = 1/3\)<br><br>对 \\(\alpha_2\\)：\\(\alpha_2^T\alpha_2 = (-1)^2+(-1)^2+0+1^2 = 3\\)<br>　　　　\\(\alpha_2^T\beta = -1\times1 + (-1)\times1 + 0 + 1\times(-1) = -3\\)  \(\\Rightarrow 3k_2 = -3 \\Rightarrow k_2 = -1\)<br><br>对 \\(\alpha_3\\)：\\(\alpha_3^T\alpha_3 = 0+1^2+(-1)^2+1^2 = 3\\)<br>　　　　\\(\alpha_3^T\beta = 0 + 1\times1 + (-1)\times1 + 1\times(-1) = -1\\)  \(\\Rightarrow 3k_3 = -1 \\Rightarrow k_3 = -1/3\)</p><p><strong>步骤 4 · 求和得出结论</strong></p><p>\\(k_1^2 + k_2^2 + k_3^2 = (1/3)^2 + (-1)^2 + (-1/3)^2 = 1/9 + 1 + 1/9 = 11/9\\)。</p><p><strong>步骤 5 · 易错点提示</strong></p><p>【易错点】如果没有发现正交性，硬解一个三元一次方程组会耗费大量时间且容易算错。记住：**具体数字的长向量，90% 都在考正交**。</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 写出关键思路 (3分)；② 计算正确 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>内积计算错误；忽略 \(\alpha_i^T\alpha_j\) 项</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点「向量内积；线性方程组」属于向量内积。建议做完后回到本章前面的例题重做一遍，强化「识别信号 → 套方法」的肌肉记忆。</p>
+  <div class="example-hint"><strong>🎯 最终答案：</strong>\(\dfrac{11}{9}\)</div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 近五年真题 4 | 2024 数一 | 选择题 · 5分</div>
+  <div class="example-question">设向量 \(\alpha_{1} = \begin{pmatrix} a \\ 1 \\ -1 \\ 1 \end{pmatrix}\) , \(\alpha_{2} = \begin{pmatrix} 1 \\ 1 \\ b \\ a \end{pmatrix}\) , \(\alpha_{3} = \begin{pmatrix} 1 \\ a \\ -1 \\ 1 \end{pmatrix}\) , 若 \(\alpha_{1}, \alpha_{2}, \alpha_{3}\) 线性相关, 且其中任意两个向量均线性无关, 则
+6.<br>A. \(a = 1, b \neq -1\)<br>B. \(a = 1, b = -1\)<br>C. \(a \neq -2, b = 2\)<br>D. \(a = -2, b = 2\)</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>矩阵合同</p>
+  <p><span class="section-tag tag-tip">🧭 解题思路（小白逐步版）</span></p>
+  <p><strong>步骤 1 · 先用“任意两个都线性无关”排选项</strong></p><p>若 \(a=1\)，则 \(\alpha_1=(1,1,-1,1)^T\)，\(\alpha_3=(1,1,-1,1)^T\)，两向量相同，显然线性相关，所以 A、B 直接排除。</p><p><strong>步骤 2 · 只剩 C、D，二者都要求 \(b=2\)</strong></p><p>把 \(b=2\) 代入后，再由“\(\alpha_1,\alpha_2,\alpha_3\) 线性相关”要求矩阵 \((\alpha_1,\alpha_2,\alpha_3)\) 的秩为 2。对相应的 3 阶子式计算，可得必须有 \(a=-2\)。</p><p><strong>步骤 3 · 结论</strong></p><p>故唯一满足条件的是 \(a=-2,b=2\)，选 D。</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 写出关键思路 (3分)；② 计算正确 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>⚠️ 记住核心考点「矩阵合同」的适用条件，避免想当然套公式</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点「矩阵合同」属于矩阵合同。建议做完后回到本章前面的例题重做一遍，强化「识别信号 → 套方法」的肌肉记忆。</p>
+  <div class="example-hint"><strong>🎯 最终答案：</strong>D</div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 近五年真题 5 | 2025 数一 | 选择题 · 5分</div>
+  <div class="example-question">设 \(\pmb { \alpha } _ { 1 } , \pmb { \alpha } _ { 2 } , \pmb { \alpha } _ { 3 } , \pmb { \alpha } _ { 4 }\) 是 \(n\) 维列向量， \({ \pmb { \alpha } } _ { 1 } , { \pmb { \alpha } } _ { 2 }\) 线性无关， \({ \pmb { \alpha } } _ { 1 } , { \pmb { \alpha } } _ { 2 } , { \pmb { \alpha } } _ { 3 }\) 线性相关，且 \(\pmb { \alpha } _ { 1 } + \pmb { \alpha } _ { 2 } + \pmb { \alpha } _ { 4 } = \pmb { 0 }\) .在空间直角坐标系 \(O - x y z\) 中，关于 \(x , y , z\) 的方程组 \(x { \pmb { \alpha } } _ { 1 } + y { \pmb { \alpha } } _ { 2 } + z { \pmb { \alpha } } _ { 3 } = { \pmb { \alpha } } _ { 4 }\) 的几何图形是<br>A. 过原点的一个平面<br>B. 过原点的一条直线<br>C. 不过原点的一个平面<br>D. 不过原点的一条直线</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>二重积分</p>
+  <p><span class="section-tag tag-tip">🧭 解题思路（小白逐步版）</span></p>
+  <p><strong>步骤 1 · 先化右端向量</strong></p><p>由 \(\alpha_1+\alpha_2+\alpha_4=0\) 得 \(\alpha_4=-\alpha_1-\alpha_2\)。又因 \(\alpha_1,\alpha_2\) 线性无关，而 \(\alpha_1,\alpha_2,\alpha_3\) 线性相关，所以 \(\alpha_3\) 一定可写成 \(\alpha_3=p\alpha_1+q\alpha_2\)。</p><p><strong>步骤 2 · 把向量方程化成两个独立方程</strong></p><p>原方程<br>\[x\alpha_1+y\alpha_2+z\alpha_3=\alpha_4\]
+代入上式后变成<br>\[(x+pz+1)\alpha_1+(y+qz+1)\alpha_2=0.\]
+由于 \(\alpha_1,\alpha_2\) 线性无关，只能有<br>\[x+pz=-1,\qquad y+qz=-1.\]</p><p><strong>步骤 3 · 看几何图形</strong></p><p>这是关于 \((x,y,z)\) 的两个独立一次方程，所以解集是一条直线。又原点 \((0,0,0)\) 不满足方程，因为右端 \(\alpha_4\ne0\)。</p><p><strong>步骤 4 · 结论</strong></p><p>几何图形是不经过原点的一条直线，选 D。</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 写出关键思路 (3分)；② 计算正确 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>⚠️ 记住核心考点「二重积分」的适用条件，避免想当然套公式</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点「二重积分」属于二重积分。建议做完后回到本章前面的例题重做一遍，强化「识别信号 → 套方法」的肌肉记忆。</p>
+  <div class="example-hint"><strong>🎯 最终答案：</strong>D</div>
+</div>
 <div class="must-card">
   <div class="must-label">🎯 本章应试策略总结（80 分必备）</div>
   <p><strong>1. 答题时间分配：</strong>选择题 2~3 分钟/题，填空题 3 分钟/题，解答题 8~12 分钟/题。</p>

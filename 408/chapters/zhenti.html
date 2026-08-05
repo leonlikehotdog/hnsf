@@ -1,11 +1,11 @@
 <!--
-    考研 408 · 近 5 年真题精选（2021-2024）刷题模块
+    考研 408 · 近 4 年真题精选（2021-2024）刷题模块
     数据从 zhenti_data.js 加载（window.ZHENTI_DATA 与 ZHENTI_CHAPTER_INDEX）
     UI 由 js/zhenti.js 注入
 -->
 <section class="chapter-card" id="zhenti">
     <div class="ch-header zhenti-header">
-        <div class="ch-title">🎯 近 5 年真题精选 <span class="ch-score">| 2021-2024</span></div>
+        <div class="ch-title">🎯 近 4 年真题精选 <span class="ch-score">| 2021-2024</span></div>
         <div class="ch-stars star-high">⭐⭐⭐⭐⭐ 真题实战</div>
     </div>
 
@@ -14,35 +14,43 @@
         <!-- ============ 模块介绍 ============ -->
         <div class="zhenti-intro">
             <p><span class="section-tag tag-core">🎯 模块说明</span></p>
-            <p>本模块汇集 <strong>2021-2024 年计算机学科专业基础综合（408）真题精选</strong>，覆盖<strong>数据结构、计算机组成原理、操作系统、计算机网络</strong>四大板块。每道题都附带：</p>
+            <p>本模块汇集 <strong>2021-2024 年计算机学科专业基础综合（408）真题精选</strong>，覆盖<strong>数据结构、计算机组成原理、操作系统、计算机网络</strong>四大板块。</p>
+            <p><strong>🟦 使用方式：</strong>下方默认展示 <strong>「进度总览」</strong> —— 每道题是一个彩色方块（颜色 = 掌握程度）。点击方块即可查看题目、做题并标记掌握程度。</p>
             <ul>
                 <li>📝 <strong>原题 + 选项 + 答案</strong>（真题原文）</li>
                 <li>🎯 <strong>考察点</strong>（出题人意图）</li>
                 <li>📚 <strong>对应章节</strong>（关联到 408 项目 ch01-ch20 复习笔记，可一键跳转）</li>
                 <li>🧭 <strong>解题套路</strong>（思路框架，不照搬标准答案）</li>
-                <li>🏷️ <strong>章节映射</strong>（后期会在各章节笔记末尾插入「本章真题精选」指向本题）</li>
+                <li>� <strong>掌握程度</strong>（5 档评级，浏览器本地保存）</li>
             </ul>
             <div class="tag-float t-tip">
                 <div class="tf-title">💡 408 真题使用建议</div>
                 <div class="tf-body">
                     ① 选择题 80 道分布在四大板块，其中 1-11 数据结构 / 12-22 计组 / 23-32 OS / 33-40 计网；<br>
                     ② 大题 41-47 共 70 分，每题题型与分值相对固定；<br>
-                    ③ 真题至少做 2 轮：第一轮按年份模拟，第二轮按章节查漏补缺；<br>
-                    ④ 章节映射：每题 <code>chapter</code> 字段关联 ch01-ch20，可直接点击跳转到对应笔记。
+                    ③ 真题至少做 2 轮：第一轮按年份模拟（用「题目列表」），第二轮按章节查漏补缺；<br>
+                    ④ 数据保存在浏览器 localStorage，换浏览器/清缓存会丢。
                 </div>
             </div>
         </div>
 
+        <!-- ============ 缩略图条：历年试卷概览（移动端可滚动） ============ -->
+        <div class="zhenti-thumb-strip" id="thumbStrip">
+            <div class="thumb-strip-header">
+                <span>📅 历年试卷</span>
+                <span class="thumb-tip">点击查看该年详细题目</span>
+            </div>
+            <div class="thumb-strip-list" id="thumbList"></div>
+        </div>
+
+        <!-- ============ Tab 切换：进度总览（默认） / 题目列表 ============ -->
+        <div class="zhenti-tabs" id="zhentiTabs">
+            <button class="zhenti-tab active" data-tab="progress">📊 进度总览</button>
+            <button class="zhenti-tab" data-tab="list">📝 题目列表</button>
+        </div>
+
         <!-- ============ 数据总览卡片 ============ -->
         <div class="zhenti-overview" id="zhentiOverview"></div>
-
-        <!-- ============ Tab 切换 ============ -->
-        <div class="zhenti-tabs">
-            <button class="zhenti-tab active" data-tab="all">📅 历年真题</button>
-            <button class="zhenti-tab" data-tab="chapter">📚 按章节</button>
-            <button class="zhenti-tab" data-tab="part">🔧 按板块</button>
-            <button class="zhenti-tab" data-tab="type">📝 按题型</button>
-        </div>
 
         <!-- ============ 筛选栏 ============ -->
         <div class="zhenti-filters" id="zhentiFilters">
@@ -51,10 +59,6 @@
                     <label class="filter-label">📅 年份</label>
                     <div class="filter-pills" id="filterYear">
                         <button class="filter-pill active" data-year="all">全部</button>
-                        <button class="filter-pill" data-year="2024">2024</button>
-                        <button class="filter-pill" data-year="2023">2023</button>
-                        <button class="filter-pill" data-year="2022">2022</button>
-                        <button class="filter-pill" data-year="2021">2021</button>
                     </div>
                 </div>
                 <div class="filter-group">
@@ -77,6 +81,14 @@
                         <button class="filter-pill" data-type="大题">大题</button>
                     </div>
                 </div>
+                <div class="filter-group">
+                    <label class="filter-label">🎯 掌握程度</label>
+                    <div class="filter-pills" id="filterMastery">
+                        <button class="filter-pill active" data-mastery="all">全部</button>
+                    </div>
+                </div>
+            </div>
+            <div class="filter-row">
                 <div class="filter-group filter-group-search">
                     <label class="filter-label">🔍 搜索（题干 / 知识点 / 章节）</label>
                     <input type="text" id="zhentiSearch" class="filter-input" placeholder="例如：链表、哈夫曼、TLB、ch03...">
@@ -90,6 +102,11 @@
                 <div class="spinner"></div>
                 <p>正在加载真题...</p>
             </div>
+        </div>
+
+        <!-- ============ 进度总览（默认隐藏，切换到对应 Tab 时显示） ============ -->
+        <div class="zhenti-progress-area" id="zhentiProgressArea" hidden>
+            <div class="zhenti-loading"><div class="spinner"></div><p>正在渲染进度总览...</p></div>
         </div>
 
     </div>

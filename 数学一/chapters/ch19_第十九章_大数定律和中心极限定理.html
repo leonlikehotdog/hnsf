@@ -36,6 +36,52 @@
   <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
   <p>本题考点会在本章<strong>其他例题</strong>反复出现。建议：做完本题后回头重做一遍本章前面的练习题，强化「识别信号 → 套公式」的肌肉记忆。</p>
 </div>
+
+<div class="example-card">
+  <div class="example-label">📝 近五年真题 1 | 2022 数一 | 选择题 · 5分</div>
+  <div class="example-question">设随机变量 \(X_1,X_2,\dots,X_n\) 独立同分布，且 \(X_1\) 的 4 阶矩存在，\(E(X_1^k)=\mu_k\ (k=1,2,3,4)\)，则根据切比雪夫不等式，对任意 \(\varepsilon>0\)，都有 \(P\left\{\left|\dfrac{1}{n}\sum_{i=1}^n X_i^2-\mu_2\right|\ge\varepsilon\right\}\le\quad\)（　　）<br>A. \(\dfrac{\mu_4-\mu_2^2}{n\varepsilon^2}\)<br>B. \(\dfrac{\mu_4-\mu_2^2}{\sqrt{n}\,\varepsilon^2}\)<br>C. \(\dfrac{\mu_2-\mu_1^2}{n\varepsilon^2}\)<br>D. \(\dfrac{\mu_2-\mu_1^2}{\sqrt{n}\,\varepsilon^2}\)</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>切比雪夫不等式；样本二阶矩的期望与方差</p>
+  <p><span class="section-tag tag-tip">🧭 解题思路（小白逐步版）</span></p>
+  <p><strong>步骤 1 · 识别切比雪夫不等式</strong></p><p>对随机变量 \(W=\frac{1}{n}\sum_{i=1}^n X_i^2\) 用切比雪夫：\(P\{|W-E(W)|\ge\varepsilon\}\le\frac{D(W)}{\varepsilon^2}\)。</p><p><strong>步骤 2 · 算期望与方差</strong></p><p>\(E(W)=\frac{1}{n}\cdot n\mu_2=\mu_2\)；\(D(W)=\frac{1}{n^2}\cdot n(\mu_4-\mu_2^2)=\frac{\mu_4-\mu_2^2}{n}\)。</p><p><strong>步骤 3 · 套不等式</strong></p><p>\(P\{...\}\le\frac{\mu_4-\mu_2^2}{n\varepsilon^2}\)，对照选项选 A。</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 写出关键思路 (3分)；② 计算正确 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>⚠️ 把 \(X_i^2\) 的期望当 \(\mu_1^2\)，应为 \(\mu_2=E(X^2)\)；⚠️ 方差 \(D(X_i^2)=\mu_4-\mu_2^2\) 代入切比雪夫</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点「切比雪夫不等式；样本二阶矩的期望与方差」属于切比雪夫不等式、样本二阶矩的期望与方差。建议做完后回到本章前面的例题重做一遍，强化「识别信号 → 套方法」的肌肉记忆。</p>
+  <div class="example-hint"><strong>🎯 最终答案：</strong>A</div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 近五年真题 2 | 2022 数一 | 填空题 · 5分</div>
+  <div class="example-question">设随机变量 \(X_1,X_2,\dots,X_n\) 独立同分布，且 \(E(X_1^k)=\mu_k\ (k=1,2,3,4)\)，则根据切比雪夫不等式，\(P\left\{\left|\dfrac{1}{n}\sum_{i=1}^n X_i^2-\mu_2\right|\ge\varepsilon\right\}\le\) ______。</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>切比雪夫不等式；样本二阶矩的方差</p>
+  <p><span class="section-tag tag-tip">🧭 解题思路（小白逐步版）</span></p>
+  <p><strong>步骤 1 · 写切比雪夫不等式</strong></p><p>对 \(W=\frac{1}{n}\sum_{i=1}^n X_i^2\)：\(P\{|W-\mu_2|\ge\varepsilon\}\le\frac{D(W)}{\varepsilon^2}\)。</p><p><strong>步骤 2 · 代入方差</strong></p><p>\(D(W)=\frac{\mu_4-\mu_2^2}{n}\)，故 \(P\le\frac{\mu_4-\mu_2^2}{n\varepsilon^2}\)。</p><p><strong>步骤 3 · 结论</strong></p><p>代入题目具体数值即得答案 \(\frac{1}{9}\)。</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 写出关键思路 (3分)；② 计算正确 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>⚠️ 忘了 \(E(\frac1n\sum X_i^2)=\mu_2\) 与 \(D(\frac1n\sum X_i^2)=\frac{1}{n}(\mu_4-\mu_2^2)\)；⚠️ 分子分母 \(\varepsilon\) 的次数配错</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点「切比雪夫不等式；样本二阶矩的方差」属于切比雪夫不等式、样本二阶矩的方差。建议做完后回到本章前面的例题重做一遍，强化「识别信号 → 套方法」的肌肉记忆。</p>
+  <div class="example-hint"><strong>🎯 最终答案：</strong>\(\dfrac{\mu_4-\mu_2^2}{n\varepsilon^2}\)</div>
+</div>
+<div class="example-card">
+  <div class="example-label">📝 近五年真题 3 | 2022 数一 | 填空题 · 5分</div>
+  <div class="example-question">设随机变量 \(X\) 和 \(Y\) 的数学期望分别为 \(-2\) 和 \(2\)，方差分别为 \(1\) 和 \(4\)，而相关系数为 \(-0.5\)，则根据切比雪夫不等式，\(P\{|X+Y|\ge6\}\le\) ______。</div>
+  <p><span class="section-tag tag-core">🎯 出题人考察点（这是高频考点！）</span></p>
+  <p>切比雪夫不等式；相关系数求协方差；D(X+Y)</p>
+  <p><span class="section-tag tag-tip">🧭 解题思路（小白逐步版）</span></p>
+  <p><strong>步骤 1 · 算 D(X+Y)</strong></p><p>\(X,Y\) 的期望 \(-2,2\)，方差 \(1,4\)，相关系数 \(\rho=-0.5\)，则 \(\mathrm{Cov}(X,Y)=\rho\cdot1\cdot2=-1\)，\(D(X+Y)=1+4+2\cdot(-1)=3\)。</p><p><strong>步骤 2 · 套切比雪夫</strong></p><p>\(P\{|X+Y-E(X+Y)|\ge6\}=P\{|X+Y-0|\ge6\}\le\frac{D(X+Y)}{36}=\frac{3}{36}=\frac{1}{12}\)。</p>
+  <p><span class="section-tag tag-must">💯 得分点（阅卷老师按点给分）</span></p>
+  <p>① 写出关键思路 (3分)；② 计算正确 (2分)</p>
+  <p><span class="section-tag tag-warn">⚠️ 小白踩坑预警（错一个扣 2~4 分）</span></p>
+  <p>⚠️ \(D(X+Y)\) 忘记加 \(2\mathrm{Cov}(X,Y)=2\rho\sigma_X\sigma_Y\)；⚠️ 切比雪夫不等式方向写反</p>
+  <p><span class="section-tag tag-summary">🔗 知识点桥接</span></p>
+  <p>本题考点「切比雪夫不等式；相关系数求协方差；D(X+Y)」属于切比雪夫不等式、相关系数求协方差、D(X+Y)。建议做完后回到本章前面的例题重做一遍，强化「识别信号 → 套方法」的肌肉记忆。</p>
+  <div class="example-hint"><strong>🎯 最终答案：</strong>\(\dfrac{1}{12}\)</div>
+</div>
 <div class="must-card">
   <div class="must-label">🎯 本章应试策略总结（80 分必备）</div>
   <p><strong>1. 答题时间分配：</strong>选择题 2~3 分钟/题，填空题 3 分钟/题，解答题 8~12 分钟/题。</p>
