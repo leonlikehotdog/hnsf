@@ -1,6 +1,6 @@
 <section class="chapter-card" id="ch06">
     <div class="ch-header">
-        <div class="ch-title">第六章：多元函数积分学 <span class="ch-score">| 12分</span></div>
+        <div class="ch-title">第六章：多元函数积分学 <span class="ch-score">| 12分</span> <span class="section-tag tag-special">🔴 数一特有 · 三重/曲线/曲面积分</span></div>
         <div class="ch-stars star-low">★★</div>
     </div>
     <div class="ch-content">
@@ -124,6 +124,35 @@
             <p>这一小块的「长」= \(r\,d\theta\)（沿弧线走的真实距离，半径 r × 弧度 dθ），「宽」= \(dr\)（沿半径的真实距离）。</p>
             <p>所以面积 = 长 × 宽 = \((r\,d\theta)\cdot(dr)=r\,dr\,d\theta\)。</p>
             <div class="formula-box">\(d\sigma = dx\,dy = r\,dr\,d\theta\)</div>
+            <div class="example-illustrate">
+                <svg viewBox="0 0 320 240" xmlns="http://www.w3.org/2000/svg" style="max-width:320px;width:100%;height:auto;background:#fff;border-radius:8px;border:1px solid #e2e8f0;">
+                    <line x1="20" y1="200" x2="300" y2="200" stroke="#94a3b8" stroke-width="1"/>
+                    <text x="305" y="205" font-size="12" fill="#64748b">x</text>
+                    <line x1="160" y1="225" x2="160" y2="20" stroke="#94a3b8" stroke-width="1"/>
+                    <text x="160" y="15" font-size="12" fill="#64748b" text-anchor="middle">y</text>
+                    <circle cx="160" cy="200" r="120" fill="#dbeafe" fill-opacity="0.4" stroke="#2563eb" stroke-width="1.5"/>
+                    <!-- 极坐标网格 -->
+                    <circle cx="160" cy="200" r="60" fill="none" stroke="#93c5fd" stroke-width="1" stroke-dasharray="2,2"/>
+                    <circle cx="160" cy="200" r="90" fill="none" stroke="#93c5fd" stroke-width="1" stroke-dasharray="2,2"/>
+                    <line x1="160" y1="200" x2="266" y2="200" stroke="#93c5fd" stroke-width="1" stroke-dasharray="2,2"/>
+                    <line x1="160" y1="200" x2="160" y2="80" stroke="#93c5fd" stroke-width="1" stroke-dasharray="2,2"/>
+                    <line x1="160" y1="200" x2="216" y2="115" stroke="#93c5fd" stroke-width="1" stroke-dasharray="2,2" transform="rotate(-30 160 200)"/>
+                    <!-- 角度标 -->
+                    <path d="M 200 200 A 40 40 0 0 0 188.6 162.4" fill="none" stroke="#16a34a" stroke-width="2"/>
+                    <text x="205" y="190" font-size="11" fill="#16a34a">θ</text>
+                    <!-- 小扇形高亮 -->
+                    <path d="M 160 200 L 160 140 A 60 60 0 0 1 215.9 170 Z" fill="#f97316" fill-opacity="0.55" stroke="#ea580c" stroke-width="1.5"/>
+                    <!-- 半径标签 r -->
+                    <line x1="160" y1="200" x2="160" y2="140" stroke="#dc2626" stroke-width="1.5"/>
+                    <text x="168" y="170" font-size="11" fill="#dc2626">r</text>
+                    <!-- 弧长 dθ 标签 -->
+                    <text x="190" y="160" font-size="11" fill="#dc2626">rdθ</text>
+                    <!-- dr 标签 -->
+                    <line x1="160" y1="140" x2="167" y2="123" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="3,2"/>
+                    <text x="170" y="128" font-size="11" fill="#dc2626">dr</text>
+                    <text x="160" y="235" font-size="11" fill="#64748b" text-anchor="middle">极坐标面积元: dσ = r·dr·dθ</text>
+                </svg>
+            </div>
             <p><strong>第 3 步（代入积分）：</strong></p>
             <div class="formula-box">\(\displaystyle\iint_D f(x,y)\,dx\,dy=\int_\alpha^\beta\!d\theta\int_{r_1(\theta)}^{r_2(\theta)}\!f(r\cos\theta,r\sin\theta)\,r\,dr\)</div>
             <p><strong>关键陷阱：</strong>那个 r 是<strong>在 dr 前面的乘子</strong>，不是 f 里的 r。漏乘就直接扣 2 分。</p>
@@ -182,6 +211,25 @@
         <!-- 例题 1 -->
         <div class="example-card">
             <div class="example-label">📝 例题 1（直角）· 矩形区域上的简单积分</div>
+            <div class="example-illustrate">
+                <svg viewBox="0 0 320 220" xmlns="http://www.w3.org/2000/svg" style="max-width:320px;width:100%;height:auto;background:#fff;border-radius:8px;border:1px solid #e2e8f0;">
+                    <line x1="20" y1="200" x2="300" y2="200" stroke="#94a3b8" stroke-width="1"/>
+                    <text x="305" y="205" font-size="12" fill="#64748b">x</text>
+                    <line x1="40" y1="210" x2="40" y2="20" stroke="#94a3b8" stroke-width="1"/>
+                    <text x="30" y="15" font-size="12" fill="#64748b">y</text>
+                    <rect x="40" y="40" width="240" height="160" fill="#dbeafe" fill-opacity="0.5" stroke="#2563eb" stroke-width="2"/>
+                    <text x="38" y="195" font-size="11" fill="#64748b" text-anchor="end">0</text>
+                    <text x="278" y="195" font-size="11" fill="#64748b" text-anchor="end">1</text>
+                    <text x="38" y="48" font-size="11" fill="#64748b" text-anchor="end">1</text>
+                    <rect x="120" y="40" width="6" height="160" fill="#f97316" fill-opacity="0.55"/>
+                    <line x1="123" y1="40" x2="123" y2="200" stroke="#ea580c" stroke-width="1" stroke-dasharray="3,2"/>
+                    <defs><marker id="a1" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/></marker><marker id="a2" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M10,0 L0,5 L10,10 z" fill="#dc2626"/></marker></defs>
+                    <line x1="135" y1="40" x2="135" y2="200" stroke="#dc2626" stroke-width="1.5" marker-end="url(#a1)" marker-start="url(#a2)"/>
+                    <text x="142" y="125" font-size="11" fill="#dc2626">y: 0→1</text>
+                    <text x="50" y="58" font-size="11" fill="#1f4e79" font-weight="bold">D: 0≤x≤1, 0≤y≤1</text>
+                    <text x="160" y="218" font-size="11" fill="#64748b" text-anchor="middle">固定 x，沿 y 积一根竖条</text>
+                </svg>
+            </div>
             <div class="example-question">计算 \(\displaystyle\iint_D (x+y)\,d\sigma\)，其中 D = \{0 ≤ x ≤ 1,\ 0 ≤ y ≤ 1\}。</div>
             <p><span class="section-tag tag-core">🎯 考点：</span>矩形区域 + 多项式被积函数 = 直角坐标最快</p>
             <p><span class="section-tag tag-tip">🧭 第一步：定积分次序</span></p>
@@ -197,6 +245,23 @@
         <!-- 例题 2 -->
         <div class="example-card">
             <div class="example-label">📝 例题 2（极坐标）· 圆盘上的 x² + y²</div>
+            <div class="example-illustrate">
+                <svg viewBox="0 0 320 240" xmlns="http://www.w3.org/2000/svg" style="max-width:320px;width:100%;height:auto;background:#fff;border-radius:8px;border:1px solid #e2e8f0;">
+                    <line x1="20" y1="200" x2="300" y2="200" stroke="#94a3b8" stroke-width="1"/>
+                    <text x="305" y="205" font-size="12" fill="#64748b">x</text>
+                    <line x1="160" y1="225" x2="160" y2="20" stroke="#94a3b8" stroke-width="1"/>
+                    <text x="160" y="15" font-size="12" fill="#64748b" text-anchor="middle">y</text>
+                    <circle cx="160" cy="200" r="120" fill="#fef3c7" fill-opacity="0.6" stroke="#d97706" stroke-width="2"/>
+                    <text x="160" y="120" font-size="13" fill="#92400e" text-anchor="middle" font-weight="bold">D</text>
+                    <text x="160" y="135" font-size="11" fill="#92400e" text-anchor="middle">x²+y²≤1</text>
+                    <line x1="160" y1="200" x2="265" y2="115" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="3,2"/>
+                    <line x1="160" y1="200" x2="265" y2="200" stroke="#16a34a" stroke-width="1.5" stroke-dasharray="3,2"/>
+                    <text x="262" y="212" font-size="11" fill="#16a34a">θ=0</text>
+                    <text x="252" y="115" font-size="11" fill="#dc2626">θ=π/2</text>
+                    <text x="180" y="206" font-size="11" fill="#1f4e79">r: 0→1</text>
+                    <text x="160" y="235" font-size="11" fill="#64748b" text-anchor="middle">圆+圆内 → 极坐标: r∈[0,1], θ∈[0,2π]</text>
+                </svg>
+            </div>
             <div class="example-question">计算 \(\displaystyle\iint_D (x^2+y^2)\,d\sigma\)，其中 D 是圆 \(x^2+y^2\le 1\)。</div>
             <p><span class="section-tag tag-core">🎯 考点：</span>识别"圆形区域 + x²+y²" = 极坐标必杀</p>
             <p><span class="section-tag tag-tip">🧭 第 1 步：判坐标系</span></p>
@@ -219,6 +284,28 @@
         <!-- 例题 3: 换序 -->
         <div class="example-card">
             <div class="example-label">📝 例题 3（换序）· 把"先 y 后 x"换成"先 x 后 y"</div>
+            <div class="example-illustrate">
+                <svg viewBox="0 0 320 220" xmlns="http://www.w3.org/2000/svg" style="max-width:320px;width:100%;height:auto;background:#fff;border-radius:8px;border:1px solid #e2e8f0;">
+                    <line x1="20" y1="200" x2="300" y2="200" stroke="#94a3b8" stroke-width="1"/>
+                    <text x="305" y="205" font-size="12" fill="#64748b">x</text>
+                    <line x1="40" y1="210" x2="40" y2="20" stroke="#94a3b8" stroke-width="1"/>
+                    <text x="30" y="15" font-size="12" fill="#64748b">y</text>
+                    <path d="M 40 200 L 40 60 L 280 60 Z" fill="#dbeafe" fill-opacity="0.5" stroke="#2563eb" stroke-width="2"/>
+                    <line x1="40" y1="200" x2="280" y2="60" stroke="#2563eb" stroke-width="2"/>
+                    <text x="135" y="135" font-size="11" fill="#2563eb" transform="rotate(-31 135 135)">y = x</text>
+                    <text x="38" y="195" font-size="11" fill="#64748b" text-anchor="end">0</text>
+                    <text x="278" y="208" font-size="11" fill="#64748b" text-anchor="end">1</text>
+                    <text x="38" y="65" font-size="11" fill="#64748b" text-anchor="end">1</text>
+                    <rect x="130" y="60" width="4" height="120" fill="#f97316" fill-opacity="0.6"/>
+                    <text x="140" y="100" font-size="10" fill="#ea580c">先 y 后 x</text>
+                    <text x="140" y="115" font-size="10" fill="#ea580c">y∈[x,1]</text>
+                    <rect x="40" y="90" width="120" height="3" fill="#16a34a" fill-opacity="0.7"/>
+                    <text x="170" y="90" font-size="10" fill="#16a34a">先 x 后 y</text>
+                    <text x="170" y="105" font-size="10" fill="#16a34a">x∈[0,y]</text>
+                    <text x="160" y="30" font-size="11" fill="#1f4e79" text-anchor="middle" font-weight="bold">D: 0≤x≤1, x≤y≤1 (上方三角)</text>
+                    <text x="160" y="170" font-size="10" fill="#64748b" text-anchor="middle">两套方向截图同一个区域 = 换序</text>
+                </svg>
+            </div>
             <div class="example-question">计算 \(\displaystyle\int_0^1\!dx\int_x^1 e^{y^2}\,dy\)。提示：先 y 后 x 积分不出，需要换序。</div>
             <p><span class="section-tag tag-core">🎯 考点：</span>遇到 \(\int e^{y^2}\,dy\) 这种"原函数不存在"的，立刻想换序</p>
             <p><span class="section-tag tag-tip">🧭 第 1 步：画区域</span></p>
@@ -237,6 +324,28 @@
         <!-- 例题 4: 对称性 -->
         <div class="example-card">
             <div class="example-label">📝 例题 4（对称性）· 奇函数在对称区域上为 0</div>
+            <div class="example-illustrate">
+                <svg viewBox="0 0 320 240" xmlns="http://www.w3.org/2000/svg" style="max-width:320px;width:100%;height:auto;background:#fff;border-radius:8px;border:1px solid #e2e8f0;">
+                    <line x1="20" y1="200" x2="300" y2="200" stroke="#94a3b8" stroke-width="1"/>
+                    <text x="305" y="205" font-size="12" fill="#64748b">x</text>
+                    <line x1="160" y1="225" x2="160" y2="20" stroke="#94a3b8" stroke-width="1"/>
+                    <text x="160" y="15" font-size="12" fill="#64748b" text-anchor="middle">y</text>
+                    <line x1="160" y1="200" x2="160" y2="40" stroke="#94a3b8" stroke-width="1" stroke-dasharray="4,3"/>
+                    <text x="166" y="55" font-size="11" fill="#64748b">y 轴</text>
+                    <rect x="40" y="40" width="120" height="160" fill="#fee2e2" fill-opacity="0.6" stroke="#dc2626" stroke-width="2"/>
+                    <text x="100" y="115" font-size="14" fill="#dc2626" text-anchor="middle" font-weight="bold">D_-</text>
+                    <text x="100" y="135" font-size="11" fill="#dc2626" text-anchor="middle">f(-x,y) = -f(x,y)</text>
+                    <text x="100" y="155" font-size="13" fill="#dc2626" text-anchor="middle">∫ = -I</text>
+                    <rect x="160" y="40" width="120" height="160" fill="#dbeafe" fill-opacity="0.6" stroke="#2563eb" stroke-width="2"/>
+                    <text x="220" y="115" font-size="14" fill="#2563eb" text-anchor="middle" font-weight="bold">D_+</text>
+                    <text x="220" y="135" font-size="11" fill="#2563eb" text-anchor="middle">f(x,y) = ...</text>
+                    <text x="220" y="155" font-size="13" fill="#2563eb" text-anchor="middle">∫ = +I</text>
+                    <defs><marker id="a3" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#16a34a"/></marker><marker id="a4" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M10,0 L0,5 L10,10 z" fill="#16a34a"/></marker></defs>
+                    <line x1="80" y1="195" x2="240" y2="195" stroke="#16a34a" stroke-width="2" marker-end="url(#a3)" marker-start="url(#a4)"/>
+                    <text x="160" y="215" font-size="12" fill="#16a34a" text-anchor="middle" font-weight="bold">左右抵消 = 0</text>
+                    <text x="160" y="232" font-size="10" fill="#64748b" text-anchor="middle">奇函数 × y 轴对称区域 = 0</text>
+                </svg>
+            </div>
             <div class="example-question">计算 \(\displaystyle\iint_D x\,y^2\,d\sigma\)，其中 D 由 \(x=-1, x=1, y=0, y=1\) 围成（一个矩形）。</div>
             <p><span class="section-tag tag-core">🎯 考点：</span>识别对称性 → 0 分拿满</p>
             <p><span class="section-tag tag-tip">🧭 第 1 步：看区域</span></p>

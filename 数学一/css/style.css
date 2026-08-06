@@ -3787,3 +3787,13 @@ code sub, code sup {
     .zwk-item { flex-wrap: wrap; }
 }
 }
+
+/* ====== 例题插图统一样式 ====== */
+.example-illustrate { margin: 14px 0 18px; text-align: center; }
+.example-illustrate svg { display: inline-block; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+@media (max-width: 480px) { .example-illustrate svg { max-width: 100% !important; } }
+
+
+/* ====== 数一特有专题徽标 ====== */
+.section-tag.tag-special { background: #fdecea; color: #c0392b; border: 1px solid #f5b7b1; font-weight: 700; margin-left: 10px; margin-bottom: 0; vertical-align: middle; }
+.section-tag.tag-semi { background: #fef7e6; color: #d68910; border: 1px solid #f9e0a0; font-weight: 700; margin-left: 10px; margin-bottom: 0; vertical-align: middle; }
