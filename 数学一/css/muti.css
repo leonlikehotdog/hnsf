@@ -1,0 +1,419 @@
+/* ============================================
+ * 考研数学一 · 母题 22 炼 板块样式
+ * 复用 style.css 中的 filter-pill / pc-mastery-* / pc-notes-* 等通用类
+ * ============================================ */
+
+/* ===== 顶部统计条 ===== */
+.muti-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+.muti-stat-card {
+    flex: 1 1 140px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 12px 14px;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+}
+.muti-stat-label { font-size: 12px; color: #64748b; margin-bottom: 4px; }
+.muti-stat-value { font-size: 20px; font-weight: 700; color: #0f172a; }
+.muti-stat-sub { font-size: 12px; color: #94a3b8; margin-top: 2px; }
+.muti-loading { color: #94a3b8; font-size: 13px; }
+
+/* ===== 筛选栏 ===== */
+.muti-filters {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 16px;
+}
+.filter-hint { font-size: 12px; color: #94a3b8; margin-left: 10px; }
+
+/* ===== 题位总览网格 ===== */
+.muti-grid-section { margin-bottom: 18px; }
+.muti-grid-title {
+    font-size: 14px; font-weight: 600; color: #1a3a5c;
+    margin-bottom: 8px;
+}
+.muti-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
+    gap: 6px;
+}
+.muti-grid-cell {
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 6px 4px;
+    text-align: center;
+    font-size: 12px;
+    cursor: pointer;
+    background: #f8fafc;
+    transition: transform 0.15s, box-shadow 0.15s;
+}
+.muti-grid-cell:hover { transform: translateY(-2px); box-shadow: 0 3px 8px rgba(15,23,42,0.12); }
+.muti-grid-cell .mc-num { font-weight: 700; color: #1e293b; display: block; }
+.muti-grid-cell .mc-part { font-size: 11px; color: #64748b; display: block; }
+.muti-grid-cell.ready-part-高数 { border-color: #3b82f6; background: #eff6ff; }
+.muti-grid-cell.ready-part-线代 { border-color: #f59e0b; background: #fffbeb; }
+.muti-grid-cell.ready-part-概率 { border-color: #10b981; background: #ecfdf5; }
+.muti-grid-cell.pending { cursor: default; opacity: 0.55; background: #f1f5f9; }
+.muti-grid-cell.pending:hover { transform: none; box-shadow: none; }
+
+/* ===== 母题卡片 ===== */
+.muti-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    margin-bottom: 18px;
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.06);
+    overflow: hidden;
+}
+.muti-card-head {
+    padding: 14px 16px 10px;
+    border-bottom: 1px solid #eef2f7;
+}
+.muti-card-top { display: flex; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
+.muti-slot-badge {
+    flex: none;
+    background: linear-gradient(135deg, #1a3a5c, #0e7490);
+    color: #fff;
+    font-weight: 700;
+    font-size: 14px;
+    border-radius: 8px;
+    padding: 6px 10px;
+}
+.muti-card-title { flex: 1; min-width: 200px; }
+.muti-topic { font-size: 16px; font-weight: 700; color: #0f172a; margin-bottom: 4px; }
+.muti-meta { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.muti-meta .chip {
+    font-size: 12px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    border: 1px solid #e2e8f0;
+    color: #475569;
+    background: #f8fafc;
+}
+.muti-meta .chip.part-高数 { color: #1d4ed8; border-color: #bfdbfe; background: #eff6ff; }
+.muti-meta .chip.part-线代 { color: #b45309; border-color: #fde68a; background: #fffbeb; }
+.muti-meta .chip.part-概率 { color: #047857; border-color: #a7f3d0; background: #ecfdf5; }
+.muti-meta .chip.diff { color: #b45309; }
+.muti-meta .chip.slot-chip { color: #0e7490; border-color: #a5f3fc; background: #ecfeff; }
+
+/* ===== 来源标注 ===== */
+.muti-source-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+}
+.muti-source-badge {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 2px 10px;
+    border-radius: 20px;
+    color: #fff;
+}
+.muti-source-badge.rank-1 { background: #dc2626; }
+.muti-source-badge.rank-2 { background: #ea580c; }
+.muti-source-badge.rank-3 { background: #7c3aed; }
+.muti-source-detail {
+    font-size: 12px;
+    color: #64748b;
+    border: 1px dashed #cbd5e1;
+    border-radius: 6px;
+    padding: 4px 8px;
+    background: #f8fafc;
+}
+details.muti-source-toggle summary { cursor: pointer; font-size: 12px; color: #0e7490; }
+
+/* ===== 知识点串联行 ===== */
+.muti-kp-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed #eef2f7;
+}
+.muti-kp-label { font-size: 12px; color: #64748b; }
+.muti-kp-tag {
+    font-size: 12px;
+    background: #eef2ff;
+    color: #4338ca;
+    border: 1px solid #c7d2fe;
+    border-radius: 6px;
+    padding: 2px 8px;
+}
+.muti-kp-jump {
+    font-size: 12px;
+    color: #0e7490;
+    text-decoration: none;
+    border: 1px solid #0e7490;
+    border-radius: 6px;
+    padding: 2px 8px;
+    cursor: pointer;
+}
+.muti-kp-jump:hover { background: #0e7490; color: #fff; }
+
+/* ===== 维度切换按钮（1/2/3/4/5） ===== */
+.muti-dim-tabs {
+    display: flex;
+    gap: 6px;
+    padding: 10px 16px 0;
+    flex-wrap: wrap;
+}
+.muti-dim-tab {
+    border: 1px solid #cbd5e1;
+    background: #f8fafc;
+    color: #475569;
+    border-radius: 8px 8px 0 0;
+    padding: 6px 12px;
+    font-size: 13px;
+    cursor: pointer;
+}
+.muti-dim-tab:hover { background: #eef2ff; }
+.muti-dim-tab.active {
+    background: #1a3a5c;
+    color: #fff;
+    border-color: #1a3a5c;
+    font-weight: 600;
+}
+
+/* ===== 题目内容区 ===== */
+.muti-items { padding: 0 16px 14px; }
+.muti-item { display: none; }
+.muti-item.active { display: block; }
+.muti-item-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 10px 0 6px;
+}
+.muti-item-dim {
+    font-size: 12px;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 20px;
+    background: #1a3a5c;
+    color: #fff;
+}
+.muti-item-dim.概念 { background: #4338ca; }
+.muti-item-dim.计算 { background: #0e7490; }
+.muti-item-dim.公式 { background: #b45309; }
+.muti-item-dim.创新 { background: #7c3aed; }
+.muti-item-label { font-size: 13px; color: #64748b; }
+.muti-item-question { font-size: 15px; line-height: 1.9; color: #1e293b; }
+.muti-options { margin-top: 8px; display: grid; gap: 4px; }
+.muti-opt {
+    font-size: 14px;
+    padding: 4px 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    background: #f8fafc;
+    line-height: 1.7;
+}
+.muti-opt.is-answer { border-color: #10b981; background: #ecfdf5; color: #047857; font-weight: 600; }
+
+/* ===== 折叠解析 ===== */
+details.muti-collapse {
+    margin-top: 8px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background: #fbfcfe;
+}
+details.muti-collapse summary {
+    cursor: pointer;
+    padding: 8px 12px;
+    font-weight: 600;
+    font-size: 13px;
+    color: #1a3a5c;
+}
+details.muti-collapse .collapse-body { padding: 4px 14px 12px; }
+.muti-answer-box {
+    font-size: 15px;
+    color: #047857;
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin-top: 8px;
+}
+.muti-sol-step { margin-top: 8px; }
+.muti-sol-step .ms-step-num {
+    font-size: 12px;
+    font-weight: 700;
+    color: #0e7490;
+    display: block;
+    margin-bottom: 2px;
+}
+.muti-sol-step .ms-step-title { font-size: 14px; font-weight: 600; color: #1e293b; }
+.muti-sol-step .ms-step-content { font-size: 14px; line-height: 1.9; color: #334155; }
+
+/* ===== 涉及概念与公式（零跳步前置知识）===== */
+.muti-concepts {
+    background: #fff7ed;
+    border: 1px solid #fed7aa;
+    border-radius: 8px;
+    padding: 8px 10px;
+    margin-top: 6px;
+}
+.mc-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: #9a3412;
+    margin-bottom: 6px;
+}
+.mc-item {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 6px;
+    padding: 3px 0;
+    border-top: 1px dashed #fed7aa;
+}
+.mc-item:first-of-type { border-top: none; }
+.mc-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #7c2d12;
+    background: #ffedd5;
+    border-radius: 4px;
+    padding: 1px 6px;
+    flex: none;
+}
+.mc-note { font-size: 13px; color: #431407; line-height: 1.7; }
+
+/* ===== 卡片底部：掌握度 + 笔记（复用 app.js 的 pc-* 类样式） ===== */
+.muti-item-footer {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px dashed #eef2f7;
+}
+
+/* ===== 待收录占位卡片 ===== */
+.muti-pending-card {
+    border: 1px dashed #cbd5e1;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 14px;
+    background: #f8fafc;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.muti-pending-card .mp-num {
+    font-size: 14px; font-weight: 700; color: #94a3b8;
+    border: 1px solid #cbd5e1; border-radius: 8px; padding: 6px 10px;
+}
+.muti-pending-card .mp-info { flex: 1; }
+.muti-pending-card .mp-topic { font-size: 14px; color: #475569; }
+.muti-pending-card .mp-hint { font-size: 12px; color: #94a3b8; margin-top: 2px; }
+
+/* ===== 空态 ===== */
+.muti-empty {
+    text-align: center;
+    color: #94a3b8;
+    padding: 30px 10px;
+    font-size: 14px;
+}
+
+/* ===== 右侧「题位导航」scroll-spy ===== */
+.muti-spy-nav {
+    padding: 10px 10px 12px;
+    border-bottom: 1px dashed #eef2f7;
+}
+.muti-spy-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: #1a3a5c;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+}
+.muti-spy-sub { font-size: 10px; color: #94a3b8; font-weight: 400; }
+.muti-spy-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 4px;
+}
+.muti-spy-cell {
+    aspect-ratio: 1;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    border: 1px solid #e2e8f0;
+    background: #f1f5f9;
+    color: #94a3b8;
+    cursor: default;
+    transition: transform 0.12s, box-shadow 0.12s, background 0.15s, color 0.15s;
+    user-select: none;
+}
+.muti-spy-cell.pending { opacity: 0.6; }
+.muti-spy-cell.ready { cursor: pointer; }
+.muti-spy-cell.ready.part-高数 { background: #eff6ff; border-color: #bfdbfe; color: #1d4ed8; }
+.muti-spy-cell.ready.part-线代 { background: #fffbeb; border-color: #fde68a; color: #b45309; }
+.muti-spy-cell.ready.part-概率 { background: #ecfdf5; border-color: #a7f3d0; color: #047857; }
+.muti-spy-cell.ready:hover { transform: scale(1.12); box-shadow: 0 2px 6px rgba(15, 23, 42, 0.16); }
+.muti-spy-cell.active {
+    background: #1a3a5c !important;
+    color: #fff !important;
+    border-color: #1a3a5c !important;
+    transform: scale(1.12);
+    box-shadow: 0 2px 8px rgba(26, 58, 92, 0.35);
+}
+
+/* ===== 右侧「当前考点」动态卡片 ===== */
+.muti-spy-current {
+    margin-top: 8px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 8px 9px;
+}
+.msp-slot {
+    font-size: 12px;
+    font-weight: 700;
+    color: #0f172a;
+    line-height: 1.5;
+}
+.msp-kps {
+    margin-top: 4px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    color: #64748b;
+}
+.msp-kp-tag {
+    font-size: 11px;
+    background: #eef2ff;
+    color: #4338ca;
+    border: 1px solid #c7d2fe;
+    border-radius: 4px;
+    padding: 1px 6px;
+}
+.msp-meta {
+    margin-top: 4px;
+    font-size: 11px;
+    color: #94a3b8;
+}
+.msp-empty {
+    font-size: 11px;
+    color: #94a3b8;
+    line-height: 1.5;
+}

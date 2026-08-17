@@ -1,0 +1,68 @@
+<!-- 考研数学一 ·「母题 22 炼」板块 -->
+<meta charset="UTF-8">
+<link rel="stylesheet" href="css/muti.css?v=1">
+<section class="chapter-card" id="muti">
+    <div class="ch-header muti-header">
+        <div class="ch-title">🧬 母题 22 炼 <span class="ch-score">| 22 母题 × 每道 4 变式 · 抗遗忘引擎</span></div>
+        <div class="ch-stars star-high">概念 · 计算 · 公式 · 创新</div>
+    </div>
+
+    <!-- 顶部统计条（由 JS 渲染） -->
+    <div class="muti-stats" id="mutiStats">
+        <div class="muti-loading">正在加载母题数据...</div>
+    </div>
+
+    <!-- 筛选栏 -->
+    <div class="muti-filters" id="mutiFilters">
+        <div class="filter-row">
+            <div class="filter-group">
+                <label class="filter-label">板块</label>
+                <div class="filter-pills" id="mutiFilterPart">
+                    <button class="filter-pill active" data-part="all">全部</button>
+                    <button class="filter-pill" data-part="高数">高数</button>
+                    <button class="filter-pill" data-part="线代">线代</button>
+                    <button class="filter-pill" data-part="概率">概率</button>
+                </div>
+            </div>
+            <div class="filter-group">
+                <label class="filter-label">题型</label>
+                <div class="filter-pills" id="mutiFilterType">
+                    <button class="filter-pill active" data-type="all">全部</button>
+                    <button class="filter-pill" data-type="选择题">选择题</button>
+                    <button class="filter-pill" data-type="填空题">填空题</button>
+                    <button class="filter-pill" data-type="解答题">解答题</button>
+                </div>
+            </div>
+        </div>
+        <div class="filter-row">
+            <div class="filter-group">
+                <label class="filter-label">默认打开维度</label>
+                <div class="filter-pills" id="mutiFilterDim">
+                    <button class="filter-pill active" data-dim="0">1 母题</button>
+                    <button class="filter-pill" data-dim="1">2 概念</button>
+                    <button class="filter-pill" data-dim="2">3 计算</button>
+                    <button class="filter-pill" data-dim="3">4 公式</button>
+                    <button class="filter-pill" data-dim="4">5 创新</button>
+                </div>
+                <span class="filter-hint">点击后所有卡片默认切换到该维度；单张卡片内也可用 1/2/3/4/5 按钮随时切换</span>
+            </div>
+            <div class="filter-group">
+                <label class="filter-label">掌握程度</label>
+                <div class="filter-pills" id="mutiFilterMastery">
+                    <button class="filter-pill active" data-mastery="all">全部</button>
+                    <button class="filter-pill" data-mastery="unmastered">未掌握(&lt;50)</button>
+                    <button class="filter-pill" data-mastery="strong">已掌握(≥80)</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 题位总览网格（22 槽位，由 JS 渲染） -->
+    <div class="muti-grid-section">
+        <div class="muti-grid-title">🗺️ 22 个真题题位 · 已收录 <span id="mutiGridReady">0</span>/<span id="mutiGridTotal">22</span></div>
+        <div class="muti-grid" id="mutiGrid"></div>
+    </div>
+
+    <!-- 母题卡片列表（由 JS 渲染） -->
+    <div class="muti-list" id="mutiList"></div>
+</section>

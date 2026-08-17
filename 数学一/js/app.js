@@ -23,6 +23,7 @@
     const CHAPTERS = [
         { id: 'zhenti', file: 'zhenti.html', title: '近5年真题精练', part: '专题', stars: '★★★★★', cls: 'high', score: '40题', special: true },
         { id: 'zhenti-2023', file: 'zhenti_2023.html', title: '2023 真题闯关', part: '专题', stars: '★★★★★', cls: 'high', score: '22题', special: true },
+        { id: 'muti', file: 'muti.html', title: '母题22炼', part: '专题', stars: '★★★★★', cls: 'high', score: '110题', special: true },
         { id: 'ch01', file: 'ch01_第一章_函数、极限、连续.html', title: '函数极限连续', part: '一', stars: '★★★★★', cls: 'high', score: '12分' },
         { id: 'ch02', file: 'ch02_第二章_一元函数微分学.html', title: '一元微分', part: '一', stars: '★★★★★', cls: 'high', score: '16分' },
         { id: 'ch03', file: 'ch03_第三章_一元函数积分学.html', title: '一元积分', part: '一', stars: '★★★★★', cls: 'high', score: '16分' },
@@ -222,6 +223,9 @@
         if (outlinePanel) {
             outlinePanel.style.display = (chapterId === 'zhenti') ? 'none' : '';
         }
+        // 母题题位导航：仅母题页显示
+        var spyNav = document.getElementById('mutiSpyNav');
+        if (spyNav) spyNav.style.display = (chapterId === 'muti') ? '' : 'none';
 
         buildOutline();
         // 章节内容是动态加载的，KaTeX auto-render 不会自动处理这里
@@ -244,6 +248,19 @@
                     }
                 }, 100);
             }
+        }
+        // 母题 22 炼初始化
+        if (chapterId === 'muti' && typeof window.initMutiModule === 'function') {
+            window.initMutiModule();
+        }
+
+        // 母题跳转：导航到章节后自动切到「练习」Tab
+        if (window.__gotoPractice === chapterId) {
+            window.__gotoPractice = null;
+            setTimeout(function() {
+                var pt = contentWrap.querySelector('.ch-tab[data-mode="practice"]');
+                if (pt) pt.click();
+            }, 80);
         }
     }
 
@@ -1236,6 +1253,11 @@
     function buildOutline() {
         var list = document.getElementById('outlineList');
         if (!list) return;
+        // 母题页：右侧由「题位导航 + 当前考点」接管，跳过本章要点
+        if (contentWrap.querySelector('#muti')) {
+            list.innerHTML = '';
+            return;
+        }
         var parts = Array.from(contentWrap.querySelectorAll('.part-divider'));
         var floats = Array.from(contentWrap.querySelectorAll('.tag-float'));
         if (parts.length === 0 && floats.length === 0) {
@@ -1364,6 +1386,10 @@
     window.__navigateTo = function(chapterId) {
         navigateTo(chapterId);
     };
+
+    // ===== 暴露掌握度 / 笔记绑定，供母题板块（js/muti.js）等复用 =====
+    window.__mastery = { initAll: initAllMasteryWidgets };
+    window.__notes = { initAll: initAllNotesWidgets };
 
     // ===== 番茄钟 =====
     const POMO_KEY = 'pomodoro_data_v1';
