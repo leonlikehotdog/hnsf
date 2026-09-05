@@ -147,7 +147,7 @@
                 + '</div>';
         }
 
-        // 解析：答案 + 零跳步分步解析
+        // 解析：答案 + 邪修口诀 + 零跳步分步解析 + 易错点
         var steps = item.solution || [];
         var stepsHtml = steps.map(function(s) {
             return '<div class="muti-sol-step">'
@@ -158,8 +158,24 @@
         var answerHtml = item.answer
             ? '<div class="muti-answer-box"><strong>答案：</strong>' + item.answer + '</div>'
             : '';
+        // 邪修秒杀口诀（可字符串或数组）
+        var tips = item.tips;
+        if (tips && !Array.isArray(tips)) tips = [tips];
+        var tipsHtml = (tips && tips.length)
+            ? '<div class="muti-tips"><div class="mt-label">⚡ 邪修秒杀口诀</div>'
+                + tips.map(function(t) { return '<div class="mt-item">' + t + '</div>'; }).join('')
+                + '</div>'
+            : '';
+        // 易错点提示（可字符串或数组）
+        var mistakes = item.mistakes;
+        if (mistakes && !Array.isArray(mistakes)) mistakes = [mistakes];
+        var mistakesHtml = (mistakes && mistakes.length)
+            ? '<div class="muti-mistakes"><div class="mm-label">🚨 易错点提示</div>'
+                + mistakes.map(function(m) { return '<div class="mm-item">' + m + '</div>'; }).join('')
+                + '</div>'
+            : '';
         var collapseHtml = '<details class="muti-collapse"><summary>📖 查看答案与分步解析（零跳步）</summary><div class="collapse-body">'
-            + conceptsHtml + answerHtml + stepsHtml + '</div></details>';
+            + conceptsHtml + answerHtml + tipsHtml + stepsHtml + mistakesHtml + '</div></details>';
 
         var sourceHtml = '<div class="muti-source-row">' + sourceBadge(item.source) + '</div>';
 
@@ -191,9 +207,9 @@
                 + (i + 1) + ' ' + n + '</button>';
         }).join('');
 
-        var itemsHtml = DIM_NAMES.map(function(_, i) {
-            return renderItem(slotData, i);
-        }).join('');
+        // 懒渲染：只渲染当前激活的维度（其余维度在切换 tab 时动态渲染，避免一次性
+        // 把全部 5 个维度塞进 DOM，导致上千个 KaTeX 公式卡死页面）
+        var itemsHtml = renderItem(slotData, state.dim);
 
         return '<div class="muti-card" id="card-' + slotData.id + '" data-slot="' + slotData.slot + '" '
             + 'data-part="' + esc(slotData.part) + '" data-type="' + esc(slotData.type) + '">'
@@ -251,7 +267,9 @@
             + '<div class="muti-stat-sub">母题 + 变式</div></div>'
             + '<div class="muti-stat-card"><div class="muti-stat-label">板块进度</div>'
             + '<div class="muti-stat-value" style="font-size:15px;">' + partStr + '</div>'
-            + '<div class="muti-stat-sub">按真题题位分布：高数13 · 线代5 · 概率4</div></div>';
+            + '<div class="muti-stat-sub">按真题题位分布：'
+            + ['高数', '线代', '概率'].map(function(p) { return p + PART_CNT[p]; }).join(' · ')
+            + '</div>';
     }
 
     /* ===== 题位网格 ===== */
@@ -333,14 +351,25 @@
         els.list.querySelectorAll('.muti-dim-tab').forEach(function(btn) {
             btn.addEventListener('click', function() {
                 var card = btn.getAttribute('data-card');
-                var dim = btn.getAttribute('data-dim');
-                // 本卡片的 tab 高亮 + item 切换
+                var dim = parseInt(btn.getAttribute('data-dim'), 10);
+                state.dim = dim;   // 同步全局维度（renderList 重绘时保持一致）
+                // 本卡片的 tab 高亮
                 els.list.querySelectorAll('.muti-dim-tab[data-card="' + card + '"]').forEach(function(b) {
                     b.classList.toggle('active', b === btn);
                 });
-                els.list.querySelectorAll('#card-' + card + ' .muti-item').forEach(function(it) {
-                    it.classList.toggle('active', it.getAttribute('data-dim') === dim);
-                });
+                // 懒渲染：切换维度时动态渲染该维度的题项
+                var cardEl = byId('card-' + card);
+                var sd = null;
+                (DATA || []).forEach(function(s) { if (s.id === card) sd = s; });
+                if (sd && cardEl) {
+                    var itemsWrap = cardEl.querySelector('.muti-items');
+                    if (itemsWrap) {
+                        itemsWrap.innerHTML = renderItem(sd, dim);
+                        if (window.renderMathWhenReady) window.renderMathWhenReady(itemsWrap);
+                        if (window.__mastery && window.__mastery.initAll) window.__mastery.initAll(itemsWrap);
+                        if (window.__notes && window.__notes.initAll) window.__notes.initAll(itemsWrap);
+                    }
+                }
             });
         });
 
@@ -366,7 +395,7 @@
             btn.classList.add('active');
             state[key] = btn.getAttribute('data-' + key);
             if (key === 'dim') {
-                // 维度筛选 = 切换所有卡片默认打开的维度
+                // 维度筛选 = 切换所有卡片默认打开的维度（懒渲染：重建各卡当前维度项）
                 state.dim = parseInt(state.dim, 10) || 0;
                 els.list.querySelectorAll('.muti-card').forEach(function(card) {
                     var cid = card.getAttribute('id').replace('card-', '');
@@ -374,10 +403,15 @@
                         var on = b.getAttribute('data-dim') === String(state.dim);
                         b.classList.toggle('active', on);
                     });
-                    card.querySelectorAll('.muti-item').forEach(function(it) {
-                        it.classList.toggle('active', it.getAttribute('data-dim') === String(state.dim));
-                    });
+                    var sd = null;
+                    (DATA || []).forEach(function(s) { if (s.id === cid) sd = s; });
+                    var itemsWrap = card.querySelector('.muti-items');
+                    if (sd && itemsWrap) itemsWrap.innerHTML = renderItem(sd, state.dim);
                 });
+                // 对新增的题项统一渲染公式 + 绑定掌握度/笔记
+                if (window.renderMathWhenReady) window.renderMathWhenReady(els.list);
+                if (window.__mastery && window.__mastery.initAll) window.__mastery.initAll(els.list);
+                if (window.__notes && window.__notes.initAll) window.__notes.initAll(els.list);
             } else {
                 renderList();
             }
@@ -487,6 +521,12 @@
         els.list = listEl;
         els.gridReady = byId('mutiGridReady');
         els.gridTotal = byId('mutiGridTotal');
+
+        // 移动端默认折叠题位网格：首屏让位给题目卡片，避免「一屏全是统计/筛选/网格」
+        var gridWrap = byId('mutiGridWrap');
+        if (gridWrap && window.innerWidth <= 768) {
+            gridWrap.removeAttribute('open');
+        }
 
         bindPills('mutiFilterPart', 'part');
         bindPills('mutiFilterType', 'type');

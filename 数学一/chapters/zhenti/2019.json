@@ -134,11 +134,12 @@
     "chapter": "ch01",
     "question": "如图所示, 有 3 张平面两两相交, 交线相互平行, 它们的方程\\n\\n$$\\na _ {i 1} x + a _ {i 2} y + a _ {i 3} z = d _ {i} (i = 1, 2, 3)\\n$$\\n\\n组成的线性方程组的系数矩阵和增广矩阵分别记为 $A, \\overline{A}$ , 则( )",
     "options": [
-      "A. $r(\\mathbf{",
-      "B. $r(\\mathbf{",
-      "C. $r(\\mathbf{"
+      "A. $r(A) = 2, r(\\overline{A}) = 3$",
+      "B. $r(A) = 2, r(\\overline{A}) = 2$",
+      "C. $r(A) = 1, r(\\overline{A}) = 2$",
+      "D. $r(A) = 1, r(\\overline{A}) = 1$"
     ],
-    "answer": "",
+    "answer": "A",
     "analysis": ""
   },
   {
@@ -157,19 +158,12 @@
     "chapter": "ch15",
     "question": "设 $A, B$ 为随机事件, 则 $P(A) = P(B)$ 的充分必要条件是( )",
     "options": [
-      "A. $P(",
-      "B. = P(",
-      "A. + P(",
-      "B. $ .",
-      "B. $P(",
-      "B. = P(",
-      "A. P(",
-      "B. $ .",
-      "C. $P(",
-      "D. $P(",
-      "B. = P(\\overline{"
+      "A. $P(A \\cup B) = P(A) + P(B)$",
+      "B. $P(AB) = P(A)P(B)$",
+      "C. $P(A \\overline{B}) = P(\\overline{A} B)$",
+      "D. $P(AB) = P(\\overline{A} \\overline{B})$"
     ],
-    "answer": "",
+    "answer": "C",
     "analysis": ""
   },
   {

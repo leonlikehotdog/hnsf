@@ -11,8 +11,9 @@
     "question": "1 设 $\\lim_{x\\to 1}\\frac{f(x)}{\\ln x} = 1$ ，则（",
     "options": [
       "A. $f(1) = 0$ .",
-      "B. $\\lim_{x\\to 1}f(x) = 0.$ $\\mathrm{(C)}f^{\\prime}(1) = 1.$",
-      "D. $\\lim_{x\\to 1}f'(x) = 1.$ 答案 B."
+      "B. $\\lim_{x\\to 1}f(x) = 0.$",
+      "C. $f^{\\prime}(1) = 1.$",
+      "D. $\\lim_{x\\to 1}f'(x) = 1.$"
     ],
     "testPoints": [
       "极限"
@@ -45,9 +46,12 @@
     "type": "选择题",
     "part": "高数",
     "difficulty": 3,
-    "question": "2 设 $f(u)$ 可导， $z = xyf\\left(\\frac{y}{x}\\right)$ ，若 $x \\frac{\\partial z}{\\partial x} + y \\frac{\\partial z}{\\partial y} = y^2 (\\ln y - \\ln x)$ ，则（ ）\n$\\mathrm{(A)}f(1) = \\frac{1}{2},f^{\\prime}(1) = 0.$",
+    "question": "2 设 $f(u)$ 可导， $z = xyf\\left(\\frac{y}{x}\\right)$ ，若 $x \\frac{\\partial z}{\\partial x} + y \\frac{\\partial z}{\\partial y} = y^2 (\\ln y - \\ln x)$ ，则（ ）",
     "options": [
-      "B. $f(1) = 0, f'(1) = \\frac{1}{2}$ . $\\mathrm{(C)}f(1) = \\frac{1}{2},f^{\\prime}(1) = 1.$ $\\mathrm{(D)}f(1) = 0,f^{\\prime}(1) = 1.$ 答案 B."
+      "A. $f(1) = \\frac{1}{2}, f^{\\prime}(1) = 0.$",
+      "B. $f(1) = 0, f'(1) = \\frac{1}{2}$",
+      "C. $f(1) = \\frac{1}{2}, f^{\\prime}(1) = 1.$",
+      "D. $f(1) = 0, f^{\\prime}(1) = 1.$"
     ],
     "testPoints": [
       "偏导数"
@@ -85,7 +89,7 @@
       "A. 若 $\\lim_{n\\to \\infty}\\cos (\\sin x_n)$ 存在, 则 $\\lim_{n\\to \\infty}x_n$ 存在.",
       "B. 若 $\\lim_{n\\to \\infty}\\sin (\\cos x_n)$ 存在, 则 $\\lim_{n\\to \\infty}x_n$ 存在.",
       "C. 若 $\\lim_{n\\to \\infty}\\cos (\\sin x_n)$ 存在, 则 $\\lim_{n\\to \\infty}\\sin x_n$ 存在, 但 $\\lim_{n\\to \\infty}x_n$ 不一定存在.",
-      "D. 若 $\\lim_{n\\to \\infty}\\sin (\\cos x_n)$ 存在, 则 $\\lim_{n\\to \\infty}\\cos x_n$ 存在, 但 $\\lim_{n\\to \\infty}x_n$ 不一定存在. 答案 D."
+      "D. 若 $\\lim_{n\\to \\infty}\\sin (\\cos x_n)$ 存在, 则 $\\lim_{n\\to \\infty}\\cos x_n$ 存在, 但 $\\lim_{n\\to \\infty}x_n$ 不一定存在."
     ],
     "testPoints": [
       "数列极限"
@@ -123,7 +127,7 @@
       "A. 当 $\\lim_{n\\to \\infty}\\sin x_n = 0$ 时, $\\lim_{n\\to \\infty}x_n = 0.$",
       "B. 当 $\\lim_{n\\to \\infty}\\left(x_n + \\sqrt{|x_n|}\\right) = 0$ 时, $\\lim_{n\\to \\infty}x_n = 0.$",
       "C. 当 $\\lim_{n\\to \\infty}(x_n + x_n^2) = 0$ 时, $\\lim_{n\\to \\infty}x_n = 0.$",
-      "D. 当 $\\lim_{n\\to \\infty}(x_n + \\sin x_n) = 0$ 时, $\\lim_{n\\to \\infty}x_n = 0.$ 答案 D."
+      "D. 当 $\\lim_{n\\to \\infty}(x_n + \\sin x_n) = 0$ 时, $\\lim_{n\\to \\infty}x_n = 0.$"
     ],
     "testPoints": [
       "定积分比较"
@@ -160,7 +164,8 @@
     "options": [
       "A. $I_{1} < I_{2} < I_{3}$ .",
       "B. $I_{2} < I_{1} < I_{3}$ .",
-      "C. $I_{1} < I_{3} < I_{2}$ . $(\\mathrm{D})I_{3} < I_{2} < I_{1}$ 答案 A."
+      "C. $I_{1} < I_{3} < I_{2}$ .",
+      "D. $I_{3} < I_{2} < I_{1}$"
     ],
     "testPoints": [
       "矩阵"
@@ -198,7 +203,7 @@
       "A. $A$ 有3个不同的特征值",
       "B. $A$ 有3个线性无关的特征向量",
       "C. $A$ 有3个两两线性无关的特征向量",
-      "D. $A$ 的属于不同特征值的特征向量相互正交 答案 A."
+      "D. $A$ 的属于不同特征值的特征向量相互正交"
     ],
     "testPoints": [
       "分块矩阵"
@@ -235,7 +240,8 @@
     "options": [
       "A. $\\left( \\begin{array}{ll}A & O\\\\ E & B \\end{array} \\right)y = 0$ 只有零解",
       "B. $\\left( \\begin{array}{cc}E & A\\\\ O & AB \\end{array} \\right)y = 0$ 只有零解.",
-      "C. $\\left( \\begin{array}{ll}A & B\\\\ O & B \\end{array} \\right)y = 0$ 与 $\\left( \\begin{array}{ll}B & A\\\\ O & A \\end{array} \\right)y = 0$ 同解 $\\left( \\begin{array}{ll}AB & B\\\\ O & A \\end{array} \\right)y = 0$ 与 $\\left( \\begin{array}{ll}BA & A\\\\ O & B \\end{array} \\right)y = 0$ 同解 答案 C."
+      "C. $\\left( \\begin{array}{ll}A & B\\\\ O & B \\end{array} \\right)y = 0$ 与 $\\left( \\begin{array}{ll}B & A\\\\ O & A \\end{array} \\right)y = 0$ 同解",
+      "D. $\\left( \\begin{array}{ll}AB & B\\\\ O & A \\end{array} \\right)y = 0$ 与 $\\left( \\begin{array}{ll}BA & A\\\\ O & B \\end{array} \\right)y = 0$ 同解"
     ],
     "testPoints": [
       "向量组"
@@ -273,7 +279,7 @@
       "A. $\\{0,1\\}$ .",
       "B. $\\{\\lambda \\mid \\lambda \\in \\mathbb{R}, \\lambda \\neq -2\\}$ .",
       "C. $\\{\\lambda \\mid \\lambda \\in \\mathbf{R}, \\lambda \\neq -1, \\lambda \\neq -2\\}$ .",
-      "D. $\\{\\lambda \\mid \\lambda \\in \\mathbf{R}, \\lambda \\neq -1\\}$ . 答案 C."
+      "D. $\\{\\lambda \\mid \\lambda \\in \\mathbf{R}, \\lambda \\neq -1\\}$ ."
     ],
     "testPoints": [
       "方差"
@@ -311,7 +317,7 @@
       "A. 1.",
       "B. 5.",
       "C. 9.",
-      "D. 12. 答案 C."
+      "D. 12."
     ],
     "testPoints": [
       "特征值"
@@ -347,7 +353,9 @@
     "question": "9 设随机变量 $X_{1}, X_{2}, \\dots, X_{n}$ 独立同分布，且 $X_{1}$ 的4阶矩存在， $E(X_{1}^{k}) = \\mu_{k}(k = 1,2,3,4)$ ，则根据切比雪夫不等式，对任意 $\\varepsilon > 0$ ，都有 $P\\left\\{\\left|\\frac{1}{n}\\sum_{i=1}^{n}X_{i}^{2} - \\mu_{2}\\right| \\geqslant \\varepsilon\\right\\} \\leqslant (\\quad)$",
     "options": [
       "A. $\\frac{\\mu_4 - \\mu_2^2}{n\\varepsilon^2}$ .",
-      "B. $\\frac{\\mu_4 - \\mu_2^2}{\\sqrt{n}\\varepsilon^2}.$ $\\left(\\mathrm{C}\\right)\\frac{\\mu_2 - \\mu_1^2}{n\\varepsilon^2}.$ $\\frac{\\mu_2 - \\mu_1^2}{\\sqrt{n}\\varepsilon^2}.$ 答案 A."
+      "B. $\\frac{\\mu_4 - \\mu_2^2}{\\sqrt{n}\\varepsilon^2}$",
+      "C. $\\frac{\\mu_2 - \\mu_1^2}{n\\varepsilon^2}$",
+      "D. $\\frac{\\mu_2 - \\mu_1^2}{\\sqrt{n}\\varepsilon^2}$"
     ],
     "testPoints": [
       "无偏估计"
@@ -484,7 +492,7 @@
       "A. $\\frac{1}{4}$ .",
       "B. $\\frac{1}{2}$ .",
       "C. $\\frac{\\sqrt{3}}{3}$ .",
-      "D. $\\frac{\\sqrt{2}}{2}$ . 答案 D."
+      "D. $\\frac{\\sqrt{2}}{2}$ ."
     ],
     "testPoints": [
       "幂级数"
@@ -720,7 +728,7 @@
       "A. 当 $f^{\\prime}(x) < 0$ 时, $f\\left(\\frac{1}{2}\\right) < 0$ .",
       "B. 当 $f''(x) < 0$ 时, $f\\left(\\frac{1}{2}\\right) < 0$ .",
       "C. 当 $f^{\\prime}(x) > 0$ 时, $f\\left(\\frac{1}{2}\\right) < 0$ .",
-      "D. 当 $f''(x) > 0$ 时, $f\\left(\\frac{1}{2}\\right) < 0$ . 答案 D."
+      "D. 当 $f''(x) > 0$ 时, $f\\left(\\frac{1}{2}\\right) < 0$ ."
     ],
     "testPoints": [
       "条件密度"

@@ -1,6 +1,6 @@
 <!-- 考研数学一 ·「母题 22 炼」板块 -->
 <meta charset="UTF-8">
-<link rel="stylesheet" href="css/muti.css?v=1">
+<link rel="stylesheet" href="css/muti.css?v=2">
 <section class="chapter-card" id="muti">
     <div class="ch-header muti-header">
         <div class="ch-title">🧬 母题 22 炼 <span class="ch-score">| 22 母题 × 每道 4 变式 · 抗遗忘引擎</span></div>
@@ -57,11 +57,12 @@
         </div>
     </div>
 
-    <!-- 题位总览网格（22 槽位，由 JS 渲染） -->
-    <div class="muti-grid-section">
-        <div class="muti-grid-title">🗺️ 22 个真题题位 · 已收录 <span id="mutiGridReady">0</span>/<span id="mutiGridTotal">22</span></div>
+    <!-- 题位总览网格（22 槽位，由 JS 渲染；可折叠，移动端默认收起让位给题目） -->
+    <details class="muti-grid-wrap" id="mutiGridWrap" open>
+        <summary>🗺️ 22 个真题题位 · 已收录 <span id="mutiGridReady">0</span>/<span id="mutiGridTotal">22</span>
+            <span class="mg-toggle-hint">点击折叠/展开</span></summary>
         <div class="muti-grid" id="mutiGrid"></div>
-    </div>
+    </details>
 
     <!-- 母题卡片列表（由 JS 渲染） -->
     <div class="muti-list" id="mutiList"></div>

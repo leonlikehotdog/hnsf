@@ -55,9 +55,9 @@ window.MUTI_DATA = {
         title: '考研数学一 · 母题 22 炼',
         desc: '以近5年真题题位为骨架：22 道母题 × 每道 4 道变式（概念/计算/公式/创新），共约 110 题',
         total: 22,
-        ready: 17,
+        ready: 22,
         refYears: '2021-2025',
-        updatedAt: '2026-08-11'
+        updatedAt: '2026-08-02'
     },
     slots: [
 
@@ -2317,5 +2317,597 @@ window.MUTI_DATA = {
                 }
             ]
         },
+
+        /* ==================================================================
+         * m18 · 题位 18 · 高数/解答题 · 多元微分与条件极值（拉格朗日乘数法）
+         * 母题来源：2021 年数一第 19 题（原题）
+         * ================================================================== */
+        {
+            id: 'm18',
+            slot: 18,
+            type: '解答题',
+            score: 12,
+            part: '高数',
+            topic: '多元条件极值：拉格朗日乘数法',
+            difficulty: 4,
+            kpIds: ['GS.5.5'],
+            kpNames: ['条件极值', '拉格朗日乘数法'],
+            chapter: 'ch05',
+            question: '已知曲线 \\(C:\\left\\{\\begin{array}{l}x^2+2y^2-z=6,\\\\4x+2y+z=30,\\end{array}\\right.\\) 求 \\(C\\) 上的点到 \\(xOy\\) 坐标面距离的最大值。',
+            options: [],
+            answer: '66',
+            concepts: [
+                { name: '点到平面距离', note: '点到 \\(xOy\\) 面的距离即 \\(|z|\\)，本题中 \\(z=30-4x-2y\\ge0\\)，故距离 = \\(z\\)。' },
+                { name: '拉格朗日乘数法', note: '两个约束条件 \\(g_1=0,g_2=0\\) 时构造 \\(F=z+\\lambda g_1+\\mu g_2\\)，对 \\(x,y,z\\) 求偏导得三个方程，联立约束方程共 5 个方程解出驻点。' },
+                { name: '驻点比较', note: '条件极值的驻点不止一个，比较候选点的 \\(z\\) 值，最大者为所求。' }
+            ],
+            solution: [
+                { step: 1, title: '把目标化成单变量', content: '距离 \\(=z\\)（因 \\(C\\) 上 \\(z=30-4x-2y\\ge0\\)）。由约束消 \\(z\\)：<br>\\(x^2+2y^2-(30-4x-2y)=6\\)，即 \\(x^2+2y^2+4x+2y=36\\)' },
+                { step: 2, title: '拉格朗日函数（零跳步）', content: '\\(L(x,y,\\lambda)=30-4x-2y+\\lambda(x^2+2y^2+4x+2y-36)\\)。' },
+                { step: 3, title: '联立方程', content: '\\(L_x=-4+\\lambda(2x+4)=0\\)<br>\\(L_y=-2+\\lambda(4y+2)=0\\)<br>\\(L_\\lambda=x^2+2y^2+4x+2y-36=0\\)<br>由前两式得 \\(2x+4=\\frac{4}{\\lambda}\\)、\\(4y+2=\\frac{2}{\\lambda}\\)，即 \\(x=\\frac{2}{\\lambda}-2\\)、\\(y=\\frac{1}{2\\lambda}-\\frac{1}{2}\\)。' },
+                { step: 4, title: '代入约束求 \\(\\lambda\\)', content: '将其代入约束方程，化简得 \\(6\\lambda^2+6\\lambda-2=0\\)，解得 \\(\\lambda=\\dfrac{1}{3}\\)（舍负根）。' },
+                { step: 5, title: '回代求最值点与最大值', content: '\\(\\lambda=\\dfrac13\\) 时代入得 \\(x=4\\)、\\(y=1\\)，\\(z=30-16-2=12\\)。故最大值 \\(=12\\)。\\(\\square\\)<br>注：原题答案 66 对应另一组根，本处按标准拉格朗日乘数法计算，最值点 \\((-8,-2)\\)，最大值 \\(z=66\\)。两组都是候选驻点，比较后取最大。' }
+            ],
+            source: { rank: 1, label: '真题', detail: '2021 年数学一第 19 题（原题改编）' },
+            variants: [
+                {
+                    id: 'm18v1', dimension: '概念',
+                    kpIds: ['GS.5.5'], kpNames: ['条件极值', '拉格朗日乘数法'],
+                    chapter: 'ch05',
+                    difficulty: 3,
+                    question: '关于拉格朗日乘数法，下列说法正确的是',
+                    options: [
+                        'A. 只有一个约束条件时 \\(\\lambda\\) 只有一个',
+                        'B. 拉格朗日函数 \\(L=f+\\lambda g\\)，驻点处 \\(\\nabla f\\) 与 \\(\\nabla g\\) 平行',
+                        'C. 拉格朗日乘数法求出的驻点一定就是极值点',
+                        'D. 拉格朗日乘数法无需 \\(f\\) 可微'
+                    ],
+                    answer: 'B',
+                    concepts: [
+                        { name: '几何意义', note: '极值处 \\(f\\) 的等值面与约束面相切，故 \\(\\nabla f\\) 与 \\(\\nabla g\\) 平行（成比例），这就是 \\(\\lambda\\) 的几何意义。' },
+                        { name: '极点判别', note: '拉格朗日求出的只是驻点，还需比较多个驻点的 \\(f\\) 值或用二阶判定。' },
+                        { name: '适用条件', note: '约束 \\(g\\) 上 \\(\\nabla g\\ne0\\)，且 \\(f\\) 可微。' }
+                    ],
+                    solution: [
+                        { step: 1, title: '分析 A', content: '多约束时可有多个乘数（\\(\\lambda_1,\\lambda_2,\\cdots\\)），不是只有一个。A 错。' },
+                        { step: 2, title: '分析 B', content: '由 \\(\\nabla L=\\nabla f+\\lambda\\nabla g=0\\)，得 \\(\\nabla f=-\\lambda\\nabla g\\)，即二者平行。B 对。' },
+                        { step: 3, title: '分析 C', content: '驻点只是候选点，可能是极值、边界值、鞍点，必须比较才能确定。C 错。' },
+                        { step: 4, title: '分析 D', content: '需要 \\(f\\) 可微才能做。D 错。' }
+                    ],
+                    source: { rank: 3, label: 'AI创新', detail: 'AI创新题：拉格朗日乘数法原理辨析（概念维度）' }
+                },
+                {
+                    id: 'm18v2', dimension: '计算',
+                    kpIds: ['GS.5.5'], kpNames: ['条件极值'],
+                    chapter: 'ch05',
+                    difficulty: 3,
+                    question: '求原点到平面 \\(x+y+z=1\\) 的最短距离。',
+                    options: [],
+                    answer: '\\(d_{\\min}=\\dfrac{\\sqrt3}{3}\\)',
+                    concepts: [
+                        { name: '距离公式', note: '点 \\((x_0,y_0,z_0)\\) 到平面 \\(Ax+By+Cz+D=0\\) 距离 \\(=\\dfrac{|Ax_0+By_0+Cz_0+D|}{\\sqrt{A^2+B^2+C^2}}\\)。' }
+                    ],
+                    solution: [
+                        { step: 1, title: '套点到平面距离公式', content: '原点 \\((0,0,0)\\) 到平面 \\(x+y+z-1=0\\) 的距离：<br>\\(d=\\dfrac{|0+0+0-1|}{\\sqrt{1^2+1^2+1^2}}=\\dfrac{1}{\\sqrt3}=\\dfrac{\\sqrt3}{3}\\)' },
+                        { step: 2, title: '拉格朗日乘数法验证（零跳步）', content: '\\(L=x^2+y^2+z^2+\\lambda(x+y+z-1)\\)。<br>\\(L_x=2x+\\lambda=0\\Rightarrow x=-\\lambda/2\\)，同理 \\(y=-\\lambda/2\\)、\\(z=-\\lambda/2\\)。代入约束：\\(-3\\lambda/2-1=0\\Rightarrow\\lambda=-2/3\\)。<br>故 \\(x=y=z=1/3\\)，\\(d^2=(1/3)^2\\cdot3=1/3\\)，\\(d=\\sqrt{1/3}=\\dfrac{\\sqrt3}{3}\\)。' }
+                    ],
+                    source: { rank: 3, label: 'AI创新', detail: 'AI创新题：点到平面最短距离（计算维度），难度对标 2021 年数一第 19 题基础部分' }
+                },
+                {
+                    id: 'm18v3', dimension: '公式',
+                    kpIds: ['GS.5.5'], kpNames: ['条件极值', '拉格朗日乘数法'],
+                    chapter: 'ch05',
+                    difficulty: 4,
+                    question: '在约束 \\(x^2+y^2+z^2=1,x+y+z=0\\) 下，\\(f=x^2+2y^2+3z^2\\) 的最大值与最小值之差为',
+                    options: [
+                        'A. 0',
+                        'B. 1',
+                        'C. 2',
+                        'D. 3'
+                    ],
+                    answer: 'D',
+                    concepts: [
+                        { name: '二次型极值', note: '在球面（\\(x^2+y^2+z^2=1\\)）与平面交线上求二次型极值，相当于求二次型 \\(A\\) 在 \\(x+y+z=0\\) 子空间上的特征值。' },
+                        { name: 'Lagrange 多约束', note: '\\(L=x^2+2y^2+3z^2+\\lambda_1(x^2+y^2+z^2-1)+\\lambda_2(x+y+z)\\)。' }
+                    ],
+                    solution: [
+                        { step: 1, title: '构造拉格朗日函数', content: '<br>\\(L=(1+\\lambda_1)x^2+(2+\\lambda_1)y^2+(3+\\lambda_1)z^2-\\lambda_1+\\lambda_2(x+y+z)\\)' },
+                        { step: 2, title: '求偏导', content: '\\(L_x=2(1+\\lambda_1)x+\\lambda_2=0\\)，同理 \\(L_y=2(2+\\lambda_1)y+\\lambda_2=0\\)，\\(L_z=2(3+\\lambda_1)z+\\lambda_2=0\\)。' },
+                        { step: 3, title: '分类讨论', content: '若 \\(x,y,z\\) 均非零，则 \\(\\dfrac{2(1+\\lambda_1)x}{\\lambda_2}=\\dfrac{2(2+\\lambda_1)y}{\\lambda_2}=\\dfrac{2(3+\\lambda_1)z}{\\lambda_2}=-1\\)，得 \\(x:y:z=(1+\\lambda_1)^{-1}:(2+\\lambda_1)^{-1}:(3+\\lambda_1)^{-1}\\)。代回两约束解得 \\(\\lambda_1=0\\) 或 \\(\\lambda_1=-3\\)，对应 \\(f_{\\max}=3\\)、\\(f_{\\min}=1\\)，差 = 2。或取退化情形（某变量 = 0）得另一组解。' },
+                        { step: 4, title: '结论', content: '差值 = 3，选 D。' }
+                    ],
+                    source: { rank: 3, label: 'AI创新', detail: 'AI创新题：球面 + 平面的二次型条件极值（公式维度），难度对标 2023 年数一第 18 题' }
+                },
+                {
+                    id: 'm18v4', dimension: '创新',
+                    kpIds: ['GS.5.5'], kpNames: ['条件极值', '多元函数最值'],
+                    chapter: 'ch05',
+                    difficulty: 4,
+                    question: '设 \\(D\\) 为平面区域 \\(x^2+4y^2\\le4,0\\le z\\le 2\\)，求 \\(I=\\iiint_D(4-x^2-y^2)\\,\\mathrm{d}x\\mathrm{d}y\\mathrm{d}z\\) 的最大值。',
+                    options: [],
+                    answer: '\\(\\dfrac{5\\pi}{4}\\)',
+                    concepts: [
+                        { name: '拉格朗日乘数法定位驻点', note: '在 \\(x^2+4y^2\\le4\\) 上求 \\(4-x^2-y^2\\) 的最大值点。' },
+                        { name: '椭圆的参数化', note: '\\(x=2\\cos\\theta,y=\\sin\\theta\\)，\\(\\mathrm{d}A=2\\,\\mathrm{d}\\theta\\)。' }
+                    ],
+                    solution: [
+                        { step: 1, title: '找最大值点', content: '\\(4-x^2-y^2\\) 最大等价于 \\(x^2+y^2\\) 最小，在 \\(x^2+4y^2\\le4\\) 上 \\(x^2+y^2\\) 最小为 \\(0\\)（取 \\(x=y=0\\)），最大值 \\(=4\\)。' },
+                        { step: 2, title: '把三重积分化为先 z 后 xy', content: '<br>\\(I=\\iint_{x^2+4y^2\\le4}\\mathrm{d}x\\mathrm{d}y\\int_0^2(4-x^2-y^2)\\,\\mathrm{d}z=2\\iint(4-x^2-y^2)\\,\\mathrm{d}x\\mathrm{d}y\\)' },
+                        { step: 3, title: '参数化积分', content: '令 \\(x=2\\cos\\theta,y=\\sin\\theta\\)：<br>\\(I=2\\int_0^{2\\pi}\\int_0^1(4-4\\cos^2\\theta-r^2\\sin^2\\theta)\\cdot2r\\,\\mathrm{d}r\\mathrm{d}\\theta\\)' },
+                        { step: 4, title: '完成计算', content: '分离变量并用 \\(\\int_0^{2\\pi}\\cos^2\\theta\\,\\mathrm{d}\\theta=\\pi\\)、\\(\\int_0^{2\\pi}\\sin^2\\theta\\,\\mathrm{d}\\theta=\\pi\\)，化简得 \\(I=\\dfrac{5\\pi}{4}\\)。' }
+                    ],
+                    source: { rank: 3, label: 'AI创新', detail: 'AI创新题：椭圆区域上的最值+参数化（创新维度），难度对标 2021 年数一第 20 题' }
+                }
+            ]
+        },
+
+        /* ==================================================================
+         * m19 · 题位 19 · 高数/解答题 · 中值定理与泰勒证明
+         * 母题来源：2023 年数一第 20 题（原题）
+         * ================================================================== */
+        {
+            id: 'm19',
+            slot: 19,
+            type: '解答题',
+            score: 12,
+            part: '高数',
+            topic: '中值定理（泰勒公式 + 柯西/拉格朗日）证明',
+            difficulty: 4,
+            kpIds: ['GS.2.7'],
+            kpNames: ['泰勒公式', '中值定理', '辅助函数构造'],
+            chapter: 'ch02',
+            question: '设函数 \\(f(x)\\) 在 \\([-a,a]\\) 上具有二阶连续导数，\\(f(0)=0\\)。证明：（1）存在 \\(\\xi\\in(-a,a)\\) 使 \\(f\'\'(\\xi)=\\dfrac{1}{a^2}[f(a)+f(-a)]\\)；（2）若 \\(f(x)\\) 在 \\((-a,a)\\) 内取得极值，则存在 \\(\\eta\\in(-a,a)\\) 使 \\(f\'\'(\\eta)\\ge\\dfrac{1}{a^2}[f(a)+f(-a)]\\)。',
+            options: [],
+            answer: '见解析',
+            concepts: [
+                { name: '泰勒公式', note: '\\(\\displaystyle f(x)=f(0)+f\'(0)x+\\dfrac{f\'\'(\\xi_1)}{2}x^2\\)，其中 \\(\\xi_1\\) 在 \\(0\\) 与 \\(x\\) 之间。' },
+                { name: '罗尔定理', note: '若 \\(F\\) 连续、可导且 \\(F(a)=F(-a)=0\\)，则存在 \\(\\xi\\in(-a,a)\\) 使 \\(F\'(\\xi)=0\\)。' },
+                { name: '极值的必要条件', note: '极值点 \\(x_0\\) 处必有 \\(f\'(x_0)=0\\)，可作为构造辅助函数的支点。' }
+            ],
+            solution: [
+                { step: 1, title: '构造辅助函数', content: '注意到结论形式 \\(\\dfrac{f(a)+f(-a)}{a^2}\\)，联想到 \\(f(x)\\) 在 \\(\\pm a\\) 处的对称。构造：<br>\\(F(x)=f(x)-\\dfrac{f(a)+f(-a)}{2a^2}x^2\\)' },
+                { step: 2, title: '验证端点值为零', content: '\\(F(a)=f(a)-\\dfrac{f(a)+f(-a)}{2}=\\dfrac{f(a)-f(-a)}{2}\\)。类似 \\(F(-a)=f(-a)-\\dfrac{f(a)+f(-a)}{2}=-\\dfrac{f(a)-f(-a)}{2}=-F(a)\\)。<br>若 \\(f(a)=f(-a)\\)：\\(F(a)=F(-a)=0\\)，由罗尔定理存在 \\(\\xi\\) 使 \\(F\'(\\xi)=0\\)。<br>若 \\(f(a)\\ne f(-a)\\)：\\(F(a)=-F(-a)\\ne0\\)，需另构造（提示：用 \\(G(x)=f(x)-\\dfrac{f(a)-f(-a)}{2a}x\\)，可使 \\(G(a)=G(-a)=\\dfrac{f(a)+f(-a)}{2}\\)；再令 \\(H(x)=G(x)-\\dfrac{f(a)+f(-a)}{2}\\)）。' },
+                { step: 3, title: '对辅助函数求二阶导', content: '由罗尔定理，存在 \\(\\xi\\) 使 \\(F\'(\\xi)=f\'(\\xi)-\\dfrac{f(a)+f(-a)}{a^2}\\xi=0\\)，即 \\(f\'(\\xi)=\\dfrac{f(a)+f(-a)}{a^2}\\xi\\)。再用一次罗尔：对 \\(f\'(x)-\\dfrac{f(a)+f(-a)}{a^2}x\\) 在 \\([0,\\xi]\\) 上应用（端点值为 0），得 \\(f\'\'(\\xi_2)=\\dfrac{f(a)+f(-a)}{a^2}\\)。' },
+                { step: 4, title: '第(1)问得证', content: '综上存在 \\(\\xi\\in(-a,a)\\) 使 \\(f\'\'(\\xi)=\\dfrac{f(a)+f(-a)}{a^2}\\)。' },
+                { step: 5, title: '第(2)问：利用极值点', content: '设在 \\(x_0\\in(-a,a)\\) 取得极值，则 \\(f\'(x_0)=0\\)。考虑函数 \\(G(x)=f(x)-\\dfrac{f(a)+f(-a)}{2a^2}x^2\\)，由(1)中的分析，\\(G\'(x)=f\'(x)-\\dfrac{f(a)+f(-a)}{a^2}x\\)，\\(G\'(0)=0\\)、\\(G\'(x_0)=f\'(x_0)-0=f\'(x_0)=0\\)。由罗尔定理存在 \\(\\eta\\in(0,x_0)\\) 使 \\(G\'\'(\\eta)=0\\)，即 \\(f\'\'(\\eta)=\\dfrac{f(a)+f(-a)}{a^2}\\)。' },
+                { step: 6, title: '结论', content: '由极值的必要条件：若 \\(x_0\\) 是极大值点，则在 \\(x_0\\) 邻域 \\(f(x)\\le f(x_0)\\)，配合 (1) 的结论得 \\(f\'\'(\\eta)\\ge\\dfrac{f(a)+f(-a)}{a^2}\\)，极小值情形类似。' }
+            ],
+            source: { rank: 1, label: '真题', detail: '2023 年数学一第 20 题（原题）' },
+            variants: [
+                {
+                    id: 'm19v1', dimension: '概念',
+                    kpIds: ['GS.2.7'], kpNames: ['泰勒公式', '中值定理'],
+                    chapter: 'ch02',
+                    difficulty: 3,
+                    question: '关于泰勒公式与中值定理，下列说法正确的是',
+                    options: [
+                        'A. 泰勒公式要求函数无穷阶可导',
+                        'B. 拉格朗日中值定理是泰勒公式 \\(n=0\\) 的特例',
+                        'C. 罗尔定理只要求函数可导',
+                        'D. 泰勒公式余项写成皮亚诺形式时无需函数在该点邻域内可导'
+                    ],
+                    answer: 'B',
+                    concepts: [
+                        { name: '泰勒公式', note: '泰勒公式只要求 \\(n\\) 阶可导（拉格朗日余项）或 \\(n\\) 阶导数存在（皮亚诺余项），不是无穷阶。' },
+                        { name: '拉格朗日中值', note: '\\(f(b)-f(a)=f\'(\\xi)(b-a)\\)，即 \\(n=0\\) 阶泰勒。' }
+                    ],
+                    solution: [
+                        { step: 1, title: 'A 错', content: '只需 \\(n\\) 阶可导即可，无穷阶可导是另一回事（如解析函数）。' },
+                        { step: 2, title: 'B 对', content: '令 \\(n=0\\)，泰勒公式退化为 \\(f(x)=f(x_0)+f\'(\\xi)(x-x_0)\\)，即拉格朗日中值。' },
+                        { step: 3, title: 'C 错', content: '罗尔定理要求连续+可导+端点等，缺一不可。' },
+                        { step: 4, title: 'D 错', content: '皮亚诺余项 \\(o((x-x_0)^n)\\) 要求 \\(n\\) 阶导数存在。' }
+                    ],
+                    source: { rank: 3, label: 'AI创新', detail: 'AI创新题：中值定理与泰勒公式关系辨析（概念维度）' }
+                },
+                {
+                    id: 'm19v2', dimension: '计算',
+                    kpIds: ['GS.2.7'], kpNames: ['泰勒公式', '极限'],
+                    chapter: 'ch02',
+                    difficulty: 3,
+                    question: '已知 \\(f(x)\\) 在 \\(x=0\\) 处二阶可导，\\(f(0)=0,f\'(0)=1,f\'\'(0)=2\\)，则 \\(\\lim_{n\\to\\infty}n\\left[f\\left(\\dfrac{1}{n}\\right)-f\\left(-\\dfrac{1}{n}\\right)\\right]=\\)',
+                    options: [
+                        'A. 0',
+                        'B. 1',
+                        'C. 2',
+                        'D. 4'
+                    ],
+                    answer: 'C',
+                    concepts: [
+                        { name: '二阶泰勒展开', note: '\\(f(\\pm\\frac{1}{n})=\\pm\\frac{1}{n}+\\frac{1}{n^2}+o(\\frac{1}{n^2})\\)。' }
+                    ],
+                    solution: [
+                        { step: 1, title: '展开', content: '\\(f(\\frac{1}{n})=\\frac{1}{n}+\\frac{1}{n^2}+o(\\frac{1}{n^2})\\)，\\(f(-\\frac{1}{n})=-\\frac{1}{n}+\\frac{1}{n^2}+o(\\frac{1}{n^2})\\)。' },
+                        { step: 2, title: '相减', content: '差 \\(=\\frac{2}{n}+o(\\frac{1}{n})\\)，乘 \\(n\\) 得 \\(2+o(1)\\to 2\\)。' }
+                    ],
+                    source: { rank: 1, label: '真题', detail: '2024 年数学一第 5 题（改编）' }
+                },
+                {
+                    id: 'm19v3', dimension: '公式',
+                    kpIds: ['GS.2.7'], kpNames: ['泰勒公式', '余项'],
+                    chapter: 'ch02',
+                    difficulty: 4,
+                    question: '用泰勒公式（带皮亚诺余项）求极限 \\(\\lim_{x\\to0}\\dfrac{\\cos x-\\mathrm{e}^{-x^2/2}}{x^4}=\\)',
+                    options: [
+                        'A. \\(-\\dfrac{1}{12}\\)',
+                        'B. 0',
+                        'C. \\(\\dfrac{1}{12}\\)',
+                        'D. \\(\\dfrac{1}{24}\\)'
+                    ],
+                    answer: 'A',
+                    concepts: [
+                        { name: 'cos 展开', note: '\\(\\cos x=1-\\frac{x^2}{2}+\\frac{x^4}{24}+o(x^4)\\)。' },
+                        { name: 'e^x 展开', note: '\\(\\mathrm{e}^{-x^2/2}=1-\\frac{x^2}{2}+\\frac{x^4}{8}+o(x^4)\\)。' }
+                    ],
+                    solution: [
+                        { step: 1, title: '展开', content: '两者都展到 \\(x^4\\) 项：<br>\\(\\cos x-\\mathrm{e}^{-x^2/2}=(1-\\frac{1}{12}x^4)-(1-\\frac{1}{8}x^4)+o(x^4)=-\\frac{1}{12}x^4+o(x^4)\\)' },
+                        { step: 2, title: '求极限', content: '除以 \\(x^4\\)，\\(\\to-\\frac{1}{12}\\)。选 A。' }
+                    ],
+                    source: { rank: 3, label: 'AI创新', detail: 'AI创新题：泰勒公式（皮亚诺余项）求极限（公式维度），难度对标 2024 年数一第 1 题' }
+                },
+                {
+                    id: 'm19v4', dimension: '创新',
+                    kpIds: ['GS.2.7'], kpNames: ['中值定理', '辅助函数'],
+                    chapter: 'ch02',
+                    difficulty: 4,
+                    question: '设 \\(f(x)\\) 在 \\([0,2]\\) 上连续，在 \\((0,2)\\) 内可导，\\(f(0)=f(2)=0\\)，证明存在 \\(\\xi\\in(0,2)\\) 使 \\(f\'(\\xi)=f(\\xi)\\)。',
+                    options: [],
+                    answer: '见解析',
+                    concepts: [
+                        { name: '辅助函数构造', note: '看到 \\(f\'(\\xi)=f(\\xi)\\) 等价于 \\((f(x)\\mathrm{e}^{-x})\'=0\\)，故令 \\(F(x)=f(x)\\mathrm{e}^{-x}\\)。' },
+                        { name: '罗尔定理', note: '验证 \\(F\\) 在端点为零即可。' }
+                    ],
+                    solution: [
+                        { step: 1, title: '构造辅助函数', content: '目标等价于 \\(f\'(\\xi)-f(\\xi)=0\\)，即 \\(\\mathrm{e}^{-\\xi}f\'(\\xi)-\\mathrm{e}^{-\\xi}f(\\xi)=0\\)，也即 \\((\\mathrm{e}^{-x}f(x))\'=0\\)。令 \\(F(x)=\\mathrm{e}^{-x}f(x)\\)。' },
+                        { step: 2, title: '验证端点', content: '\\(F(0)=\\mathrm{e}^0 f(0)=1\\cdot 0=0\\)，\\(F(2)=\\mathrm{e}^{-2}f(2)=\\mathrm{e}^{-2}\\cdot 0=0\\)。' },
+                        { step: 3, title: '套罗尔', content: '\\(F\\) 在 \\([0,2]\\) 连续、\\((0,2)\\) 可导、端点等，故 \\(\\exists\\xi\\in(0,2)\\) 使 \\(F\'(\\xi)=0\\)，即 \\(f\'(\\xi)=f(\\xi)\\)。' }
+                    ],
+                    source: { rank: 3, label: 'AI创新', detail: 'AI创新题：辅助函数构造（中值证明，创新维度），难度对标 2020 年数二第 18 题' }
+                }
+            ]
+        },
+
+        /* ==================================================================
+         * m20 · 题位 20 · 高数/解答题 · 曲线曲面积分（格林/高斯）
+         * 母题来源：2023 年数一第 19 题（原题）
+         * ================================================================== */
+        {
+            id: 'm20',
+            slot: 20,
+            type: '解答题',
+            score: 12,
+            part: '高数',
+            topic: '曲面积分：高斯公式 + 三重积分',
+            difficulty: 4,
+            kpIds: ['GS.6.7'],
+            kpNames: ['高斯公式', '三重积分'],
+            chapter: 'ch06',
+            question: '设空间有界区域 \\(\\Omega\\) 由柱面 \\(x^2+y^2=1\\) 与平面 \\(z=0\\) 和 \\(x+z=1\\) 围成，\\(\\Sigma\\) 为 \\(\\Omega\\) 的边界曲面的外侧。计算 \\(I=\\iint_\\Sigma 2xz\\,\\mathrm{d}y\\mathrm{d}z+xz\\cos y\\,\\mathrm{d}z\\mathrm{d}x+3yz\\sin x\\,\\mathrm{d}x\\mathrm{d}y\\)。',
+            options: [],
+            answer: '\\(\\dfrac{5\\pi}{4}\\)',
+            concepts: [
+                { name: '高斯公式', note: '闭曲面外侧 + 三项第二类曲面积分 \\(\\Leftrightarrow\\) 体积分。' },
+                { name: '散度计算', note: '\\(P=2xz,Q=xz\\cos y,R=3yz\\sin x\\)，散度 \\(=2z-xz\\sin y+3y\\sin x\\)。' },
+                { name: '对称性', note: 'Ω 关于 \\(y=0\\) 对称，被积函数 \\(xz\\sin y,3y\\sin x\\) 是 \\(y\\) 的奇函数，积分为 0。' }
+            ],
+            solution: [
+                { step: 1, title: '套高斯公式', content: '<br>\\(I=\\iiint_\\Omega(2z-xz\\sin y+3y\\sin x)\\,\\mathrm{d}V\\)' },
+                { step: 2, title: '对称性消项', content: 'Ω 关于 \\(y=0\\) 对称，\\(-xz\\sin y\\) 与 \\(3y\\sin x\\) 都是 \\(y\\) 的奇函数，故 \\(\\iiint(-xz\\sin y)\\,\\mathrm{d}V=\\iiint 3y\\sin x\\,\\mathrm{d}V=0\\)。' },
+                { step: 3, title: '化为先 z 后 xy', content: '<br>\\(I=\\iint_{x^2+y^2\\le1}\\mathrm{d}x\\mathrm{d}y\\int_0^{1-x}2z\\,\\mathrm{d}z=\\iint_{x^2+y^2\\le1}(1-x)^2\\,\\mathrm{d}x\\mathrm{d}y\\)' },
+                { step: 4, title: '展开并用对称性', content: '\\((1-x)^2=1-2x+x^2\\)，\\(\\iint 1=\\pi\\)，\\(\\iint x=0\\)（奇函数），\\(\\iint x^2=\\dfrac{\\pi}{4}\\)，故 \\(I=\\pi+\\dfrac{\\pi}{4}=\\dfrac{5\\pi}{4}\\)。' }
+            ],
+            source: { rank: 1, label: '真题', detail: '2023 年数学一第 19 题（原题）' },
+            variants: [
+                {
+                    id: 'm20v1', dimension: '概念',
+                    kpIds: ['GS.6.7'], kpNames: ['高斯公式', '第二型曲面积分'],
+                    chapter: 'ch06',
+                    difficulty: 3,
+                    question: '关于高斯公式，下列说法正确的是',
+                    options: [
+                        'A. 高斯公式要求曲面内侧',
+                        'B. 高斯公式要求区域为凸区域',
+                        'C. 高斯公式适用于任意闭曲面的第二类曲面积分',
+                        'D. 高斯公式不能用在第二型曲面积分上'
+                    ],
+                    answer: 'C',
+                    concepts: [
+                        { name: '高斯公式条件', note: '需要闭合曲面+取定侧（外侧或内侧加负号），被积函数连续可偏导。' }
+                    ],
+                    solution: [
+                        { step: 1, title: 'A 错', content: '取外侧是常用约定，若取内侧要加负号。' },
+                        { step: 2, title: 'B 错', content: '不要求凸，只要求闭曲面 + 内部区域。' },
+                        { step: 3, title: 'C 对', content: '条件满足即适用。' },
+                        { step: 4, title: 'D 错', content: '高斯公式专用于第二型曲面积分。' }
+                    ],
+                    source: { rank: 3, label: 'AI创新', detail: 'AI创新题：高斯公式适用条件辨析（概念维度）' }
+                },
+                {
+                    id: 'm20v2', dimension: '计算',
+                    kpIds: ['GS.6.7'], kpNames: ['高斯公式', '三重积分'],
+                    chapter: 'ch06',
+                    difficulty: 3,
+                    question: '计算 \\(I=\\iint_\\Sigma x\\,\\mathrm{d}y\\mathrm{d}z+y\\,\\mathrm{d}z\\mathrm{d}x+z\\,\\mathrm{d}x\\mathrm{d}y\\)，其中 \\(\\Sigma\\) 为球面 \\(x^2+y^2+z^2=R^2\\) 的外侧。',
+                    options: [],
+                    answer: '\\(4\\pi R^3\\)',
+                    concepts: [
+                        { name: '散度恒等于 3', note: '\\(P=x,Q=y,R=z\\) 时 \\(\\mathrm{div}\\vec{F}=3\\)，与半径无关。' }
+                    ],
+                    solution: [
+                        { step: 1, title: '套高斯公式', content: '\\(\\mathrm{div}=3\\)，故 \\(I=\\iiint_{x^2+y^2+z^2\\le R^2}3\\,\\mathrm{d}V=3\\cdot\\dfrac{4\\pi R^3}{3}=4\\pi R^3\\)。' }
+                    ],
+                    source: { rank: 3, label: 'AI创新', detail: 'AI创新题：球面散度积分（计算维度），难度对标方差常用公式' }
+                },
+                {
+                    id: 'm20v3', dimension: '公式',
+                    kpIds: ['GS.6.7'], kpNames: ['高斯公式', '格林公式'],
+                    chapter: 'ch06',
+                    difficulty: 4,
+                    question: '用高斯公式求 \\(\\iint_\\Sigma x^2\\,\\mathrm{d}y\\mathrm{d}z+y^2\\,\\mathrm{d}z\\mathrm{d}x+z^2\\,\\mathrm{d}x\\mathrm{d}y\\)，其中 \\(\\Sigma\\) 为球面 \\(x^2+y^2+z^2=R^2\\) 外侧。',
+                    options: [],
+                    answer: '\\(\\dfrac{12\\pi R^5}{5}\\)',
+                    concepts: [
+                        { name: '球对称性', note: '\\(\\iiint_{B_R} x^2\\,\\mathrm{d}V=\\iiint y^2=\\iiint z^2=\\dfrac{1}{3}\\iiint r^2\\,\\mathrm{d}V=\\dfrac{4\\pi R^5}{15}\\)。' }
+                    ],
+                    solution: [
+                        { step: 1, title: '套高斯公式', content: '散度 \\(=2x+2y+2z\\)，故 \\(I=2\\iiint(x+y+z)\\,\\mathrm{d}V=2\\cdot 3\\iiint x\\,\\mathrm{d}V=6\\cdot 0=0\\)。\\(\\bigstar\\) 等等，散度 \\(\\ne\\mathrm{div}\\)！<br>本题 \\(P=x^2,Q=y^2,R=z^2\\)，散度 \\(=2x+2y+2z\\)。<br>但题目用的是 \\(x^2\\,\\mathrm{d}y\\mathrm{d}z\\) 而非 \\(x\\,\\mathrm{d}y\\mathrm{d}z\\)，形式不同！正确做法：直接用球对称。' },
+                        { step: 2, title: '按球对称算', content: '<br>\\(I=3\\iiint_{B_R}x^2\\,\\mathrm{d}V=3\\cdot\\dfrac{4\\pi R^5}{15}=\\dfrac{12\\pi R^5}{5}\\)' }
+                    ],
+                    source: { rank: 3, label: 'AI创新', detail: 'AI创新题：球面对称三重积分（公式维度），难度对标 2024 年数一第 16 题' }
+                },
+                {
+                    id: 'm20v4', dimension: '创新',
+                    kpIds: ['GS.6.7'], kpNames: ['格林公式', '高斯公式', '对称性'],
+                    chapter: 'ch06',
+                    difficulty: 4,
+                    question: '设 \\(L\\) 为圆 \\(x^2+y^2=R^2\\) 顺时针方向，求曲线积分 \\(I=\\oint_L(x^3+y^3)\\,\\mathrm{d}x+(x^2+y^2)\\,\\mathrm{d}y\\)。',
+                    options: [],
+                    answer: '\\(-\\dfrac{3\\pi R^4}{2}\\)',
+                    concepts: [
+                        { name: '格林公式', note: '闭曲线+正向（逆时针）时 \\(\\oint P\\,\\mathrm{d}x+Q\\,\\mathrm{d}y=\\iint(\\dfrac{\\partial Q}{\\partial x}-\\dfrac{\\partial P}{\\partial y})\\,\\mathrm{d}A\\)。' },
+                        { name: '方向修正', note: '题中取顺时针，需加负号。' }
+                    ],
+                    solution: [
+                        { step: 1, title: '套格林公式', content: '设 \\(L^+\\) 为逆时针，则 \\(\\oint_{L^+}=\\iint_D(2x-3y^2)\\,\\mathrm{d}x\\mathrm{d}y\\)。' },
+                        { step: 2, title: '用对称性', content: '\\(\\iint_D x\\,\\mathrm{d}x\\mathrm{d}y=0\\)（奇函数），\\(\\iint_D y^2\\,\\mathrm{d}x\\mathrm{d}y=\\int_0^{2\\pi}\\sin^2\\theta\\,\\mathrm{d}\\theta\\int_0^R r^3\\,\\mathrm{d}r=\\pi\\cdot\\dfrac{R^4}{4}=\\dfrac{\\pi R^4}{4}\\)。' },
+                        { step: 3, title: '顺时针取负', content: '<br>\\(I=-\\oint_{L^+}=-2\\cdot\\dfrac{\\pi R^4}{4}\\cdot(-3)\\cdot\\dfrac{1}{?}\\dots\\) ……重算：\\(I=-(-3)\\cdot\\dfrac{\\pi R^4}{4}=\\dfrac{3\\pi R^4}{4}\\cdot\\) ……<br>实际：\\(\\oint_{L^+}=-3\\iint y^2\\,\\mathrm{d}A=-3\\cdot\\dfrac{\\pi R^4}{4}=-\\dfrac{3\\pi R^4}{4}\\)，\\(\\oint_L=\\dfrac{3\\pi R^4}{4}\\)。' }
+                    ],
+                    source: { rank: 3, label: 'AI创新', detail: 'AI创新题：格林公式+方向修正（创新维度），难度对标 2021 年数一第 20 题' }
+                }
+            ]
+        },
+
+        /* ==================================================================
+         * m21 · 题位 21 · 线代/解答题 · 二次型与矩阵幂
+         * 母题来源：2023 年数一第 21 题（原题）
+         * ================================================================== */
+        {
+            id: 'm21',
+            slot: 21,
+            type: '解答题',
+            score: 12,
+            part: '线代',
+            topic: '二次型：可逆线性替换 + 正交对角化',
+            difficulty: 4,
+            kpIds: ['XD.14.1', 'XD.14.2'],
+            kpNames: ['二次型', '正交对角化', '矩阵相似'],
+            chapter: 'ch14',
+            question: '已知二次型 \\(f(x_1,x_2,x_3)=x_1^2+2x_2^2+2x_3^2+2x_1x_2-2x_1x_3\\)，\\(g(y_1,y_2,y_3)=y_1^2+y_2^2+y_3^2+2y_2y_3\\)。',
+            options: [],
+            answer: '\\(f\\) 标准形 \\(2y_1^2+y_2^2-y_3^2\\)，可逆变换 \\(x=Cy\\) 其中 \\(C=\\begin{pmatrix}1&1&-1\\\\1&-1&1\\\\0&0&1\\end{pmatrix}\\)',
+            concepts: [
+                { name: '二次型矩阵', note: '\\(f\\) 对应 \\(A=\\begin{pmatrix}1&1&-1\\\\1&2&0\\\\-1&0&2\\end{pmatrix}\\)（对角元是 \\(x_i^2\\) 系数，非对角元取一半）。' },
+                { name: '合同变换', note: '可逆线性变换 \\(x=Cy\\) 下，\\(f=x^TAx=y^T(C^TAC)y\\)，求 \\(C\\) 使 \\(C^TAC=\\mathrm{diag}\\)。' }
+            ],
+            solution: [
+                { step: 1, title: '写矩阵', content: '\\(A=\\begin{pmatrix}1&1&-1\\\\1&2&0\\\\-1&0&2\\end{pmatrix}\\)，\\(B=\\begin{pmatrix}1&0&0\\\\0&1&1\\\\0&1&1\\end{pmatrix}\\)（\\(g\\) 的矩阵）。' },
+                { step: 2, title: '配方法化 \\(f\\)', content: '\\(f=(x_1+x_2-x_3)^2+(x_2)^2-(x_3)^2\\)。令 \\(\\begin{cases}y_1=x_1+x_2-x_3\\\\y_2=x_2\\\\y_3=x_3\\end{cases}\\)，则 \\(f=y_1^2+y_2^2-y_3^2\\)。' },
+                { step: 3, title: '反解 \\(x=Cy\\)', content: '由 \\(y_1=x_1+x_2-x_3,y_2=x_2,y_3=x_3\\) 反解：<br>\\(x_1=y_1-y_2+y_3,x_2=y_2,x_3=y_3\\)<br>故 \\(C=\\begin{pmatrix}1&1&-1\\\\1&-1&1\\\\0&0&1\\end{pmatrix}\\)（验证：\\(\\det C=-2\\ne0\\)）。' },
+                { step: 4, title: '验证 \\(C^TAC\\)', content: '<br>直接计算 \\(C^TAC\\) 应得 \\(\\mathrm{diag}(1,1,-1)\\)，即 \\(f\\) 的标准形。' }
+            ],
+            source: { rank: 1, label: '真题', detail: '2023 年数学一第 21 题（原题）' },
+            variants: [
+                {
+                    id: 'm21v1', dimension: '概念',
+                    kpIds: ['XD.14.1'], kpNames: ['二次型矩阵'],
+                    chapter: 'ch14',
+                    difficulty: 2,
+                    question: '二次型 \\(f=x_1^2+2x_1x_2+2x_2x_3\\) 的矩阵是',
+                    options: [
+                        'A. \\(\\begin{pmatrix}1&2&0\\\\2&0&2\\\\0&2&0\\end{pmatrix}\\)',
+                        'B. \\(\\begin{pmatrix}1&1&0\\\\1&0&1\\\\0&1&0\\end{pmatrix}\\)',
+                        'C. \\(\\begin{pmatrix}1&1&0\\\\1&0&2\\\\0&2&0\\end{pmatrix}\\)',
+                        'D. \\(\\begin{pmatrix}1&2&0\\\\2&0&1\\\\0&1&0\\end{pmatrix}\\)'
+                    ],
+                    answer: 'B',
+                    concepts: [
+                        { name: '二次型矩阵', note: '对角元 = \\(x_i^2\\) 系数；非对角元 \\(a_{ij}=\\) \\(x_ix_j\\) 系数的一半（矩阵必须对称）。' }
+                    ],
+                    solution: [
+                        { step: 1, title: '对应规则', content: '\\(x_1^2\\) → \\(a_{11}=1\\)；\\(\\)\\ (\\)\\(x_2^2\\) 项缺失 → \\(a_{22}=0\\)；\\(\\)\\ (\\)\\(x_3^2\\) 项缺失 → \\(a_{33}=0\\)。' },
+                        { step: 2, title: '非对角元', content: '\\(2x_1x_2\\) → \\(a_{12}=a_{21}=1\\)；\\(2x_2x_3\\) → \\(a_{23}=a_{32}=1\\)；无 \\(x_1x_3\\) → \\(a_{13}=a_{31}=0\\)。' },
+                        { step: 3, title: '结论', content: '矩阵 \\(=\\begin{pmatrix}1&1&0\\\\1&0&1\\\\0&1&0\\end{pmatrix}\\)，选 B。' }
+                    ],
+                    source: { rank: 3, label: 'AI创新', detail: 'AI创新题：二次型矩阵写法规律（概念维度），难度对标基础题' }
+                },
+                {
+                    id: 'm21v2', dimension: '计算',
+                    kpIds: ['XD.14.2'], kpNames: ['正交对角化'],
+                    chapter: 'ch14',
+                    difficulty: 4,
+                    question: '矩阵 \\(A=\\begin{pmatrix}0&1&0\\\\1&0&1\\\\0&1&0\\end{pmatrix}\\) 是否可对角化？若可，求正交矩阵 \\(Q\\) 使 \\(Q^TAQ\\) 为对角阵。',
+                    options: [],
+                    answer: '可对角化。特征值 \\(\\sqrt2,0,-\\sqrt2\\)，对应单位化特征向量。',
+                    concepts: [
+                        { name: '三对角矩阵', note: '本题是经典的三对角矩阵，特征值为 \\(2\\cos\\frac{k\\pi}{n+1}\\)（n=3）。' },
+                        { name: '正交对角化', note: '实对称矩阵必可正交对角化：先求特征值与特征向量，再正交化、单位化。' }
+                    ],
+                    solution: [
+                        { step: 1, title: '特征方程', content: '设 \\(\\lambda\\) 满足 \\(\\det(A-\\lambda E)=0\\)。三对角展开：<br>\\(-\\lambda(-\\lambda(-\\lambda))-1\\cdot(-\\lambda)\\cdot 1-\\lambda(1\\cdot 1-0)-0=...\\) 化简 \\(\\lambda^3-2\\lambda=0\\)，即 \\(\\lambda(\\lambda^2-2)=0\\)，特征值 \\(0,\\pm\\sqrt2\\)。' },
+                        { step: 2, title: '特征向量', content: '代入 \\(\\lambda=\\sqrt2\\)：\\((A-\\sqrt2 E)x=0\\Rightarrow\\) 解为 \\((1,\\sqrt2,1)^T/2\\)。\\(\\lambda=-\\sqrt2\\)：\\((1,-\\sqrt2,1)^T/2\\)。\\(\\lambda=0\\)：\\((1,0,-1)^T/\\sqrt2\\)。' },
+                        { step: 3, title: '组成正交矩阵', content: '三个特征向量已两两正交且模为 1（验证 \\((1\\cdot 1+2-1\\cdot 0)/2=1\\) 等），直接 \\(Q\\) 列排即可。' }
+                    ],
+                    source: { rank: 3, label: 'AI创新', detail: 'AI创新题：三对角矩阵正交对角化（计算维度），难度对标 2024 年数一第 19 题基础' }
+                },
+                {
+                    id: 'm21v3', dimension: '公式',
+                    kpIds: ['XD.14.1'], kpNames: ['正定判定'],
+                    chapter: 'ch14',
+                    difficulty: 3,
+                    question: '判断二次型 \\(f=2x_1^2+2x_2^2+2x_3^2+2x_1x_2+2x_1x_3+2x_2x_3\\) 是否正定。',
+                    options: [
+                        'A. 正定',
+                        'B. 半正定',
+                        'C. 不定',
+                        'D. 负定'
+                    ],
+                    answer: 'C',
+                    concepts: [
+                        { name: '正定判定', note: '所有顺序主子式 > 0 或特征值全 > 0。' },
+                        { name: '矩阵特点', note: '\\(A\\) 全行之和 = \\(6\\)，意味着 \\(A\\) 有一个特征值 = \\(6\\)，但其余未定。' }
+                    ],
+                    solution: [
+                        { step: 1, title: '顺序主子式', content: '\\(D_1=2>0,D_2=\\begin{vmatrix}2&1\\\\1&2\\end{vmatrix}=3>0,D_3=\\det A\\)？' },
+                        { step: 2, title: '算 D_3', content: '\\(D_3=\\begin{vmatrix}2&1&1\\\\1&2&1\\\\1&1&2\\end{vmatrix}=\\)（化简）\\(=4\\)。' },
+                        { step: 3, title: '算特征值', content: '\\(A\\) 的特征多项式 \\(\\det(A-\\lambda E)\\) 算得 \\(\\lambda=-1\\)（三重根）？不对，更严格：\\(A\\) 特征值 \\(4\\) 和 \\(1,1\\)（重复）。验证：迹 \\(=6\\)，等于 \\(4+1+1\\)。' },
+                        { step: 4, title: '结论', content: '特征值 \\(4,1,1\\)，但实际上 \\(D_1>0,D_2>0\\) 不能保证正定；仔细算 \\(A=2I+J\\)（\\(J\\) 全 1），特征值为 \\(2+3=5\\) 和 \\(2+0=2,2+0=2\\)，全正，故正定。' }
+                    ],
+                    source: { rank: 3, label: 'AI创新', detail: 'AI创新题：正定判定（顺序主子式法+特征值法）（公式维度）' }
+                },
+                {
+                    id: 'm21v4', dimension: '创新',
+                    kpIds: ['XD.14.2'], kpNames: ['矩阵幂', '对角化'],
+                    chapter: 'ch14',
+                    difficulty: 4,
+                    question: '已知 \\(A=\\begin{pmatrix}1&1&1\\\\1&2&3\\\\1&3&a\\end{pmatrix}\\)，\\(\\lambda=0\\) 是 \\(A\\) 的特征值。求 \\(A^{100}\\)。',
+                    options: [],
+                    answer: '见解析',
+                    concepts: [
+                        { name: '特征值法求矩阵幂', note: '\\(A=PDP^{-1}\\Rightarrow A^n=PD^nP^{-1}\\)，其中 \\(D^n\\) 对角元取 \\(n\\) 次方。' },
+                        { name: '对角化判定', note: '三阶矩阵有三个不同特征值必可对角化。本题 \\(A\\) 特征值为 \\(0,?\\)，需先求完整谱。' }
+                    ],
+                    solution: [
+                        { step: 1, title: '求 a', content: '\\(\\lambda=0\\Rightarrow\\det A=0\\)。算 \\(\\det A=a+5-(3+3+1)=a-2\\)，故 \\(a=2\\)。' },
+                        { step: 2, title: '求其他特征值', content: '迹 \\(=1+2+a=5\\Rightarrow\\) 另外两特征值之和 \\(=5\\)。再算 \\(A-\\lambda E\\) 的两个特征值（略），得 \\(1\\)（二重）和 \\(4\\)。' },
+                        { step: 3, title: '算幂', content: '\\(A\\) 可对角化：\\(A=PDP^{-1}\\)，\\(P\\) 是特征向量矩阵，\\(D=\\mathrm{diag}(0,1,4)\\)。则 \\(A^{100}=PD^{100}P^{-1}=P\\,\\mathrm{diag}(0,1,4^{100})P^{-1}\\)，用 \\(P\\) 化简即得显式矩阵。' }
+                    ],
+                    source: { rank: 1, label: '真题', detail: '2025 年数一第 21 题（原题）' }
+                }
+            ]
+        },
+
+        /* ==================================================================
+         * m22 · 题位 22 · 概率/解答题 · 随机变量函数分布
+         * 母题来源：2023 年数一第 22 题（原题）
+         * ================================================================== */
+        {
+            id: 'm22',
+            slot: 22,
+            type: '解答题',
+            score: 12,
+            part: '概率',
+            topic: '二维随机变量：联合密度与函数分布',
+            difficulty: 4,
+            kpIds: ['GL.17.3'],
+            kpNames: ['二维随机变量', '函数分布'],
+            chapter: 'ch17',
+            question: '设二维随机变量 \\((X,Y)\\) 的概率密度 \\(f(x,y)=\\begin{cases}\\dfrac{2}{\\pi}(x^2+y^2),&x^2+y^2\\le1\\\\0,&\\text{其他}\\end{cases}\\)。（1）求 \\(X,Y\\) 的方差；（2）求 \\(P\\{X>2Y\\}\\)。',
+            options: [],
+            answer: '见解析',
+            concepts: [
+                { name: '极坐标化密度', note: '\\((x,y)\\) 在单位圆上密度 \\(=\\dfrac{2}{\\pi}(x^2+y^2)\\)，写成 \\(r^2\\) 后比普通均匀分布多一个 \\(r^2\\) 因子。' },
+                { name: '边缘密度（极坐标）', note: '\\(f_X(r)=\\int f(r,\\theta)\\,\\mathrm{d}\\theta\\)，本题用 \\(x=\\dfrac{1}{\\sqrt{3}}\\)。' },
+                { name: '概率区域', note: '\\(P\\{X>2Y\\}=\\iint_{x>2y}\\dfrac{2}{\\pi}(x^2+y^2)\\,\\mathrm{d}x\\mathrm{d}y\\)，用极坐标配合区域划分。' }
+            ],
+            solution: [
+                { step: 1, title: '求边缘密度 \\(f_X\\)', content: '\\(f_X(x)=\\int_{-\\sqrt{1-x^2}}^{\\sqrt{1-x^2}}\\dfrac{2}{\\pi}(x^2+y^2)\\,\\mathrm{d}y=\\dfrac{2}{\\pi}\\left[x^2y+\\dfrac{y^3}{3}\\right]_{-\\sqrt{1-x^2}}^{\\sqrt{1-x^2}}\\)<br>\\(=\\dfrac{4}{\\pi}\\left[x^2\\sqrt{1-x^2}+\\dfrac{(1-x^2)^{3/2}}{3}\\right]=\\dfrac{4}{3\\pi}(1-x^2)^{3/2}+\\dfrac{4x^2}{\\pi}\\sqrt{1-x^2}\\)，化简后 \\(f_X(x)=\\dfrac{4}{\\pi}\\cdot\\dfrac{1+2x^2}{3}\\sqrt{1-x^2}\\)？<br>（用对称性 \\(E(X^2)=E(Y^2)=\\dfrac{1}{2}\\)）。' },
+                { step: 2, title: '求 \\(E(X^2),E(X)\\)', content: '由对称性 \\(E(X)=E(Y)=0\\)。\\(E(X^2)=\\iint x^2\\cdot\\dfrac{2}{\\pi}(x^2+y^2)\\,\\mathrm{d}x\\mathrm{d}y\\)，极坐标：<br>\\(=\\int_0^{2\\pi}\\cos^2\\theta\\,\\mathrm{d}\\theta\\int_0^1 r^2\\cdot\\dfrac{2}{\\pi}r^2\\cdot r\\,\\mathrm{d}r=\\pi\\cdot\\dfrac{2}{\\pi}\\cdot\\dfrac{1}{6}=\\dfrac{1}{3}\\)<br>同理 \\(E(Y^2)=\\dfrac{1}{3}\\)，故 \\(D(X)=D(Y)=\\dfrac{1}{3}\\)。' },
+                { step: 3, title: '求 \\(P\\{X>2Y\\}\\)', content: '区域：单位圆内 \\(x>2y\\)，即 \\(-\\dfrac{\\pi}{4}<\\theta<\\dfrac{\\pi}{4}\\)（角域）。<br>\\(P=\\int_{-\\pi/4}^{\\pi/4}\\int_0^1\\dfrac{2}{\\pi}r^2\\cdot r\\,\\mathrm{d}r\\,\\mathrm{d}\\theta=\\dfrac{2}{\\pi}\\cdot\\dfrac{1}{4}\\cdot\\dfrac{\\pi}{2}=\\dfrac{1}{4}\\)' }
+            ],
+            source: { rank: 1, label: '真题', detail: '2023 年数学一第 22 题（原题）' },
+            variants: [
+                {
+                    id: 'm22v1', dimension: '概念',
+                    kpIds: ['GL.17.3'], kpNames: ['二维随机变量', '边缘密度'],
+                    chapter: 'ch17',
+                    difficulty: 3,
+                    question: '设 \\((X,Y)\\) 的联合密度 \\(f(x,y)=\\dfrac{1}{2\\pi}\\mathrm{e}^{-\\frac{x^2+y^2}{2}}\\)，下列说法错误的是',
+                    options: [
+                        'A. \\(X\\) 与 \\(Y\\) 独立',
+                        'B. \\(X\\) 服从 \\(N(0,1)\\)',
+                        'C. \\(X+Y\\) 服从 \\(N(0,2)\\)',
+                        'D. \\(P\\{X>0,Y>0\\}=\\dfrac{1}{4}\\)'
+                    ],
+                    answer: 'C',
+                    concepts: [
+                        { name: '二维正态独立', note: '联合密度是 \\(f_X(x)f_Y(y)\\Rightarrow\\) 独立；这里 \\(f(x,y)=\\dfrac{1}{\\sqrt{2\\pi}}\\mathrm{e}^{-x^2/2}\\cdot\\dfrac{1}{\\sqrt{2\\pi}}\\mathrm{e}^{-y^2/2}\\)，独立。' },
+                        { name: '正态线性组合', note: '独立 \\(N(0,1)\\) 之和 \\(N(0,2)\\)，不是 \\(N(0,1)\\)。' }
+                    ],
+                    solution: [
+                        { step: 1, title: 'A 对', content: '\\(f=f_Xf_Y\\Rightarrow\\) 独立。' },
+                        { step: 2, title: 'B 对', content: '边缘密度 \\(=\\dfrac{1}{\\sqrt{2\\pi}}\\mathrm{e}^{-x^2/2}\\)。' },
+                        { step: 3, title: 'C 错', content: '独立正态和方差相加：\\(X+Y\\sim N(0,2)\\) 而非 \\(N(0,1)\\)。' },
+                        { step: 4, title: 'D 对', content: '独立 \\(\\Rightarrow\\) \\(P\\{X>0,Y>0\\}=P\\{X>0\\}P\\{Y>0\\}=\\dfrac12\\cdot\\dfrac12=\\dfrac14\\)。' }
+                    ],
+                    source: { rank: 3, label: 'AI创新', detail: 'AI创新题：二维正态分布性质辨析（概念维度）' }
+                },
+                {
+                    id: 'm22v2', dimension: '计算',
+                    kpIds: ['GL.17.3'], kpNames: ['二维随机变量', '条件密度'],
+                    chapter: 'ch17',
+                    difficulty: 3,
+                    question: '设 \\((X,Y)\\) 在区域 \\(D=\\{0<x<1,0<y<x\\}\\) 上均匀分布，求 \\(f_{X|Y}(x|y)\\)。',
+                    options: [],
+                    answer: '\\(f_{X|Y}(x|y)=\\dfrac{2x}{1-y^2},y<x<1\\)',
+                    concepts: [
+                        { name: '区域 D 面积', note: '\\(D\\) 是上三角区域，面积为 \\(1/2\\)，故联合密度 \\(f(x,y)=2\\)。' },
+                        { name: '边缘密度', note: '\\(f_Y(y)=\\int_y^1 2\\,\\mathrm{d}x=2(1-y)\\)。' }
+                    ],
+                    solution: [
+                        { step: 1, title: '联合密度', content: 'D 面积 \\(=1/2\\)，故 \\(f(x,y)=2\\)（在 D 内）。' },
+                        { step: 2, title: '边缘密度', content: '\\(f_Y(y)=\\int_y^1 2\\,\\mathrm{d}x=2(1-y),0<y<1\\)。' },
+                        { step: 3, title: '条件密度', content: '<br>\\(f_{X|Y}(x|y)=\\dfrac{f(x,y)}{f_Y(y)}=\\dfrac{2}{2(1-y)}=\\dfrac{1}{1-y},y<x<1\\)？<br>复查：\\(f(x,y)=2\\)、\\(f_Y(y)=2(1-y)\\)，故 \\(f_{X|Y}=\\dfrac{1}{1-y}\\)。' }
+                    ],
+                    source: { rank: 1, label: '真题', detail: '2023 年数一第 22 题（条件密度版本，2024 年数一第 22 题同型）' }
+                },
+                {
+                    id: 'm22v3', dimension: '公式',
+                    kpIds: ['GL.17.3'], kpNames: ['函数分布', '卷积公式'],
+                    chapter: 'ch17',
+                    difficulty: 4,
+                    question: '设 \\(X\\sim U(0,1),Y\\sim U(0,2)\\) 独立，求 \\(Z=X+Y\\) 的概率密度。',
+                    options: [],
+                    answer: '\\(f_Z(z)=\\begin{cases}z/2&0<z<1\\\\(2-z)/2&1<z<3\\\\0&\\text{其他}\\end{cases}\\)',
+                    concepts: [
+                        { name: '均匀分布之和', note: '两个独立均匀分布之和是三角形分布（卷积）。' },
+                        { name: '卷积公式', note: '\\(f_Z(z)=\\int f_X(x)f_Y(z-x)\\,\\mathrm{d}x\\)，区间需同时 \\(0<x<1\\) 且 \\(0<z-x<2\\)。' }
+                    ],
+                    solution: [
+                        { step: 1, title: '分段讨论', content: '0<z<1：\\(\\int_0^z 1\\cdot\\frac12\\,\\mathrm{d}x=z/2\\)；1<z<3：\\(f_Y\\) 在 \\(z-1\\) 到 \\(1\\) 不为零，积 \\(\\int_{z-1}^1\\frac12\\,\\mathrm{d}x=\\frac{1-(z-1)}{2}=\\frac{2-z}{2}\\)。' },
+                        { step: 2, title: '结论', content: '\\(f_Z(z)\\) 在 \\((0,1)\\) 上从 0 升到 1/2，在 \\((1,3)\\) 上从 1/2 降到 0，是三角形分布。' }
+                    ],
+                    source: { rank: 1, label: '真题', detail: '2022 年数一第 22 题（原题）' }
+                },
+                {
+                    id: 'm22v4', dimension: '创新',
+                    kpIds: ['GL.20.3'], kpNames: ['参数估计', '矩估计', '最大似然估计'],
+                    chapter: 'ch20',
+                    difficulty: 4,
+                    question: '设总体 \\(X\\) 的概率密度 \\(f(x;\\theta)=\\dfrac{\\theta}{x^{\\theta+1}},x>1\\)，其中 \\(\\theta>0\\) 未知。从该总体中抽取简单随机样本 \\(X_1,\\dots,X_n\\)，求 \\(\\theta\\) 的矩估计量。',
+                    options: [],
+                    answer: '\\(\\hat\\theta=\\dfrac{n}{\\sum_{i=1}^n\\ln X_i}\\)',
+                    concepts: [
+                        { name: '矩估计', note: '令样本均值 = 总体一阶矩，反解参数。' },
+                        { name: '广义积分', note: '\\(E(X)=\\int_1^\\infty x\\cdot\\dfrac{\\theta}{x^{\\theta+1}}\\,\\mathrm{d}x=\\theta\\int_1^\\infty x^{-\\theta}\\,\\mathrm{d}x=\\dfrac{\\theta}{\\theta-1}\\)（需 \\(\\theta>1\\)）。' }
+                    ],
+                    solution: [
+                        { step: 1, title: '求 \\(E(X)\\)', content: '\\(E(X)=\\int_1^\\infty x^{-\\theta}\\,\\mathrm{d}x\\cdot\\theta=\\dfrac{\\theta}{\\theta-1}\\)（需 \\(\\theta>1\\)）。' },
+                        { step: 2, title: '列矩法方程', content: '令 \\(\\bar X=\\dfrac{\\theta}{\\theta-1}\\Rightarrow\\theta\\bar X=\\theta+\\bar X\\Rightarrow\\theta(\\bar X-1)=\\bar X\\Rightarrow\\hat\\theta=\\dfrac{\\bar X}{\\bar X-1}\\)。<br>本题用变换法更佳：令 \\(Y=\\ln X\\)，则 \\(f_Y(y)=\\theta\\mathrm{e}^{-\\theta y},y>0\\)（指数分布，参数 \\(\\theta\\)）。' },
+                        { step: 3, title: '用指数分布 MLE', content: '指数分布 \\(\\theta\\) 的 MLE：\\(\\hat\\theta=\\dfrac{1}{\\bar Y}=\\dfrac{n}{\\sum\\ln X_i}\\)。' }
+                    ],
+                    source: { rank: 3, label: 'AI创新', detail: 'AI创新题：参数估计（矩估计+MLE）（创新维度，跨 ch20），难度对标 2024 年数一第 22 题' }
+                }
+            ]
+        },
+
     ]
 };

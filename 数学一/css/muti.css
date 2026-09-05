@@ -33,12 +33,17 @@
 }
 .filter-hint { font-size: 12px; color: #94a3b8; margin-left: 10px; }
 
-/* ===== 题位总览网格 ===== */
-.muti-grid-section { margin-bottom: 18px; }
-.muti-grid-title {
+/* ===== 题位总览网格（可折叠）===== */
+.muti-grid-wrap { margin-bottom: 18px; }
+.muti-grid-wrap summary {
     font-size: 14px; font-weight: 600; color: #1a3a5c;
-    margin-bottom: 8px;
+    margin-bottom: 8px; cursor: pointer; user-select: none;
+    list-style: none;
 }
+.muti-grid-wrap summary::-webkit-details-marker { display: none; }
+.muti-grid-wrap summary::before { content: '▸ '; color: #0e7490; }
+.muti-grid-wrap[open] summary::before { content: '▾ '; }
+.mg-toggle-hint { font-size: 12px; color: #94a3b8; font-weight: 400; margin-left: 8px; }
 .muti-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
@@ -102,6 +107,20 @@
 .muti-meta .chip.part-概率 { color: #047857; border-color: #a7f3d0; background: #ecfdf5; }
 .muti-meta .chip.diff { color: #b45309; }
 .muti-meta .chip.slot-chip { color: #0e7490; border-color: #a5f3fc; background: #ecfeff; }
+
+/* ===== 邪修秒杀口诀 / 易错点提示 ===== */
+.muti-tips {
+    background: #fef3c7; border: 1px solid #fde68a; border-radius: 8px;
+    padding: 8px 10px; margin-top: 8px;
+}
+.mt-label { font-weight: 700; color: #92400e; font-size: 13px; margin-bottom: 4px; }
+.mt-item { font-size: 13px; color: #78350f; line-height: 1.7; }
+.muti-mistakes {
+    background: #fee2e2; border: 1px solid #fecaca; border-radius: 8px;
+    padding: 8px 10px; margin-top: 8px;
+}
+.mm-label { font-weight: 700; color: #991b1b; font-size: 13px; margin-bottom: 4px; }
+.mm-item { font-size: 13px; color: #7f1d1d; line-height: 1.7; }
 
 /* ===== 来源标注 ===== */
 .muti-source-row {
