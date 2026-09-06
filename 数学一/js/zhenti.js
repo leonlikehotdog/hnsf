@@ -787,27 +787,12 @@
         };
     }
 
-    /* ===== 折叠式：答案 + 解题骨架 + 详细步骤 ===== */
+    /* ===== 折叠式：答案 + 详细步骤 ===== */
     function renderCollapsibleSolution(q) {
         const hasFullSolution = q.solution && q.solution.length > 0;
-        const hasSkeleton = hasFullSolution;
         const hasCommonErrors = q.commonErrors && q.commonErrors.length > 0;
         const answerText = q.answer || '（参考解析请查阅配套解析 PDF）';
-        const solveOverview = renderSolutionOverview(q, hasFullSolution);
         const reviewAdvice = renderReviewAdvice(q, hasFullSolution, hasCommonErrors);
-
-        // 骨架：来自 solution steps 的 title 列表
-        let skeletonHtml = '';
-        if (hasSkeleton) {
-            const items = q.solution.map(s =>
-                `<li><strong>第 ${s.step} 步</strong>：${escapeHtml(s.title || '')}</li>`
-            ).join('');
-            skeletonHtml = `<ol class="skeleton-list">${items}</ol>`;
-        } else if (q.testPoints && q.testPoints.length) {
-            skeletonHtml = `<ul class="skeleton-list">${q.testPoints.map(t => `<li>${escapeHtml(t)}</li>`).join('')}</ul>`;
-        } else {
-            skeletonHtml = '<p class="empty-tip">本题暂无解析骨架，请参考涉及知识点章节。</p>';
-        }
 
         // 详细步骤
         let detailedHtml = '';
@@ -822,8 +807,7 @@
             `).join('');
             detailedHtml = `
                 <div class="detail-intro">
-                    <p><strong>阅读顺序：</strong>先看骨架确认思路，再自己尝试推一遍，最后展开下面的步骤核对细节。</p>
-                    <p><strong>本题解析状态：</strong>已配置 ${totalSteps} 步详细过程，可直接按“入口 → 推导 → 结论”的顺序复盘。</p>
+                    <p><strong>提示：</strong>先自己尝试推一遍，再展开下面的步骤逐行核对，效果更好。</p>
                 </div>
                 ${steps}
             `;
@@ -850,12 +834,6 @@
                     <div class="answer-main"><strong>参考答案：</strong>${escapeHtml(answerText)}</div>
                     <div class="answer-guide">${reviewAdvice}</div>
                 </div>
-            </details>
-
-            <!-- 解题骨架：默认展开 -->
-            <details class="q-collapse q-collapse-skeleton" open>
-                <summary>【解题骨架】<span class="collapse-hint">点击收起</span></summary>
-                <div class="skeleton-content">${solveOverview}${skeletonHtml}</div>
             </details>
 
             <!-- 详细步骤：默认折叠 -->
@@ -911,8 +889,8 @@
     function renderReviewAdvice(q, hasFullSolution, hasCommonErrors) {
         const tips = [];
         tips.push(hasFullSolution
-            ? `建议先看“解题骨架”，自己做一遍后再展开“详细步骤”，这样更容易真正记住。`
-            : '这题目前还没有完整分步过程，先看骨架和涉及知识点，再去对应章节补方法。');
+            ? `建议先自己推导一遍，再展开“详细步骤”逐行核对，这样更容易真正记住。`
+            : '这题目前还没有完整分步过程，先看答案与涉及知识点，再去对应章节补方法。');
         if (hasCommonErrors) {
             tips.push(`复盘时重点盯住“常见错误”部分，避免同类题在同一个地方反复失分。`);
         }
@@ -938,7 +916,7 @@
             </div>
             <div class="solution-step">
                 <div class="step-num">复盘模板</div>
-                <div class="step-title">先自己做，再对照骨架补缺口</div>
+                <div class="step-title">先自己尝试推导，再对照下方步骤复盘</div>
                 <div class="step-content">
                     <ol class="solution-fallback-list">
                         ${lines.map(line => `<li>${escapeHtml(line)}</li>`).join('')}

@@ -8,7 +8,7 @@
     "type": "选择题",
     "part": "高数",
     "difficulty": 3,
-    "question": "# 2024年全国硕士研究生入学统一考试数学（一）试题\n考试时间：180分钟，满分：150分\n一、选择题： $1 \\sim 10$ 小题，每小题5分，共50分，下列每题给出的四个选项中，只有一个选项符合题目要求，请将所选项前的字母填在答题纸指定位置上。\n已知函数 $f(x) = \\int_0^x\\mathrm{e}^{\\cos t}\\mathrm{d}t$ ， $g(x) = \\int_0^{\\sin x}\\mathrm{e}^{t^2}\\mathrm{d}t$ ，则1.",
+    "question": "已知函数 $f(x)=\\int_0^x\\mathrm{e}^{\\cos t}\\,\\mathrm{d}t$，$g(x)=\\int_0^{\\sin x}\\mathrm{e}^{t^2}\\,\\mathrm{d}t$，则（ ）",
     "options": [
       "A. $f(x)$ 为奇函数, $g_{(x)}$ 为偶函数",
       "B. $f(x)$ 为偶函数, $g_{(x)}$ 为奇函数",
@@ -222,9 +222,9 @@
     "qnum": 5,
     "score": 5,
     "type": "选择题",
-    "part": "高数",
+    "part": "线代",
     "difficulty": 3,
-    "question": "在空间直角坐标系 $O - xyz$ 中，三张平面 $\\pi_{i}:a_{i}x + b_{i}y + c_{i}z = d_{i}$\n$(i = 1,2,3)$ 位置关系如图所示，记 $\\pmb{\\alpha}_{i} = (a_{i},b_{i},c_{i}),\\pmb{\\beta}_{i} = (a_{i},b_{i},c_{i},d_{i})$\n若 $r\\left( \\begin{array}{l}\\pmb{\\alpha}_1\\\\ \\pmb{\\alpha}_2\\\\ \\pmb{\\alpha}_3 \\end{array} \\right) = m,r\\left( \\begin{array}{l}\\pmb {\\beta}_1\\\\ \\pmb {\\beta}_2\\\\ \\pmb {\\beta}_3 \\end{array} \\right) = n$ ，则\n![](images/fe951ed74c2efdc3e42c9e25c46887fd8cd8c2e2684a82656a733980c354d748.jpg)",
+    "question": "在空间直角坐标系 $O-xyz$ 中，三张平面 $\\pi_i:a_ix+b_iy+c_iz=d_i\\ (i=1,2,3)$ 的位置关系如图所示，记 $\\pmb\\alpha_i=(a_i,b_i,c_i)$，$\\pmb\\beta_i=(a_i,b_i,c_i,d_i)$，若 $r\\begin{pmatrix}\\pmb\\alpha_1\\\\ \\pmb\\alpha_2\\\\ \\pmb\\alpha_3\\end{pmatrix}=m$，$r\\begin{pmatrix}\\pmb\\beta_1\\\\ \\pmb\\beta_2\\\\ \\pmb\\beta_3\\end{pmatrix}=n$，则（ ）",
     "options": [
       "A. $m = 1, n = 2$",
       "B. $m = n = 2$",
@@ -278,7 +278,7 @@
     "type": "选择题",
     "part": "线代",
     "difficulty": 3,
-    "question": "设向量 $\\alpha_{1} = \\begin{pmatrix} a \\\\ 1 \\\\ -1 \\\\ 1 \\end{pmatrix}$ , $\\alpha_{2} = \\begin{pmatrix} 1 \\\\ 1 \\\\ b \\\\ a \\end{pmatrix}$ , $\\alpha_{3} = \\begin{pmatrix} 1 \\\\ a \\\\ -1 \\\\ 1 \\end{pmatrix}$ , 若 $\\alpha_{1}, \\alpha_{2}, \\alpha_{3}$ 线性相关, 且其中任意两个向量均线性无关, 则\n6.",
+    "question": "设向量 $\\pmb\\alpha_1=\\begin{pmatrix}a\\\\1\\\\-1\\\\1\\end{pmatrix}$，$\\pmb\\alpha_2=\\begin{pmatrix}1\\\\1\\\\b\\\\a\\end{pmatrix}$，$\\pmb\\alpha_3=\\begin{pmatrix}1\\\\a\\\\-1\\\\1\\end{pmatrix}$，若 $\\pmb\\alpha_1,\\pmb\\alpha_2,\\pmb\\alpha_3$ 线性相关，且其中任意两个向量均线性无关，则（ ）",
     "options": [
       "A. $a = 1, b \\neq -1$",
       "B. $a = 1, b = -1$",
@@ -330,9 +330,9 @@
     "qnum": 7,
     "score": 5,
     "type": "选择题",
-    "part": "概率",
+    "part": "线代",
     "difficulty": 3,
-    "question": "7.\n3阶矩阵A的秩为2非零向量满足Aα=0，任意向量β，使得βα=0且Aβ=β，则下列结论正确的是",
+    "question": "设 $A$ 是秩为 2 的 3 阶矩阵，$\\pmb\\alpha$ 是满足 $A\\pmb\\alpha=0$ 的非零向量。若对满足 $\\pmb\\beta^{\\mathrm T}\\pmb\\alpha=0$ 的任意向量 $\\pmb\\beta$，均有 $A\\pmb\\beta=\\pmb\\beta$，则下列结论正确的是（ ）",
     "options": [
       "A. $A^{3}$ 的迹为 2",
       "B. $A^{3}$ 的迹为 5",
@@ -384,9 +384,9 @@
     "qnum": 8,
     "score": 5,
     "type": "选择题",
-    "part": "高数",
+    "part": "概率",
     "difficulty": 3,
-    "question": "8. 设随机变量 $\\mathrm{X}$ 与 $\\mathrm{Y}$ 独立， $\\mathrm{X}$ 服从 $\\mathrm{N}(0,2)$ 的正态分布， $\\mathrm{Y}$ 服从 $\\mathrm{N}(-2,2)$ 的正态分布，若 $\\mathrm{P}\\{2\\mathrm{X} + \\mathrm{Y} < \\mathrm{a}\\} = \\mathrm{P}\\{\\mathrm{X} > \\mathrm{Y}\\}$ ，则 $\\mathrm{a} =$",
+    "question": "设随机变量 $X$ 与 $Y$ 相互独立，$X\\sim N(0,2)$，$Y\\sim N(-2,2)$。若 $P\\{2X+Y<a\\}=P\\{X>Y\\}$，则 $a=$（ ）",
     "options": [
       "A. $-2 - \\sqrt{10}$",
       "B. $-2 + \\sqrt{10}$",
@@ -492,9 +492,9 @@
     "qnum": 10,
     "score": 5,
     "type": "选择题",
-    "part": "线代",
+    "part": "概率",
     "difficulty": 3,
-    "question": "10. 设随机变量 $X$ ， $Y$ 相互独立，且均服从参数为 $\\lambda$ 的指数分布，令 $Z = |X - Y|$ ，则下列随机变量与 $Z$ 同分布的是",
+    "question": "设随机变量 $X$ 与 $Y$ 相互独立，且均服从参数为 $\\lambda$ 的指数分布，令 $Z=|X-Y|$，则下列随机变量与 $Z$ 同分布的是（ ）",
     "options": [
       "A. $X + Y$",
       "B. $\\frac{X + Y}{2}$",
@@ -548,7 +548,7 @@
     "type": "填空题",
     "part": "高数",
     "difficulty": 3,
-    "question": "二、填空题： $11\\sim 16$ 小题，每小题5分，共30分，请将答案写在答题纸指定位置上。\n若 $\\lim_{x\\to 0}\\frac{\\left(1 + ax^2\\right)^{\\sin x} - 1}{x^3} = 6$ 则 $a =$ 11.",
+    "question": "若 $\\displaystyle\\lim_{x\\to0}\\frac{\\left(1+ax^2\\right)^{\\sin x}-1}{x^3}=6$，则 $a=$ ＿＿＿＿。",
     "options": [],
     "testPoints": [
       "二重积分"
@@ -597,7 +597,7 @@
     "type": "填空题",
     "part": "高数",
     "difficulty": 3,
-    "question": "$$\nz = f (u, v) \\text {有 二 阶 连 续 导 数 ，} \\mathrm {d} f \\big | _ {(1, 1)} = 3 \\mathrm {d} u + 4 \\mathrm {d} v,\n$$\n$$\ny = f (\\cos x, 1 + x ^ {2}) \\text {, 则} \\frac {\\mathrm {d} ^ {2} y}{\\mathrm {d} x ^ {2}} \\Bigg | _ {x = 0} =\n$$\n12.",
+    "question": "设函数 $z=f(u,v)$ 具有 2 阶连续偏导数，且 $\\mathrm{d}f\\big|_{(1,1)}=3\\,\\mathrm{d}u+4\\,\\mathrm{d}v$。令 $y=f(\\cos x,\\ 1+x^2)$，则 $\\left.\\dfrac{\\mathrm{d}^2y}{\\mathrm{d}x^2}\\right|_{x=0}=$ ＿＿＿＿。",
     "options": [],
     "testPoints": [
       "反常积分"
@@ -646,10 +646,11 @@
     "type": "填空题",
     "part": "高数",
     "difficulty": 3,
-    "question": "13.\n若函数f（x）-x+1.若f（x）=a+∑αcosx.x∈[0,π].则极限limn²sinα",
+    "question": "设函数 $f(x)=x+1$，若 $f(x)=\\dfrac{a_0}{2}+\\displaystyle\\sum_{n=1}^{\\infty}a_n\\cos nx$（$x\\in[0,\\pi]$），则 $\\displaystyle\\lim_{n\\to\\infty}n^2\\sin a_{2n-1}=$ ＿＿＿＿。",
     "options": [],
     "testPoints": [
-      "微分方程"
+      "傅里叶级数",
+      "无穷小极限"
     ],
     "knowledgeIds": [
       "GS.8.1"
@@ -664,16 +665,21 @@
     "solution": [
       {
         "step": 1,
-        "title": "题面核对说明",
-        "content": "当前这道题在 JSON 中存在明显 OCR 断裂：题干、极限式和答案字段都已损坏，现有文本无法可靠还原原题。"
+        "title": "写出余弦级数系数公式",
+        "content": "\\(a_n=\\dfrac{2}{\\pi}\\displaystyle\\int_0^\\pi (x+1)\\cos nx\\,\\mathrm{d}x=\\dfrac{2}{\\pi}\\left[\\dfrac{x\\sin nx}{n}+\\dfrac{\\cos nx}{n^2}+\\dfrac{\\sin nx}{n}\\right]_0^\\pi=\\dfrac{2}{n^2\\pi}(\\cos n\\pi-1)=\\dfrac{2}{n^2\\pi}\\bigl((-1)^n-1\\bigr)\\)。"
       },
       {
         "step": 2,
-        "title": "处理建议",
-        "content": "这题不适合硬编全过程。建议后续补一张原卷截图或把完整题面贴进来，我再按当前项目的思维导图格式补成可直接刷题的详细解析。"
+        "title": "只取奇数项",
+        "content": "当 \\(n=2m-1\\) 为奇数时，\\((-1)^n-1=-2\\)，故<br>\\(a_{2m-1}=-\\dfrac{4}{(2m-1)^2\\pi}\\)。"
+      },
+      {
+        "step": 3,
+        "title": "代入极限并求值",
+        "content": "\\(\\sin x\\sim x\\ (x\\to0)\\)，且 \\(a_{2n-1}\\to0\\)，故<br>\\(\\displaystyle\\lim_{n\\to\\infty}n^2\\sin a_{2n-1}=\\lim_{n\\to\\infty}n^2\\cdot a_{2n-1}=\\lim_{n\\to\\infty}\\dfrac{-4n^2}{(2n-1)^2\\pi}=-\\dfrac{1}{\\pi}\\)。"
       }
     ],
-    "answer": "$-\\frac{1}{x}$",
+    "answer": "$-\\dfrac{1}{\\pi}$",
     "commonErrors": [],
     "frequency": 1,
     "tags": [
@@ -688,9 +694,9 @@
     "qnum": 14,
     "score": 5,
     "type": "填空题",
-    "part": "概率",
+    "part": "高数",
     "difficulty": 3,
-    "question": "微分方程 $y' = \\frac{1}{(x + y)^2}$ ，满足条件 $y(1) = 0$ 的解为\n14.",
+    "question": "微分方程 $y'=\\dfrac{1}{(x+y)^2}$ 满足条件 $y(1)=0$ 的解为 ＿＿＿＿。",
     "options": [],
     "testPoints": [
       "正态分布"
@@ -744,7 +750,7 @@
     "type": "填空题",
     "part": "线代",
     "difficulty": 3,
-    "question": "x = \\tan \\left(y + \\frac {\\pi}{4}\\right) - y.\n$$\n设实矩阵 $A = \\begin{pmatrix} a + 1 & a \\\\ a & a \\end{pmatrix}$ ，若对任意实向量 $\\alpha = \\begin{pmatrix} x_1 \\\\ x_2 \\end{pmatrix}$ ， $\\beta = \\begin{pmatrix} y_1 \\\\ y_2 \\end{pmatrix}$ ， $\\beta = \\begin{pmatrix} y_1 \\\\ y_2 \\end{pmatrix}$\n15.\n$(\\alpha^T \\mathbf{A} \\beta)^2 \\leq \\alpha^T \\mathbf{A} \\alpha \\beta^T \\mathbf{A} \\beta$ 都成立，则 $a$ 的取值范围是",
+    "question": "设实矩阵 $A=\\begin{pmatrix}a+1&a\\\\ a&a\\end{pmatrix}$，若对任意实向量 $\\pmb\\alpha=\\begin{pmatrix}x_1\\\\x_2\\end{pmatrix}$、$\\pmb\\beta=\\begin{pmatrix}y_1\\\\y_2\\end{pmatrix}$，不等式 $\\left(\\pmb\\alpha^{\\mathrm T}A\\pmb\\beta\\right)^2\\leqslant \\pmb\\alpha^{\\mathrm T}A\\pmb\\alpha\\cdot\\pmb\\beta^{\\mathrm T}A\\pmb\\beta$ 恒成立，则 $a$ 的取值范围为 ＿＿＿＿。",
     "options": [],
     "testPoints": [
       "线性方程组"
@@ -791,9 +797,9 @@
     "qnum": 16,
     "score": 5,
     "type": "填空题",
-    "part": "高数",
+    "part": "概率",
     "difficulty": 3,
-    "question": "16. 随机试验每次成功的概率为 $\\mathrm{P}$ ，现进行三次独立重复实验，已知至少成功一次的条件下全部成功概率为 $\\frac{4}{13}$ ，现 $\\mathrm{P} =$",
+    "question": "设随机试验每次成功的概率为 $p$，现进行 3 次独立重复试验，已知在至少成功一次的条件下，3 次试验全部成功的概率为 $\\dfrac{4}{13}$，则 $p=$ ＿＿＿＿。",
     "options": [],
     "testPoints": [
       "曲面积分"
@@ -840,12 +846,13 @@
     "qnum": 17,
     "score": 12,
     "type": "解答题",
-    "part": "概率",
+    "part": "高数",
     "difficulty": 3,
-    "question": "三、解答题: 17-22 小题, 共 70 分。请将解答写在答题纸指定位置上解答应写出文字说明、证明过程或演算步骤。\n已知平面区域D={（x，y）|√1-y²≤x≤1,-1≤y≤1}，计算 ∫x dσ.\n17.",
+    "question": "已知平面区域 $D=\\left\\{(x,y)\\mid \\sqrt{1-y^2}\\leqslant x\\leqslant 1,\\ -1\\leqslant y\\leqslant 1\\right\\}$，计算 $\\displaystyle\\iint_{D}\\frac{x}{\\sqrt{x^2+y^2}}\\,\\mathrm{d}x\\,\\mathrm{d}y$。",
     "options": [],
     "testPoints": [
-      "相关系数"
+      "二重积分",
+      "对称性"
     ],
     "knowledgeIds": [
       "GL.18.3"
@@ -860,13 +867,23 @@
     "solution": [
       {
         "step": 1,
-        "title": "题面核对说明",
-        "content": "当前题面经过 OCR 后，积分符号后的被积函数与积分测度已经缺失，只剩“区域 \\(D\\)”和一个答案值，无法可靠还原题目。"
+        "title": "利用区域对称性",
+        "content": "区域 \\(D\\) 关于 \\(x\\) 轴对称（\\(-1\\le y\\le1\\)），被积函数 \\(\\dfrac{x}{\\sqrt{x^2+y^2}}\\) 关于 \\(y\\) 为偶函数，故<br>\\(I=\\displaystyle\\iint_D\\frac{x}{\\sqrt{x^2+y^2}}\\mathrm{d}x\\mathrm{d}y=2\\int_0^1\\mathrm{d}y\\int_{\\sqrt{1-y^2}}^1\\frac{x}{\\sqrt{x^2+y^2}}\\mathrm{d}x\\)。"
       },
       {
         "step": 2,
-        "title": "处理建议",
-        "content": "这类解答题不适合凭答案反推全过程。建议补原卷题图或更正题干后，我再把它补成完整的“步骤 + 思维导图 + 踩坑点”版本。"
+        "title": "计算内层积分",
+        "content": "令 \\(t=\\sqrt{x^2+y^2}\\)，则 \\(\\mathrm{d}t=\\dfrac{x}{\\sqrt{x^2+y^2}}\\mathrm{d}x\\)，<br>内层 \\(=\\displaystyle\\int_{1}^{\\sqrt{1+y^2}}\\mathrm{d}t=\\sqrt{1+y^2}-1\\)（当 \\(x=\\sqrt{1-y^2}\\) 时 \\(t=1\\)）。"
+      },
+      {
+        "step": 3,
+        "title": "计算外层定积分",
+        "content": "\\(I=2\\displaystyle\\int_0^1\\bigl(\\sqrt{1+y^2}-1\\bigr)\\mathrm{d}y=2\\int_0^1\\sqrt{1+y^2}\\,\\mathrm{d}y-2\\)。"
+      },
+      {
+        "step": 4,
+        "title": "求出结果",
+        "content": "\\(\\displaystyle\\int_0^1\\sqrt{1+y^2}\\,\\mathrm{d}y=\\frac12\\Bigl[y\\sqrt{1+y^2}+\\ln\\bigl(y+\\sqrt{1+y^2}\\bigr)\\Bigr]_0^1=\\frac12\\bigl(\\sqrt2+\\ln(1+\\sqrt2)\\bigr)\\)，<br>故 \\(I=\\sqrt2+\\ln(1+\\sqrt2)-2\\)。"
       }
     ],
     "answer": "$\\sqrt{2} +\\ln (1 + \\sqrt{2}) - 2$",
@@ -938,9 +955,9 @@
     "qnum": 19,
     "score": 12,
     "type": "解答题",
-    "part": "线代",
+    "part": "高数",
     "difficulty": 3,
-    "question": "$x + y + z = 3$ ；最大值21，最小值 $\\frac{17}{27}$\n设 $f(x)$ 二阶可导， $f^{\\prime}(0) = f^{\\prime}(0).|f^{\\prime \\prime}(x)|\\leq 1$ ，证：\n1）|f（x）-f(0)(1-x）-f(1)x|≤x（1-x）/2\n2） $\\left|\\int_0^1 f(x)dx - \\frac{f(0) + f(1)}{2}\\right|\\leq \\frac{1}{12}$\n19.",
+    "question": "设函数 $f(x)$ 在 $[0,1]$ 上二阶可导，且 $|f''(x)|\\leqslant 1$，证明：<br>(1) 当 $x\\in[0,1]$ 时，$|f(x)-f(0)(1-x)-f(1)x|\\leqslant\\dfrac{x(1-x)}{2}$；<br>(2) $\\left|\\displaystyle\\int_0^1 f(x)\\,\\mathrm{d}x-\\dfrac{f(0)+f(1)}{2}\\right|\\leqslant\\dfrac{1}{12}$。",
     "options": [],
     "testPoints": [
       "实对称"
@@ -992,9 +1009,9 @@
     "qnum": 20,
     "score": 12,
     "type": "解答题",
-    "part": "概率",
+    "part": "高数",
     "difficulty": 3,
-    "question": "（2）把（1）代入\n20. 已知有向曲线 L 为球面 $x^{2} + y^{2} + z^{2} = 2x$ 与平面 $2x - z - 1 = 0$ 的交线从 $z$ 轴正向往 $z$ 轴负向看去为逆时针方向，计算曲线积分 $\\int_{L} (6xyz - yz^{2}) dx + 2x^{2} z dy + xyz dz$",
+    "question": "已知有向曲线 $L$ 为球面 $x^2+y^2+z^2=2x$ 与平面 $2x-z-1=0$ 的交线，从 $z$ 轴正向往 $z$ 轴负向看去为逆时针方向，计算曲线积分 $I=\\displaystyle\\int_{L}(6xyz-yz^2)\\,\\mathrm{d}x+2x^2z\\,\\mathrm{d}y+xyz\\,\\mathrm{d}z$。",
     "options": [],
     "testPoints": [
       "区间估计"
@@ -1048,7 +1065,7 @@
     "type": "解答题",
     "part": "线代",
     "difficulty": 3,
-    "question": "已知数列 $\\{x_{n}\\},\\{y_{n}\\},\\{z_{n}\\}$ 满足 $x_0 = -1, y_0 = 0, z_0 = 2$ 且 $\\left\\{ \\begin{array}{l} x_n = -2x_{n-1} + 2z_{n-1} \\\\ y_n = -2y_{n-1} - 2z_{n-1} \\\\ z_n = -6x_{n-1} - 3y_{n-1} + 3z_{n-1} \\end{array} \\right.$ ,\n记 $\\alpha_{n} = \\left\\{ \\begin{array}{l}x_{n}\\\\ y_{n}\\\\ \\vdots \\end{array} \\right\\}$ ，写出满足 $\\alpha_{n} = A\\alpha_{n - 1}$ 的矩阵 $A$ ，并求 $A^n$ 及 $x_{n},y_{n},z_{n}(n = 1,2,\\dots)$\n21.",
+    "question": "已知数列 $\\{x_n\\},\\{y_n\\},\\{z_n\\}$ 满足 $x_0=-1,\\ y_0=0,\\ z_0=2$，且 $\\begin{cases}x_n=-2x_{n-1}+2z_{n-1}\\\\ y_n=-2y_{n-1}-2z_{n-1}\\\\ z_n=-6x_{n-1}-3y_{n-1}+3z_{n-1}\\end{cases}$。<br>记 $\\pmb\\alpha_n=\\begin{pmatrix}x_n\\\\y_n\\\\z_n\\end{pmatrix}$，写出满足 $\\pmb\\alpha_n=A\\pmb\\alpha_{n-1}$ 的矩阵 $A$，并求 $A^n$ 及 $x_n,y_n,z_n\\ (n=1,2,\\cdots)$。",
     "options": [],
     "testPoints": [
       "矩阵秩"
@@ -1102,7 +1119,7 @@
     "type": "解答题",
     "part": "概率",
     "difficulty": 3,
-    "question": ",\n$$\nx _ {n} = 8 + (- 2) ^ {n}, y _ {n} = - 8 + (- 2) ^ {n}, z _ {n} = 1 2.\n$$\n22.\n设总体 $X \\sim U(0, \\theta)$ ， $\\theta$ 未知， $X_1, X_2, \\dots, X_n$ 为简单随机样本，\n$$\nX _ {(n)} = \\max  \\left(X _ {1}, X _ {2} \\dots X _ {n}\\right), T _ {c} = c X _ {(n)}.\n$$\n（1）求c时，使得T为θ的无偏估计\n（2）记 $h(c) = E(T_c - \\theta)^2$ ，求c使得h(c)取最小值",
+    "question": "设总体 $X\\sim U(0,\\theta)$，其中 $\\theta>0$ 未知，$X_1,X_2,\\cdots,X_n$ 为来自总体 $X$ 的简单随机样本，记 $X_{(n)}=\\max(X_1,X_2,\\cdots,X_n)$，$T_c=cX_{(n)}$。<br>(1) 求 $c$ 的值，使 $T_c$ 为 $\\theta$ 的无偏估计；<br>(2) 记 $h(c)=E(T_c-\\theta)^2$，求 $c$ 使 $h(c)$ 取得最小值。",
     "options": [],
     "testPoints": [
       "联合密度"

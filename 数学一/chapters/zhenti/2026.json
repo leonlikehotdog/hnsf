@@ -1,0 +1,1038 @@
+[
+  {
+    "id": "2026-01",
+    "year": 2026,
+    "num": "一(1)",
+    "qnum": 1,
+    "score": 5,
+    "type": "选择题",
+    "part": "高数",
+    "difficulty": 3,
+    "question": "设函数 \\(z=z(x,y)\\) 由方程 \\(x-az=\\mathrm{e}^{y+az}\\) 确定，其中 \\(a\\) 是非零常数，则（ ）",
+    "options": [
+      "A. \\(\\dfrac{\\partial z}{\\partial x}-\\dfrac{\\partial z}{\\partial y}=\\dfrac{1}{a}\\)",
+      "B. \\(\\dfrac{\\partial z}{\\partial x}+\\dfrac{\\partial z}{\\partial y}=\\dfrac{1}{a}\\)",
+      "C. \\(\\dfrac{\\partial z}{\\partial x}-\\dfrac{\\partial z}{\\partial y}=-\\dfrac{1}{a}\\)",
+      "D. \\(\\dfrac{\\partial z}{\\partial x}+\\dfrac{\\partial z}{\\partial y}=-\\dfrac{1}{a}\\)"
+    ],
+    "testPoints": [
+      "隐函数偏导数"
+    ],
+    "knowledgeIds": [],
+    "knowledgePoints": [],
+    "solution": [
+      {
+        "step": 1,
+        "title": "方程两边对 $x$ 求偏导",
+        "content": "把 \\(z\\) 视为 \\(x,y\\) 的函数。对 \\(x\\) 求偏导：<br>\\(1-a\\dfrac{\\partial z}{\\partial x}=\\mathrm{e}^{y+az}\\cdot a\\dfrac{\\partial z}{\\partial x}\\)，<br>故 \\(\\dfrac{\\partial z}{\\partial x}=\\dfrac{1}{a(1+\\mathrm{e}^{y+az})}\\)。"
+      },
+      {
+        "step": 2,
+        "title": "方程两边对 $y$ 求偏导",
+        "content": "对 \\(y\\) 求偏导：<br>\\(-a\\dfrac{\\partial z}{\\partial y}=\\mathrm{e}^{y+az}\\Bigl(1+a\\dfrac{\\partial z}{\\partial y}\\Bigr)\\)，<br>故 \\(\\dfrac{\\partial z}{\\partial y}=-\\dfrac{\\mathrm{e}^{y+az}}{a(1+\\mathrm{e}^{y+az})}\\)。"
+      },
+      {
+        "step": 3,
+        "title": "作差得结论",
+        "content": "两式相减：\\(\\dfrac{\\partial z}{\\partial x}-\\dfrac{\\partial z}{\\partial y}=\\dfrac{1+\\mathrm{e}^{y+az}}{a(1+\\mathrm{e}^{y+az})}=\\dfrac{1}{a}\\)，选 A。"
+      }
+    ],
+    "answer": "A",
+    "commonErrors": [],
+    "frequency": 1,
+    "tags": [
+      "2026",
+      "隐函数"
+    ]
+  },
+  {
+    "id": "2026-02",
+    "year": 2026,
+    "num": "一(2)",
+    "qnum": 2,
+    "score": 5,
+    "type": "选择题",
+    "part": "高数",
+    "difficulty": 4,
+    "question": "幂级数 \\(\\displaystyle\\sum_{n=1}^{\\infty}\\left(\\frac{3+(-1)^n}{4}\\right)^n x^{2n}\\) 的收敛域为（ ）",
+    "options": [
+      "A. \\([-2,2]\\)",
+      "B. \\([-1,1]\\)",
+      "C. \\((-2,2)\\)",
+      "D. \\((-1,1)\\)"
+    ],
+    "testPoints": [
+      "幂级数收敛域"
+    ],
+    "knowledgeIds": [],
+    "knowledgePoints": [],
+    "solution": [
+      {
+        "step": 1,
+        "title": "拆分奇偶项",
+        "content": "奇项 \\(n=2m-1\\)：\\(\\dfrac{3+(-1)^n}{4}=\\dfrac12\\)，通项为 \\(\\left(\\dfrac12\\right)^{2m-1}x^{4m-2}\\)；<br>偶项 \\(n=2m\\)：系数为 1，通项为 \\(x^{4m}\\)。"
+      },
+      {
+        "step": 2,
+        "title": "分别定收敛半径",
+        "content": "\\(\\sum\\left(\\frac12\\right)^{2m-1}x^{4m-2}\\) 需 \\(|x|<1\\)（其半径 \\(\\sqrt2\\)）；\\(\\sum x^{4m}\\) 需 \\(|x|<1\\)。取交集得收敛区间 \\((-1,1)\\)。"
+      },
+      {
+        "step": 3,
+        "title": "验端点",
+        "content": "\\(x=\\pm1\\) 时级数为 \\(\\sum\\left(\\dfrac{3+(-1)^n}{4}\\right)^n\\)，偶数项通项为 1，不趋于 0，发散。故收敛域 \\((-1,1)\\)，选 D。"
+      }
+    ],
+    "answer": "D",
+    "commonErrors": [],
+    "frequency": 1,
+    "tags": [
+      "2026",
+      "幂级数"
+    ]
+  },
+  {
+    "id": "2026-03",
+    "year": 2026,
+    "num": "一(3)",
+    "qnum": 3,
+    "score": 5,
+    "type": "选择题",
+    "part": "高数",
+    "difficulty": 4,
+    "question": "已知 \\(f(x)\\) 在区间 \\([-1,1]\\) 上有定义，则下列命题正确的是（ ）",
+    "options": [
+      "A. 当 \\(f(x)\\) 在 \\((-1,0)\\) 内单调递减、在 \\((0,1)\\) 内单调递增时，\\(f(0)\\) 是极小值",
+      "B. 当 \\(f(0)\\) 是极小值时，\\(f(x)\\) 在 \\((-1,0)\\) 内单调递减、在 \\((0,1)\\) 内单调递增",
+      "C. 当 \\(f(x)\\) 的图形在 \\([-1,1]\\) 上是凹的时，\\(\\dfrac{f(x)-f(1)}{x-1}\\) 在 \\((-1,1)\\) 上单调递增",
+      "D. 当 \\(\\dfrac{f(x)-f(1)}{x-1}\\) 在 \\([-1,1]\\) 上单调递增时，\\(f(x)\\) 的图形在 \\([-1,1]\\) 上是凹的"
+    ],
+    "testPoints": [
+      "单调性",
+      "凹凸性",
+      "极值"
+    ],
+    "knowledgeIds": [],
+    "knowledgePoints": [],
+    "solution": [
+      {
+        "step": 1,
+        "title": "A 错：极值判别需连续",
+        "content": "极值第一充分条件要求 \\(f\\) 在 \\(x=0\\) 处连续；若 \\(x=0\\) 为跳跃间断点，左右分段单调并不能保证 \\(f(0)\\) 为极小值。"
+      },
+      {
+        "step": 2,
+        "title": "B 错：举反例",
+        "content": "如 \\(f(x)=-\\cos 10x\\)，\\(x=0\\) 是极小值点，但 \\(f\\) 在 \\((-1,0)\\cup(0,1)\\) 内并不单调。"
+      },
+      {
+        "step": 3,
+        "title": "C 对：凹函数割线斜率单调",
+        "content": "设 \\(x_1<x_2\\)。取 \\(\\lambda=\\dfrac{x_2-x_1}{1-x_1}\\in(0,1)\\)，令 \\(x=1,\\ y=x_1\\)，由凹函数定义<br>\\(f(x_2)=f\\bigl(\\lambda\\cdot1+(1-\\lambda)x_1\\bigr)<\\lambda f(1)+(1-\\lambda)f(x_1)\\)，整理得<br>\\(\\dfrac{f(x_1)-f(1)}{x_1-1}<\\dfrac{f(x_2)-f(1)}{x_2-1}\\)，即该差商单调递增。"
+      },
+      {
+        "step": 4,
+        "title": "D 错：举反例",
+        "content": "如 \\(f(x)=x^3+x^2-2x\\)，\\(\\dfrac{f(x)-f(1)}{x-1}=x^2+2x\\) 单调递增，但 \\(f''(x)=6x+2\\) 变号，图形非凹。结论选 C。"
+      }
+    ],
+    "answer": "C",
+    "commonErrors": [],
+    "frequency": 1,
+    "tags": [
+      "2026",
+      "凹凸性"
+    ]
+  },
+  {
+    "id": "2026-04",
+    "year": 2026,
+    "num": "一(4)",
+    "qnum": 4,
+    "score": 5,
+    "type": "选择题",
+    "part": "高数",
+    "difficulty": 3,
+    "question": "设曲面 \\(z=\\sqrt{4-x^2-y^2}\\) 与 \\(z=\\sqrt{x^2+y^2}\\) 所围成的有界闭区域为 \\(\\Omega\\)，\\(f(u)\\) 连续，则 \\(\\displaystyle\\iiint_{\\Omega} f(x^2+y^2+z^2)\\,\\mathrm{d}v\\) 可表示为（ ）",
+    "options": [
+      "A. \\(\\displaystyle\\int_0^{2\\pi}\\mathrm{d}\\theta\\int_0^{2}\\mathrm{d}r\\int_{r}^{\\sqrt{4-r^2}} f(r^2+z^2)\\,\\mathrm{d}z\\)",
+      "B. \\(\\displaystyle\\int_0^{2\\pi}\\mathrm{d}\\theta\\int_0^{\\sqrt2}\\mathrm{d}r\\int_0^{\\sqrt{4-r^2}} f(r^2+z^2)\\,\\mathrm{d}z\\)",
+      "C. \\(\\displaystyle\\int_0^{2\\pi}\\mathrm{d}\\theta\\int_0^{\\pi/4}\\mathrm{d}\\varphi\\int_0^{2} f(r^2)\\,r^2\\sin\\varphi\\,\\mathrm{d}r\\)",
+      "D. \\(\\displaystyle\\int_0^{2\\pi}\\mathrm{d}\\theta\\int_0^{\\pi/2}\\mathrm{d}\\varphi\\int_0^{2} f(r^2)\\,r^2\\sin\\varphi\\,\\mathrm{d}r\\)"
+    ],
+    "testPoints": [
+      "三重积分",
+      "球坐标"
+    ],
+    "knowledgeIds": [],
+    "knowledgePoints": [],
+    "solution": [
+      {
+        "step": 1,
+        "title": "确定区域",
+        "content": "交线：\\(\\sqrt{4-x^2-y^2}=\\sqrt{x^2+y^2}\\Rightarrow x^2+y^2=2\\)。\\(\\Omega\\) 为锥体与半球之交。"
+      },
+      {
+        "step": 2,
+        "title": "选球坐标",
+        "content": "被积含 \\(x^2+y^2+z^2=r^2\\)。球坐标下 \\(\\mathrm{d}v=r^2\\sin\\varphi\\,\\mathrm{d}r\\mathrm{d}\\varphi\\mathrm{d}\\theta\\)。"
+      },
+      {
+        "step": 3,
+        "title": "定限并写结果",
+        "content": "\\(0\\le r\\le2,\\ 0\\le\\varphi\\le\\pi/4,\\ 0\\le\\theta\\le2\\pi\\)，故<br>\\(\\iiint_\\Omega f(x^2+y^2+z^2)\\mathrm{d}v=\\int_0^{2\\pi}\\mathrm{d}\\theta\\int_0^{\\pi/4}\\mathrm{d}\\varphi\\int_0^2 f(r^2)\\,r^2\\sin\\varphi\\,\\mathrm{d}r\\)，选 C。"
+      }
+    ],
+    "answer": "C",
+    "commonErrors": [],
+    "frequency": 1,
+    "tags": [
+      "2026",
+      "三重积分"
+    ]
+  },
+  {
+    "id": "2026-05",
+    "year": 2026,
+    "num": "一(5)",
+    "qnum": 5,
+    "score": 5,
+    "type": "选择题",
+    "part": "线代",
+    "difficulty": 3,
+    "question": "单位矩阵经过若干次互换两行得到的矩阵称为置换矩阵。设 \\(A\\) 为 \\(n\\) 阶置换矩阵，\\(A^{*}\\) 为 \\(A\\) 的伴随矩阵，则（ ）",
+    "options": [
+      "A. \\(A^{*}\\) 为置换矩阵",
+      "B. \\(A^{-1}\\) 为置换矩阵",
+      "C. \\(A^{-1}=A^{*}\\)",
+      "D. \\(A^{-1}=-A^{*}\\)"
+    ],
+    "testPoints": [
+      "置换矩阵",
+      "逆矩阵"
+    ],
+    "knowledgeIds": [],
+    "knowledgePoints": [],
+    "solution": [
+      {
+        "step": 1,
+        "title": "置换矩阵结构",
+        "content": "\\(A=P_1P_2\\cdots P_s\\)，每个 \\(P_i\\) 为交换两行的初等矩阵，均满足 \\(P_i^{-1}=P_i\\) 且仍是置换矩阵。"
+      },
+      {
+        "step": 2,
+        "title": "求逆仍为置换",
+        "content": "\\(A^{-1}=(P_1\\cdots P_s)^{-1}=P_s^{-1}\\cdots P_1^{-1}=P_s\\cdots P_1\\)，仍是置换矩阵，B 正确。"
+      },
+      {
+        "step": 3,
+        "title": "排除其余",
+        "content": "\\(A^{*}=|A|A^{-1}\\)，而 \\(|A|=\\pm1\\)（依行交换次数奇偶），不能断言 \\(A^{*}=A^{-1}\\) 或 \\(-A^{-1}\\)；\\(A^{*}\\) 一般也不满足置换矩阵“每行恰一个 1”的结构。"
+      }
+    ],
+    "answer": "B",
+    "commonErrors": [],
+    "frequency": 1,
+    "tags": [
+      "2026",
+      "矩阵"
+    ]
+  },
+  {
+    "id": "2026-06",
+    "year": 2026,
+    "num": "一(6)",
+    "qnum": 6,
+    "score": 5,
+    "type": "选择题",
+    "part": "线代",
+    "difficulty": 3,
+    "question": "设 \\(A,B\\) 为 \\(n\\) 阶矩阵，\\(\\beta\\) 为 \\(n\\) 维列向量，\\(A\\) 的列向量组能由 \\(B\\) 的列向量组线性表示，则（ ）",
+    "options": [
+      "A. 若 \\(Ax=\\beta\\) 有解，则 \\(Bx=\\beta\\) 有解",
+      "B. 若 \\(Bx=\\beta\\) 有解，则 \\(Ax=\\beta\\) 有解",
+      "C. 若 \\(A^{\\mathrm T}x=\\beta\\) 有解，则 \\(B^{\\mathrm T}x=\\beta\\) 有解",
+      "D. 若 \\(B^{\\mathrm T}x=\\beta\\) 有解，则 \\(A^{\\mathrm T}x=\\beta\\) 有解"
+    ],
+    "testPoints": [
+      "列向量组",
+      "方程组有解"
+    ],
+    "knowledgeIds": [],
+    "knowledgePoints": [],
+    "solution": [
+      {
+        "step": 1,
+        "title": "翻译条件",
+        "content": "\\(A\\) 的列向量均可由 \\(B\\) 的列向量表示 ⟺ 存在矩阵 \\(C\\) 使 \\(A=BC\\)（此时 \\(C(A)\\subset C(B)\\)）。"
+      },
+      {
+        "step": 2,
+        "title": "正向推导",
+        "content": "若 \\(Ax=\\beta\\) 有解 \\(x\\)，则 \\(BCx=\\beta\\)，令 \\(y=Cx\\) 得 \\(By=\\beta\\) 有解，A 正确。"
+      },
+      {
+        "step": 3,
+        "title": "逆否说明",
+        "content": "包含方向相反时（B 有解推 A）不成立；转置选项对应的是行空间包含关系，方向也不对。结论选 A。"
+      }
+    ],
+    "answer": "A",
+    "commonErrors": [],
+    "frequency": 1,
+    "tags": [
+      "2026",
+      "线性表示"
+    ]
+  },
+  {
+    "id": "2026-07",
+    "year": 2026,
+    "num": "一(7)",
+    "qnum": 7,
+    "score": 5,
+    "type": "选择题",
+    "part": "线代",
+    "difficulty": 4,
+    "question": "设二次型 \\(f(x_1,x_2,x_3)=a(x_1^2+x_2^2+x_3^2)+4x_1x_2+4x_1x_3+4x_2x_3\\)。若方程 \\(f(x_1,x_2,x_3)=-1\\) 表示的曲面为圆柱面，则（ ）",
+    "options": [
+      "A. \\(a=-4\\)，且 \\(f\\) 的规范形为 \\(-y_1^2-y_2^2-y_3^2\\)",
+      "B. \\(a=-4\\)，且 \\(f\\) 在正交变换下的标准形为 \\(-6y_1^2-6y_2^2\\)",
+      "C. \\(a=2\\)，且 \\(f\\) 的规范形为 \\(-y_1^2-y_2^2-y_3^2\\)",
+      "D. \\(a=2\\)，且 \\(f\\) 在正交变换下的标准形为 \\(-6y_1^2-6y_2^2\\)"
+    ],
+    "testPoints": [
+      "二次型",
+      "特征值",
+      "二次曲面"
+    ],
+    "knowledgeIds": [],
+    "knowledgePoints": [],
+    "solution": [
+      {
+        "step": 1,
+        "title": "特征值",
+        "content": "二次型矩阵 \\(M=\\begin{pmatrix}a&2&2\\\\2&a&2\\\\2&2&a\\end{pmatrix}\\) 的特征值为 \\(a+4,\\ a-2,\\ a-2\\)。"
+      },
+      {
+        "step": 2,
+        "title": "圆柱面定参数",
+        "content": "\\(f=-1\\) 为圆柱面 ⟹ 秩 2 且两非零特征值同号。由 \\(|M|=0\\) 得 \\(a=2\\) 或 \\(a=-4\\)。<br>\\(a=2\\) 时特征值 \\(6,0,0\\)，\\(6y_1^2=-1\\) 无实解，舍；故 \\(a=-4\\)。"
+      },
+      {
+        "step": 3,
+        "title": "标准形",
+        "content": "\\(a=-4\\) 时特征值为 \\(0,-6,-6\\)，标准形 \\(-6y_1^2-6y_2^2\\)，此时 \\(-6(y_1^2+y_2^2)=-1\\) 为圆柱面，选 B。"
+      }
+    ],
+    "answer": "B",
+    "commonErrors": [],
+    "frequency": 1,
+    "tags": [
+      "2026",
+      "二次型"
+    ]
+  },
+  {
+    "id": "2026-08",
+    "year": 2026,
+    "num": "一(8)",
+    "qnum": 8,
+    "score": 5,
+    "type": "选择题",
+    "part": "概率",
+    "difficulty": 3,
+    "question": "设随机变量 \\(X\\sim N(1,2)\\)，令 \\(f(t)=E[(X+t)^2]\\)，则 \\(f(t)\\) 的最小值点与最小值分别为（ ）",
+    "options": [
+      "A. \\(1,\\ 2\\)",
+      "B. \\(1,\\ 4\\)",
+      "C. \\(-1,\\ 2\\)",
+      "D. \\(-1,\\ 4\\)"
+    ],
+    "testPoints": [
+      "数字特征"
+    ],
+    "knowledgeIds": [],
+    "knowledgePoints": [],
+    "solution": [
+      {
+        "step": 1,
+        "title": "展开期望",
+        "content": "\\(f(t)=E(X^2)+2tE(X)+t^2=D(X)+[E(X)]^2+2t+t^2=2+1+2t+t^2=(t+1)^2+2\\)。"
+      },
+      {
+        "step": 2,
+        "title": "定最小值点",
+        "content": "顶点 \\(t=-1\\)，最小值 \\(2\\)，故选 C。"
+      }
+    ],
+    "answer": "C",
+    "commonErrors": [],
+    "frequency": 1,
+    "tags": [
+      "2026",
+      "数字特征"
+    ]
+  },
+  {
+    "id": "2026-09",
+    "year": 2026,
+    "num": "一(9)",
+    "qnum": 9,
+    "score": 5,
+    "type": "选择题",
+    "part": "概率",
+    "difficulty": 3,
+    "question": "设连续型随机变量 \\(X\\) 的分布函数为 \\(F(x)\\)，随机变量 \\(Y\\) 的分布函数为 \\(F(ay+b)\\)，\\(X\\) 的期望为 \\(\\mu\\)、方差为 \\(\\sigma^2\\ (\\sigma>0)\\)。若 \\(Y\\) 的期望与方差分别为 \\(0\\) 和 \\(1\\)，则（ ）",
+    "options": [
+      "A. \\(a=\\sigma,\\ b=\\mu\\)",
+      "B. \\(a=\\sigma,\\ b=-\\mu\\)",
+      "C. \\(a=\\dfrac{1}{\\sigma},\\ b=\\mu\\)",
+      "D. \\(a=\\dfrac{1}{\\sigma},\\ b=-\\mu\\)"
+    ],
+    "testPoints": [
+      "分布函数",
+      "标准化"
+    ],
+    "knowledgeIds": [],
+    "knowledgePoints": [],
+    "solution": [
+      {
+        "step": 1,
+        "title": "识别关系",
+        "content": "\\(F_Y(y)=F(ay+b)\\) 说明 \\(Y=\\dfrac{X-b}{a}\\)（\\(a>0\\)）。"
+      },
+      {
+        "step": 2,
+        "title": "期望方差定参",
+        "content": "\\(E(Y)=\\dfrac{\\mu-b}{a}=0\\Rightarrow b=\\mu\\)；\\(D(Y)=\\dfrac{\\sigma^2}{a^2}=1\\Rightarrow a=\\sigma\\)。"
+      }
+    ],
+    "answer": "A",
+    "commonErrors": [],
+    "frequency": 1,
+    "tags": [
+      "2026",
+      "随机变量函数"
+    ]
+  },
+  {
+    "id": "2026-10",
+    "year": 2026,
+    "num": "一(10)",
+    "qnum": 10,
+    "score": 5,
+    "type": "选择题",
+    "part": "概率",
+    "difficulty": 4,
+    "question": "设随机变量 \\(X\\) 的概率分布为 \\(P\\{X=k\\}=\\dfrac{1}{2^{k+1}}+\\dfrac{1}{3^{k}}\\ (k=1,2,\\cdots)\\)，则对任意正整数 \\(m,n\\) 有（ ）",
+    "options": [
+      "A. \\(P\\{X>m+n\\mid X>m\\}=P\\{X>m\\}\\)",
+      "B. \\(P\\{X>m+n\\mid X>m\\}=P\\{X>n\\}\\)",
+      "C. \\(P\\{X>m+n\\mid X>m\\}>P\\{X>m\\}\\)",
+      "D. \\(P\\{X>m+n\\mid X>m\\}>P\\{X>n\\}\\)"
+    ],
+    "testPoints": [
+      "分布列",
+      "条件概率"
+    ],
+    "knowledgeIds": [],
+    "knowledgePoints": [],
+    "solution": [
+      {
+        "step": 1,
+        "title": "尾概率",
+        "content": "\\(P\\{X>m\\}=\\sum_{k=m+1}^{\\infty}\\Bigl(\\frac1{2^{k+1}}+\\frac1{3^k}\\Bigr)=\\frac1{2^{m+1}}+\\frac1{2\\cdot3^{m}}\\)，同理有 \\(P\\{X>n\\}\\)、\\(P\\{X>m+n\\}\\)。"
+      },
+      {
+        "step": 2,
+        "title": "比较",
+        "content": "\\(P\\{X>m+n\\}-P\\{X>m\\}P\\{X>n\\}=\\frac14\\Bigl(\\frac1{3^n}-\\frac1{2^n}\\Bigr)\\Bigl(\\frac1{3^m}-\\frac1{2^m}\\Bigr)>0\\)。"
+      },
+      {
+        "step": 3,
+        "title": "条件概率",
+        "content": "除以 \\(P\\{X>m\\}\\)：\\(P\\{X>m+n\\mid X>m\\}>P\\{X>n\\}\\)，选 D。"
+      }
+    ],
+    "answer": "D",
+    "commonErrors": [],
+    "frequency": 1,
+    "tags": [
+      "2026",
+      "条件概率"
+    ]
+  },
+  {
+    "id": "2026-11",
+    "year": 2026,
+    "num": "二(11)",
+    "qnum": 11,
+    "score": 5,
+    "type": "填空题",
+    "part": "高数",
+    "difficulty": 3,
+    "question": "设向量 \\(\\vec v_1=(0,x,z)\\)，\\(\\vec v_2=(y,0,1)\\)，向量场 \\(\\vec F(x,y,z)=\\vec v_1\\times\\vec v_2\\)，则 \\(\\mathrm{div}\\,\\vec F=\\) ＿＿＿＿。",
+    "options": [],
+    "testPoints": [
+      "向量积",
+      "散度"
+    ],
+    "knowledgeIds": [],
+    "knowledgePoints": [],
+    "solution": [
+      {
+        "step": 1,
+        "title": "叉积",
+        "content": "\\(\\vec F=(x,\\ yz,\\ -xy)\\)。"
+      },
+      {
+        "step": 2,
+        "title": "散度",
+        "content": "\\(\\mathrm{div}\\,\\vec F=\\dfrac{\\partial}{\\partial x}(x)+\\dfrac{\\partial}{\\partial y}(yz)+\\dfrac{\\partial}{\\partial z}(-xy)=1+z\\)。"
+      }
+    ],
+    "answer": "\\(1+z\\)",
+    "commonErrors": [
+      "场论"
+    ],
+    "frequency": 1,
+    "tags": [
+      "2026",
+      "散度"
+    ]
+  },
+  {
+    "id": "2026-12",
+    "year": 2026,
+    "num": "二(12)",
+    "qnum": 12,
+    "score": 5,
+    "type": "填空题",
+    "part": "高数",
+    "difficulty": 3,
+    "question": "极限 \\(\\displaystyle\\lim_{x\\to0}\\left[\\frac{1}{x}-\\frac{\\ln(1+x)}{x\\sin x}\\right]=\\) ＿＿＿＿。",
+    "options": [],
+    "testPoints": [
+      "极限"
+    ],
+    "knowledgeIds": [],
+    "knowledgePoints": [],
+    "solution": [
+      {
+        "step": 1,
+        "title": "通分",
+        "content": "\\(I=\\lim_{x\\to0}\\dfrac{\\sin x-\\ln(1+x)}{x\\sin x}=\\lim_{x\\to0}\\dfrac{\\sin x-\\ln(1+x)}{x^2}\\)。"
+      },
+      {
+        "step": 2,
+        "title": "泰勒",
+        "content": "\\(\\sin x=x-\\dfrac{x^3}{6}+o(x^3)\\)，\\(\\ln(1+x)=x-\\dfrac{x^2}{2}+o(x^2)\\)，故 \\(\\sin x-\\ln(1+x)=\\dfrac{x^2}{2}+o(x^2)\\)。"
+      },
+      {
+        "step": 3,
+        "title": "极限",
+        "content": "\\(I=\\dfrac12\\)。"
+      }
+    ],
+    "answer": "\\(\\dfrac12\\)",
+    "commonErrors": [
+      "泰勒"
+    ],
+    "frequency": 1,
+    "tags": [
+      "2026",
+      "极限"
+    ]
+  },
+  {
+    "id": "2026-13",
+    "year": 2026,
+    "num": "二(13)",
+    "qnum": 13,
+    "score": 5,
+    "type": "填空题",
+    "part": "高数",
+    "difficulty": 3,
+    "question": "设函数 \\(y=y(x)\\) 由参数方程 \\(\\begin{cases}x=2\\sin^2t\\\\ y=t+\\cos t\\end{cases}\\ \\left(t\\in\\left(0,\\frac{\\pi}{2}\\right)\\right)\\) 确定，则 \\(\\left.\\dfrac{\\mathrm{d}^2y}{\\mathrm{d}x^2}\\right|_{t=\\frac{\\pi}{4}}=\\) ＿＿＿＿。",
+    "options": [],
+    "testPoints": [
+      "参数方程求导"
+    ],
+    "knowledgeIds": [],
+    "knowledgePoints": [],
+    "solution": [
+      {
+        "step": 1,
+        "title": "一阶导",
+        "content": "\\(x'(t)=4\\sin t\\cos t=2\\sin2t\\)，\\(y'(t)=1-\\sin t\\)，\\(\\dfrac{\\mathrm{d}y}{\\mathrm{d}x}=\\dfrac{1-\\sin t}{2\\sin2t}\\)。"
+      },
+      {
+        "step": 2,
+        "title": "二阶导代值",
+        "content": "\\(\\dfrac{\\mathrm{d}^2y}{\\mathrm{d}x^2}=\\dfrac{\\mathrm{d}}{\\mathrm{d}t}\\bigl(\\frac{\\mathrm{d}y}{\\mathrm{d}x}\\bigr)\\Big/x'(t)\\)。在 \\(t=\\pi/4\\) 处算得 \\(\\dfrac{\\mathrm{d}}{\\mathrm{d}t}\\bigl(\\frac{\\mathrm{d}y}{\\mathrm{d}x}\\bigr)=-\\dfrac{\\sqrt2}{4}\\)，\\(x'(t)=2\\)，故结果为 \\(-\\dfrac{\\sqrt2}{8}\\)。"
+      }
+    ],
+    "answer": "\\(-\\dfrac{\\sqrt2}{8}\\)",
+    "commonErrors": [],
+    "frequency": 1,
+    "tags": [
+      "2026",
+      "参数方程"
+    ]
+  },
+  {
+    "id": "2026-14",
+    "year": 2026,
+    "num": "二(14)",
+    "qnum": 14,
+    "score": 5,
+    "type": "填空题",
+    "part": "高数",
+    "difficulty": 3,
+    "question": "反常积分 \\(\\displaystyle\\int_1^{+\\infty}\\frac{\\ln(1+x)}{x^2}\\,\\mathrm{d}x=\\) ＿＿＿＿。",
+    "options": [],
+    "testPoints": [
+      "反常积分"
+    ],
+    "knowledgeIds": [],
+    "knowledgePoints": [],
+    "solution": [
+      {
+        "step": 1,
+        "title": "分部积分",
+        "content": "\\(\\int\\dfrac{\\ln(1+x)}{x^2}\\mathrm{d}x=-\\dfrac{\\ln(1+x)}{x}+\\int\\dfrac{\\mathrm{d}x}{x(1+x)}=-\\dfrac{\\ln(1+x)}{x}+\\ln\\dfrac{x}{x+1}\\)。"
+      },
+      {
+        "step": 2,
+        "title": "代限",
+        "content": "\\(\\Bigl[-\\dfrac{\\ln(1+x)}{x}+\\ln\\dfrac{x}{x+1}\\Bigr]_1^{+\\infty}=(0-0)-(-\\ln2+\\ln\\tfrac12)=2\\ln2\\)。"
+      }
+    ],
+    "answer": "\\(2\\ln2\\)",
+    "commonErrors": [],
+    "frequency": 1,
+    "tags": [
+      "2026",
+      "反常积分"
+    ]
+  },
+  {
+    "id": "2026-15",
+    "year": 2026,
+    "num": "二(15)",
+    "qnum": 15,
+    "score": 5,
+    "type": "填空题",
+    "part": "线代",
+    "difficulty": 3,
+    "question": "设矩阵 \\(A=\\begin{pmatrix}1&0&0\\\\2&a&2\\\\0&2&a\\end{pmatrix}\\)，\\(B=\\begin{pmatrix}a&-1&-1\\\\-1&2&1\\\\-1&-1&a\\end{pmatrix}\\)，记 \\(m(X)\\) 为矩阵 \\(X\\) 的实特征值中的最大值。若 \\(m(A)<m(B)\\)，则 \\(a\\) 的取值范围为 ＿＿＿＿。",
+    "options": [],
+    "testPoints": [
+      "特征值"
+    ],
+    "knowledgeIds": [],
+    "knowledgePoints": [],
+    "solution": [
+      {
+        "step": 1,
+        "title": "A 的特征值",
+        "content": "\\(A\\) 为分块对角（第 1 行第 1 列 1 与块 \\(\\begin{pmatrix}a&2\\\\2&a\\end{pmatrix}\\)），特征值 \\(1,\\ a+2,\\ a-2\\)。"
+      },
+      {
+        "step": 2,
+        "title": "B 的特征值",
+        "content": "解 \\(|\\lambda E-B|=0\\)：特征值 \\(2,\\ a+1,\\ a-1\\)。"
+      },
+      {
+        "step": 3,
+        "title": "比较最大值",
+        "content": "\\(m(A)=\\max\\{1,a+2\\}\\)，\\(m(B)=\\max\\{2,a+1\\}\\)。<br>当 \\(a<0\\) 时 \\(m(B)=2\\) 且 \\(m(A)<2\\)；当 \\(a\\ge0\\) 时 \\(m(A)\\ge a+2\\ge2\\ge m(B)\\) 不满足。故 \\(a<0\\)。"
+      }
+    ],
+    "answer": "\\(a<0\\)",
+    "commonErrors": [],
+    "frequency": 1,
+    "tags": [
+      "2026",
+      "特征值"
+    ]
+  },
+  {
+    "id": "2026-16",
+    "year": 2026,
+    "num": "二(16)",
+    "qnum": 16,
+    "score": 5,
+    "type": "填空题",
+    "part": "概率",
+    "difficulty": 3,
+    "question": "设随机变量 \\(X\\) 服从参数为 \\(1\\) 的泊松分布，\\(Y\\) 服从参数为 \\(3\\) 的泊松分布，且 \\(X\\) 与 \\(Y-X\\) 相互独立，则 \\(E(XY)=\\) ＿＿＿＿。",
+    "options": [],
+    "testPoints": [
+      "泊松分布",
+      "期望"
+    ],
+    "knowledgeIds": [],
+    "knowledgePoints": [],
+    "solution": [
+      {
+        "step": 1,
+        "title": "拆分",
+        "content": "\\(XY=X(Y-X+X)=X(Y-X)+X^2\\)。"
+      },
+      {
+        "step": 2,
+        "title": "独立性",
+        "content": "因 \\(X\\) 与 \\(Y-X\\) 独立，\\(E[X(Y-X)]=E(X)E(Y-X)=1\\cdot(3-1)=2\\)。"
+      },
+      {
+        "step": 3,
+        "title": "结果",
+        "content": "\\(E(X^2)=D(X)+[E(X)]^2=1+1=2\\)，故 \\(E(XY)=2+2=4\\)。"
+      }
+    ],
+    "answer": "4",
+    "commonErrors": [],
+    "frequency": 1,
+    "tags": [
+      "2026",
+      "泊松分布"
+    ]
+  },
+  {
+    "id": "2026-17",
+    "year": 2026,
+    "num": "三(17)",
+    "qnum": 17,
+    "score": 10,
+    "type": "解答题",
+    "part": "高数",
+    "difficulty": 4,
+    "question": "求函数 \\(f(x,y)=(2x^2-y^2)\\mathrm{e}^x\\) 的极值。",
+    "options": [],
+    "testPoints": [
+      "无条件极值"
+    ],
+    "knowledgeIds": [],
+    "knowledgePoints": [],
+    "solution": [
+      {
+        "step": 1,
+        "title": "求驻点",
+        "content": "\\(f'_x=(4x+2x^2-y^2)\\mathrm{e}^x,\\ f'_y=-2y\\mathrm{e}^x\\)。令两偏导为 0 得驻点 \\((0,0)\\)、\\((-2,0)\\)。"
+      },
+      {
+        "step": 2,
+        "title": "二阶偏导",
+        "content": "\\(f''_{xx}=\\bigl(4+8x+2x^2-y^2\\bigr)\\mathrm{e}^x,\\ f''_{xy}=-2y\\mathrm{e}^x,\\ f''_{yy}=-2\\mathrm{e}^x\\)。"
+      },
+      {
+        "step": 3,
+        "title": "(0,0) 判别",
+        "content": "\\(A=4,\\ B=0,\\ C=-2\\)，\\(AC-B^2=-8<0\\)，非极值点（鞍点）。"
+      },
+      {
+        "step": 4,
+        "title": "(-2,0) 判别",
+        "content": "\\(A=-4\\mathrm{e}^{-2},\\ B=0,\\ C=-2\\mathrm{e}^{-2}\\)，\\(AC-B^2=8\\mathrm{e}^{-4}>0\\) 且 \\(A<0\\)，为极大值点。"
+      },
+      {
+        "step": 5,
+        "title": "极值",
+        "content": "极大值 \\(f(-2,0)=(8-0)\\mathrm{e}^{-2}=8\\mathrm{e}^{-2}\\)。"
+      }
+    ],
+    "answer": "极大值点 \\((-2,0)\\)，极大值 \\(8\\mathrm{e}^{-2}\\)；\\((0,0)\\) 非极值点",
+    "commonErrors": [
+      "Hesse 判别"
+    ],
+    "frequency": 1,
+    "tags": [
+      "2026",
+      "极值"
+    ]
+  },
+  {
+    "id": "2026-18",
+    "year": 2026,
+    "num": "三(18)",
+    "qnum": 18,
+    "score": 12,
+    "type": "解答题",
+    "part": "高数",
+    "difficulty": 5,
+    "question": "设 \\(f(u)\\) 在 \\((0,+\\infty)\\) 内具有 3 阶连续导数，且存在可微函数 \\(F(x,y)\\) 使得<br>\\(\\mathrm{d}F(x,y)=\\dfrac{f(xy)}{x^2y}\\,\\mathrm{d}x+\\dfrac{f''(xy)}{xy^2}\\,\\mathrm{d}y\\quad(xy>0)\\)。<br>(1) 证明：\\(\\dfrac{f''(u)}{u}-\\dfrac{f(u)}{u}=C\\)，其中 \\(C\\) 为常数；<br>(2) 若 \\(f(1)=1,\\ f'(1)=-1,\\ f''(1)=0\\)，求 \\(f(u)\\) 的表达式。",
+    "options": [],
+    "testPoints": [
+      "微分形式",
+      "混合偏导",
+      "微分方程"
+    ],
+    "knowledgeIds": [],
+    "knowledgePoints": [],
+    "solution": [
+      {
+        "step": 1,
+        "title": "由全微分定偏导",
+        "content": "\\(F_x=\\dfrac{f(xy)}{x^2y}\\)，\\(F_y=\\dfrac{f''(xy)}{xy^2}\\)。"
+      },
+      {
+        "step": 2,
+        "title": "(1) 混合偏导相等",
+        "content": "由 \\(f'''(u)\\) 连续知 \\(F_{xy}=F_{yx}\\)。令 \\(u=xy\\)：<br>\\(F_{xy}=\\dfrac{xyf'(xy)-f(xy)}{x^2y^2}=\\dfrac{u f'(u)-f(u)}{u^2}\\)，<br>\\(F_{yx}=\\dfrac{xyf'''(xy)-f''(xy)}{x^2y^2}=\\dfrac{u f'''(u)-f''(u)}{u^2}\\)。"
+      },
+      {
+        "step": 3,
+        "title": "(1) 得常微分等式",
+        "content": "两者相等：\\(\\dfrac{u f'(u)-f(u)}{u^2}=\\dfrac{u f'''(u)-f''(u)}{u^2}\\)，<br>即 \\(\\Bigl(\\dfrac{f''(u)-f(u)}{u}\\Bigr)'=0\\)，故 \\(\\dfrac{f''(u)}{u}-\\dfrac{f(u)}{u}=C\\)。"
+      },
+      {
+        "step": 4,
+        "title": "(2) 定常数",
+        "content": "由 \\(f(1)=1,\\ f''(1)=0\\) 得 \\(C=-1\\)，即 \\(f''(u)-f(u)=-u\\)。"
+      },
+      {
+        "step": 5,
+        "title": "(2) 解方程",
+        "content": "齐次通解 \\(C_1\\mathrm{e}^u+C_2\\mathrm{e}^{-u}\\)，特解 \\(u\\)（代入 \\(-Au=-u\\) 得 \\(A=1\\)），故 \\(f(u)=C_1\\mathrm{e}^u+C_2\\mathrm{e}^{-u}+u\\)。"
+      },
+      {
+        "step": 6,
+        "title": "(2) 初值定系数",
+        "content": "由 \\(f(1)=1,\\ f'(1)=-1\\)：\\(C_1\\mathrm{e}+C_2\\mathrm{e}^{-1}=0\\) 且 \\(C_1\\mathrm{e}-C_2\\mathrm{e}^{-1}=-2\\)，解得 \\(C_1=-\\mathrm{e}^{-1},\\ C_2=\\mathrm{e}\\)。故 \\(f(u)=-\\mathrm{e}^{u-1}+\\mathrm{e}^{1-u}+u\\)。"
+      }
+    ],
+    "answer": "\\(f(u)=-\\mathrm{e}^{u-1}+\\mathrm{e}^{1-u}+u\\)",
+    "commonErrors": [
+      "证明+ODE"
+    ],
+    "frequency": 1,
+    "tags": [
+      "2026",
+      "多元微分"
+    ]
+  },
+  {
+    "id": "2026-19",
+    "year": 2026,
+    "num": "三(19)",
+    "qnum": 19,
+    "score": 12,
+    "type": "解答题",
+    "part": "高数",
+    "difficulty": 4,
+    "question": "设有向曲线 \\(L\\) 为椭圆 \\(x^2+3y^2=1\\) 上沿逆时针方向从点 \\(A\\left(-\\frac12,-\\frac12\\right)\\) 到点 \\(B\\left(\\frac12,\\frac12\\right)\\) 的部分，计算曲线积分<br>\\(I=\\displaystyle\\int_L \\bigl(\\mathrm{e}^{x^2}\\sin x-2xy\\bigr)\\mathrm{d}x+\\bigl(6x-x^2-y\\cos^4y\\bigr)\\mathrm{d}y\\)。",
+    "options": [],
+    "testPoints": [
+      "格林公式",
+      "补线法"
+    ],
+    "knowledgeIds": [],
+    "knowledgePoints": [],
+    "solution": [
+      {
+        "step": 1,
+        "title": "记 P、Q 并求差",
+        "content": "\\(P=\\mathrm{e}^{x^2}\\sin x-2xy,\\ Q=6x-x^2-y\\cos^4y\\)。<br>\\(\\dfrac{\\partial Q}{\\partial x}-\\dfrac{\\partial P}{\\partial y}=(6-2x)-(-2x)=6\\)。"
+      },
+      {
+        "step": 2,
+        "title": "补线",
+        "content": "补直线段 \\(L_1:\\ y=x\\) 从 \\(B(\\frac12,\\frac12)\\) 到 \\(A(-\\frac12,-\\frac12)\\)，\\(L+L_1\\) 逆时针围成区域 \\(D\\)（椭圆被弦切下的半椭圆）。由格林公式：<br>\\(\\displaystyle\\int_{L}P\\,\\mathrm{d}x+Q\\,\\mathrm{d}y+\\int_{L_1}P\\,\\mathrm{d}x+Q\\,\\mathrm{d}y=\\iint_D 6\\,\\mathrm{d}x\\mathrm{d}y\\)。"
+      },
+      {
+        "step": 3,
+        "title": "区域面积",
+        "content": "椭圆 \\(x^2+3y^2=1\\) 面积 \\(\\pi/\\sqrt3\\)，半椭圆面积 \\(S_D=\\dfrac{\\pi}{2\\sqrt3}\\)，故 \\(\\iint_D6=6S_D=\\sqrt3\\,\\pi\\)。"
+      },
+      {
+        "step": 4,
+        "title": "L1 上积分",
+        "content": "在 \\(L_1\\) 上 \\(y=x,\\ \\mathrm{d}y=\\mathrm{d}x\\)：被积式 \\(=\\mathrm{e}^{x^2}\\sin x-2x^2+6x-x^2-x\\cos^4x\\)。<br>奇函数项积分 0，剩下 \\(\\int_{-1/2}^{1/2}-3x^2\\,\\mathrm{d}x=-\\dfrac14\\)。"
+      },
+      {
+        "step": 5,
+        "title": "结论",
+        "content": "\\(I=\\sqrt3\\,\\pi-\\left(-\\dfrac14\\right)=\\sqrt3\\,\\pi-\\dfrac14\\)。"
+      }
+    ],
+    "answer": "\\(\\sqrt3\\,\\pi-\\dfrac14\\)",
+    "commonErrors": [
+      "第二型曲线积分"
+    ],
+    "frequency": 1,
+    "tags": [
+      "2026",
+      "曲线积分"
+    ]
+  },
+  {
+    "id": "2026-20",
+    "year": 2026,
+    "num": "三(20)",
+    "qnum": 20,
+    "score": 12,
+    "type": "解答题",
+    "part": "高数",
+    "difficulty": 5,
+    "question": "设可导函数 \\(f(x)\\) 严格单调递增，且 \\(\\displaystyle\\int_{-1}^{1}f(x)\\,\\mathrm{d}x=0\\)，记 \\(a=\\displaystyle\\int_{0}^{1}f(x)\\,\\mathrm{d}x\\)。<br>(1) 证明：\\(a>0\\)；<br>(2) 令 \\(F(x)=a(1-x^2)+\\displaystyle\\int_1^{x}f(t)\\,\\mathrm{d}t\\)，证明：存在 \\(\\xi\\in(-1,1)\\) 使 \\(F''(\\xi)=0\\)。",
+    "options": [],
+    "testPoints": [
+      "积分",
+      "罗尔定理"
+    ],
+    "knowledgeIds": [],
+    "knowledgePoints": [],
+    "solution": [
+      {
+        "step": 1,
+        "title": "(1) 换元",
+        "content": "\\(\\displaystyle\\int_{-1}^{0}f(x)\\mathrm{d}x\\xlongequal{x=-t}\\int_0^{1}f(-t)\\mathrm{d}t\\)，故 \\(\\int_0^1 f(-x)\\mathrm{d}x=\\int_{-1}^0f=-a\\)。"
+      },
+      {
+        "step": 2,
+        "title": "(1) 单调比较",
+        "content": "\\(x\\in(0,1)\\) 时 \\(-x<x\\)，由 \\(f\\) 严格单调递增得 \\(f(-x)<f(x)\\)，积分得 \\(-a<a\\)，即 \\(a>0\\)。"
+      },
+      {
+        "step": 3,
+        "title": "(2) 算三点值",
+        "content": "\\(F(x)=a(1-x^2)+\\displaystyle\\int_1^x f(t)\\mathrm{d}t\\)。<br>\\(F(-1)=0-\\int_{-1}^{1}f=0\\)，\\(F(0)=a-\\int_0^1f=0\\)，\\(F(1)=0\\)。"
+      },
+      {
+        "step": 4,
+        "title": "(2) 两次罗尔",
+        "content": "\\(F'(x)=-2ax+f(x)\\)。对 \\([-1,0]\\)、\\([0,1]\\) 分别用罗尔定理：存在 \\(\\xi_1\\in(-1,0),\\ \\xi_2\\in(0,1)\\) 使 \\(F'(\\xi_1)=F'(\\xi_2)=0\\)。"
+      },
+      {
+        "step": 5,
+        "title": "(2) 再罗尔",
+        "content": "对 \\(F'\\) 在 \\([\\xi_1,\\xi_2]\\) 用罗尔定理：存在 \\(\\xi\\in(\\xi_1,\\xi_2)\\subset(-1,1)\\) 使 \\(F''(\\xi)=0\\)。"
+      }
+    ],
+    "answer": "（证明见解析）",
+    "commonErrors": [
+      "变限积分"
+    ],
+    "frequency": 1,
+    "tags": [
+      "2026",
+      "中值定理"
+    ]
+  },
+  {
+    "id": "2026-21",
+    "year": 2026,
+    "num": "三(21)",
+    "qnum": 21,
+    "score": 12,
+    "type": "解答题",
+    "part": "线代",
+    "difficulty": 4,
+    "question": "设向量组 \\(\\alpha_1=\\begin{pmatrix}1\\\\0\\\\-1\\\\-1\\end{pmatrix},\\ \\alpha_2=\\begin{pmatrix}1\\\\-1\\\\0\\\\-2\\end{pmatrix},\\ \\alpha_3=\\begin{pmatrix}0\\\\-1\\\\1\\\\-1\\end{pmatrix},\\ \\alpha_4=\\begin{pmatrix}0\\\\1\\\\-1\\\\1\\end{pmatrix}\\)，令 \\(A=(\\alpha_1,\\alpha_2,\\alpha_3,\\alpha_4)\\)，\\(G=(\\alpha_1,\\alpha_2)\\)。<br>(1) 证明：\\(\\alpha_1,\\alpha_2\\) 是 \\(\\alpha_1,\\alpha_2,\\alpha_3,\\alpha_4\\) 的一个极大线性无关组；<br>(2) 求矩阵 \\(H\\)，使得 \\(A=GH\\)，并计算 \\(A^{10}\\)。",
+    "options": [],
+    "testPoints": [
+      "向量组",
+      "矩阵分解"
+    ],
+    "knowledgeIds": [],
+    "knowledgePoints": [],
+    "solution": [
+      {
+        "step": 1,
+        "title": "(1) 线性无关",
+        "content": "设 \\(c_1\\alpha_1+c_2\\alpha_2=0\\)。看第 1、2 分量：\\(c_1+c_2=0\\) 且 \\(-c_2=0\\)，故 \\(c_1=c_2=0\\)，\\(\\alpha_1,\\alpha_2\\) 线性无关。"
+      },
+      {
+        "step": 2,
+        "title": "(1) 其余可由其表示",
+        "content": "验证 \\(\\alpha_3=\\alpha_2-\\alpha_1,\\quad \\alpha_4=\\alpha_1-\\alpha_2\\)。<br>故 \\(\\alpha_3,\\alpha_4\\in\\mathrm{span}\\{\\alpha_1,\\alpha_2\\}\\)，即 \\(\\alpha_1,\\alpha_2\\) 是极大线性无关组（秩 2）。"
+      },
+      {
+        "step": 3,
+        "title": "(2) 求 H",
+        "content": "把 \\(A=(\\alpha_1,\\alpha_2,\\alpha_3,\\alpha_4)\\) 的每列写成 \\((\\alpha_1,\\alpha_2)\\) 的线性组合：<br>\\(H=\\begin{pmatrix}1&0&-1&1\\\\0&1&1&-1\\end{pmatrix}\\)，满足 \\(A=GH\\)。"
+      },
+      {
+        "step": 4,
+        "title": "(2) 算 HG",
+        "content": "\\(HG=\\begin{pmatrix}1&0&-1&1\\\\0&1&1&-1\\end{pmatrix}\\begin{pmatrix}1&1\\\\0&-1\\\\-1&0\\\\-1&-2\\end{pmatrix}=\\begin{pmatrix}1&-1\\\\0&1\\end{pmatrix}\\)。"
+      },
+      {
+        "step": 5,
+        "title": "(2) 幂",
+        "content": "\\(\\begin{pmatrix}1&k\\\\0&1\\end{pmatrix}^n=\\begin{pmatrix}1&nk\\\\0&1\\end{pmatrix}\\)，故 \\((HG)^9=\\begin{pmatrix}1&-9\\\\0&1\\end{pmatrix}\\)。"
+      },
+      {
+        "step": 6,
+        "title": "(2) 组装 A^10",
+        "content": "\\(A^{10}=(GH)^{10}=G(HG)^9H\\)（归纳 \\(A^m=G(HG)^{m-1}H\\)），数值计算得 $A^{10}=G(HG)^9H=\\begin{pmatrix}1&-8&-9&9\\\\0&-1&-1&1\\\\-1&9&10&-10\\\\-1&7&8&-8\\end{pmatrix}$"
+      }
+    ],
+    "answer": "$A^{10}=G(HG)^9H=\\begin{pmatrix}1&-8&-9&9\\\\0&-1&-1&1\\\\-1&9&10&-10\\\\-1&7&8&-8\\end{pmatrix}$",
+    "commonErrors": [
+      "矩阵幂"
+    ],
+    "frequency": 1,
+    "tags": [
+      "2026",
+      "向量组"
+    ]
+  },
+  {
+    "id": "2026-22",
+    "year": 2026,
+    "num": "三(22)",
+    "qnum": 22,
+    "score": 12,
+    "type": "解答题",
+    "part": "概率",
+    "difficulty": 4,
+    "question": "假设某种元件的寿命服从指数分布，其均值 \\(\\theta\\) 是未知参数。为估计 \\(\\theta\\)，取 \\(n\\) 个元件同时做寿命试验，试验进行到出现 \\(k\\) 个元件失效时停止。<br>(1) 若 \\(k=1\\)，把失效元件的寿命记为 \\(T\\)：<br>（i）求 \\(T\\) 的概率密度；<br>（ii）确定常数 \\(a\\)，使 \\(aT\\) 为 \\(\\theta\\) 的无偏估计，并求 \\(D(aT)\\)；<br>(2) 若 \\(k\\) 个失效元件的寿命值分别为 \\(t_1,t_2,\\cdots,t_k\\)（按从小到大排序），且题给似然函数 \\(L(\\theta)=\\dfrac{n!}{(n-k)!}\\Bigl(\\dfrac1\\theta\\Bigr)^k\\exp\\Bigl[-\\dfrac1\\theta\\Bigl(\\sum_{i=1}^{k}t_i+(n-k)t_k\\Bigr)\\Bigr]\\)，求 \\(\\theta\\) 的最大似然估计值。",
+    "options": [],
+    "testPoints": [
+      "指数分布",
+      "截尾样本",
+      "最大似然估计"
+    ],
+    "knowledgeIds": [],
+    "knowledgePoints": [],
+    "solution": [
+      {
+        "step": 1,
+        "title": "(1)(i) 首失效时间",
+        "content": "寿命 \\(X_i\\sim\\mathrm{Exp}(1/\\theta)\\)，\\(T=\\min(X_1,\\cdots,X_n)\\)。<br>\\(P\\{T>t\\}=P\\{X_1>t\\}^n=\\mathrm{e}^{-nt/\\theta}\\)，故<br>\\(f_T(t)=\\dfrac{n}{\\theta}\\mathrm{e}^{-nt/\\theta},\\ t>0\\)（即 \\(T\\sim\\mathrm{Exp}(n/\\theta)\\)，均值 \\(\\theta/n\\)）。"
+      },
+      {
+        "step": 2,
+        "title": "(1)(ii) 无偏化",
+        "content": "\\(E(T)=\\theta/n\\)，取估计量 \\(nT\\)：\\(E(nT)=\\theta\\)，即取 \\(a=n\\) 时无偏。<br>\\(D(nT)=n^2D(T)=n^2\\cdot\\dfrac{\\theta^2}{n^2}=\\theta^2\\)。"
+      },
+      {
+        "step": 3,
+        "title": "(2) 定数截尾似然",
+        "content": "设前 \\(k\\) 个失效时刻为 \\(t_{(1)}\\le\\cdots\\le t_{(k)}\\)，其余 \\(n-k\\) 个元件到 \\(t_{(k)}\\) 仍存活。联合似然<br>\\(L(\\theta)=\\dfrac{n!}{(n-k)!}\\Bigl(\\dfrac1\\theta\\Bigr)^k\\exp\\Bigl[-\\dfrac1\\theta\\Bigl(\\sum_{i=1}^{k}t_{(i)}+(n-k)t_{(k)}\\Bigr)\\Bigr]\\)。"
+      },
+      {
+        "step": 4,
+        "title": "(2) 求导",
+        "content": "\\(\\ln L=C-k\\ln\\theta-\\dfrac{1}{\\theta}\\Bigl[\\sum_{i=1}^{k}t_{(i)}+(n-k)t_{(k)}\\Bigr]\\)，<br>\\(\\dfrac{\\mathrm{d}\\ln L}{\\mathrm{d}\\theta}=-\\dfrac{k}{\\theta}+\\dfrac{1}{\\theta^2}\\Bigl[\\sum_{i=1}^{k}t_{(i)}+(n-k)t_{(k)}\\Bigr]=0\\)。"
+      },
+      {
+        "step": 5,
+        "title": "(2) 估计值",
+        "content": "\\(\\hat\\theta=\\dfrac{1}{k}\\Bigl[\\displaystyle\\sum_{i=1}^{k}t_{(i)}+(n-k)t_{(k)}\\Bigr]\\)（二阶导为负，确为极大值点）。"
+      }
+    ],
+    "answer": "\\(\\hat\\theta=\\dfrac1k\\Bigl[\\sum_{i=1}^{k}t_{(i)}+(n-k)t_{(k)}\\Bigr]\\)",
+    "commonErrors": [
+      "应用建模"
+    ],
+    "frequency": 1,
+    "tags": [
+      "2026",
+      "参数估计"
+    ]
+  }
+]

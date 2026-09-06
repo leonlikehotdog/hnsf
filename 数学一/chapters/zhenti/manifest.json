@@ -16,11 +16,12 @@
     2022,
     2023,
     2024,
-    2025
+    2025,
+    2026
   ],
   "minYear": 2009,
-  "maxYear": 2025,
-  "totalYears": 17,
-  "updatedAt": "2026-07-26",
+  "maxYear": 2026,
+  "totalYears": 18,
+  "updatedAt": "2026-09-06",
   "note": "各年真题 JSON 文件位于 chapters/zhenti/{year}.json"
 }

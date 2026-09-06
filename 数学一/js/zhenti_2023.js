@@ -502,7 +502,7 @@
                     ${q.options && q.options.length ? `<div class="zx23-q-options">${q.options.map(o => `<label class="zx23-q-opt">${renderMath(o)}</label>`).join('')}</div>` : ''}
                     <p>📌 <strong>你的答案：</strong>${userAns ? renderMath(userAns) : '<em>未作答</em>'}</p>
                     <p>✅ <strong>正确答案：</strong>${renderMath(q.answer || '见解析')}</p>
-                    <details><summary>📋 解题骨架</summary><ol>${solution}</ol></details>
+                    <details><summary>📖 答案解析</summary><ol>${solution}</ol></details>
                     ${errors ? `<p style="color:#dc2626;">${errors}</p>` : ''}
                 </div>
             `;
@@ -540,7 +540,7 @@
                     <div class="zx23-q-body">${renderMath(q.question)}</div>
                     <p>📌 <strong>你的答案：</strong>${m.userAns ? renderMath(m.userAns) : '<em>未作答</em>'}</p>
                     <p>✅ <strong>正确答案：</strong>${renderMath(q.answer || '见解析')}</p>
-                    ${q.solution && q.solution.length ? `<details><summary>📋 解题骨架</summary><ol>${q.solution.map(s => `<li><strong>${s.title}：</strong>${renderMath(s.content)}</li>`).join('')}</ol></details>` : ''}
+                    ${q.solution && q.solution.length ? `<details><summary>📖 答案解析</summary><ol>${q.solution.map(s => `<li><strong>${s.title}：</strong>${renderMath(s.content)}</li>`).join('')}</ol></details>` : ''}
                 </div>
             `;
         }).join('');
