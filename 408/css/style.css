@@ -894,3 +894,64 @@ a.nav-zhenti-link.active { background: rgba(243,156,18,0.28); border-left-color:
     .thumb-item { flex: 0 0 70px; height: 70px; }
     .thumb-year { font-size: 14px; }
 }
+
+/* ============ 全卷真题正文富内容（自动抓取 2024/2026 全卷） ============ */
+.qtext img,
+.qm-question img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 10px auto;
+    border: 1px solid #e8ecf1;
+    border-radius: 6px;
+    box-sizing: border-box;
+}
+.qtext table,
+.qm-question table,
+.qm-solution table,
+.qm-opts table {
+    border-collapse: collapse;
+    margin: 8px 0;
+    max-width: 100%;
+    font-size: 13px;
+}
+.qtext table th,
+.qtext table td,
+.qm-question table th,
+.qm-question table td,
+.qm-solution table th,
+.qm-solution table td {
+    border: 1px solid #d7dde4;
+    padding: 5px 10px;
+    text-align: center;
+    white-space: nowrap;
+}
+.qtext table th,
+.qm-question table th,
+.qm-solution table th {
+    background: #f0f4f9;
+    font-weight: 600;
+}
+.qtext pre,
+.qm-question pre,
+.qm-solution pre {
+    background: #f6f8fa;
+    border: 1px solid #e3e8ee;
+    border-radius: 6px;
+    padding: 10px 12px;
+    overflow-x: auto;
+    font-size: 12.5px;
+    line-height: 1.55;
+    margin: 8px 0;
+}
+.qtext p { margin: 6px 0; }
+.qtext blockquote,
+.qm-solution blockquote {
+    margin: 6px 0 6px 0;
+    padding: 4px 12px;
+    border-left: 3px solid #5b8def;
+    background: #f6f9ff;
+    color: #34495e;
+}
+.qtext sub, .qm-question sub { line-height: 0; }
+

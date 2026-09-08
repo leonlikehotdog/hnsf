@@ -333,14 +333,16 @@
             ? '<span class="q-mastery q-mastery-new">⚪ 未开始</span>'
             : '<span class="q-mastery" style="background:' + lv.color + '22;color:' + lv.color + ';border-color:' + lv.color + '55">' + lv.icon + ' ' + lv.label + '</span>';
 
-        const ansBtn = revealed
-            ? '<button class="qans-toggle qans-toggle-on" data-qid="' + q.id + '">✅ 答案：' + q.answer + '（点击隐藏）</button>'
-            : '<button class="qans-toggle" data-qid="' + q.id + '">🔒 点击查看答案</button>';
+        const ansBtn = (q.options && q.options.length)
+            ? (revealed
+                ? '<button class="qans-toggle qans-toggle-on" data-qid="' + q.id + '">✅ 答案：' + q.answer + '（点击隐藏）</button>'
+                : '<button class="qans-toggle" data-qid="' + q.id + '">🔒 点击查看答案</button>')
+            : ''; // 综合题无字母答案：卡片内直接引导“查看解析”→ 弹窗
 
         return '<div class="qcard" data-qid="' + q.id + '" data-reveal="' + (revealed ? '1' : '0') + '">'
             + '<div class="qcard-head">'
             + '<div class="qnum">' + q.year + ' · ' + q.num + '</div>'
-            + '<div class="qtype">' + q.type + ' · ' + q.score + '分</div>'
+            + '<div class="qtype">' + q.type + (q.score != null ? ' · ' + q.score + '分' : '') + '</div>'
             + '<div class="qpart" style="background:' + PART_COLOR[q.part] + '">' + q.part + '</div>'
             + masteryBadge
             + '</div>'
@@ -438,10 +440,10 @@
         if (btn) {
             if (nowRevealed) {
                 btn.classList.add('qm-answer-toggle-on');
-                btn.innerHTML = '✅ 答案：<strong>' + q.answer + '</strong>（点击隐藏）';
+                btn.innerHTML = '✅ ' + (q.answer ? ('答案：<strong>' + q.answer + '</strong>') : '参考答案') + '（点击隐藏）';
             } else {
                 btn.classList.remove('qm-answer-toggle-on');
-                btn.innerHTML = '🔒 点击展开答案';
+                btn.innerHTML = '🔒 点击查看' + (q.answer ? '答案' : '参考答案');
             }
         }
     }
@@ -488,25 +490,29 @@
             ? '<button type="button" class="mastery-clear-btn" data-mastery-clear="' + q.id + '">🔄 重置掌握度</button>'
             : '';
 
+        const hasLetter = !!q.answer;
+        const ansTitle = hasLetter ? q.answer : '参考答案';
+        const solTitle = (q.type === '大题' && !hasLetter) ? '📝 参考答案与解析：' : '🧭 解题套路：';
+
         body.innerHTML =
             '<div class="qm-meta">'
             + '<span class="qm-year">' + q.year + ' 年 第 ' + q.num + ' 题</span>'
             + '<span class="qm-tag">' + q.type + '</span>'
-            + '<span class="qm-tag">' + q.score + ' 分</span>'
+            + (q.score != null ? '<span class="qm-tag">' + q.score + ' 分</span>' : '')
             + '<span class="qm-tag" style="background:' + PART_COLOR[q.part] + '">' + q.part + '</span>'
             + '</div>'
             + '<div class="qm-question">' + q.question + '</div>'
             + '<div class="qm-opts-wrap" data-reveal="' + (modalRevealed ? '1' : '0') + '">' + (optsHtml || '') + '</div>'
             + '<div class="qm-answer-toggle-wrap">'
             + (modalRevealed
-                ? '<button type="button" class="qm-answer-toggle qm-answer-toggle-on" data-qid="' + q.id + '">✅ 答案：<strong>' + q.answer + '</strong>（点击隐藏）</button>'
-                : '<button type="button" class="qm-answer-toggle" data-qid="' + q.id + '">🔒 点击展开答案</button>')
+                ? '<button type="button" class="qm-answer-toggle qm-answer-toggle-on" data-qid="' + q.id + '">✅ ' + (hasLetter ? '答案：<strong>' + q.answer + '</strong>' : ansTitle) + '（点击隐藏）</button>'
+                : '<button type="button" class="qm-answer-toggle" data-qid="' + q.id + '">🔒 点击查看' + (hasLetter ? '答案' : '参考答案') + '</button>')
             + '</div>'
             + '<div class="qm-section qm-detail" data-reveal="' + (modalRevealed ? '1' : '0') + '">'
             + '<div class="qm-section-inner">'
             + '<div class="qm-section"><strong>🎯 考察点：</strong><div class="qm-tps">' + tpsHtml + '</div></div>'
             + '<div class="qm-section"><strong>📚 必备知识点：</strong><div class="qm-kps">' + kpsHtml + '</div></div>'
-            + '<div class="qm-section"><strong>🧭 解题套路：</strong><div class="qm-solution">' + q.solution + '</div></div>'
+            + '<div class="qm-section"><strong>' + solTitle + '</strong><div class="qm-solution">' + q.solution + '</div></div>'
             + '<div class="qm-section"><strong>📖 关联章节：</strong><div class="qm-chapters">' + chaptersHtml + '</div></div>'
             + '</div></div>'
             + '<div class="qm-section qm-mastery-section">'
@@ -516,7 +522,8 @@
             + '</div>'
             + (q.source ? '<div class="qm-source">来源：' + q.source + '</div>' : '');
 
-        document.getElementById('questionModalTitle').textContent = q.year + ' · 第 ' + q.num + ' 题 · 答案 ' + q.answer;
+        document.getElementById('questionModalTitle').textContent =
+            q.year + ' · 第 ' + q.num + ' 题' + (hasLetter ? (' · 答案 ' + q.answer) : '');
         document.getElementById('questionModal').hidden = false;
 
         // 弹窗内章节跳转：先关闭弹窗，再跳转

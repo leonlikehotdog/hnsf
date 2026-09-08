@@ -32,7 +32,13 @@
 <button class="back-to-top" id="backToTop" aria-label="回到顶部">↑</button>
 <script src="js/app.js"></script>
 <!-- 真题刷题模块 -->
+<!-- ① 旧精选（2021-2023 保留；2024 将被下方全卷覆盖） -->
 <script defer src="chapters/zhenti_data.js"></script>
+<!-- ② 全卷数据（覆盖/新增对应年份 40 选择 + 7 综合，配图在 imgs/zhenti/） -->
+<script defer src="chapters/zhenti_full_2024.js"></script>
+<script defer src="chapters/zhenti_full_2026.js"></script>
+<!-- ③ 数据就绪后重建章节索引与总题数 -->
+<script defer src="chapters/zhenti_meta.js"></script>
 <script defer src="js/zhenti.js"></script>
 </body>
 </html>
