@@ -172,7 +172,7 @@
         if (zhentiCount > 0) {
             zhentiHtml = '<div class="zhenti-chapter-banner" data-zhenti-chap="' + chapterId + '">'
                 + '<span class="zb-icon">🎯</span>'
-                + '<span class="zb-text"><strong>' + zhentiCount + ' 道近 4 年真题</strong> 考察本章知识点</span>'
+                + '<span class="zb-text"><strong>' + zhentiCount + ' 道历年真题</strong> 考察本章知识点</span>'
                 + '<button class="zb-btn">📝 去刷本章真题</button>'
                 + '</div>';
         }
@@ -211,6 +211,30 @@
     });
 
     window.__navigateTo = navigateTo;
+
+    // ===== 移动端侧边栏抽屉 =====
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+    const sidebarEl = document.getElementById('sidebar');
+
+    function openSidebar() {
+        if (sidebarEl) sidebarEl.classList.add('open');
+        if (sidebarOverlay) sidebarOverlay.classList.add('show');
+    }
+    function closeSidebar() {
+        if (sidebarEl) sidebarEl.classList.remove('open');
+        if (sidebarOverlay) sidebarOverlay.classList.remove('show');
+    }
+    if (mobileMenuBtn) mobileMenuBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        if (sidebarEl && sidebarEl.classList.contains('open')) closeSidebar();
+        else openSidebar();
+    });
+    if (sidebarOverlay) sidebarOverlay.addEventListener('click', closeSidebar);
+    // 点击任一导航项后收起抽屉
+    sidebarNav.addEventListener('click', function(e) {
+        if (e.target.closest('a')) closeSidebar();
+    });
 
     function init() {
         buildSidebar();

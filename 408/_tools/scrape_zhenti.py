@@ -164,8 +164,21 @@ def _svg_ok(text):
 
 def repair_svg(payload):
     """源站 SVG 偶发样式属性里带裸双引号（font-family: "Helvetica"）导致 XML 解析失败，
-    或整体以 JS 字符串转义存储（2026 部分图），逐级修复直到可被严格 XML 解析。"""
+    或整体以 JS 字符串转义存储（2026 部分图），逐级修复直到可被严格 XML 解析。
+    另保证根 <svg> 带 xmlns 命名空间（缺失时 <img> 引用会拒绝解码）。"""
     cand = payload
+    if not re.search(r"<svg\b[^>]*\bxmlns=([\"'])([^\"']+)\1", cand):
+        # 根 <svg> 缺默认命名空间，补上（插在 xmlns:xlink 前或标签结束前）
+        m = re.search(r"<svg\b[^>]*>", cand)
+        if m:
+            head = m.group(0)
+            ns = 'xmlns="http://www.w3.org/2000/svg"'
+            if "xmlns:xlink" in head:
+                idx = head.find("xmlns:xlink")
+                new_head = head[:idx] + ns + " " + head[idx:]
+            else:
+                new_head = head[:-1] + " " + ns + ">"
+            cand = cand[:m.start()] + new_head + cand[m.end():]
     if _svg_ok(cand):
         return cand
     cand = js_unescape(payload)

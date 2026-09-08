@@ -494,12 +494,23 @@
         const ansTitle = hasLetter ? q.answer : '参考答案';
         const solTitle = (q.type === '大题' && !hasLetter) ? '📝 参考答案与解析：' : '🧭 解题套路：';
 
+        const qIndex = allQuestions.findIndex(function(x) { return x.id === q.id; });
+        const hasPrev = qIndex > 0;
+        const hasNext = qIndex >= 0 && qIndex < allQuestions.length - 1;
+
         body.innerHTML =
             '<div class="qm-meta">'
             + '<span class="qm-year">' + q.year + ' 年 第 ' + q.num + ' 题</span>'
             + '<span class="qm-tag">' + q.type + '</span>'
             + (q.score != null ? '<span class="qm-tag">' + q.score + ' 分</span>' : '')
             + '<span class="qm-tag" style="background:' + PART_COLOR[q.part] + '">' + q.part + '</span>'
+            + '<span class="qm-nav">'
+            + '<button type="button" class="qm-nav-btn" data-qnav="prev" '
+            + (hasPrev ? '' : 'disabled') + '>← 上一题</button>'
+            + '<span class="qm-nav-pos">' + (qIndex + 1) + ' / ' + allQuestions.length + '</span>'
+            + '<button type="button" class="qm-nav-btn" data-qnav="next" '
+            + (hasNext ? '' : 'disabled') + '>下一题 →</button>'
+            + '</span>'
             + '</div>'
             + '<div class="qm-question">' + q.question + '</div>'
             + '<div class="qm-opts-wrap" data-reveal="' + (modalRevealed ? '1' : '0') + '">' + (optsHtml || '') + '</div>'
@@ -532,6 +543,16 @@
                 const ch = this.dataset.chap;
                 closeQuestionModal();
                 if (window.__navigateTo) window.__navigateTo(ch);
+            });
+        });
+
+        // 弹窗内上一题 / 下一题
+        body.querySelectorAll('.qm-nav-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                if (this.disabled) return;
+                const step = this.dataset.qnav === 'prev' ? -1 : 1;
+                const target = allQuestions[qIndex + step];
+                if (target) openQuestionModal(target.id);
             });
         });
 
