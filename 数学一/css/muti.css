@@ -436,3 +436,122 @@ details.muti-collapse .collapse-body { padding: 4px 14px 12px; }
     color: #94a3b8;
     line-height: 1.5;
 }
+
+/* ============================================
+ * 综合母题 12 炼（跨章节压轴 · 2027 预测）
+ * ============================================ */
+
+/* ===== 顶部横幅 ===== */
+.muti-combo-banner {
+    margin: 26px 0 14px;
+    padding: 14px 18px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #0f172a 0%, #1a3a5c 55%, #0e7490 100%);
+    color: #fff;
+    box-shadow: 0 3px 12px rgba(15, 23, 42, 0.18);
+}
+.mcb-title { font-size: 17px; font-weight: 700; letter-spacing: 0.3px; }
+.mcb-sub {
+    font-size: 12px;
+    font-weight: 400;
+    margin-left: 8px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.18);
+    color: #e0f2fe;
+}
+.mcb-desc {
+    margin-top: 8px;
+    font-size: 13px;
+    line-height: 1.8;
+    color: #cbd5e1;
+}
+.mcb-desc b { color: #fbbf24; }
+
+/* ===== 2027 预测热量条（基础题位卡片）===== */
+.muti-predict-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    background: #fffbeb;
+    border: 1px dashed #fcd34d;
+    font-size: 12px;
+    color: #78350f;
+}
+.mp-heat {
+    font-weight: 700;
+    padding: 1px 8px;
+    border-radius: 20px;
+    white-space: nowrap;
+}
+.muti-predict-row .mp-years { color: #92400e; white-space: nowrap; }
+.muti-predict-row .mp-trend { color: #57534e; }
+.muti-predict-row .mp-advice { color: #1d4ed8; flex: 1 1 240px; }
+/* 热度配色：5 必考 / 4 高频 / 3 常规 */
+.heat-5 { background: #dc2626; color: #fff; }
+.heat-4 { background: #ea580c; color: #fff; }
+.heat-3 { background: #f59e0b; color: #fff; }
+.heat-2 { background: #94a3b8; color: #fff; }
+.heat-1 { background: #cbd5e1; color: #334155; }
+
+/* ===== 综合母题卡片 ===== */
+.muti-combo-card { border-left: 4px solid #0e7490; }
+.muti-slot-badge.combo-badge {
+    background: linear-gradient(135deg, #dc2626, #ea580c);
+    letter-spacing: 0.5px;
+}
+.muti-chain {
+    margin-top: 8px;
+    padding: 7px 10px;
+    border-radius: 8px;
+    background: #f0f9ff;
+    border: 1px solid #bae6fd;
+    font-size: 13px;
+    line-height: 1.7;
+    color: #0c4a6e;
+}
+.mcc-label { font-weight: 700; margin-right: 6px; color: #0369a1; }
+.mcc-text { word-break: break-word; }
+
+.muti-combo-predict {
+    margin-top: 8px;
+    padding: 9px 12px;
+    border-radius: 8px;
+    background: #fffbeb;
+    border: 1px dashed #fcd34d;
+    font-size: 12.5px;
+    line-height: 1.8;
+    color: #78350f;
+}
+.mcp-head { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 4px; }
+.mcp-heat { font-weight: 700; padding: 2px 10px; border-radius: 20px; white-space: nowrap; }
+.mcp-years { color: #92400e; }
+.mcp-line { color: #57534e; }
+.mcp-line b { color: #b45309; }
+
+/* 涉及章节小标签 */
+.muti-combo-ch {
+    font-size: 12px;
+    padding: 2px 8px;
+    border-radius: 6px;
+    background: #ecfeff;
+    border: 1px solid #a5f3fc;
+    color: #0e7490;
+    font-family: Consolas, Monaco, monospace;
+}
+
+/* 综合母题的维度标签配色 */
+.muti-item-dim.综合计算 { background: #0e7490; }
+.muti-item-dim.综合创新 { background: #7c3aed; }
+
+@media (max-width: 768px) {
+    .muti-combo-banner { padding: 12px 14px; }
+    .mcb-title { font-size: 15px; }
+    .mcb-desc { font-size: 12px; }
+    .muti-predict-row .mp-advice { flex: 1 1 100%; }
+    .mcp-head { gap: 6px; }
+}

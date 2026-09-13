@@ -66,4 +66,49 @@
 
     <!-- 母题卡片列表（由 JS 渲染） -->
     <div class="muti-list" id="mutiList"></div>
+
+    <!-- ============================================================
+         综合母题 12 炼（跨章节压轴 · 2027 出题人视角）
+         数据源：chapters/muti_combo_{hs,xd,gl}.js
+         ============================================================ -->
+    <div class="muti-combo-banner">
+        <div class="mcb-title">🔥 综合母题 12 炼
+            <span class="mcb-sub">跨章节压轴 · 2027 出题人视角</span>
+        </div>
+        <div class="mcb-desc">
+            上面的 <b>22 道题位母题</b>解决「考点覆盖面」，这里的 <b>12 道综合母题</b>解决「综合度与预测性」：
+            把极限 → 积分 → 级数、多元微分 → 几何应用、向量组 → 方程组 → 二次型、二维分布 → 数字特征 → 参数估计
+            串成一道大题来练。每题标注 <b>2027 预测热度</b>与<b>真题溯源年份</b>，吸收完这套，选填稳、大题全，目标 <b>90+</b>。
+        </div>
+    </div>
+
+    <div class="muti-stats" id="comboStats">
+        <div class="muti-loading">正在加载综合母题...</div>
+    </div>
+
+    <div class="muti-filters" id="comboFilters">
+        <div class="filter-row">
+            <div class="filter-group">
+                <label class="filter-label">板块</label>
+                <div class="filter-pills" id="comboFilterPart">
+                    <button class="filter-pill active" data-part="all">全部</button>
+                    <button class="filter-pill" data-part="高数">高数</button>
+                    <button class="filter-pill" data-part="线代">线代</button>
+                    <button class="filter-pill" data-part="概率">概率</button>
+                </div>
+            </div>
+            <div class="filter-group">
+                <label class="filter-label">2027 预测热度</label>
+                <div class="filter-pills" id="comboFilterHeat">
+                    <button class="filter-pill active" data-heat="all">全部</button>
+                    <button class="filter-pill" data-heat="5">必考 ★5</button>
+                    <button class="filter-pill" data-heat="4">高频 ★4+</button>
+                </div>
+                <span class="filter-hint">热度为近 11 年频次 + 近 3 年走向的统计判断</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 综合母题卡片列表（由 JS 渲染） -->
+    <div class="muti-list" id="comboList"></div>
 </section>
