@@ -548,10 +548,94 @@ details.muti-collapse .collapse-body { padding: 4px 14px 12px; }
 .muti-item-dim.综合计算 { background: #0e7490; }
 .muti-item-dim.综合创新 { background: #7c3aed; }
 
+/* ============================================
+ * 移动端适配（母题 22 炼 + 综合母题 12 炼）
+ * ============================================ */
+
+/* 行间公式：窄屏允许横向滚动，避免被卡片 overflow:hidden 裁掉关键行 */
+.muti-item .katex-display {
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 2px 0 4px;
+    -webkit-overflow-scrolling: touch;
+}
+.muti-item .katex-display::-webkit-scrollbar { height: 4px; }
+.muti-item .katex-display::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+/* 矩阵/长分式在窄屏整体缩放，减少横向滚动次数 */
+.muti-item .katex-display > .katex { max-width: 100%; }
+
 @media (max-width: 768px) {
-    .muti-combo-banner { padding: 12px 14px; }
-    .mcb-title { font-size: 15px; }
-    .mcb-desc { font-size: 12px; }
+    /* ---- 首屏紧凑：统计条 + 筛选栏压缩，让题目尽早出现 ---- */
+    .muti-stats { gap: 6px; }
+    .muti-stats, .muti-filters { margin-bottom: 10px; }
+    .muti-stat-card { flex: 1 1 calc(50% - 5px); min-width: 0; padding: 8px 10px; }
+    .muti-stat-value { font-size: 16px; }
+    .muti-stat-sub { font-size: 11px; }
+    .muti-stat-label { font-size: 11px; margin-bottom: 2px; }
+    .muti-filters { padding: 9px 12px; }
+    /* 筛选栏改为纵向堆叠 + 药丸横向滚动，去掉长说明文字 */
+    .muti-filters .filter-row { flex-direction: column; align-items: stretch; gap: 3px; }
+    .muti-filters .filter-label { display: block; margin-bottom: 3px; font-size: 12px; }
+    .muti-filters .filter-pills {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 2px;
+    }
+    .muti-filters .filter-pills::-webkit-scrollbar { height: 3px; }
+    .muti-filters .filter-pills::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+    .muti-filters .filter-pill { flex: none; white-space: nowrap; }
+    .muti-filters .filter-hint { display: none; }
+
+    /* ---- 触控目标统一抬到 ≥44px（移动端可点性）---- */
+    .muti-dim-tab,
+    .muti-filters .filter-pill,
+    .muti-kp-jump,
+    .pc-mastery-toggle,
+    .pc-notes-toggle {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .muti-kp-jump { padding: 4px 12px; }
+    .muti-dim-tabs { gap: 4px; padding: 8px 12px 0; }
+    .muti-dim-tab { padding: 6px 10px; font-size: 13px; }
+
+    /* ---- 卡片：收窄内边距、放宽容器、避免元素撑宽 ---- */
+    .muti-card { border-radius: 10px; margin-bottom: 14px; }
+    .muti-card-head { padding: 12px 12px 8px; }
+    .muti-card-title { min-width: 0; }
+    .muti-topic { font-size: 15px; }
+    .muti-slot-badge { font-size: 13px; padding: 5px 8px; }
+    .muti-items { padding: 0 12px 12px; }
+    .muti-item-question { font-size: 14.5px; line-height: 1.85; }
+    .muti-opt { font-size: 13.5px; padding: 5px 8px; }
+    .muti-sol-step .ms-step-content,
+    .muti-sol-step .ms-step-title { font-size: 13.5px; line-height: 1.85; }
+    .muti-answer-box { font-size: 14px; padding: 7px 10px; }
+    /* 页脚按钮允许换行，避免掌握度/笔记按钮被挤出 */
+    .muti-item-footer { flex-wrap: wrap; gap: 6px; }
+    .muti-item-footer .filter-hint { flex: 1 1 100%; }
+
+    /* ---- 2027 预测条 / 综合母题头部：改为纵向紧凑排列 ---- */
+    .muti-predict-row { gap: 5px; padding: 6px 8px; }
+    .muti-predict-row .mp-years { white-space: normal; }
     .muti-predict-row .mp-advice { flex: 1 1 100%; }
+    .muti-combo-banner { padding: 12px 14px; margin: 20px 0 12px; }
+    .mcb-title { font-size: 15px; }
+    .mcb-sub { display: block; margin: 6px 0 0; width: fit-content; }
+    .mcb-desc { font-size: 12px; line-height: 1.75; }
+    .muti-chain { font-size: 12.5px; padding: 6px 8px; }
+    .muti-combo-predict { padding: 8px 10px; font-size: 12px; }
     .mcp-head { gap: 6px; }
+    .mcp-years { white-space: normal; }
+    .muti-combo-ch { font-size: 11px; }
+}
+
+@media (max-width: 480px) {
+    /* 超窄屏也保持两列，避免统计卡竖排把首屏撑高 */
+    .muti-stat-card { flex: 1 1 calc(50% - 4px); padding: 7px 9px; }
+    .muti-predict-row .mp-heat { font-size: 11px; }
+    .muti-item .katex-display > .katex { font-size: 0.95em; }
 }

@@ -2243,6 +2243,7 @@ code sub, code sup {
     .chapter-card .ch-title { font-size: 16px; }
     .top-banner h1 { font-size: 17px; }
     .must-card table { font-size: 12px; }
+}
 
 /* ============================================================
    真题精练模块样式
@@ -3786,7 +3787,6 @@ code sub, code sup {
     .zst-year-list .zsy-row { flex-wrap: wrap; }
     .zwk-item { flex-wrap: wrap; }
 }
-}
 
 /* ====== 例题插图统一样式 ====== */
 .example-illustrate { margin: 14px 0 18px; text-align: center; }
@@ -3797,3 +3797,59 @@ code sub, code sup {
 /* ====== 数一特有专题徽标 ====== */
 .section-tag.tag-special { background: #fdecea; color: #c0392b; border: 1px solid #f5b7b1; font-weight: 700; margin-left: 10px; margin-bottom: 0; vertical-align: middle; }
 .section-tag.tag-semi { background: #fef7e6; color: #d68910; border: 1px solid #f9e0a0; font-weight: 700; margin-left: 10px; margin-bottom: 0; vertical-align: middle; }
+
+/* ============================================================
+   移动端适配：侧边栏抽屉 + 消除横向溢出
+   （追加于文件末尾，绕开上方 @media (max-width:576px) 未闭合的历史问题）
+   ============================================================ */
+/* .main-content 是 .app-wrapper(flex) 的子项，默认 min-width:auto 会被内容的
+   min-content 顶宽，导致窄屏横向溢出（展开长公式时尤其明显）——必须置 0 */
+.main-content { min-width: 0; }
+
+.mobile-menu-btn {
+    display: none;
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    z-index: 300;
+    background: #1a3a5c;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 8px;
+    width: 44px;
+    height: 44px;
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.25);
+}
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.45);
+    z-index: 90;
+}
+
+@media (max-width: 768px) {
+    /* 侧边栏改为抽屉：默认移出屏幕，点汉堡展开 */
+    .sidebar {
+        width: 250px;
+        transform: translateX(-100%);
+        transition: transform 0.28s ease;
+    }
+    .sidebar.open { transform: translateX(0); }
+    /* 正文不再给侧边栏让位 —— 这是手机端横向溢出的根因 */
+    .main-content { margin-left: 0; }
+    .mobile-menu-btn { display: flex; }
+    .sidebar-overlay.show { display: block; }
+    /* 顶部横幅给汉堡按钮留出空间 */
+    .top-banner { padding: 30px 44px 24px; }
+}
+@media (max-width: 576px) {
+    .sidebar { width: 230px; }
+    .main-content { margin-left: 0; }
+    .top-banner { padding: 28px 40px 22px; }
+}

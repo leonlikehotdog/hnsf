@@ -7,9 +7,9 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <title>考研数学一 · 小白上岸手册 | 目标80分</title>
-    <link rel="stylesheet" href="css/style.css?v=5">
+    <link rel="stylesheet" href="css/style.css?v=8">
     <link rel="stylesheet" href="css/zhenti_layout.css?v=10">
-    <link rel="stylesheet" href="css/muti.css?v=2">
+    <link rel="stylesheet" href="css/muti.css?v=4">
     <!-- KaTeX：数学公式渲染（本地化，离线可用） -->
     <link rel="stylesheet" href="css/katex.min.css?v=5">
     <script defer src="js/katex.min.js?v=5"></script>
@@ -32,8 +32,13 @@
         </nav>
     </aside>
 
+    <!-- 移动端侧边栏遮罩 -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
     <!-- ===== Main Content ===== -->
     <main class="main-content">
+        <!-- 移动端汉堡按钮（桌面端隐藏） -->
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="展开目录菜单">☰</button>
         <header class="top-banner">
             <h1>📖 考研数学一 · 小白上岸手册</h1>
             <p>零基础也能看懂 · 只讲最核心的考点</p>
@@ -211,7 +216,7 @@
 <!-- ===== Back to Top ===== -->
 <button class="back-to-top" id="backToTop" aria-label="回到顶部">↑</button>
 
-<script src="js/app.js?v=7"></script>
+<script src="js/app.js?v=8"></script>
 <!-- 全局知识点分类树（window.KP_TREE / KP_INDEX / KP_TO_CHAPTER） -->
 <script defer src="chapters/kp_tree.js?v=1"></script>
 <!-- 练习题库：每章一个文件，统一挂到 window.PRACTICE_DATA 上 -->

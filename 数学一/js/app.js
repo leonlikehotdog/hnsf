@@ -1882,9 +1882,42 @@
         setTimeout(function() { t.remove(); }, 2200);
     }
 
+    // ===== 移动端侧边栏抽屉 =====
+    function initMobileDrawer() {
+        var btn = document.getElementById('mobileMenuBtn');
+        var overlay = document.getElementById('sidebarOverlay');
+        var sidebar = document.getElementById('sidebar');
+        if (!btn || !sidebar) return;
+        function closeSidebar() {
+            sidebar.classList.remove('open');
+            if (overlay) overlay.classList.remove('show');
+        }
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (sidebar.classList.contains('open')) {
+                closeSidebar();
+            } else {
+                sidebar.classList.add('open');
+                if (overlay) overlay.classList.add('show');
+            }
+        });
+        if (overlay) overlay.addEventListener('click', closeSidebar);
+        // 点击任一导航项后收起抽屉
+        if (sidebarNav) {
+            sidebarNav.addEventListener('click', function(e) {
+                if (e.target.closest('a')) closeSidebar();
+            });
+        }
+        // Esc 关闭
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeSidebar();
+        });
+    }
+
     // ===== 初始化 =====
     function init() {
         buildSidebar();
+        initMobileDrawer();
 
         // 启动考研倒计时
         initCountdown();
