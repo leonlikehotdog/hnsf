@@ -1,0 +1,773 @@
+/* ============================================================
+   302 数学二 闯关系统 · 热血「紫电」主题皮肤层
+   ------------------------------------------------------------
+   说明：本文件只在 body.dz（热血模式）下生效，基础样式仍在 style.css，
+        想换回简洁模式点顶部「🥋 热血模式」按钮即可。
+   配色：紫电雷光 —— 主色 #a855f7 / 亮色 #c4b5fd / 电青 #22d3ee。
+        刻意与 829 的「橙金烈焰」区分开，两门课一眼能分清。
+   背景：优先用 assets/bg.mp4 视频当底图，其次 assets/bg-map.jpg、bg-battle.jpg 两张静态图，
+        再由 js/fx.js 的 Canvas 叠加实时闪电/气焰/星云（原创程序化绘制，
+        可离线运行，不依赖任何外部素材）。
+   ============================================================ */
+
+/* ================= 背景画布与特效层 ================= */
+#bgCanvas {
+    position: fixed; inset: 0; z-index: 0;
+    display: none; pointer-events: none;
+}
+body.dz #bgCanvas { display: block; }
+body.dz { background: transparent; }
+
+/* 背景视频：不直接显示，只当画布底图源（放在屏幕外但保持可解码，
+   用 display:none / visibility:hidden 可能被浏览器暂停解码） */
+.bg-video {
+    position: fixed; left: -9999px; top: 0;
+    width: 2px; height: 2px;
+    pointer-events: none;
+}
+
+/* ---------- 想换成自己的背景？不用改代码 ----------
+   首选：把视频放到 数学二/assets/ 并命名为 bg.mp4，页面会自动把它当底图
+        （逐帧绘制到画布：cover 裁切 + 压暗 + 叠加气焰/闪电等动态图层）。
+   备选：图片放在同目录，命名 bg-map.jpg（地图页）、bg-battle.jpg（战斗页），
+        只有 bg.mp4 探测不到/放不出来时才会用到；
+   都没探测到就无缝降级到程序化背景，不会报 404。
+   提示：若素材涉及他人版权作品，请勿用于公网部署。
+   现有的两张图是仓库自带的程序化生成图，想改配色/构图可跑 数学二/make-bg.ps1
+--------------------------------------------------- */
+/* 只给需要"压住画布"的静态流式容器建立层叠上下文；
+   注意不能改动 .hud(sticky) / .tip(fixed) / .panel / .battle-mask 的定位方式 */
+body.dz .legend,
+body.dz .map-scroll { position: relative; z-index: 2; }
+
+/* 全屏闪光 */
+#fxFlash {
+    position: fixed; inset: 0; z-index: 400; pointer-events: none;
+    opacity: 0;
+}
+#fxFlash.go { animation: fxFlashOut 0.55s ease-out forwards; }
+@keyframes fxFlashOut {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+/* 爆气点 */
+.fx-burst {
+    position: fixed; z-index: 380; pointer-events: none;
+    width: 20px; height: 20px; margin: -10px 0 0 -10px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(var(--c), 0.95), rgba(var(--c), 0.35) 45%, rgba(var(--c), 0) 70%);
+    animation: fxBurst 0.7s cubic-bezier(.15,.75,.2,1) forwards;
+}
+@keyframes fxBurst {
+    0% { transform: scale(0.4); opacity: 1; }
+    60% { opacity: 0.9; }
+    100% { transform: scale(11); opacity: 0; }
+}
+
+/* 气浪光环（升级 / 神龙） */
+.fx-ring {
+    position: fixed; left: 50%; top: 50%; z-index: 385; pointer-events: none;
+    width: 120px; height: 120px; margin: -60px 0 0 -60px;
+    border-radius: 50%;
+    border: 4px solid rgba(var(--c), 0.95);
+    box-shadow: 0 0 60px rgba(var(--c), 0.9), inset 0 0 40px rgba(var(--c), 0.6);
+    animation: fxRing 1.15s cubic-bezier(.1,.7,.2,1) forwards;
+}
+@keyframes fxRing {
+    0% { transform: scale(0.25); opacity: 1; }
+    100% { transform: scale(11); opacity: 0; }
+}
+
+/* 飘字（会心一击 / 被打中 / 连击） */
+.fx-label {
+    position: fixed; left: 50%; top: 34%; z-index: 390; pointer-events: none;
+    transform: translate(-50%, 0);
+    font-size: 34px; font-weight: 900; letter-spacing: 3px;
+    animation: fxLabel 1.05s ease-out forwards;
+    text-shadow: 0 0 22px currentColor, 0 4px 12px rgba(0,0,0,0.8);
+    white-space: nowrap;
+}
+.fx-label.hit { color: #c4b5fd; top: 40%; }
+.fx-label.hurt { color: #ff6b6b; }
+.fx-label.combo { color: #a78bfa; font-size: 30px; top: 25%; }
+@keyframes fxLabel {
+    0% { opacity: 0; transform: translate(-50%, 26px) scale(0.75); }
+    22% { opacity: 1; transform: translate(-50%, 0) scale(1.12); }
+    70% { opacity: 1; transform: translate(-50%, -26px) scale(1); }
+    100% { opacity: 0; transform: translate(-50%, -62px) scale(0.98); }
+}
+
+/* 震屏 */
+body.shake-1 .hud, body.shake-1 .map-scroll, body.shake-1 .battle-panel { animation: shakeX 0.42s; }
+body.shake-2 .hud, body.shake-2 .map-scroll, body.shake-2 .battle-panel { animation: shakeX 0.5s; }
+body.shake-3 .hud, body.shake-3 .map-scroll, body.shake-3 .battle-panel { animation: shakeX 0.62s; }
+@keyframes shakeX {
+    0%, 100% { transform: translate(0, 0); }
+    12% { transform: translate(-7px, 4px); }
+    28% { transform: translate(6px, -3px); }
+    44% { transform: translate(-5px, -3px); }
+    62% { transform: translate(4px, 3px); }
+    80% { transform: translate(-2px, -1px); }
+}
+
+/* 连击时屏幕边缘燃起来（六档，逐档加剧） */
+body.combo-1::after, body.combo-2::after, body.combo-3::after,
+body.combo-4::after, body.combo-5::after, body.combo-6::after {
+    content: ''; position: fixed; inset: 0; z-index: 350; pointer-events: none;
+}
+body.combo-1::after {
+    box-shadow: inset 0 0 90px rgba(139, 92, 246, 0.35);
+    animation: comboBreathe 1.6s ease-in-out infinite;
+}
+body.combo-2::after {
+    box-shadow: inset 0 0 130px rgba(124, 58, 237, 0.55);
+    animation: comboBreathe 1.1s ease-in-out infinite;
+}
+body.combo-3::after {
+    box-shadow: inset 0 0 180px rgba(109, 40, 217, 0.75), inset 0 0 60px rgba(196, 181, 253, 0.5);
+    animation: comboBreathe 0.75s ease-in-out infinite;
+}
+/* 10 连：加入紫色，边缘更厚 */
+body.combo-4::after {
+    box-shadow: inset 0 0 200px rgba(168, 85, 247, 0.85), inset 0 0 90px rgba(200, 90, 255, 0.45);
+    animation: comboBreathe 0.62s ease-in-out infinite;
+}
+/* 15 连：紫金混色 + 轻微抖动感 */
+body.combo-5::after {
+    box-shadow: inset 0 0 240px rgba(139, 92, 246, 0.92), inset 0 0 130px rgba(230, 120, 255, 0.55),
+                inset 0 0 50px rgba(216, 180, 254, 0.6);
+    animation: comboBreathe 0.5s ease-in-out infinite, comboVibrate 0.28s linear infinite;
+}
+/* 20 连：全屏金紫狂焰 */
+body.combo-6::after {
+    box-shadow: inset 0 0 300px rgba(109, 40, 217, 1), inset 0 0 180px rgba(240, 150, 255, 0.65),
+                inset 0 0 80px rgba(233, 213, 255, 0.75);
+    animation: comboBreathe 0.4s ease-in-out infinite, comboVibrate 0.2s linear infinite;
+}
+@keyframes comboVibrate {
+    0%, 100% { transform: translate(0, 0); }
+    25% { transform: translate(1px, -1px); }
+    75% { transform: translate(-1px, 1px); }
+}
+@keyframes comboBreathe {
+    0%, 100% { opacity: 0.65; }
+    50% { opacity: 1; }
+}
+
+/* ================= HUD 战力面板 ================= */
+body.dz .hud {
+    background: linear-gradient(180deg, rgba(18, 9, 36, 0.94), rgba(14, 10, 32, 0.86));
+    border-bottom: 2px solid rgba(139, 92, 246, 0.45);
+    box-shadow: 0 4px 26px rgba(124, 58, 237, 0.18);
+}
+body.dz .avatar {
+    background: conic-gradient(#a855f7 0deg var(--p, 0deg), rgba(255, 255, 255, 0.09) var(--p, 0deg) 360deg);
+    box-shadow: 0 0 22px rgba(168, 85, 247, 0.55);
+}
+body.dz .avatar::after {
+    background: radial-gradient(circle at 35% 25%, #1a0b2e, #0f0620);
+    border-color: rgba(168, 85, 247, 0.45);
+}
+body.dz .avatar span { color: #ede9fe; text-shadow: 0 0 10px rgba(168, 85, 247, 0.8); }
+body.dz .hud-xp-top b { color: #c4b5fd; }
+body.dz .xp-bar {
+    height: 12px; background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(139, 92, 246, 0.35);
+}
+body.dz .xp-fill {
+    background: linear-gradient(90deg, #7c3aed, #a855f7, #ddd6fe, #a855f7);
+    background-size: 220% 100%;
+    animation: energyFlow 1.6s linear infinite;
+    box-shadow: 0 0 18px rgba(168, 85, 247, 0.85);
+}
+@keyframes energyFlow { to { background-position: -220% 0; } }
+body.dz .hud-stats .stat b { color: #ede9fe; }
+body.dz .hud-stats .stat.streak b { color: #a78bfa; text-shadow: 0 0 12px rgba(139, 92, 246, 0.7); }
+body.dz .hud-stats .stat.warn b { color: #ff6b6b; }
+body.dz .legend { border-bottom-color: rgba(139, 92, 246, 0.18); }
+
+/* ================= 七龙珠收集条（两种模式都显示） ================= */
+.dragonballs {
+    display: flex; align-items: center; gap: 6px;
+    padding: 5px 12px; border-radius: 99px;
+    background: rgba(120, 170, 255, 0.09);
+    border: 1px solid rgba(120, 170, 255, 0.28);
+}
+body.dz .dragonballs {
+    background: rgba(139, 92, 246, 0.09);
+    border-color: rgba(139, 92, 246, 0.3);
+}
+.dragonballs .dbtitle { font-size: 11px; color: #a5b4fc; margin-right: 2px; }
+body.dz .dragonballs .dbtitle { color: #c4b5fd; }
+.dball {
+    width: 26px; height: 26px; border-radius: 50%;
+    display: flex; flex-wrap: wrap; align-content: center; justify-content: center;
+    font-size: 6.5px; line-height: 1.05; letter-spacing: 0; color: #c62828;
+    padding: 2px;
+    background: radial-gradient(circle at 33% 28%, #8a8fb0, #2a2a48);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    transition: all 0.4s;
+    position: relative;
+}
+.dball.got {
+    background: radial-gradient(circle at 33% 28%, #ede9fe, #a855f7 45%, #6d28d9);
+    border-color: #ddd6fe;
+    box-shadow: 0 0 12px rgba(168, 85, 247, 0.95);
+    animation: dballPop 0.5s;
+}
+.dball.got::after {
+    content: ''; position: absolute; inset: -4px; border-radius: 50%;
+    border: 1px solid rgba(196, 181, 253, 0.5);
+    animation: pulse 2.4s ease-in-out infinite;
+}
+@keyframes dballPop { 0% { transform: scale(0.4); } 60% { transform: scale(1.35); } 100% { transform: scale(1); } }
+
+/* 窄屏：龙珠条要跟 HUD 的按钮挤在同一行，缩珠子省出宽度，
+   否则最右边的「成就/错题本」「重置」会被挤出屏幕 */
+@media (max-width: 860px) {
+    .dragonballs { flex: 1 1 auto; justify-content: center; padding: 2px 6px; gap: 3px; }
+    .dragonballs .dbtitle { display: none; }
+    .dball { width: 18px; height: 18px; font-size: 5px; padding: 1px; }
+}
+
+/* ================= 节点地图：星球战场 ================= */
+body.dz .map-bg {
+    background-image:
+        linear-gradient(rgba(139, 92, 246, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(139, 92, 246, 0.05) 1px, transparent 1px);
+}
+body.dz .tier-col {
+    border-left: 1px dashed rgba(168, 85, 247, 0.22);
+    border-right: 1px dashed rgba(168, 85, 247, 0.1);
+    background: linear-gradient(180deg, color-mix(in srgb, var(--tc) 14%, transparent), transparent 60%);
+}
+body.dz .tier-title { text-shadow: 0 0 20px color-mix(in srgb, var(--tc) 80%, transparent), 0 2px 10px #000; }
+body.dz .tier-desc { color: #c4b5fd; }
+body.dz .node-core {
+    box-shadow: 0 0 24px color-mix(in srgb, var(--color) 45%, transparent), inset 0 0 20px rgba(0, 0, 0, 0.7);
+}
+body.dz .node.unlocked .node-core {
+    animation: nodeHot 2.4s ease-in-out infinite;
+}
+@keyframes nodeHot {
+    0%, 100% { box-shadow: 0 0 20px color-mix(in srgb, var(--color) 45%, transparent), inset 0 0 18px rgba(0,0,0,.7); }
+    50% { box-shadow: 0 0 38px color-mix(in srgb, var(--color) 85%, transparent), inset 0 0 18px rgba(0,0,0,.7); }
+}
+body.dz .node.cleared .node-core {
+    border-color: #c4b5fd;
+    box-shadow: 0 0 30px rgba(168, 85, 247, 0.8), inset 0 0 20px rgba(76, 29, 149, 0.6);
+}
+body.dz .node.cleared .node-crown { background: linear-gradient(135deg, #7c3aed, #ddd6fe); color: #1a0b2e; }
+body.dz .node.boss .node-core {
+    border-color: #ff4d4d;
+    animation: bossRage 1.8s ease-in-out infinite;
+}
+@keyframes bossRage {
+    0%, 100% { box-shadow: 0 0 24px rgba(255, 60, 60, 0.55), inset 0 0 20px rgba(0,0,0,.7); }
+    50% { box-shadow: 0 0 54px rgba(255, 60, 60, 1), inset 0 0 20px rgba(0,0,0,.7); transform: scale(1.03); }
+}
+body.dz .node-label { color: #ede9fe; }
+body.dz .edge-active { stroke: #a855f7; filter: drop-shadow(0 0 8px rgba(168, 85, 247, 0.95)); }
+body.dz .edge-done { stroke: #ddd6fe; }
+
+/* ================= 战斗界面：比武场 ================= */
+body.dz .battle-mask { background: rgba(6, 4, 12, 0.88); }
+body.dz .battle-panel {
+    background:
+        linear-gradient(180deg, rgba(28, 14, 56, 0.96), rgba(14, 10, 34, 0.98));
+    border: 2px solid rgba(139, 92, 246, 0.5);
+    box-shadow: 0 30px 90px rgba(0, 0, 0, 0.8), 0 0 60px rgba(124, 58, 237, 0.22);
+}
+body.dz .battle-head {
+    background: linear-gradient(90deg, rgba(109, 40, 217, 0.22), rgba(168, 85, 247, 0.08) 55%, transparent);
+    border-bottom-color: rgba(139, 92, 246, 0.35);
+}
+body.dz .monster-icon {
+    font-size: 46px;
+    animation: monsterBreathe 2.2s ease-in-out infinite;
+    filter: drop-shadow(0 0 16px rgba(244, 63, 94, 0.9));
+}
+/* 幅度刻意做小：外层的整体呼吸只负责轻微起伏，
+   明显的"上下浮动"交给内层 .monster-emoji/.monster-img 的 monsterIdle，
+   这样 158px 的立绘放大后也不会压到右侧名字与血条 */
+@keyframes monsterBreathe {
+    0%, 100% { transform: scale(1) rotate(-1.5deg); }
+    50% { transform: scale(1.035) rotate(1.5deg); }
+}
+body.dz .monster-name { color: #ede9fe; font-size: 15.5px; letter-spacing: 1px; }
+body.dz .trial-bar {
+    height: 11px; border: 1px solid rgba(139, 92, 246, 0.5);
+    background: rgba(0, 0, 0, 0.5);
+}
+body.dz .trial-fill {
+    background:
+        repeating-linear-gradient(115deg, rgba(255,255,255,0.22) 0 8px, transparent 8px 16px),
+        linear-gradient(90deg, #0ea5e9, #34d399);
+    background-size: 32px 100%, 100% 100%;
+    animation: trialFlow 0.8s linear infinite;
+    box-shadow: 0 0 16px rgba(52, 211, 153, 0.85);
+}
+@keyframes trialFlow { to { background-position: -32px 0, 0 0; } }
+body.dz .trial-text { color: #c4b5fd; }
+body.dz .combo-badge {
+    background: linear-gradient(135deg, #7c3aed, #c4b5fd);
+    color: #1a0b2e; font-size: 14px;
+    box-shadow: 0 0 22px rgba(139, 92, 246, 0.95);
+    animation: comboPop 0.28s;
+}
+@keyframes comboPop { 0% { transform: scale(0.6) rotate(-6deg); } 100% { transform: scale(1) rotate(0); } }
+
+body.dz .q-tag-type, body.dz .tag-type { background: rgba(139, 92, 246, 0.2); color: #c4b5fd; border-color: rgba(139, 92, 246, 0.45); }
+body.dz .tag-xp { background: rgba(168, 85, 247, 0.22); color: #ddd6fe; }
+body.dz .q-stem { color: #f5f3ff; }
+body.dz .inline-code { background: rgba(139, 92, 246, 0.16); color: #c4b5fd; }
+body.dz .opt {
+    background: rgba(255, 255, 255, 0.045);
+    border-color: rgba(139, 92, 246, 0.22);
+}
+body.dz .opt:hover:not(:disabled) {
+    background: rgba(139, 92, 246, 0.16);
+    border-color: rgba(168, 85, 247, 0.75);
+    box-shadow: 0 0 18px rgba(139, 92, 246, 0.3);
+}
+body.dz .opt.right { background: rgba(52, 211, 153, 0.18); border-color: #34d399; }
+body.dz .opt.wrong { background: rgba(255, 70, 70, 0.18); border-color: #ff5a5a; }
+body.dz .opt.wrong .opt-key { background: #ff5a5a; color: #1a0b2e; }
+body.dz .q-input:focus { border-color: #a855f7; box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.2); }
+body.dz .btn-primary {
+    background: linear-gradient(135deg, #7c3aed, #a855f7);
+    color: #1a0b2e;
+    box-shadow: 0 6px 22px rgba(139, 92, 246, 0.45);
+}
+body.dz .btn-primary:hover { background: linear-gradient(135deg, #8b5cf6, #ddd6fe); }
+body.dz .btn-ok { background: linear-gradient(135deg, #059669, #34d399); }
+body.dz .btn-no { background: linear-gradient(135deg, #9f1239, #ff5a5a); }
+body.dz .battle-foot { background: rgba(18, 9, 36, 0.75); border-top-color: rgba(139, 92, 246, 0.3); }
+body.dz .fb-source { color: #c4b5fd; }
+
+/* ================= 结算：胜利演出 ================= */
+body.dz .settle.win .settle-title {
+    color: #c4b5fd;
+    font-size: 30px;
+    text-shadow: 0 0 30px rgba(168, 85, 247, 0.9), 0 0 60px rgba(109, 40, 217, 0.6), 0 4px 12px #000;
+    animation: victoryPulse 1.1s ease-in-out infinite;
+}
+@keyframes victoryPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.06); }
+}
+body.dz .settle-icon { font-size: 78px; filter: drop-shadow(0 0 24px rgba(168, 85, 247, 0.9)); }
+body.dz .sg b { color: #c4b5fd; }
+body.dz .settle-row b { color: #ddd6fe; }
+body.dz .unlock-box { background: rgba(139, 92, 246, 0.1); border-color: rgba(168, 85, 247, 0.45); }
+body.dz .ub-title { color: #c4b5fd; }
+body.dz .ach-box { background: rgba(196, 181, 253, 0.1); border-color: rgba(196, 181, 253, 0.4); }
+body.dz .ach-box .ub-title { color: #c4b5fd; }
+
+/* ================= 弹窗 / 面板 / 抽屉 ================= */
+body.dz .modal-card {
+    background: linear-gradient(180deg, rgba(26, 13, 52, 0.97), rgba(16, 12, 36, 0.98));
+    border: 2px solid rgba(139, 92, 246, 0.45);
+}
+body.dz .nd-block-title { color: #c4b5fd; }
+body.dz .nd-block ul li::before { color: #8b5cf6; }
+body.dz .nd-source { color: #c4b5fd; }
+body.dz .panel {
+    background: linear-gradient(180deg, #150b28, #0a0a18);
+    border-left: 2px solid rgba(139, 92, 246, 0.4);
+}
+body.dz .panel-tab.active { background: rgba(139, 92, 246, 0.2); border-color: rgba(168, 85, 247, 0.6); color: #fff; }
+body.dz .ach.got { background: linear-gradient(90deg, rgba(168, 85, 247, 0.18), rgba(255, 255, 255, 0.03)); border-color: rgba(168, 85, 247, 0.5); }
+body.dz .ach.got .ach-name { color: #c4b5fd; }
+body.dz .stat-cell b { color: #c4b5fd; }
+body.dz .play-tips b { color: #ddd6fe; }
+body.dz .wi-node { color: #a78bfa; }
+body.dz .toast { background: rgba(24, 12, 48, 0.97); border-color: rgba(168, 85, 247, 0.5); }
+body.dz .toast.lvup { background: linear-gradient(135deg, #7c3aed, #c4b5fd); color: #1a0b2e; }
+body.dz .toast.ach { background: linear-gradient(135deg, #8b5cf6, #ddd6fe); color: #1a0b2e; }
+body.dz .toast.rec { background: linear-gradient(135deg, #5b21b6, #ede9fe); color: #1a0b2e; }
+/* 连击里程碑的提示文字比普通连击更亮眼 */
+body.dz .settle-row.rec { color: #ddd6fe; }
+body.dz .hm-cell.m3 { color: #b7f5dd; }
+body.dz .xp-float.plus { color: #c4b5fd; }
+body.dz .empty { color: #c4b5fd; }
+
+/* ================= 滚动条 ================= */
+body.dz ::-webkit-scrollbar { width: 10px; height: 10px; }
+body.dz ::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.03); }
+body.dz ::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #8b5cf6, #4c1d95);
+    border-radius: 99px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body.dz .xp-fill, body.dz .trial-fill, body.dz .monster-icon,
+    body.dz .settle.win .settle-title, body.dz .node.unlocked .node-core,
+    body.dz .node.boss .node-core { animation: none !important; }
+    /* 高连击的抖动/呼吸也一并关掉，避免眩晕 */
+    body.combo-1::after, body.combo-2::after, body.combo-3::after,
+    body.combo-4::after, body.combo-5::after, body.combo-6::after { animation: none !important; }
+    /* 进场亮相也要关：它的选择器权重比上面那条高，不单独列出来会漏网 */
+    .monster.enter .monster-icon, .monster.enter .monster-aura,
+    .monster.enter .monster-name { animation: none !important; }
+}
+
+/* ================= 实体怪物立绘 =================
+   图片放在 829/monsters/ 下（文件名见 monsters/monsters.js），
+   缺图时自动回退成 emoji，不会报错。 */
+.monster-stage {
+    position: relative;
+    width: 158px; height: 158px;
+    flex: 0 0 auto;
+}
+/* 立绘放大/呼吸时不要压到右侧名字与考验条 */
+.monster-info { padding-left: 8px; min-width: 0; }
+/* 脚下光环（颜色由 JS 按角色属性注入 --aura） */
+.monster-aura {
+    position: absolute; left: 50%; bottom: -2px;
+    width: 132px; height: 28px; margin-left: -66px;
+    border-radius: 50%; pointer-events: none;
+    background: radial-gradient(ellipse at center, var(--aura, rgba(139, 92, 246, 0.55)) 0%, transparent 70%);
+    filter: blur(3px);
+    animation: auraPulse 2.8s ease-in-out infinite;
+}
+@keyframes auraPulse {
+    0%, 100% { opacity: 0.55; transform: scale(1); }
+    50% { opacity: 0.95; transform: scale(1.09); }
+}
+.monster-icon {
+    position: absolute; inset: 0;
+    display: flex; align-items: flex-end; justify-content: center;
+    font-size: 40px; line-height: 1;
+    filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.65));
+}
+/* 待机呼吸（放在内层，这样和外层的受击抖动可以叠加） */
+.monster-emoji {
+    display: block; line-height: 1;
+    animation: monsterIdle 2.8s ease-in-out infinite;
+}
+.monster-img {
+    display: block;
+    max-width: 150px; max-height: 150px;
+    animation: monsterIdle 2.8s ease-in-out infinite;
+    user-select: none; -webkit-user-drag: none;
+}
+/* 注意：作者样式的 display:block 会盖掉 UA 的 [hidden]{display:none}，
+   必须显式补回来，否则有图时 emoji 仍然可见 */
+.monster-emoji[hidden],
+.monster-img[hidden] { display: none !important; }
+/* 纯黑背景的 JPG：用 screen 混合自动扣掉黑底（暗色战场下更适合发光主体） */
+.monster-img.blend { mix-blend-mode: screen; }
+@keyframes monsterIdle {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-5px) scale(1.022); }
+}
+
+/* 完整亮相（1.5s，**每次进关卡都播**）：
+   ① 立绘从暗处浮现并带扫光 ② 脚下光环炸开再收敛 ③ 名牌从左侧滑入、字距收拢 */
+.monster.enter .monster-icon { animation: monsterEnter 1.5s cubic-bezier(.2, .8, .2, 1); }
+@keyframes monsterEnter {
+    0% { opacity: 0; transform: translateY(28px) scale(0.72); filter: brightness(3); }
+    35% { opacity: 1; transform: translateY(-8px) scale(1.08); filter: brightness(1.85); }
+    58% { transform: translateY(3px) scale(0.985); filter: brightness(1.15); }
+    78% { transform: translateY(-2px) scale(1.015); filter: brightness(1.05); }
+    100% { opacity: 1; transform: translateY(0) scale(1); filter: brightness(1); }
+}
+.monster.enter .monster-aura { animation: auraBurst 1.5s ease-out; }
+@keyframes auraBurst {
+    0% { opacity: 0; transform: scale(0.3); }
+    35% { opacity: 1; transform: scale(1.5); }
+    100% { opacity: 0.55; transform: scale(1); }
+}
+.monster.enter .monster-name { animation: namePlate 1.5s cubic-bezier(.2, .8, .2, 1); }
+@keyframes namePlate {
+    0% { opacity: 0; transform: translateX(-16px); letter-spacing: 9px; }
+    40% { opacity: 1; transform: translateX(0); letter-spacing: 3px; }
+    100% { opacity: 1; transform: translateX(0); letter-spacing: 1px; }
+}
+/* 阵营名牌配色：友方冷紫，反派血红 —— 战斗中也能一眼看出这次是"被带"还是"被考" */
+.monster.side-ally .monster-name { color: #e9e2ff; }
+.monster.side-foe .monster-name { color: #fda4af; text-shadow: 0 0 14px rgba(251, 113, 133, 0.55); }
+/* 答对：他认可你 —— 点头 + 金光罩一层（不是挨打，是被点头）
+   动画一律放在内层 .monster-icon 上，和外层的进场动画互不干扰 */
+.monster.approve .monster-icon { animation: monsterApprove 0.6s cubic-bezier(.2, .9, .3, 1); }
+@keyframes monsterApprove {
+    0% { transform: translateY(0) scale(1); filter: brightness(1); }
+    22% { transform: translateY(5px) scale(0.985); filter: brightness(1.5) drop-shadow(0 0 20px rgba(255, 210, 74, 0.95)); }
+    55% { transform: translateY(0) scale(1.04); filter: brightness(1.2) drop-shadow(0 0 26px rgba(255, 210, 74, 0.75)); }
+    100% { transform: translateY(0) scale(1); filter: brightness(1); }
+}
+/* 答错：他摇了摇头 —— 左右轻摆 + 琥珀色一沉，带点"唉"的味道 */
+.monster.reject .monster-icon { animation: monsterReject 0.6s ease-in-out; }
+@keyframes monsterReject {
+    0% { transform: rotate(0); filter: brightness(1); }
+    18% { transform: rotate(-4.5deg); filter: brightness(0.86) drop-shadow(0 0 16px rgba(245, 158, 11, 0.7)); }
+    42% { transform: rotate(4.5deg); }
+    66% { transform: rotate(-2.6deg); filter: brightness(0.9); }
+    100% { transform: rotate(0); filter: brightness(1); }
+}
+
+/* ================= 面板右侧全身立绘：紫电主题描光 ================= */
+body.dz .fullbody-img {
+    filter: drop-shadow(0 0 44px rgba(124, 58, 237, 0.32)) drop-shadow(0 10px 26px rgba(0, 0, 0, 0.55)) brightness(1.08);
+}
+body.dz .battle-figure-name {
+    color: #c4b5fd;
+    text-shadow: 0 0 14px rgba(139, 92, 246, 0.8), 0 2px 10px #000;
+}
+
+@media (max-width: 640px) {
+    .monster-stage { width: 108px; height: 108px; }
+    .monster-img { max-width: 102px; max-height: 102px; }
+    .monster-aura { width: 92px; height: 20px; margin-left: -46px; }
+    .monster-icon { font-size: 30px; }
+    /* 窄屏塞不下 12 个头像 + 文字：去掉「本章遭遇」标签，头像缩到 14px */
+    .bond-strip { gap: 5px; margin-top: 6px; }
+    .bond-label { display: none; }
+    .bond-row { gap: 3px; }
+    .bond-cell { width: 14px; height: 14px; }
+    .bond-cell.cur::after { inset: -3px; }
+    .trial-bar { height: 8px; }
+    .trial-text { font-size: 10.5px; }
+}
+
+/* ================= 考验条（替掉了原来的「对手血量」） =================
+   老的血条是个**假**进度：它不参与通关判定（通关只看正确率 ≥ 60%），
+   掉多少、回多少全是演出来的。现在换成真进度：已答对 / 总题数，只涨不跌。 */
+.trial-bar {
+    height: 9px; border-radius: 99px; overflow: hidden;
+    background: rgba(0, 0, 0, 0.45); border: 1px solid rgba(139, 92, 246, 0.4);
+}
+.trial-fill {
+    height: 100%; width: 0; border-radius: 99px;
+    background: linear-gradient(90deg, #0ea5e9, #34d399);
+    box-shadow: 0 0 14px rgba(52, 211, 153, 0.75);
+    transition: width 0.34s cubic-bezier(.2, .9, .2, 1);
+}
+/* 通关线刻度：条过半 ≠ 通关（判定线是正确率 60%），这根竖线把"差多少"画出来。
+   位置由 app.js 按 Store.PASS_RATE 注入，不在这里写死百分比。 */
+.trial-bar { position: relative; }
+.trial-mark {
+    position: absolute; top: -2px; bottom: -2px; width: 2px; margin-left: -1px;
+    background: rgba(255, 255, 255, 0.7);
+    box-shadow: 0 0 6px rgba(255, 255, 255, 0.75);
+    pointer-events: none;
+}
+
+/* 答对推进时整条亮一下 —— 正反馈，但不抖动（没有"被击中"的含义了） */
+.trial-bar.struck { animation: trialStruck 0.36s; }
+@keyframes trialStruck {
+    0% { filter: brightness(1); }
+    35% { filter: brightness(2.1); box-shadow: 0 0 16px rgba(52, 211, 153, 0.9); }
+    100% { filter: brightness(1); }
+}
+
+/* ================= 本章遭遇录（战斗头部那一条） =================
+   一排小头像 = 这一章的角色。已结伴的亮起，当前这位加金圈，其余压暗成剪影。
+   这才是"这章还剩几位没过"的真实进度。 */
+.bond-strip {
+    display: flex; align-items: center; gap: 8px;
+    margin-top: 7px; min-width: 0; overflow: hidden;
+}
+.bond-label { flex: 0 0 auto; font-size: 11px; color: var(--txt-dim); white-space: nowrap; }
+.bond-label b { color: #7dd3fc; font-variant-numeric: tabular-nums; }
+.bond-row { display: flex; align-items: center; gap: 4px; min-width: 0; overflow: hidden; }
+
+/* ⚠️ 这里不能用 overflow:hidden 裁圆 —— 当前这位的金圈脉冲是 ::after 往外扩的，
+   一裁就整圈消失。圆形改由 .bond-img 自己的 border-radius 负责。 */
+.bond-cell {
+    position: relative; flex: 0 0 auto;
+    width: 24px; height: 24px; padding: 0;
+    border-radius: 50%; cursor: default;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(120, 170, 255, 0.26);
+    -webkit-tap-highlight-color: transparent;
+}
+.bond-fb {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; line-height: 1; color: var(--txt-dim);
+}
+/* 立绘是纯黑底 PNG：screen 混合抠底；没结伴的压成灰剪影 */
+.bond-img {
+    position: absolute; inset: 0; z-index: 1;
+    width: 100%; height: 100%; object-fit: cover; object-position: 50% 26%;
+    border-radius: 50%;
+    mix-blend-mode: screen;
+    filter: grayscale(1) brightness(0.62);
+}
+.bond-cell.got { border-color: var(--aura); box-shadow: 0 0 9px var(--aura); }
+.bond-cell.got .bond-img { filter: none; }
+.bond-cell.cur { border-color: #ffd24a; box-shadow: 0 0 11px rgba(255, 210, 74, 0.9); }
+.bond-cell.cur::after {
+    content: ''; position: absolute; inset: -4px; z-index: 2;
+    border-radius: 50%; border: 1px solid rgba(255, 210, 74, 0.85);
+    animation: bondPulse 1.5s ease-in-out infinite;
+}
+@keyframes bondPulse {
+    0%, 100% { opacity: 0.85; transform: scale(1); }
+    50% { opacity: 0.25; transform: scale(1.16); }
+}
+
+/* ================= 图标按钮 & 音频设置（两种模式通用） ================= */
+.btn-icon {
+    padding: 9px 11px; font-size: 15px; line-height: 1; min-width: 42px;
+}
+.btn-icon.off { opacity: 0.42; }
+
+.audio-box {
+    margin-top: 16px; padding: 14px; border-radius: 12px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(120, 170, 255, 0.16);
+}
+body.dz .audio-box { background: rgba(139, 92, 246, 0.07); border-color: rgba(139, 92, 246, 0.3); }
+.audio-box .nd-block-title { margin-bottom: 10px; }
+.audio-row {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 12.5px; color: var(--txt-dim); margin-bottom: 10px;
+}
+.audio-row:last-child { margin-bottom: 0; }
+.audio-row > span:first-child { flex: 0 0 62px; }
+.audio-row .btn { padding: 5px 12px; font-size: 12px; border-radius: 8px; }
+.audio-row .btn.on {
+    background: linear-gradient(135deg, #2563eb, #38bdf8);
+    border-color: transparent; color: #04101f;
+}
+body.dz .audio-row .btn.on { background: linear-gradient(135deg, #7c3aed, #a855f7); color: #1a0b2e; }
+.audio-row input[type="range"] {
+    flex: 1; height: 5px; border-radius: 99px; -webkit-appearance: none; appearance: none;
+    background: rgba(255, 255, 255, 0.14); outline: none;
+}
+.audio-row input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 15px; height: 15px; border-radius: 50%;
+    background: #a855f7; box-shadow: 0 0 10px rgba(168, 85, 247, 0.8); cursor: pointer;
+}
+.audio-row input[type="range"]::-moz-range-thumb {
+    width: 15px; height: 15px; border: none; border-radius: 50%;
+    background: #a855f7; cursor: pointer;
+}
+.audio-tip { font-size: 11.5px; color: var(--txt-dim); line-height: 1.6; }
+
+/* 怪物立绘素材清单 */
+.mon-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 6px 14px; margin-bottom: 10px;
+}
+.mon-row {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 12px; color: var(--txt-dim);
+    padding: 4px 0; border-bottom: 1px dashed rgba(255, 255, 255, 0.07);
+}
+.mon-row .mon-name { flex: 0 0 96px; color: var(--txt); font-weight: 700; }
+.mon-row .mon-local {
+    font-size: 9.5px; font-weight: 700; color: var(--amber);
+    border: 1px solid rgba(245, 158, 11, 0.45); border-radius: 4px;
+    padding: 0 3px; margin-left: 3px; white-space: nowrap;
+}
+.mon-row .inline-code { flex: 1 1 auto; font-size: 11px; }
+.mon-row .mon-state { flex: 0 0 62px; text-align: right; font-size: 11px; }
+.mon-row .mon-state.ok { color: #34d399; font-weight: 700; }
+
+/* 立绘映射说明（已改成一对一固定，不再有随机模式） */
+.mon-mode-hint { font-size: 11.5px; color: var(--txt-dim); margin-bottom: 10px; line-height: 1.7; }
+
+/* ================= AI 助教 ================= */
+/* —— 答题卡片里的 AI 区块 —— */
+.ai-block {
+    margin-top: 14px; padding-top: 12px;
+    border-top: 1px dashed rgba(120, 170, 255, 0.22);
+}
+.ai-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; flex-wrap: wrap; }
+.ai-title { font-size: 13px; font-weight: 700; color: var(--cyan); letter-spacing: .5px; }
+.ai-src { font-size: 11px; color: var(--txt-dim); }
+.ai-src.ai-nokey { color: var(--amber); }
+.ai-btns { display: flex; flex-wrap: wrap; gap: 8px; }
+.ai-btn {
+    font: inherit; font-size: 12.5px; font-weight: 600;
+    padding: 7px 12px; border-radius: 9px; cursor: pointer;
+    color: var(--txt); background: rgba(56, 189, 248, 0.12);
+    border: 1px solid rgba(56, 189, 248, 0.35);
+    transition: transform .12s, background .18s, border-color .18s;
+}
+.ai-btn:hover { background: rgba(56, 189, 248, 0.22); border-color: rgba(56, 189, 248, 0.6); transform: translateY(-1px); }
+.ai-btn:active { transform: translateY(0); }
+.ai-btn.ghost { background: transparent; border-color: var(--line); color: var(--txt-dim); }
+.ai-btn.ghost:hover { color: var(--txt); border-color: rgba(120, 170, 255, 0.4); }
+.ai-mini {
+    font: inherit; font-size: 11px; padding: 5px 9px; border-radius: 7px; cursor: pointer;
+    color: var(--txt-dim); background: transparent; border: 1px solid var(--line);
+}
+.ai-mini:hover { color: var(--txt); border-color: rgba(120, 170, 255, 0.4); }
+
+.ai-out {
+    margin-top: 12px; padding: 12px 14px; border-radius: 10px;
+    background: rgba(8, 14, 30, 0.72); border: 1px solid rgba(120, 170, 255, 0.18);
+    font-size: 13px; line-height: 1.75; color: var(--txt);
+    max-height: 420px; overflow-y: auto;
+}
+.ai-status { font-size: 12px; color: var(--txt-dim); display: flex; align-items: center; gap: 10px; }
+.ai-stop {
+    font: inherit; font-size: 11px; padding: 3px 9px; border-radius: 6px; cursor: pointer;
+    color: var(--rose); background: rgba(251, 113, 133, 0.12); border: 1px solid rgba(251, 113, 133, 0.35);
+}
+.ai-done { font-size: 11.5px; color: var(--txt-dim); margin-top: 10px; padding-top: 8px; border-top: 1px dashed rgba(120, 170, 255, 0.16); }
+.ai-err { font-size: 12.5px; color: var(--rose); line-height: 1.7; }
+.ai-text { margin-top: 8px; }
+.ai-text .ai-h { font-weight: 700; color: var(--gold); margin: 10px 0 4px; }
+.ai-text .ai-li { padding-left: 2px; margin: 2px 0; }
+.ai-text .ai-gap { height: 8px; }
+.ai-text .ai-code {
+    font-family: ui-monospace, Consolas, monospace; font-size: 12px;
+    background: rgba(56, 189, 248, 0.12); color: #9fe3ff;
+    padding: 1px 5px; border-radius: 4px;
+}
+.ai-text .ai-pre {
+    font-family: ui-monospace, Consolas, monospace; font-size: 12px; line-height: 1.6;
+    background: rgba(3, 8, 20, 0.85); border: 1px solid rgba(120, 170, 255, 0.18);
+    border-radius: 8px; padding: 10px 12px; margin: 8px 0;
+    overflow-x: auto; white-space: pre; color: #cfe4ff;
+}
+.ai-followup { display: flex; gap: 8px; margin-top: 10px; }
+.ai-input {
+    flex: 1; font: inherit; font-size: 13px; padding: 8px 11px; border-radius: 9px;
+    color: var(--txt); background: rgba(8, 14, 30, 0.8);
+    border: 1px solid rgba(120, 170, 255, 0.22);
+}
+.ai-input:focus { outline: none; border-color: rgba(56, 189, 248, 0.55); }
+
+/* —— 面板里的 AI 设置区 —— */
+.ai-box .ai-cfg { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
+.ai-cfg-row { display: flex; align-items: center; gap: 10px; }
+.ai-cfg-label { flex: 0 0 66px; font-size: 12px; color: var(--txt-dim); }
+.ai-cfg-field { flex: 1; display: flex; gap: 8px; align-items: center; min-width: 0; flex-wrap: wrap; }
+.ai-check {
+    display: flex; align-items: center; gap: 5px; flex: none;
+    font-size: 12px; color: var(--txt-dim); white-space: nowrap; cursor: pointer;
+}
+.ai-check input { margin: 0; cursor: pointer; }
+.ai-field {
+    flex: 1; min-width: 0; font: inherit; font-size: 12px; padding: 6px 9px; border-radius: 8px;
+    color: var(--txt); background: rgba(8, 14, 30, 0.8);
+    border: 1px solid rgba(120, 170, 255, 0.22);
+}
+.ai-field:focus { outline: none; border-color: rgba(56, 189, 248, 0.55); }
+select.ai-field { cursor: pointer; }
+.ai-actions2 { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
+.ai-actions2 .btn { font-size: 12px; padding: 6px 12px; }
+.ai-cfg-status {
+    font-size: 12px; line-height: 1.65; color: var(--txt-dim);
+    padding: 8px 10px; border-radius: 8px; margin-bottom: 8px;
+    background: rgba(8, 14, 30, 0.6); border: 1px solid rgba(120, 170, 255, 0.14);
+    word-break: break-word;
+}
+.ai-cfg-status.ok { color: #7ee7bb; border-color: rgba(52, 211, 153, 0.35); }
+.ai-cfg-status.bad { color: #ffb3bf; border-color: rgba(251, 113, 133, 0.35); }
+.ai-cfg-status.busy { color: #ede9fe; border-color: rgba(245, 158, 11, 0.35); }
+.ai-link { color: var(--cyan); word-break: break-all; }
+
+@media (max-width: 640px) {
+    .ai-cfg-row { flex-direction: column; align-items: stretch; gap: 4px; }
+    .ai-cfg-label { flex: none; }
+    .ai-out { max-height: 320px; font-size: 12.5px; }
+}

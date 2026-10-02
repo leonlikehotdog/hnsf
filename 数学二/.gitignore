@@ -1,0 +1,7 @@
+# 部署缓存（含 wrangler-account.json，不入库）
+.wrangler/
+
+# 只在本机使用的自定义立绘（官方美术资源，不入库、不部署）
+# 规则与根目录 .gitignore 里 829/monsters/custom/ 一致。
+monsters/custom/*
+!monsters/custom/.gitkeep

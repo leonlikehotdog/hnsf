@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>302 数学二 · 闯关刷题系统 | 华东师范大学</title>
+    <meta name="description" content="围绕考研 302 数学二（华东师范大学 085411 大数据技术与工程）的闯关式刷题系统：考点分层节点地图、章节剧情、羁绊收集、成就系统、错题复盘与考点溯源，支持 LaTeX 公式渲染。">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <link rel="stylesheet" href="css/katex.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dragonball.css">
+</head>
+<body class="dz">
+
+<!-- ============ 程序化动态背景（原创 Canvas 绘制） ============ -->
+<canvas id="bgCanvas"></canvas>
+<!-- 背景视频：只作为画布底图源，由 js/fx.js 逐帧绘制（不直接显示）。
+     素材首帧与末帧是同一画面（原片正放+倒放拼成的往复循环），所以直接加 loop 原生无缝循环。
+     ⚠️ 换成自己的视频时，务必先做成「首尾同帧」的往复循环，否则循环点会硬跳。
+     视频缺失或无法播放时会自动降级回静态底图 / 程序化背景。 -->
+<video id="bgVideo" class="bg-video" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>
+<div id="fxFlash"></div>
+
+<!-- ============ 顶部 HUD ============ -->
+<header class="hud">
+    <div class="hud-left">
+        <div class="avatar" id="hudProgressRing">
+            <span id="hudLevel">Lv.1</span>
+        </div>
+        <div class="hud-xp">
+            <div class="hud-xp-top"><span>经验值</span><b id="hudXp">0 / 100 XP</b></div>
+            <div class="xp-bar"><div class="xp-fill" id="hudXpFill"></div></div>
+        </div>
+    </div>
+    <div class="hud-stats">
+        <div class="stat"><span>通关考点</span><b id="hudClear">0 / 0</b></div>
+        <div class="stat streak"><span>当前连击</span><b id="hudStreak">0</b></div>
+        <div class="stat"><span>正确率</span><b id="hudAcc">0%</b></div>
+        <div class="stat warn"><span>待消化错题</span><b id="hudWrong">0</b></div>
+        <div class="stat"><span>成就</span><b id="hudAch">0 / 0</b></div>
+    </div>
+    <div class="hud-right">
+        <div class="dragonballs" id="dragonBalls" title="每通关 3 个节点点亮 1 颗龙珠，集齐七颗召唤神龙"></div>
+        <button class="btn btn-ghost btn-icon" id="btnMusic" title="背景音乐开关">🔊</button>
+        <button class="btn btn-ghost btn-icon" id="btnSfx" title="音效开关">🎵</button>
+        <button class="btn btn-ghost btn-icon" id="btnTheme" title="切换 热血模式 / 简洁模式">🥋</button>
+        <button class="btn btn-ghost" id="btnPanel" title="成就 / 错题本">🏅<span class="lbl-long"> 成就 / 错题本</span><span class="lbl-short"> 成就</span></button>
+        <button class="btn btn-ghost danger" id="btnReset" title="清空存档">重置</button>
+    </div>
+</header>
+
+<!-- ============ 图例 ============ -->
+<section class="legend">
+    <div class="legend-group">
+        <span class="legend-title">知识模块</span>
+        <span class="lg-item"><i style="background:#38bdf8"></i>高等数学</span>
+        <span class="lg-item"><i style="background:#a78bfa"></i>线性代数</span>
+    </div>
+    <div class="legend-group">
+        <span class="legend-title">节点状态</span>
+        <span class="lg-item"><i class="dot locked"></i>未解锁</span>
+        <span class="lg-item"><i class="dot unlocked"></i>可挑战</span>
+        <span class="lg-item"><i class="dot cleared"></i>已通关</span>
+        <span class="lg-item"><i class="dot boss"></i>BOSS</span>
+    </div>
+    <div class="legend-group">
+        <span class="legend-title">考点掌握度</span>
+        <span class="lg-item"><i class="dot m0"></i>未练</span>
+        <span class="lg-item"><i class="dot m1"></i>薄弱 &lt;60%</span>
+        <span class="lg-item"><i class="dot m2"></i>一般 60~85%</span>
+        <span class="lg-item"><i class="dot m3"></i>扎实 ≥85%</span>
+    </div>
+    <div class="legend-group hint">
+        <span>💡 圆越大 = 该知识点在历年真题中分值占比越高　|　悬停查看详情，点击进入关卡</span>
+    </div>
+</section>
+
+<!-- ============ 神经网络节点地图 ============ -->
+<main class="map-scroll" id="mapScroll">
+    <div class="map-inner" id="mapInner">
+        <div class="map-bg" id="mapBg"></div>
+        <svg class="edges" id="edges" xmlns="http://www.w3.org/2000/svg"></svg>
+        <div class="nodes" id="nodes"></div>
+    </div>
+    <!-- 移动端地图缩放控件（≤860px 才显示，由 js/app.js 接管） -->
+    <div class="map-zoom" id="mapZoom">
+        <button type="button" data-zoom="in" aria-label="放大">＋</button>
+        <button type="button" data-zoom="out" aria-label="缩小">－</button>
+        <button type="button" data-zoom="reset" aria-label="恢复初始视角">⤢</button>
+    </div>
+</main>
+
+<div class="tip" id="tip"></div>
+
+<!-- ============ 关卡简报弹窗 ============ -->
+<div class="modal-mask" id="nodeDetail">
+    <div class="modal-wrap">
+        <button class="modal-close" id="nodeDetailClose" aria-label="关闭">✕</button>
+        <div class="modal-card" id="nodeDetailCard"></div>
+    </div>
+</div>
+
+<!-- ============ 战斗（答题）界面 ============ -->
+<div class="battle-mask" id="battleMask">
+    <!-- 面板右侧的龙珠全身立绘：宽屏站在面板右缘外的空场，
+         窄屏没入面板后方（z-index 更低），不挡答题区 -->
+    <div class="battle-figure" id="battleFigure" aria-hidden="true">
+        <img class="fullbody-img" id="fullBodyImg" alt="" hidden>
+        <div class="battle-figure-name" id="fullBodyName"></div>
+    </div>
+    <div class="battle-panel">
+        <header class="battle-head">
+            <div class="monster" id="monster">
+                <div class="monster-stage">
+                    <div class="monster-aura" id="monsterAura"></div>
+                    <div class="monster-icon" id="monsterIcon">
+                        <span class="monster-emoji" id="monsterEmoji">👹</span>
+                        <img class="monster-img" id="monsterImg" alt="" hidden>
+                    </div>
+                </div>
+                <div class="monster-info">
+                    <div class="monster-name" id="monsterName">关卡</div>
+                    <!-- 考验条 = 已答对 / 总题数（只涨不跌的真实进度）；
+                         竖线是通关线刻度，位置由 app.js 按 PASS_RATE 注入 -->
+                    <div class="trial-bar" id="trialBar">
+                        <div class="trial-fill" id="trialFill"></div>
+                        <i class="trial-mark" id="trialMark"></i>
+                    </div>
+                    <div class="trial-text" id="trialText"></div>
+                    <!-- 本章遭遇录：这一章里已结伴 / 未结伴的角色 -->
+                    <div class="bond-strip" id="bondStrip"></div>
+                </div>
+            </div>
+            <div class="battle-meta">
+                <span class="q-progress" id="qProgress"></span>
+                <span class="combo-badge" id="comboBadge"></span>
+                <button class="battle-close" id="battleClose" aria-label="退出关卡">✕</button>
+            </div>
+        </header>
+        <main class="battle-body" id="battleBody"></main>
+        <footer class="battle-foot" id="battleFoot"></footer>
+    </div>
+</div>
+
+<!-- ============ 侧栏面板：成就 / 错题本 / 统计 ============ -->
+<div class="panel-mask" id="panelMask"></div>
+<aside class="panel" id="panel">
+    <div class="panel-head">
+        <div class="panel-tabs">
+            <button class="panel-tab active" data-view="ach">🏅 成就</button>
+            <button class="panel-tab" data-view="wrong">📕<span class="lbl-long"> 错题本</span><span class="lbl-short"> 错题</span></button>
+            <button class="panel-tab" data-view="bond">🤝<span class="lbl-long"> 羁绊录</span><span class="lbl-short"> 羁绊</span></button>
+            <button class="panel-tab" data-view="stats">📊<span class="lbl-long"> 统计与玩法</span><span class="lbl-short"> 统计</span></button>
+            <button class="panel-tab" data-view="ai">🤖<span class="lbl-long"> AI 助教</span><span class="lbl-short"> AI</span></button>
+        </div>
+        <button class="battle-close" id="panelClose" aria-label="关闭面板">✕</button>
+    </div>
+    <div class="panel-body">
+        <div class="panel-view active" id="view-ach"></div>
+        <div class="panel-view" id="view-wrong"></div>
+        <div class="panel-view" id="view-bond"></div>
+        <div class="panel-view" id="view-stats"></div>
+        <div class="panel-view" id="view-ai"></div>
+    </div>
+</aside>
+
+<!-- ============ 分镜卡（节点过场 / 出关结语） ============ -->
+<div class="story-mask" id="storyMask" aria-hidden="true">
+    <div class="story-card" id="storyCard">
+        <div class="story-badge" id="storyBadge"></div>
+        <div class="story-figure">
+            <img class="story-img" id="storyImg" alt="" hidden>
+            <div class="story-name" id="storyName"></div>
+        </div>
+        <div class="story-title" id="storyTitle"></div>
+        <p class="story-text" id="storyText"></p>
+        <div class="story-orb" id="storyOrb" hidden></div>
+        <div class="story-foot">
+            <span class="story-page" id="storyPage"></span>
+            <button class="story-btn" id="storyBtn">继 续 ▸</button>
+            <button class="story-skip" id="storySkip" type="button" hidden>跳过 ▸▸</button>
+        </div>
+    </div>
+</div>
+
+<div id="toastWrap"></div>
+
+<!-- ============ 数据与逻辑（顺序不可调换） ============ -->
+<!-- KaTeX：必须放在引擎之前，引擎渲染题目时要同步调用它 -->
+<script src="js/katex.min.js"></script>
+<script src="js/auto-render.min.js"></script>
+<script src="js/data-nodes.js"></script>
+<script src="js/achievements.js"></script>
+<script src="js/data-q-gs.js"></script>
+<script src="js/data-q-gs-c1a.js"></script>
+<script src="js/data-q-gs-c1b.js"></script>
+<script src="js/data-q-gs-c1c.js"></script>
+<script src="js/data-q-gs-c1d.js"></script>
+<script src="js/data-q-gs-c2a.js"></script>
+<script src="js/data-q-gs-c2b.js"></script>
+<script src="js/data-q-gs-c2c.js"></script>
+<script src="js/data-q-gs-c3a.js"></script>
+<script src="js/data-q-gs-c3a2.js"></script>
+<script src="js/data-q-gs-c3b.js"></script>
+<script src="js/data-q-gs-c3c.js"></script>
+<script src="js/data-q-gs-c4.js"></script>
+<script src="js/data-q-gs-c5.js"></script>
+<script src="js/data-q-gs-c6.js"></script>
+<script src="js/data-q-xd.js"></script>
+<script src="js/data-q-xd-c1.js"></script>
+<script src="js/data-q-xd-c2.js"></script>
+<script src="js/data-summary.js"></script>
+<script src="js/data-trial.js"></script>
+<script src="js/data-story.js"></script>
+<script src="js/data-links.js"></script>
+<script src="js/store.js"></script>
+<script src="monsters/monsters.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/ai.js"></script>
+<script src="js/fx.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/story.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

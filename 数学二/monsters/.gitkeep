@@ -1,0 +1,138 @@
+【当前已就位的立绘】
+  link-goblin.png       ← 你提供的那张图（白底灰度线稿，已抠白底 + 反色发光，512x338）
+  boss-leviathan.png    ← Pexels 图片 ID 30480038「室内灯光璀璨的龙雕塑」，
+                           摄影：murod lens，来源 https://www.pexels.com/photo/30480038/
+                           适用 Pexels License（免费商用、免署名、可修改），
+                           经 process.ps1 以 glow + Floor=45 处理成发光立绘（288x512）
+  _raw/                 ← 原始素材留档（不参与游戏渲染，可随时删）
+  image.png             ← 你给的原始图，保留备查
+
+  custom/dnf-01.png … dnf-07.png
+                        ← 【只在本机生效】7 只「本机怪物」。原图是 7 张满幅插画
+                           （深灰渐变底、主体画到边缘，抠不干净），已用
+                           process-illust.py 做「保留原画 + 柔和径向渐隐 + 边缘压暗」，
+                           512x512、四角 alpha=0。图片在 custom/ 里，
+                           不会提交进仓库、也不会部署到线上。
+                           custom/raw/ 里是原始 avif/jpg 留档（同样不进仓库）。
+
+其余 11 只怪物（代码石魔 / 递归幽灵 / 数据巨蟒 / 统计史莱姆 / 树之泰坦 / 查询应龙 /
+排序狂战士 / 事务守卫 / 神经脑魔 / BOSS·算法魔神 / 错题幽灵）还没有图，
+会自动回退成 emoji。生图提示词见本文件后半部分。
+
+──────────────────────────────────────────────
+【两个处理脚本，按图的特点选】
+──────────────────────────────────────────────
+① process.ps1 —— 适合「背景干净」的图（白底线稿 / 纯色底 / 3D 渲染 / 抠像）
+   它会真的把背景抠成透明：灰度线稿→反色发光；彩色图→抠底保留原色；再裁边缩放。
+     .\process.ps1 -In x.png -Out custom\tree-titan.png
+     .\process.ps1 -In .\raw -Out . -All
+   参数：-Mode auto|glow|cutout、-Tone、-Floor（-1=自动按背景亮度推算）、
+        -Gamma、-MaxSide、-NoTrim
+   注意：脚本文件必须带 UTF-8 BOM，否则 PowerShell 5.1 会按 GBK 解析中文注释、
+        吞掉换行并报「意外的标记 }」。用编辑器改过后补 BOM：
+     $p=".\process.ps1"; $c=[IO.File]::ReadAllText($p,(New-Object Text.UTF8Encoding($false))); [IO.File]::WriteAllText($p,$c,(New-Object Text.UTF8Encoding($true)))
+
+② process-illust.py —— 适合「满幅插画 / 立绘卡片」
+   主体一直画到画面边缘、背景是平滑渐变时，抠底必然失败
+   （按亮度、按背景色距离、从边框泛洪、二次曲面拟合背景我都试过，都会失败或留一圈灰雾）。
+   这个脚本不抠底，改为完整保留原画 + 柔和径向渐隐 + 边缘压暗，
+   在暗色战场上看起来是「怪物从暗处浮现」，没有硬边方块。
+     python process-illust.py -i custom\raw -o custom
+     python process-illust.py -i a.avif -o custom\dnf-08.png --r0 0.85 --r1 1.30
+   参数：--r0（完全保留的半径，默认 0.55）、--r1（完全透明的半径，默认 1.0）、
+        --darken（渐隐区压暗，默认 0.75）、--lift（整体提亮）、--size、--no-feather
+   依赖：pillow + pillow-avif-plugin（读 avif）+ numpy
+         python -m pip install pillow pillow-avif-plugin
+
+──────────────────────────────────────────────
+【一键处理脚本 process.ps1】把任意图片变成游戏立绘
+──────────────────────────────────────────────
+在 829/monsters 目录下开 PowerShell 执行：
+
+  # 处理单张（自动判断画风）
+  .\process.ps1 -In image.png -Out link-goblin.png
+
+  # 批量处理 raw 目录下所有图片
+  .\process.ps1 -In .\raw -Out . -All
+
+  # 强制指定处理方式
+  .\process.ps1 -In a.jpg -Out a.png -Mode glow     # 发光线稿
+  .\process.ps1 -In a.jpg -Out a.png -Mode cutout   # 彩色抠底
+
+脚本会自动：四角采样判断背景色 → 抠成透明 → 裁掉四周多余留白 →
+等比缩放到长边 512 → 输出 32 位带透明通道的 PNG。
+
+参数
+  -Mode    auto（默认，按饱和度自动判断）| glow | cutout
+  -MaxSide 长边像素上限，默认 512
+  -Tone    glow 模式阈值宽容度 0~2，越大亮线越粗，默认 1.3
+  -Floor   暗背景亮度下限 0~255，调大能把"暗但不纯黑"的背景彻底抠掉，默认 26
+           （处理暗背景照片/3D 渲染图时把它调到 40~60 通常就干净了）
+  -NoTrim  不裁边
+
+小提示：脚本文件必须带 UTF-8 BOM，PowerShell 5.1 才会正确解析中文注释。
+若用编辑器改过脚本后报"意外的标记 }"，执行下面这行补回 BOM 即可：
+  $p=".\process.ps1"; $c=[IO.File]::ReadAllText($p,(New-Object Text.UTF8Encoding($false))); [IO.File]::WriteAllText($p,$c,(New-Object Text.UTF8Encoding($true)))
+
+──────────────────────────────────────────────
+【到底哪些图源能用】（重要，别踩坑）
+──────────────────────────────────────────────
+✅ 可以商用 / 可以用在这个公网仓库
+   · Pexels          https://www.pexels.com/license/  （免费商用、免署名、可修改）
+   · Pixabay         https://pixabay.com/service/license-summary/
+   · Unsplash        https://unsplash.com/license
+   · Wikimedia Commons 里的 CC0 / Public Domain 文件
+   · 你自己用 AI 生成的原创怪物图（最推荐，风格也最统一）
+
+❌ 不建议用（没有授权保证，属于他人版权作品）
+   · 花瓣网 / 站酷 / 小红书 等用户上传聚合站
+   · 各种"免费壁纸站"（wallpaperflare、onlyhdwallpapers、peakpx 等）
+   · 动漫 / 影视 / 游戏角色的官方立绘、截图、二次创作
+   原因：这些站点的"免费下载"只是它自己允许你下载，不等于版权方授权，
+        而这些图片会随你的仓库一起公开发布。
+
+风格统一的小建议：让所有怪物都出自同一个生图工具、同一套画风前缀，
+处理时统一用 -Mode glow（或统一 cutout），立绘摆在一起才协调。
+
+──────────────────────────────────────────────
+【生图提示词（可直接复制）】
+──────────────────────────────────────────────
+下面每段都带统一画风后缀，描述的是「原创怪物设计 + 热血少年漫画风」，
+不指向任何既有作品或角色。出图后存到本目录并用 process.ps1 处理即可。
+
+── code-golem.png ──
+a bulky stone golem made of stacked glowing rune blocks and circuit lines, cracked rock armor, shonen anime style original creature design, bold black ink outlines, vivid cel shading, sharp highlights, dramatic rim light, glowing energy aura, full body, front-facing battle stance, fierce glowing eyes, pure black background, game boss sprite, high detail, no text
+
+── loop-phantom.png ──
+a translucent blue ghost whose lower body is an infinite self-nesting spiral vortex, hollow glowing eyes, shonen anime style original creature design, bold black ink outlines, vivid cel shading, sharp highlights, dramatic rim light, glowing energy aura, full body, front-facing battle stance, fierce glowing eyes, pure black background, game boss sprite, high detail, no text
+
+── data-serpent.png ──
+a giant metallic serpent coiling around glowing disk platters and data rings, emerald scales, shonen anime style original creature design, bold black ink outlines, vivid cel shading, sharp highlights, dramatic rim light, glowing energy aura, full body, front-facing battle stance, fierce glowing eyes, pure black background, game boss sprite, high detail, no text
+
+── stat-slime.png ──
+a translucent amber slime monster with floating data points and small bar charts inside its body, shonen anime style original creature design, bold black ink outlines, vivid cel shading, sharp highlights, dramatic rim light, glowing energy aura, full body, front-facing battle stance, fierce glowing eyes, pure black background, game boss sprite, high detail, no text
+
+── tree-titan.png ──
+a towering forest titan whose torso is a tree trunk and arms are living branches with glowing leaves, shonen anime style original creature design, bold black ink outlines, vivid cel shading, sharp highlights, dramatic rim light, glowing energy aura, full body, front-facing battle stance, fierce glowing eyes, pure black background, game boss sprite, high detail, no text
+
+── query-wyrm.png ──
+a winged dragon formed from glowing floating keywords and data tables, cyan energy wings, shonen anime style original creature design, bold black ink outlines, vivid cel shading, sharp highlights, dramatic rim light, glowing energy aura, full body, front-facing battle stance, fierce glowing eyes, pure black background, game boss sprite, high detail, no text
+
+── sort-berserker.png ──
+a raging berserker warrior dual wielding blades of different lengths, glowing numbers orbiting him, shonen anime style original creature design, bold black ink outlines, vivid cel shading, sharp highlights, dramatic rim light, glowing energy aura, full body, front-facing battle stance, fierce glowing eyes, pure black background, game boss sprite, high detail, no text
+
+── tx-keeper.png ──
+an armored guardian knight holding a giant glowing padlock and key, burning scroll floating behind, shonen anime style original creature design, bold black ink outlines, vivid cel shading, sharp highlights, dramatic rim light, glowing energy aura, full body, front-facing battle stance, fierce glowing eyes, pure black background, game boss sprite, high detail, no text
+
+── nn-brain.png ──
+a floating giant brain monster with many glowing neuron tentacles, pulsing violet energy nodes, shonen anime style original creature design, bold black ink outlines, vivid cel shading, sharp highlights, dramatic rim light, glowing energy aura, full body, front-facing battle stance, fierce glowing eyes, pure black background, game boss sprite, high detail, no text
+
+── boss-archfiend.png ──
+a six-armed demon god boss, each hand wielding a different glowing weapon, floating rune circles, crimson aura, shonen anime style original creature design, bold black ink outlines, vivid cel shading, sharp highlights, dramatic rim light, glowing energy aura, full body, front-facing battle stance, fierce glowing eyes, pure black background, game boss sprite, high detail, no text
+
+── wrong-ghost.png ──
+a pale grey-green translucent ghost wrapped in torn exam papers with red crosses, sorrowful glowing eyes, shonen anime style original creature design, bold black ink outlines, vivid cel shading, sharp highlights, dramatic rim light, glowing energy aura, full body, front-facing battle stance, fierce glowing eyes, pure black background, game boss sprite, high detail, no text
+
+【想改怪物名 / 换图 / 换对应关系】
+编辑 829/monsters/monsters.js 里的 list 和 assign。
+里面的 SHOW_NAME = false 控制是否在血条上方显示怪物名（现在是只显示关卡名）。

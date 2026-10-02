@@ -1,0 +1,1165 @@
+/* ============================================================
+   829 数据工程基础 · 闯关刷题系统 样式表
+   主题：深空神经网络 + 霓虹发光
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+    --bg: #070b17;
+    --bg-2: #0c1428;
+    --panel: rgba(17, 26, 48, 0.92);
+    --line: rgba(120, 170, 255, 0.16);
+    --txt: #dce9ff;
+    --txt-dim: #8aa0c4;
+    --cyan: #38bdf8;
+    --purple: #a78bfa;
+    --green: #34d399;
+    --amber: #f59e0b;
+    --rose: #fb7185;
+    --gold: #c084fc;
+}
+
+html, body { height: 100%; }
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+    background:
+        radial-gradient(1200px 600px at 15% -10%, rgba(56, 189, 248, 0.14), transparent 60%),
+        radial-gradient(900px 500px at 90% 10%, rgba(167, 139, 250, 0.13), transparent 60%),
+        var(--bg);
+    color: var(--txt);
+    font-size: 15px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+}
+body.no-scroll { overflow: hidden; }
+button { font-family: inherit; cursor: pointer; }
+ul { list-style: none; }
+
+/* ================= HUD ================= */
+.hud {
+    position: sticky; top: 0; z-index: 60;
+    display: flex; align-items: center; gap: 20px;
+    padding: 12px 22px;
+    background: linear-gradient(180deg, rgba(9, 14, 28, 0.96), rgba(9, 14, 28, 0.82));
+    border-bottom: 1px solid var(--line);
+    backdrop-filter: blur(12px);
+    flex-wrap: wrap;
+}
+.hud-left { display: flex; align-items: center; gap: 14px; min-width: 280px; }
+.avatar {
+    width: 58px; height: 58px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 14px; color: #fff;
+    background:
+        conic-gradient(var(--gold) 0deg var(--p, 0deg), rgba(255,255,255,0.08) var(--p, 0deg) 360deg);
+    box-shadow: 0 0 18px rgba(168, 85, 247, 0.3);
+    position: relative; flex: 0 0 auto;
+}
+.avatar::after {
+    content: ''; position: absolute; inset: 4px; border-radius: 50%;
+    background: radial-gradient(circle at 35% 25%, #1b2b4d, #0a1122);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+.avatar span { position: relative; z-index: 1; }
+.hud-xp { flex: 1 1 180px; min-width: 160px; }
+.hud-xp-top { display: flex; justify-content: space-between; font-size: 12px; color: var(--txt-dim); }
+.hud-xp-top b { color: var(--gold); font-variant-numeric: tabular-nums; }
+.xp-bar {
+    height: 9px; margin-top: 5px; border-radius: 99px; overflow: hidden;
+    background: rgba(255,255,255,0.08); box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+}
+.xp-fill {
+    height: 100%; width: 0%;
+    background: linear-gradient(90deg, #7c3aed, #a855f7, #ddd6fe);
+    box-shadow: 0 0 12px rgba(168, 85, 247, 0.6);
+    transition: width 0.45s cubic-bezier(.2,.8,.2,1);
+}
+.hud-stats { display: flex; gap: 18px; flex-wrap: wrap; }
+.hud-stats .stat { display: flex; flex-direction: column; align-items: center; min-width: 72px; }
+.hud-stats .stat span { font-size: 11px; color: var(--txt-dim); }
+.hud-stats .stat b { font-size: 17px; font-variant-numeric: tabular-nums; }
+.hud-stats .stat.warn b { color: var(--rose); }
+.hud-right { display: flex; gap: 8px; margin-left: auto; }
+/* 窄屏用的短标签，默认隐藏（桌面显示完整文案） */
+.lbl-short { display: none; }
+
+.btn {
+    border: 1px solid var(--line);
+    background: rgba(255,255,255,0.05);
+    color: var(--txt); border-radius: 10px;
+    padding: 9px 16px; font-size: 13px; font-weight: 600;
+    transition: all 0.18s;
+}
+.btn:hover { background: rgba(255,255,255,0.12); transform: translateY(-1px); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+.btn-primary {
+    background: linear-gradient(135deg, #2563eb, #38bdf8);
+    border-color: transparent; color: #04101f;
+    box-shadow: 0 6px 18px rgba(56, 189, 248, 0.28);
+}
+.btn-primary:hover { background: linear-gradient(135deg, #3b82f6, #7dd3fc); }
+.btn-ghost { background: rgba(255,255,255,0.04); }
+.btn-ghost.danger:hover { background: rgba(251, 113, 133, 0.18); border-color: rgba(251,113,133,0.5); }
+.btn-ok { background: linear-gradient(135deg, #059669, #34d399); border-color: transparent; color: #04140d; }
+.btn-no { background: linear-gradient(135deg, #9f1239, #fb7185); border-color: transparent; color: #fff; }
+.btn-mini { padding: 5px 11px; font-size: 12px; border-radius: 8px; }
+.btn-block { width: 100%; margin-top: 14px; padding: 13px; font-size: 15px; }
+
+/* ================= 图例 ================= */
+.legend {
+    display: flex; gap: 26px; flex-wrap: wrap;
+    padding: 10px 22px; font-size: 12px; color: var(--txt-dim);
+    border-bottom: 1px solid rgba(120,170,255,0.08);
+}
+.legend-group { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.legend-title { color: #6f86a8; font-weight: 700; }
+.lg-item { display: inline-flex; align-items: center; gap: 5px; }
+.lg-item i { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+.lg-item i.dot { border-radius: 50%; }
+.lg-item i.locked { background: #33405c; }
+.lg-item i.unlocked { background: var(--cyan); box-shadow: 0 0 8px var(--cyan); }
+.lg-item i.cleared { background: var(--green); box-shadow: 0 0 8px var(--green); }
+.lg-item i.boss { background: var(--rose); box-shadow: 0 0 8px var(--rose); }
+/* 考点掌握度图例：与热力图、地图外圈用同一套配色 */
+.lg-item i.m0 { background: #33405c; }
+.lg-item i.m1 { background: var(--rose); box-shadow: 0 0 8px var(--rose); }
+.lg-item i.m2 { background: var(--amber); box-shadow: 0 0 8px var(--amber); }
+.lg-item i.m3 { background: var(--green); box-shadow: 0 0 8px var(--green); }
+.legend-group.hint { margin-left: auto; }
+
+/* ================= 地图 ================= */
+.map-scroll { overflow: auto; padding: 8px 0 40px; }
+.map-inner { position: relative; margin: 0 auto; min-width: 1160px; }
+
+.map-bg {
+    position: absolute; inset: 0;
+    background-image:
+        linear-gradient(rgba(120, 170, 255, 0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(120, 170, 255, 0.045) 1px, transparent 1px);
+    background-size: 44px 44px;
+    pointer-events: none;
+}
+.tier-col {
+    position: absolute; top: 0; bottom: 0;
+    border-left: 1px dashed rgba(120, 170, 255, 0.12);
+    border-right: 1px dashed rgba(120, 170, 255, 0.06);
+    background: linear-gradient(180deg, color-mix(in srgb, var(--tc) 9%, transparent), transparent 55%);
+    border-radius: 18px;
+}
+.tier-title {
+    position: absolute; top: 18px; left: 0; right: 0; text-align: center;
+    font-size: 15px; font-weight: 800; letter-spacing: 3px; color: var(--tc);
+    text-shadow: 0 0 16px color-mix(in srgb, var(--tc) 60%, transparent);
+}
+.tier-desc {
+    position: absolute; top: 46px; left: 22px; right: 22px; text-align: center;
+    font-size: 11.5px; color: var(--txt-dim); line-height: 1.5;
+}
+
+/* ---------- 章分组带：把 69 个球按教材章切成一目了然的段 ---------- */
+.chap-band {
+    position: absolute; pointer-events: none;
+    border-top: 1px dashed color-mix(in srgb, var(--tc) 30%, transparent);
+    border-radius: 14px;
+    background: linear-gradient(180deg, color-mix(in srgb, var(--tc) 6%, transparent), transparent 46%);
+}
+.chap-tag {
+    position: absolute; top: 8px; left: 12px; white-space: nowrap;
+    padding: 1px 9px; border-radius: 99px;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.5px;
+    color: var(--tc);
+    background: rgba(7, 11, 23, 0.88);
+    border: 1px solid color-mix(in srgb, var(--tc) 30%, transparent);
+}
+
+.edges { position: absolute; inset: 0; pointer-events: none; overflow: visible; }
+.edge { fill: none; stroke-width: 1.6; opacity: 0.32; }
+.edge-locked { stroke-dasharray: 5 7; opacity: 0.16; }
+.edge-done { opacity: 0.45; stroke-width: 2.2; }
+.edge-active {
+    opacity: 0.9; stroke-width: 2.6;
+    stroke-dasharray: 9 9;
+    animation: flow 1s linear infinite;
+    filter: drop-shadow(0 0 6px currentColor);
+}
+@keyframes flow { to { stroke-dashoffset: -36; } }
+
+/* ---------- 节点 ---------- */
+.nodes { position: absolute; inset: 0; }
+.node {
+    position: absolute; transform: translate(-50%, -50%);
+    width: 112px;
+    text-align: center; cursor: pointer; user-select: none;
+    transition: transform 0.18s;
+}
+.node:hover { transform: translate(-50%, -50%) scale(1.07); z-index: 5; }
+.node-core {
+    position: relative; margin: 0 auto;
+    width: var(--size); height: var(--size); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    background: radial-gradient(circle at 34% 28%, color-mix(in srgb, var(--color) 55%, #0b1220), #0a1122 72%);
+    border: 2px solid color-mix(in srgb, var(--color) 70%, transparent);
+    box-shadow: 0 0 20px color-mix(in srgb, var(--color) 35%, transparent), inset 0 0 18px rgba(0,0,0,0.6);
+}
+.node-icon {
+    /* 头像模式下铺满球面（img 绝对定位），emoji 回退时靠 flex 居中 */
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: calc(var(--size) * 0.42); line-height: 1;
+    filter: drop-shadow(0 0 6px rgba(0,0,0,0.6));
+}
+/* 龙珠角色头像：竖构图全身立绘裁出头部。纯黑底 PNG 用 screen 扣底，
+   正好融进球面的暗色渐变；锁定/建设中节点不放头像（仍是 🔒/🚧） */
+.node-avatar {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    border-radius: 50%; object-fit: cover; object-position: 50% 30%;
+    mix-blend-mode: screen;
+    filter: brightness(1.12) contrast(1.05);
+}
+.node-crown {
+    position: absolute; right: -6px; top: -6px;
+    width: 24px; height: 24px; border-radius: 50%;
+    background: linear-gradient(135deg, #059669, #34d399);
+    color: #052e21; font-size: 13px; font-weight: 900; line-height: 24px;
+    box-shadow: 0 0 12px rgba(52, 211, 153, 0.7);
+}
+.node-ring {
+    position: absolute; inset: -9px; border-radius: 50%;
+    border: 1px solid color-mix(in srgb, var(--color) 35%, transparent);
+    opacity: 0; transition: opacity 0.25s;
+}
+.node.unlocked .node-ring { opacity: 1; animation: pulse 2.6s ease-in-out infinite; }
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.55; }
+    50% { transform: scale(1.08); opacity: 1; }
+}
+.node-label {
+    margin-top: 7px; font-size: 12px; font-weight: 700; color: var(--txt);
+    text-shadow: 0 2px 8px #000;
+    /* 名字必须单行省略：换行会让节点纵向变高，69 个节点交错时就会压到相邻节点的球 */
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+/* 占比与掌握度并排一行，省掉一整行高度（原来两行会让节点栈高出 20px） */
+.node-foot {
+    display: flex; align-items: center; justify-content: center; gap: 5px;
+    margin-top: 3px;
+}
+.node-meta { font-size: 10px; color: var(--txt-dim); white-space: nowrap; }
+
+/* ---- 地图节点上的掌握度 ---- */
+.node-mast {
+    display: inline-block; padding: 1px 6px;
+    font-size: 10px; font-weight: 700; border-radius: 999px;
+    font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+.node-mast.m0 { color: #7b8aa8; background: rgba(255, 255, 255, 0.05); }
+.node-mast.m1 { color: #ffd3da; background: rgba(251, 113, 133, 0.22); border: 1px solid rgba(251, 113, 133, 0.5); }
+.node-mast.m2 { color: #ffe8bd; background: rgba(245, 158, 11, 0.22); border: 1px solid rgba(245, 158, 11, 0.5); }
+.node-mast.m3 { color: #c9f8e5; background: rgba(52, 211, 153, 0.22); border: 1px solid rgba(52, 211, 153, 0.55); }
+/* 题库建设中的考点：灰色虚线 + 标签写「建设中」，一眼区别于「未解锁」 */
+.node.wip .node-core { filter: grayscale(0.9); opacity: 0.4; border-style: dashed; box-shadow: none; }
+.node.wip .node-label { color: #6b7a96; }
+.node.wip .node-meta { opacity: 0.5; }
+.node.wip .node-ring { opacity: 0 !important; animation: none !important; }
+.node-mast.wip { color: #8b98b0; background: rgba(255, 255, 255, 0.05); border: 1px dashed rgba(255, 255, 255, 0.22); }
+/* 外圈颜色跟着掌握度走：红=薄弱 黄=一般 绿=扎实 */
+.node.m1 .node-ring { border-color: rgba(251, 113, 133, 0.9); border-width: 2px; }
+.node.m2 .node-ring { border-color: rgba(245, 158, 11, 0.9); border-width: 2px; }
+.node.m3 .node-ring { border-color: rgba(52, 211, 153, 0.95); border-width: 2px; }
+
+.node.locked { cursor: not-allowed; }
+.node.locked .node-core {
+    filter: grayscale(1); opacity: 0.5;
+    border-color: rgba(140,160,190,0.28);
+    box-shadow: none;
+}
+.node.locked .node-label { color: #66799a; }
+.node.cleared .node-core {
+    border-color: var(--green);
+    box-shadow: 0 0 22px rgba(52, 211, 153, 0.45), inset 0 0 18px rgba(0,0,0,0.5);
+}
+.node.boss .node-core { animation: bossGlow 2.2s ease-in-out infinite; }
+@keyframes bossGlow {
+    0%, 100% { box-shadow: 0 0 22px rgba(251, 113, 133, 0.4), inset 0 0 18px rgba(0,0,0,0.6); }
+    50% { box-shadow: 0 0 38px rgba(251, 113, 133, 0.8), inset 0 0 18px rgba(0,0,0,0.6); }
+}
+
+/* ================= 悬浮提示 ================= */
+.tip {
+    position: fixed; z-index: 200; max-width: 300px;
+    padding: 11px 14px; border-radius: 12px; font-size: 12.5px;
+    background: rgba(12, 20, 40, 0.97);
+    border: 1px solid rgba(120,170,255,0.28);
+    box-shadow: 0 12px 34px rgba(0,0,0,0.6);
+    opacity: 0; pointer-events: none; transform: translateY(6px);
+    transition: opacity 0.15s, transform 0.15s;
+}
+.tip.show { opacity: 1; transform: translateY(0); }
+.tip-title { font-weight: 800; margin-bottom: 5px; font-size: 13.5px; }
+/* 悬浮提示里的小头像（黑底 screen 扣底，提示框是深色底所以能融） */
+.tip-avatar {
+    width: 22px; height: 22px; border-radius: 50%;
+    object-fit: cover; object-position: 50% 30%;
+    vertical-align: -6px; mix-blend-mode: screen;
+}
+.tip-row { color: var(--txt-dim); }
+.tip-row b { color: var(--txt); }
+.tip-row .ok { color: var(--green); }
+.tip-row .no { color: var(--rose); }
+.tip-chap { color: var(--purple); font-size: 12px; }
+
+/* ================= 关卡简报弹窗 ================= */
+.modal-mask {
+    position: fixed; inset: 0; z-index: 150;
+    display: none; align-items: center; justify-content: center;
+    background: rgba(4, 8, 18, 0.78); backdrop-filter: blur(6px);
+    padding: 20px;
+}
+.modal-mask.show { display: flex; }
+.modal-wrap { position: relative; width: 100%; max-width: 560px; max-height: 88vh; }
+.modal-close {
+    position: absolute; right: -6px; top: -6px; z-index: 3;
+    width: 34px; height: 34px; border-radius: 50%;
+    background: rgba(20,30,55,0.95); border: 1px solid var(--line);
+    color: var(--txt); font-size: 15px;
+}
+.modal-card {
+    background: var(--panel); border: 1px solid rgba(120,170,255,0.22);
+    border-radius: 18px; padding: 24px; overflow-y: auto; max-height: 88vh;
+    box-shadow: 0 30px 70px rgba(0,0,0,0.6);
+    animation: pop 0.22s ease-out;
+}
+@keyframes pop { from { transform: scale(0.94); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.nd-head { display: flex; gap: 14px; align-items: center; }
+.nd-icon {
+    width: 54px; height: 54px; border-radius: 16px; flex: 0 0 auto;
+    display: flex; align-items: center; justify-content: center; font-size: 26px;
+    background: color-mix(in srgb, var(--color) 18%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color) 50%, transparent);
+    overflow: hidden;
+}
+/* 关卡简报弹窗里的头像（黑底 screen 扣底） */
+.nd-avatar {
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: 50% 30%;
+    mix-blend-mode: screen;
+    filter: brightness(1.1) contrast(1.05);
+}
+.nd-name { font-size: 19px; font-weight: 800; }
+.nd-sub { font-size: 12px; color: var(--txt-dim); }
+.nd-desc { margin-top: 14px; color: #b9cbe8; font-size: 13.5px; }
+.nd-block { margin-top: 16px; }
+.nd-block-title { font-size: 13px; font-weight: 800; color: var(--cyan); margin-bottom: 7px; }
+.nd-block ul li {
+    font-size: 13px; color: #b9cbe8; padding-left: 16px; position: relative; margin-bottom: 3px;
+}
+.nd-block ul li::before { content: '◆'; position: absolute; left: 0; color: var(--purple); font-size: 9px; top: 5px; }
+.nd-source { font-size: 12.5px; color: var(--txt-dim); }
+
+/* ---- 通关小结（通关后才解锁；未通关显示锁定提示） ---- */
+.sum-block {
+    margin-top: 16px; padding: 14px 16px; border-radius: 14px;
+    background: linear-gradient(180deg, rgba(52, 211, 153, 0.07), rgba(56, 189, 248, 0.04));
+    border: 1px solid rgba(52, 211, 153, 0.28);
+}
+.sum-block.locked {
+    background: rgba(255, 255, 255, 0.025);
+    border: 1px dashed rgba(120, 170, 255, 0.28);
+}
+.sum-block .nd-block-title { color: #6ee7b7; margin-bottom: 8px; }
+.sum-block.locked .nd-block-title { color: var(--txt-dim); }
+.sum-lock { font-size: 12.5px; line-height: 1.75; color: var(--txt-dim); }
+.sum-lock b { color: #cfe2ff; }
+.sum-intro { font-size: 13px; line-height: 1.8; color: #cfe2ff; }
+.sum-sec { margin-top: 12px; }
+.sum-h { font-size: 12.5px; font-weight: 800; color: #7dd3fc; margin-bottom: 5px; }
+.sum-sec ul li {
+    font-size: 12.8px; line-height: 1.8; color: #b9cbe8;
+    padding-left: 15px; position: relative; margin-bottom: 3px;
+}
+.sum-sec ul li::before { content: '◆'; position: absolute; left: 0; top: 7px; font-size: 8px; color: var(--green); }
+.sum-pat {
+    font-size: 12.8px; line-height: 1.8; color: #b9cbe8;
+    padding: 6px 0 6px 10px; margin-bottom: 6px;
+    border-left: 2px solid rgba(56, 189, 248, 0.4);
+}
+.sum-pat b { display: block; color: #7dd3fc; font-size: 12.5px; margin-bottom: 1px; }
+.sum-foot { margin-top: 10px; font-size: 11.5px; color: var(--green); text-align: right; }
+
+/* ================= 战斗界面 ================= */
+.battle-mask {
+    position: fixed; inset: 0; z-index: 160;
+    display: none; align-items: center; justify-content: center;
+    background: rgba(3, 6, 14, 0.86); backdrop-filter: blur(8px); padding: 16px;
+}
+.battle-mask.show { display: flex; }
+.battle-panel {
+    position: relative; z-index: 1;   /* 压在右侧全身立绘之上，窄屏时立绘没入面板后方 */
+    width: 100%; max-width: 880px; max-height: 92vh;
+    display: flex; flex-direction: column;
+    background: linear-gradient(180deg, rgba(14, 22, 42, 0.98), rgba(9, 15, 30, 0.99));
+    border: 1px solid rgba(120,170,255,0.22);
+    border-radius: 20px; overflow: hidden;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.7);
+    animation: pop 0.2s ease-out;
+}
+.battle-head {
+    display: flex; align-items: center; justify-content: space-between; gap: 14px;
+    padding: 14px 20px; border-bottom: 1px solid var(--line);
+    background: linear-gradient(90deg, rgba(251,113,133,0.10), transparent 55%);
+    flex-wrap: wrap;
+}
+.monster { display: flex; align-items: center; gap: 12px; flex: 1 1 320px; }
+.monster-icon { font-size: 34px; line-height: 1; filter: drop-shadow(0 0 10px rgba(251,113,133,0.6)); }
+.monster-info { flex: 1; min-width: 0; }
+.monster-name { font-size: 14px; font-weight: 800; margin-bottom: 4px; }
+/* 「考验」= 已答对 / 总题数（真实进度，只涨不跌）。具体配色在 dragonball.css */
+.trial-bar { height: 9px; border-radius: 99px; background: rgba(255,255,255,0.08); overflow: hidden; }
+.trial-text { font-size: 11.5px; color: var(--txt-dim); margin-top: 3px; }
+.battle-meta { display: flex; align-items: center; gap: 12px; }
+.q-progress { font-size: 13px; color: var(--txt-dim); font-variant-numeric: tabular-nums; }
+.combo-badge {
+    display: none; padding: 4px 12px; border-radius: 99px; font-size: 13px; font-weight: 800;
+    background: linear-gradient(135deg, #f59e0b, #fb7185); color: #1a0b02;
+    box-shadow: 0 0 16px rgba(251, 113, 133, 0.7);
+    animation: pop 0.2s;
+}
+.combo-badge.show { display: inline-block; }
+.battle-close {
+    width: 34px; height: 34px; border-radius: 50%;
+    background: rgba(255,255,255,0.06); border: 1px solid var(--line);
+    color: var(--txt); font-size: 15px;
+}
+.battle-close:hover { background: rgba(251,113,133,0.2); }
+
+.battle-body { flex: 1; overflow-y: auto; padding: 20px; }
+
+/* ================= 战斗页右侧全身立绘 =================
+   与怪物头像同图：宽屏时站在面板右缘外的空场，随视窗变窄逐渐没入
+   面板后方（面板 z-index 更高），<1020px 完全隐藏。pointer-events:none
+   不挡任何操作；黑底 PNG 由 screen 混合扣底融进战场。 */
+.battle-figure {
+    position: absolute;
+    right: max(10px, 2vw);
+    bottom: 2.5vh;
+    /* 面板右缘(50%+440px)到屏幕右缘的空地，立绘再高也只站在这里 */
+    max-width: calc(50vw - 440px - 28px);
+    display: flex; flex-direction: column; align-items: flex-end;
+    z-index: 0; pointer-events: none; user-select: none;
+}
+.fullbody-img {
+    display: block;
+    height: min(76vh, 760px); width: auto; max-width: 100%;
+    object-fit: contain; object-position: bottom;
+    mix-blend-mode: screen;
+    filter: drop-shadow(0 10px 26px rgba(0, 0, 0, 0.55));
+    animation: figureIn 0.65s ease-out both, figureFloat 3.2s ease-in-out 0.65s infinite;
+}
+.fullbody-img[hidden] { display: none !important; }
+.battle-figure-name {
+    margin-top: 2px; padding-right: 6px;
+    font-size: 12.5px; font-weight: 800; letter-spacing: 3px;
+    color: var(--txt-dim); text-shadow: 0 2px 10px #000;
+}
+@keyframes figureIn {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes figureFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-7px); }
+}
+@media (max-width: 1019px) {
+    .battle-figure { display: none; }   /* 空地不够站人：面板头部的 150px 立绘继续代表角色 */
+}
+.q-card { animation: pop 0.18s ease-out; }
+.q-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+.tag {
+    font-size: 11.5px; padding: 3px 10px; border-radius: 99px;
+    background: rgba(255,255,255,0.07); color: var(--txt-dim);
+    border: 1px solid rgba(255,255,255,0.08);
+}
+.tag-type { background: rgba(56,189,248,0.16); color: #7dd3fc; border-color: rgba(56,189,248,0.35); }
+.tag-level.lv1 { background: rgba(56,189,248,0.14); color: #7dd3fc; }
+.tag-level.lv2 { background: rgba(167,139,250,0.16); color: #c4b5fd; }
+.tag-level.lv3 { background: rgba(251,113,133,0.16); color: #fda4af; }
+.tag-score { background: rgba(52,211,153,0.14); color: #6ee7b7; }
+.tag-xp { background: rgba(168,85,247,0.16); color: #ddd6fe; }
+/* 难度分级（题目质量增强）：基础 / 真题 / 拔高 */
+.tag-diff { font-weight: 800; letter-spacing: 0.5px; }
+.tag-diff.d-basic { background: rgba(52,211,153,0.14); color: #6ee7b7; border-color: rgba(52,211,153,0.4); }
+.tag-diff.d-exam { background: rgba(245,158,11,0.16); color: #fcd34d; border-color: rgba(245,158,11,0.45); }
+.tag-diff.d-hard { background: rgba(251,113,133,0.16); color: #fda4af; border-color: rgba(251,113,133,0.45); }
+
+.q-stem { font-size: 15.5px; line-height: 1.85; color: #e8f1ff; }
+.inline-code {
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    background: rgba(56,189,248,0.13); color: #7dd3fc;
+    padding: 1px 6px; border-radius: 5px; font-size: 13.5px;
+}
+.code-block {
+    margin: 12px 0; padding: 14px 16px; overflow-x: auto;
+    background: #050a14; border: 1px solid rgba(120,170,255,0.18);
+    border-radius: 10px; font-size: 13px; line-height: 1.7;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    color: #a5d8ff; white-space: pre;
+}
+
+.q-options { margin-top: 16px; display: flex; flex-direction: column; gap: 10px; }
+.opt {
+    display: flex; gap: 12px; align-items: flex-start; text-align: left;
+    padding: 13px 16px; border-radius: 12px; font-size: 14.5px;
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(120,170,255,0.16);
+    color: var(--txt); transition: all 0.16s;
+}
+.opt:hover:not(:disabled) { background: rgba(56,189,248,0.12); border-color: rgba(56,189,248,0.5); transform: translateX(3px); }
+.opt:disabled { cursor: default; }
+.opt-key {
+    flex: 0 0 auto; width: 24px; height: 24px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(255,255,255,0.09); font-weight: 800; font-size: 12.5px;
+}
+.opt.right { background: rgba(52,211,153,0.16); border-color: var(--green); }
+.opt.right .opt-key { background: var(--green); color: #04140d; }
+.opt.wrong { background: rgba(251,113,133,0.16); border-color: var(--rose); }
+.opt.wrong .opt-key { background: var(--rose); color: #2a060c; }
+
+.q-input {
+    width: 100%; margin-top: 16px; padding: 13px 15px; resize: vertical;
+    background: #050a14; color: #e8f1ff; font-size: 14px; line-height: 1.7;
+    border: 1px solid rgba(120,170,255,0.22); border-radius: 12px;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+}
+.q-input:focus { outline: none; border-color: var(--cyan); box-shadow: 0 0 0 3px rgba(56,189,248,0.18); }
+.shake { animation: shake 0.4s; border-color: var(--rose) !important; }
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    75% { transform: translateX(6px); }
+}
+
+.q-feedback { margin-top: 18px; }
+
+/* ---- 超宽公式兜底 ----
+   行间公式（\[...\]）KaTeX 会渲染成 white-space:nowrap 的块，
+   公式一长就会撑破卡片、甚至把整页推出横向滚动条。
+   这里允许公式块自己横向滚动，宽度不够时用户左右拖动即可。 */
+.q-stem .katex-display,
+.q-options .katex-display,
+.fb-analysis .katex-display,
+.fb-answer .katex-display,
+.ai-text .katex-display {
+    overflow-x: auto; overflow-y: hidden;
+    padding: 3px 0;
+}
+/* 行内公式过长时允许在公式内部断行，避免撑破题干 */
+.q-stem .katex, .fb-analysis .katex, .fb-answer .katex, .ai-text .katex { white-space: normal; }
+
+/* ---- 考点讲解外链（题目卡片里的视频/搜索入口） ---- */
+.q-links {
+    margin-top: 16px; padding: 11px 13px; border-radius: 12px;
+    background: rgba(8, 14, 30, 0.55);
+    border: 1px solid rgba(120, 170, 255, 0.18);
+}
+.q-links-head { font-size: 12px; color: var(--txt-dim); margin-bottom: 8px; }
+.q-links-body { display: flex; flex-wrap: wrap; gap: 7px; }
+.ql-chip {
+    display: inline-flex; align-items: center; gap: 5px; max-width: 100%;
+    font-size: 12px; line-height: 1.45; text-decoration: none;
+    padding: 5px 10px; border-radius: 999px;
+    color: #cfe2ff; background: rgba(56, 189, 248, 0.10);
+    border: 1px solid rgba(56, 189, 248, 0.30);
+    transition: background 0.15s, border-color 0.15s, transform 0.15s;
+}
+.ql-chip:hover { background: rgba(56, 189, 248, 0.22); border-color: rgba(56, 189, 248, 0.6); transform: translateY(-1px); }
+.ql-chip.ql-search { color: var(--txt-dim); background: transparent; border-color: var(--line); }
+.ql-chip.ql-search:hover { color: var(--txt); border-color: rgba(120, 170, 255, 0.5); }
+.fb { padding: 16px; border-radius: 14px; border: 1px solid; animation: pop 0.2s; }
+.fb-ok { background: rgba(52,211,153,0.09); border-color: rgba(52,211,153,0.45); }
+.fb-no { background: rgba(251,113,133,0.09); border-color: rgba(251,113,133,0.45); }
+.fb-pending { background: rgba(56,189,248,0.07); border-color: rgba(56,189,248,0.35); }
+.fb-title { font-weight: 800; font-size: 14px; margin: 8px 0 6px; }
+.fb-title:first-child { margin-top: 0; }
+.fb-note, .fb-note-inline { font-size: 12.5px; color: var(--amber); }
+.fb-answer { font-size: 14px; color: #e8f1ff; }
+.fb-analysis { font-size: 13.5px; color: #b9cbe8; }
+.fb-source { margin-top: 10px; font-size: 12px; color: var(--purple); }
+.fb-keys { margin: 4px 0 0; }
+.fb-keys li { font-size: 13px; color: #b9cbe8; padding-left: 16px; position: relative; margin-bottom: 3px; }
+.fb-keys li::before { content: '✔'; position: absolute; left: 0; color: var(--green); font-size: 11px; }
+
+/* ---------- 题目质量增强：踩分技巧 / 干扰项批驳 / 同类变式 ---------- */
+.fb-tips {
+    margin: 8px 0 2px; padding: 9px 12px;
+    font-size: 13px; line-height: 1.7; color: #ffe8bd;
+    background: rgba(245, 158, 11, 0.10);
+    border-left: 3px solid rgba(245, 158, 11, 0.7);
+    border-radius: 0 8px 8px 0;
+}
+.fb-opts { margin: 4px 0 0; }
+.fb-opts li {
+    padding: 6px 10px 6px 30px; margin-bottom: 5px; position: relative;
+    font-size: 13px; line-height: 1.7; border-radius: 8px;
+}
+.fb-opts li.on-right { background: rgba(52, 211, 153, 0.10); color: #c9f8e5; }
+.fb-opts li.on-wrong { background: rgba(251, 113, 133, 0.09); color: #ffd3da; }
+.fb-opts .on-key {
+    position: absolute; left: 7px; top: 6px;
+    width: 17px; height: 17px; line-height: 17px; text-align: center;
+    border-radius: 5px; font-size: 11px; font-weight: 800;
+    background: rgba(255, 255, 255, 0.12); color: #e8f1ff;
+}
+.fb-opts .on-txt { display: block; }
+.fb-opts .on-why { display: block; margin-top: 3px; font-size: 12.5px; opacity: 0.92; }
+.fb-variants { margin: 4px 0 0; }
+.fb-variants li {
+    padding: 8px 11px; margin-bottom: 6px;
+    background: rgba(56, 189, 248, 0.07);
+    border: 1px dashed rgba(56, 189, 248, 0.32);
+    border-radius: 8px;
+}
+.fb-variants .va-stem { font-size: 13.5px; color: #dce9ff; line-height: 1.75; }
+.fb-variants .va-hint { margin-top: 4px; font-size: 12.5px; color: var(--txt-dim); }
+
+.self-judge { display: flex; gap: 10px; margin-top: 16px; }
+.self-result { margin-bottom: 10px; }
+
+.battle-foot {
+    display: flex; align-items: center; gap: 12px; justify-content: flex-end;
+    padding: 14px 20px; border-top: 1px solid var(--line);
+    background: rgba(6, 11, 22, 0.7); flex-wrap: wrap;
+}
+.foot-hint { margin-right: auto; font-size: 12px; color: var(--txt-dim); }
+
+/* ================= 羁绊录（侧栏图鉴） =================
+   收集的是「遇到的人」：每通过一个考点，就有一位角色认可你。
+   图鉴按章分组，未结伴的显示为灰剪影，已结伴的点亮 + aura 描边。 */
+.bond-sum {
+    padding: 14px; border-radius: 12px; margin-bottom: 16px;
+    background: rgba(56,189,248,0.07); border: 1px solid rgba(56,189,248,0.26);
+    font-size: 13px; color: #cfe0fb; line-height: 1.75;
+}
+.bond-sum b { color: var(--gold); font-size: 15px; font-variant-numeric: tabular-nums; }
+.bond-hint { margin-top: 6px; font-size: 12px; color: var(--txt-dim); }
+
+.bond-chap { margin-bottom: 18px; }
+.bond-chap-head {
+    display: flex; align-items: baseline; justify-content: space-between; gap: 8px;
+    margin-bottom: 9px; padding-bottom: 6px;
+    border-bottom: 1px dashed rgba(120,170,255,0.16);
+}
+.bond-chap-head b { font-size: 13px; }
+.bond-chap-head span { font-size: 11.5px; color: var(--txt-dim); font-variant-numeric: tabular-nums; }
+.bond-chap.full .bond-chap-head b { color: var(--gold); }
+.bond-chap.full .bond-chap-head span { color: var(--green); }
+
+.bond-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+.bond-grid .bond-cell { width: 42px; height: 42px; cursor: pointer; transition: transform 0.16s; }
+.bond-grid .bond-cell:hover { transform: translateY(-3px); }
+.bond-grid .bond-fb { font-size: 18px; }
+
+/* ================= 结算 ================= */
+.settle { text-align: center; padding: 12px 4px; }
+.settle-icon { font-size: 60px; line-height: 1; animation: pop 0.3s; }
+.settle-title { font-size: 24px; font-weight: 900; margin-top: 8px; letter-spacing: 2px; }
+.settle.win .settle-title { color: var(--gold); text-shadow: 0 0 22px rgba(168,85,247,0.5); }
+.settle.lose .settle-title { color: var(--rose); }
+.settle-sub { color: var(--txt-dim); font-size: 13px; }
+.settle-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 22px 0;
+}
+.sg {
+    background: rgba(255,255,255,0.04); border: 1px solid var(--line);
+    border-radius: 12px; padding: 12px 6px;
+}
+.sg b { display: block; font-size: 20px; color: var(--cyan); font-variant-numeric: tabular-nums; }
+.sg span { font-size: 11.5px; color: var(--txt-dim); }
+.settle-row { display: flex; justify-content: space-between; padding: 8px 4px; border-bottom: 1px dashed rgba(120,170,255,0.14); font-size: 14px; }
+.settle-row b { color: var(--gold); }
+.settle-row.hl { color: var(--green); border: none; }
+.settle-note { margin-top: 12px; font-size: 13px; color: var(--amber); }
+.unlock-box, .ach-box {
+    margin-top: 16px; padding: 14px; border-radius: 12px; text-align: left;
+    background: rgba(56,189,248,0.07); border: 1px solid rgba(56,189,248,0.28);
+}
+.ach-box { background: rgba(168,85,247,0.07); border-color: rgba(168,85,247,0.3); margin-top: 10px; }
+.ub-title { font-size: 13px; font-weight: 800; color: var(--cyan); margin-bottom: 6px; }
+.ach-box .ub-title { color: var(--gold); }
+.ub-item { font-size: 13px; color: #cfe0fb; padding: 3px 0; }
+.ach-desc { color: var(--txt-dim); font-size: 12px; }
+
+/* ---- 通关宝箱：结果在点开之前是未知的，所以视觉上先"藏"，再"炸" ---- */
+.loot-box {
+    margin-top: 16px; padding: 16px 14px 18px; border-radius: 14px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+    border: 1px solid rgba(192,132,252,0.32);
+    box-shadow: inset 0 0 30px rgba(192,132,252,0.08);
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+.loot-head { font-size: 14px; font-weight: 900; letter-spacing: 1px; color: var(--gold); }
+.loot-hint { font-size: 12.5px; color: var(--txt-dim); margin: 6px 0 14px; line-height: 1.6; }
+.loot-btn {
+    display: block; width: 100%; padding: 13px; border: none; border-radius: 12px;
+    font-size: 16px; font-weight: 900; letter-spacing: 4px; color: #1b1030;
+    background: linear-gradient(135deg, #ffd24a, #c084fc);
+    box-shadow: 0 6px 22px rgba(192,132,252,0.45);
+    cursor: pointer; -webkit-tap-highlight-color: transparent;
+}
+.loot-btn:active { transform: translateY(1px) scale(0.99); }
+.loot-btn:disabled { opacity: 0.6; letter-spacing: 2px; cursor: default; }
+.loot-result { display: none; margin-top: 4px; }
+.loot-box.opened .loot-result { display: block; animation: pop 0.36s; }
+.loot-tier { font-size: 19px; font-weight: 900; letter-spacing: 1px; }
+.loot-gain { font-size: 13px; color: var(--txt-dim); margin-top: 6px; }
+.loot-gain b { color: var(--gold); font-size: 17px; font-variant-numeric: tabular-nums; }
+.loot-fame { font-size: 12.5px; color: var(--amber); margin-top: 8px; line-height: 1.6; }
+
+/* 开箱前的"摇晃悬念"：短暂、幅度小，够勾人但不至于烦 */
+@keyframes lootShake {
+    0%, 100% { transform: translateX(0) rotate(0); }
+    15% { transform: translateX(-6px) rotate(-1.2deg); }
+    30% { transform: translateX(6px) rotate(1.2deg); }
+    45% { transform: translateX(-5px) rotate(-0.9deg); }
+    60% { transform: translateX(5px) rotate(0.9deg); }
+    80% { transform: translateX(-2px) rotate(-0.4deg); }
+}
+.loot-box.shaking { animation: lootShake 0.62s ease-in-out; border-color: var(--gold); }
+
+/* 揭晓后按稀有度上色：越稀有边框越亮、光晕越强，一眼能分辨 */
+.loot-box.opened { border-color: rgba(192,132,252,0.55); }
+.loot-box.tier-n.opened { border-color: rgba(201,214,234,0.5); box-shadow: inset 0 0 30px rgba(201,214,234,0.08); }
+.loot-box.tier-g.opened { border-color: rgba(94,224,138,0.55); box-shadow: inset 0 0 34px rgba(94,224,138,0.12); }
+.loot-box.tier-b.opened { border-color: rgba(90,183,255,0.6); box-shadow: inset 0 0 38px rgba(90,183,255,0.16); }
+.loot-box.tier-p.opened { border-color: rgba(192,132,252,0.7); box-shadow: inset 0 0 44px rgba(192,132,252,0.2); }
+.loot-box.tier-l.opened {
+    border-color: #ffd24a;
+    box-shadow: inset 0 0 50px rgba(255,210,74,0.22), 0 0 34px rgba(255,210,74,0.35);
+}
+
+/* ================= 侧栏面板 ================= */
+.panel-mask {
+    position: fixed; inset: 0; z-index: 170; background: rgba(4,8,18,0.6);
+    display: none;
+}
+.panel-mask.show { display: block; }
+.panel {
+    position: fixed; top: 0; right: 0; bottom: 0; width: min(460px, 94vw);
+    z-index: 180; background: linear-gradient(180deg, #0d1730, #080e1e);
+    border-left: 1px solid rgba(120,170,255,0.22);
+    transform: translateX(102%); transition: transform 0.28s cubic-bezier(.2,.8,.2,1);
+    display: flex; flex-direction: column;
+    box-shadow: -20px 0 60px rgba(0,0,0,0.6);
+}
+.panel.show { transform: translateX(0); }
+.panel-head {
+    display: flex; align-items: center; gap: 10px;
+    padding: 14px 16px; border-bottom: 1px solid var(--line);
+}
+.panel-tabs { display: flex; gap: 6px; flex: 1; }
+.panel-tab {
+    flex: 1; padding: 9px 8px; border-radius: 10px; font-size: 12.5px; font-weight: 700;
+    background: rgba(255,255,255,0.05); border: 1px solid transparent; color: var(--txt-dim);
+}
+.panel-tab.active { background: rgba(56,189,248,0.16); color: #fff; border-color: rgba(56,189,248,0.45); }
+.panel-body { flex: 1; overflow-y: auto; padding: 16px; }
+.panel-view { display: none; }
+.panel-view.active { display: block; }
+
+.ach { display: flex; align-items: center; gap: 12px; padding: 11px; border-radius: 12px; margin-bottom: 8px; background: rgba(255,255,255,0.03); border: 1px solid rgba(120,170,255,0.1); }
+.ach.got { background: linear-gradient(90deg, rgba(168,85,247,0.12), rgba(255,255,255,0.03)); border-color: rgba(168,85,247,0.35); }
+.ach-icon { font-size: 24px; width: 34px; text-align: center; }
+.ach.got .ach-icon { filter: drop-shadow(0 0 8px rgba(168,85,247,0.6)); }
+.ach-body { flex: 1; }
+.ach-name { font-size: 13.5px; font-weight: 800; }
+.ach.got .ach-name { color: var(--gold); }
+.ach-desc { font-size: 11.5px; color: var(--txt-dim); }
+.ach-date { font-size: 11px; color: var(--txt-dim); }
+.empty { text-align: center; padding: 60px 20px; color: var(--txt-dim); font-size: 14px; }
+
+.wrong-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; font-size: 12.5px; color: var(--txt-dim); flex-wrap: wrap; }
+.wrong-bar span { margin-right: auto; }
+.wrong-item { padding: 13px; border-radius: 12px; margin-bottom: 10px; background: rgba(251,113,133,0.06); border: 1px solid rgba(251,113,133,0.24); }
+.wi-head { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 6px; }
+.wi-node { color: #fda4af; font-weight: 700; }
+.wi-times { color: var(--txt-dim); }
+.wi-stem { font-size: 12.5px; color: #cfe0fb; line-height: 1.6; }
+.wi-src { font-size: 11px; color: var(--purple); margin-top: 6px; }
+.wi-actions { display: flex; gap: 8px; margin-top: 10px; }
+
+.stat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 18px; }
+.stat-cell { background: rgba(255,255,255,0.04); border: 1px solid var(--line); border-radius: 12px; padding: 12px; }
+.stat-cell span { display: block; font-size: 11.5px; color: var(--txt-dim); }
+.stat-cell b { font-size: 19px; color: var(--cyan); font-variant-numeric: tabular-nums; }
+
+/* ================= 考点掌握度热力图 ================= */
+.stats-block { margin-bottom: 18px; }
+.hm-summary {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+    margin-bottom: 10px; font-size: 12px; color: var(--txt-dim);
+}
+.hm-s { padding: 3px 9px; border-radius: 999px; font-weight: 700; }
+.hm-s b { font-variant-numeric: tabular-nums; }
+.hm-s.m0 { background: rgba(255, 255, 255, 0.05); color: #93a2bd; }
+.hm-s.m1 { background: rgba(251, 113, 133, 0.16); color: #ffb3bf; }
+.hm-s.m2 { background: rgba(245, 158, 11, 0.16); color: #ffd98a; }
+.hm-s.m3 { background: rgba(52, 211, 153, 0.16); color: #7ee7bb; }
+.hm-hint { margin-left: auto; font-size: 11px; }
+.hm-weak { margin-bottom: 10px; font-size: 12px; color: var(--txt-dim); }
+.hm-link {
+    font: inherit; font-size: 12px; cursor: pointer; margin-left: 6px;
+    padding: 3px 9px; border-radius: 999px;
+    color: #ffd3da; background: rgba(251, 113, 133, 0.12);
+    border: 1px solid rgba(251, 113, 133, 0.4);
+}
+.hm-link:hover { background: rgba(251, 113, 133, 0.25); }
+.hm-wrap { display: flex; flex-direction: column; gap: 10px; }
+/* 章分组：69 个考点按「模块 → 章」二级排列，否则格子会糊成一片 */
+.hm-chap { margin-bottom: 10px; }
+.hm-chap-title {
+    font-size: 11px; font-weight: 700; color: #7d8fb0;
+    margin-bottom: 6px; padding-left: 2px; letter-spacing: 0.3px;
+}
+.hm-group-title { font-size: 11.5px; color: var(--txt-dim); margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+.hm-group-title i { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+.hm-cells { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 7px; }
+.hm-cell {
+    display: flex; flex-direction: column; align-items: flex-start; gap: 2px;
+    font: inherit; cursor: pointer; text-align: left;
+    padding: 7px 9px; border-radius: 10px; border: 1px solid;
+    transition: transform 0.14s, filter 0.14s;
+}
+.hm-cell:hover { transform: translateY(-2px); filter: brightness(1.25); }
+.hm-cell .hm-name { font-size: 11px; line-height: 1.3; opacity: 0.9; }
+.hm-cell .hm-pct { font-size: 15px; font-weight: 900; font-variant-numeric: tabular-nums; }
+.hm-cell.m0 { color: #93a2bd; background: rgba(255, 255, 255, 0.04); border-color: rgba(255, 255, 255, 0.1); }
+.hm-cell.m1 { color: #ffb3bf; background: rgba(251, 113, 133, 0.12); border-color: rgba(251, 113, 133, 0.42); }
+.hm-cell.m2 { color: #ffd98a; background: rgba(245, 158, 11, 0.12); border-color: rgba(245, 158, 11, 0.42); }
+.hm-cell.m3 { color: #7ee7bb; background: rgba(52, 211, 153, 0.12); border-color: rgba(52, 211, 153, 0.45); }
+.hm-cell.wip { opacity: 0.42; border-style: dashed; }
+
+
+/* ================= 成就稀有度 ================= */
+.ach-head {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+    margin-bottom: 12px; font-size: 12.5px; color: var(--txt-dim);
+}
+.ach-head b { color: var(--gold); font-size: 15px; font-variant-numeric: tabular-nums; }
+.ach-tally { padding: 3px 9px; border-radius: 999px; font-size: 11.5px; font-weight: 700; border: 1px solid; }
+.ach-rarity { padding: 1px 7px; border-radius: 999px; font-size: 10.5px; font-weight: 700; border: 1px solid; }
+.ach-hidden-tag { padding: 1px 7px; border-radius: 999px; font-size: 10.5px; color: #ddd; background: rgba(255,255,255,0.12); }
+.r-common, .ach-tally.r-common, .ach-rarity.r-common { color: #a9b8d4; background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.14); }
+.r-rare, .ach-tally.r-rare, .ach-rarity.r-rare { color: #c4b5fd; background: rgba(139,92,246,0.16); border-color: rgba(139,92,246,0.5); }
+.r-epic, .ach-tally.r-epic, .ach-rarity.r-epic { color: #ffc48a; background: rgba(249,115,22,0.16); border-color: rgba(249,115,22,0.5); }
+.r-legend, .ach-tally.r-legend, .ach-rarity.r-legend { color: #ddd6fe; background: rgba(168,85,247,0.18); border-color: rgba(168,85,247,0.6); }
+.ach.r-legend.got { border-color: rgba(168,85,247,0.6); }
+.ach.r-epic.got { border-color: rgba(249,115,22,0.5); }
+.ach-list { display: block; }
+
+/* ================= 破纪录提示 ================= */
+.settle-row.rec { color: var(--gold); font-weight: 800; border-bottom-style: solid; border-bottom-color: rgba(168,85,247,0.35); }
+.settle-row.rec .rec-old { margin-left: 8px; font-size: 12px; font-weight: 400; opacity: 0.75; }
+.rec-up { color: var(--green); font-size: 12.5px; }
+.rec-down { color: var(--rose); font-size: 12.5px; }
+.rec-eq { color: var(--txt-dim); font-size: 12.5px; }
+.play-tips { font-size: 12.5px; color: #b9cbe8; }
+.play-tips ul li { padding-left: 16px; position: relative; margin-bottom: 7px; }
+.play-tips ul li::before { content: '▸'; position: absolute; left: 0; color: var(--cyan); }
+.play-tips b { color: var(--gold); }
+
+/* ================= Toast / 飘字 ================= */
+#toastWrap { position: fixed; top: 78px; left: 50%; transform: translateX(-50%); z-index: 300; display: flex; flex-direction: column; gap: 8px; align-items: center; pointer-events: none; }
+.toast {
+    padding: 11px 20px; border-radius: 99px; font-size: 13.5px; font-weight: 700;
+    background: rgba(14,22,42,0.97); border: 1px solid rgba(120,170,255,0.35);
+    color: #fff; box-shadow: 0 10px 30px rgba(0,0,0,0.55);
+    opacity: 0; transform: translateY(-10px); transition: all 0.25s;
+}
+.toast.in { opacity: 1; transform: translateY(0); }
+.toast.lvup { background: linear-gradient(135deg, #7c3aed, #a855f7); color: #2a1a02; border-color: transparent; }
+.toast.ach { background: linear-gradient(135deg, #7c3aed, #38bdf8); color: #fff; border-color: transparent; }
+.toast.rec { background: linear-gradient(135deg, #6d28d9, #c4b5fd); color: #2a1a02; border-color: transparent; }
+
+.xp-float {
+    position: fixed; left: 50%; top: 42%; transform: translateX(-50%);
+    z-index: 250; font-size: 26px; font-weight: 900; pointer-events: none;
+    animation: floatUp 1.1s ease-out forwards;
+}
+.xp-float.plus { color: var(--gold); text-shadow: 0 0 20px rgba(168,85,247,0.8); }
+.xp-float.minus { font-size: 16px; color: var(--rose); text-shadow: 0 0 16px rgba(251,113,133,0.7); }
+@keyframes floatUp {
+    0% { opacity: 0; transform: translate(-50%, 20px) scale(0.8); }
+    25% { opacity: 1; transform: translate(-50%, 0) scale(1.12); }
+    100% { opacity: 0; transform: translate(-50%, -70px) scale(1); }
+}
+
+/* ================= 响应式 ================= */
+@media (max-width: 860px) {
+    /* HUD：手机上一行放不下「龙珠 + 5 个按钮」，旧规则用 flex:1 硬撑导致
+       右侧的 成就/错题本、重置 被挤出屏幕。这里改成「能缩就缩、缩不下才换行」，
+       并把头像/字号收小，整体压掉约 1/3 高度。 */
+    .hud { gap: 6px 10px; padding: 7px 12px; }
+    .hud-left { width: 100%; min-width: 0; gap: 10px; }
+    .avatar { width: 40px; height: 40px; font-size: 12px; }
+    .hud-xp { min-width: 0; flex: 1 1 auto; }
+    .hud-stats { width: 100%; justify-content: space-between; gap: 4px; }
+    .hud-stats .stat { min-width: 0; flex: 1 1 0; }
+    .hud-stats .stat span { font-size: 10px; }
+    .hud-stats .stat b { font-size: 14px; }
+    .hud-right { width: 100%; margin-left: 0; flex-wrap: wrap; gap: 5px; }
+    .hud-right .btn { flex: 0 0 auto; padding: 6px 9px; font-size: 12px; }
+    .lbl-long { display: none; }
+    .lbl-short { display: inline; }
+    .legend { gap: 14px; padding: 10px 14px; }
+    .legend-group.hint { margin-left: 0; }
+    .map-scroll { padding-bottom: 0; }
+    .battle-body { padding: 14px; }
+    .settle-grid { grid-template-columns: repeat(2, 1fr); }
+    .q-stem { font-size: 14.5px; }
+    .battle-foot { justify-content: stretch; }
+    .battle-foot .btn { flex: 1; }
+    .foot-hint { width: 100%; margin: 0 0 4px; text-align: center; }
+}
+
+/* ================= 章节剧情卡（入关 / 出关） =================
+   全屏黑幕 + 关主立绘 + 打字机台词。黑幕是故意的：
+   立绘是纯黑底 PNG，靠 mix-blend-mode: screen 抠底，背景越暗人越亮，
+   换成浅色底会立刻露出一块黑方块。 */
+.story-mask {
+    position: fixed; inset: 0; z-index: 320;
+    display: none; align-items: center; justify-content: center; padding: 24px;
+    background: radial-gradient(ellipse at 50% 38%, rgba(24,14,52,0.86), rgba(3,6,16,0.97) 72%);
+    backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);
+}
+.story-mask.show { display: flex; animation: storyIn 0.3s ease-out; }
+@keyframes storyIn { from { opacity: 0; } to { opacity: 1; } }
+
+.story-card {
+    --aura: #c084fc;
+    position: relative;
+    display: grid; grid-template-columns: 190px minmax(0, 1fr);
+    gap: 4px 26px; align-items: start;
+    width: min(880px, 94vw); padding: 32px;
+    border-radius: 20px;
+    background: linear-gradient(160deg, rgba(30,21,58,0.94), rgba(10,14,30,0.97));
+    border: 1px solid rgba(192,132,252,0.4);
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.03), 0 30px 90px rgba(0,0,0,0.7),
+                inset 0 0 80px rgba(192,132,252,0.08);
+    animation: storyPop 0.4s cubic-bezier(.2,.9,.3,1.15);
+}
+@keyframes storyPop {
+    from { transform: translateY(18px) scale(0.97); opacity: 0; }
+    to { transform: none; opacity: 1; }
+}
+
+.story-badge {
+    position: absolute; left: 32px; top: -14px;
+    padding: 6px 14px; border-radius: 999px;
+    font-size: 12px; font-weight: 800; letter-spacing: 1px; white-space: nowrap;
+    color: #1b1030; background: linear-gradient(135deg, #ffd24a, #c084fc);
+    box-shadow: 0 6px 20px rgba(192,132,252,0.5);
+}
+.story-card.is-outro .story-badge { background: linear-gradient(135deg, #ffd24a, #5ab7ff); }
+
+/* 立绘：跨满整列高度，垂直居中站好 */
+.story-figure { grid-column: 1; grid-row: 1 / span 6; align-self: center; }
+.story-img {
+    display: block; width: 100%; max-height: 50vh; object-fit: contain;
+    mix-blend-mode: screen; filter: drop-shadow(0 0 26px var(--aura));
+    animation: storyFig 0.6s ease-out;
+}
+@keyframes storyFig {
+    from { transform: translateY(16px); opacity: 0; }
+    to { transform: none; opacity: 1; }
+}
+.story-name {
+    text-align: center; margin-top: 4px;
+    font-size: 13px; font-weight: 800; letter-spacing: 3px;
+}
+
+.story-title {
+    grid-column: 2; font-size: 22px; font-weight: 900; color: var(--gold);
+    text-shadow: 0 0 26px rgba(192,132,252,0.55);
+    animation: storyTitle 0.7s ease-out;
+}
+@keyframes storyTitle {
+    from { letter-spacing: 14px; opacity: 0; filter: blur(6px); }
+    to { letter-spacing: 2px; opacity: 1; filter: none; }
+}
+
+.story-text {
+    grid-column: 2; margin: 12px 0 0;
+    min-height: 4.2em;                 /* 固定高度：逐字打字时卡片不会一跳一跳 */
+    font-size: 15.5px; line-height: 1.9; color: #dfe8fb;
+}
+.story-card.typing .story-text::after {
+    content: '▌'; margin-left: 2px; color: var(--gold);
+    animation: caret 0.7s steps(1) infinite;
+}
+@keyframes caret { 50% { opacity: 0; } }
+
+.story-orb {
+    grid-column: 2; display: flex; align-items: center; gap: 6px;
+    margin-top: 14px; font-size: 12px; color: var(--txt-dim);
+}
+.story-orb[hidden] { display: none; }
+.story-orb-dot { font-style: normal; font-size: 13px; color: rgba(255,255,255,0.18); }
+.story-orb-dot.got { color: #ffb02e; text-shadow: 0 0 10px rgba(255,176,46,0.9); animation: orbPop 0.5s; }
+@keyframes orbPop { from { transform: scale(0.3); } to { transform: scale(1); } }
+.story-orb-num { margin-left: 4px; font-variant-numeric: tabular-nums; }
+
+/* 底部一行：页码靠左，按钮靠右。多页时才出现「跳过」 */
+.story-foot {
+    grid-column: 2; display: flex; align-items: center; gap: 12px;
+    margin-top: 22px; justify-content: flex-end;
+}
+.story-page {
+    margin-right: auto; font-size: 12px; letter-spacing: 1px;
+    color: var(--txt-dim); font-variant-numeric: tabular-nums;
+}
+.story-btn {
+    padding: 11px 30px;
+    border: none; border-radius: 12px; cursor: pointer;
+    font-size: 15px; font-weight: 900; letter-spacing: 3px; color: #1b1030;
+    background: linear-gradient(135deg, #ffd24a, #c084fc);
+    box-shadow: 0 6px 22px rgba(192,132,252,0.45);
+    -webkit-tap-highlight-color: transparent;
+}
+.story-btn:hover { filter: brightness(1.08); }
+.story-btn:active { transform: translateY(1px) scale(0.99); }
+.story-skip {
+    padding: 9px 14px; border-radius: 10px; cursor: pointer;
+    font-size: 12.5px; color: var(--txt-dim);
+    background: transparent; border: 1px solid rgba(120,170,255,0.3);
+    -webkit-tap-highlight-color: transparent;
+}
+.story-skip:hover { color: #e6eeff; border-color: rgba(120,170,255,0.6); }
+.story-skip[hidden] { display: none; }
+
+/* 页 1（章节关主）用冷紫、页 2 反派用血红 —— 徽标颜色直接标出"现在是谁在说话" */
+.story-card.is-chapter .story-badge { background: linear-gradient(135deg, #7dd3fc, #a78bfa); }
+.story-card.is-foe .story-badge { background: linear-gradient(135deg, #fb7185, #f59e0b); }
+
+/* 关卡简报里的那一行氛围语 */
+.nd-story {
+    margin: 10px 0 2px; padding: 10px 12px; border-radius: 10px;
+    background: rgba(192,132,252,0.07); border: 1px solid rgba(192,132,252,0.26);
+    font-size: 12.5px; line-height: 1.7;
+}
+.nd-story b { display: block; color: var(--gold); font-size: 13px; margin-bottom: 3px; }
+.nd-story span { color: var(--txt-dim); }
+
+/* ---- 试炼卡：这个考点由谁出题、他开口说什么 ----
+   两种阵营两套配色：友方（引路人）冷蓝，反派（挑战者）血红。
+   左边那道竖条是最省事的辨识手段 —— 扫一眼就知道这次是被带还是被考。 */
+.trial-card {
+    --side: #38bdf8;
+    position: relative;
+    margin: 12px 0 6px; padding: 14px 16px 14px 20px;
+    border-radius: 12px;
+    background: linear-gradient(100deg, rgba(56,189,248,0.10), rgba(255,255,255,0.02));
+    border: 1px solid rgba(56,189,248,0.30);
+}
+.trial-card.foe {
+    --side: #fb7185;
+    background: linear-gradient(100deg, rgba(251,113,133,0.12), rgba(255,255,255,0.02));
+    border-color: rgba(251,113,133,0.38);
+}
+.trial-card::before {
+    content: ''; position: absolute; left: 0; top: 10px; bottom: 10px; width: 3px;
+    border-radius: 0 3px 3px 0; background: var(--side);
+    box-shadow: 0 0 12px var(--side);
+}
+.trial-who {
+    font-size: 12px; font-weight: 800; letter-spacing: 1px;
+    color: var(--side); margin-bottom: 6px;
+}
+.trial-say { font-size: 14px; line-height: 1.85; color: #e6eeff; }
+/* 「本关要练」并进了试炼卡：一句话说清这关到底练什么，和台词用虚线隔开 */
+.trial-goal {
+    margin-top: 11px; padding-top: 11px;
+    border-top: 1px dashed rgba(255,255,255,0.13);
+    font-size: 13.5px; line-height: 1.85; color: #cfe0fb;
+}
+.trial-goal b {
+    display: block; margin-bottom: 4px;
+    font-size: 12px; letter-spacing: 1px; color: var(--side);
+}
+
+/* ================= 移动端：全屏 App 骨架 + 地图缩放拖动 =================
+   手机上没有「窗口拖动滚动条」这回事，宽 1180px 的神经网络地图直接铺开
+   根本看不清。这里把整页锁成固定视口，只让 .map-inner 自己平移/缩放
+   （transform 由 js/app.js 的 pz* 系列函数驱动，见 map 缩放控制器）。
+   桌面端完全不受影响：下面所有规则都在 860px 以内生效。 */
+.map-zoom { display: none; }
+/* 手机上点按元素时不要那层灰色高亮块（跟深色主题冲突，观感很脏） */
+button, .opt, .node, .lg-item, .panel-tab { -webkit-tap-highlight-color: transparent; }
+
+@media (max-width: 860px) {
+    /* 固定视口：页面本身不滚，避免手指拖地图时整页跟着晃 */
+    html, body { height: 100%; overflow: hidden; }
+    body { display: flex; flex-direction: column; }
+
+    /* HUD / 图例不再 sticky、不再吃掉地图高度，图例横向滑动 */
+    .hud { flex: 0 0 auto; position: relative; }
+    .legend {
+        flex: 0 0 auto; flex-wrap: nowrap; overflow-x: auto;
+        -webkit-overflow-scrolling: touch; scrollbar-width: none;
+    }
+    .legend::-webkit-scrollbar { display: none; }
+    .legend-group, .legend-title, .lg-item { flex: 0 0 auto; white-space: nowrap; }
+    .legend-group.hint { display: none; }
+
+    /* 地图区域 = 剩下的全部高度，交给缩放控制器接管手势 */
+    .map-scroll {
+        flex: 1 1 auto; min-height: 0;
+        position: relative; overflow: hidden; padding: 0;
+        touch-action: none; overscroll-behavior: contain;
+        -webkit-user-select: none; user-select: none;
+    }
+    .map-inner { margin: 0; transform-origin: 0 0; will-change: transform; }
+
+    /* 右下角缩放按钮（捏合手势之外的第二条路，拇指够得着） */
+    .map-zoom {
+        display: flex; position: absolute; right: 12px; bottom: 18px; z-index: 30;
+        flex-direction: column; gap: 8px;
+    }
+    .map-zoom button {
+        width: 42px; height: 42px; border-radius: 12px;
+        font-size: 18px; font-weight: 800; line-height: 1;
+        color: var(--txt); background: rgba(12, 20, 40, 0.92);
+        border: 1px solid rgba(120, 170, 255, 0.3);
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+    }
+    .map-zoom button:active { background: rgba(56, 189, 248, 0.28); }
+
+    /* 答题区：选项加大点按面积；填空框字号必须 ≥16px，
+       否则 iOS Safari 一聚焦就会自动放大整个页面 */
+    .opt { padding: 15px 16px; font-size: 15px; }
+    .q-input { font-size: 16px; }
+    .battle-mask { padding: 8px; }
+    .battle-panel { max-height: 92vh; max-height: 96dvh; }
+    .battle-head { padding: 12px 14px; }
+
+    /* 剧情卡：竖屏放不下「左立绘右台词」，改成上图下文；
+       卡片本身可滚，台词再长也不会顶出屏幕 */
+    .story-mask { padding: 16px 12px; }
+    .story-card {
+        grid-template-columns: 1fr; gap: 2px;
+        width: 100%; max-height: 88dvh; overflow-y: auto;
+        padding: 26px 20px 20px;
+    }
+    .story-badge { left: 20px; }
+    .story-figure { grid-column: 1; grid-row: auto; width: 132px; margin: 0 auto 6px; }
+    .story-img { max-height: 24vh; }
+    .story-title, .story-text, .story-orb { grid-column: 1; }
+    .story-title { font-size: 19px; }
+    .story-text { font-size: 15px; min-height: 6em; }
+    .story-foot { grid-column: 1; margin-top: 16px; }
+    .story-btn { flex: 1; padding: 14px; }
+    .story-skip { padding: 12px 14px; }
+
+    /* 试炼卡：窄屏收紧一点内边距，台词字号略降，避免一段话占满整屏 */
+    .trial-card { padding: 12px 14px 12px 18px; margin: 10px 0 4px; }
+    .trial-say { font-size: 13.5px; line-height: 1.8; }
+}
