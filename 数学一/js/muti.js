@@ -1,8 +1,11 @@
 /*
  * 考研数学一 ·「母题 22 炼」板块主逻辑
  * =================================================
- * - 数据源：window.MUTI_DATA（chapters/muti_data.js）
+ * - 数据源：window.MUTI_DATA（chapters/muti_data.js）        —— 22 道题位母题
+ *           window.MUTI_COMBO（chapters/muti_combo_*.js）     —— 12 道跨章节综合母题
+ *           window.MUTI_PREDICT（chapters/muti_predict.js）   —— 2027 命题预测层
  * - 卡片内 1/2/3/4/5 按钮切换：母题 / 概念 / 计算 / 公式 / 创新
+ * - 综合母题卡片：母题 / 综合计算 / 综合创新 三个维度
  * - 掌握度 / 笔记：复用 app.js 暴露的 __mastery / __notes 绑定逻辑
  * - 知识点跳转：window.__navigateTo + 自动切到练习 Tab
  * - 数学渲染：window.renderMathWhenReady
@@ -14,6 +17,10 @@
     const DATA = (window.MUTI_DATA && Array.isArray(window.MUTI_DATA.slots)) ? window.MUTI_DATA.slots : null;
     const META = window.MUTI_DATA ? (window.MUTI_DATA.meta || {}) : { total: 22, ready: 0 };
     const DIM_NAMES = ['母题', '概念', '计算', '公式', '创新'];
+    /* 综合母题的维度：母题 + 两种跨章节综合变式 */
+    const COMBO_DIMS = ['母题', '综合计算', '综合创新'];
+    const COMBO = (window.MUTI_COMBO && Array.isArray(window.MUTI_COMBO.combos)) ? window.MUTI_COMBO.combos : [];
+    const PREDICT = window.MUTI_PREDICT || {};
 
     /* ===== 22 个题位规划（未收录槽位的路线图，分批补齐对齐此表）===== */
     const SLOT_PLAN = [
@@ -45,7 +52,7 @@
     SLOT_PLAN.forEach(s => { PART_CNT[s.part] = (PART_CNT[s.part] || 0) + 1; });
 
     let els = {};
-    let state = { part: 'all', type: 'all', dim: 0, mastery: 'all' };
+    let state = { part: 'all', type: 'all', dim: 0, mastery: 'all', comboPart: 'all', comboHeat: 'all', comboDim: 0 };
 
     /* ===== 工具 ===== */
     function esc(s) {
@@ -70,6 +77,18 @@
     function starText(d) {
         var n = Math.max(1, Math.min(5, parseInt(d, 10) || 2));
         return '★'.repeat(n);
+    }
+    /* ===== 2027 命题预测：热量条（基础题位卡片用）===== */
+    function predictRow(id) {
+        var p = PREDICT[id];
+        if (!p) return '';
+        var years = (p.years || []).join(' · ') || '—';
+        return '<div class="muti-predict-row">'
+            + '<span class="mp-heat heat-' + (p.heat || 3) + '">🔥 2027 预测 ' + starText(p.heat) + '</span>'
+            + '<span class="mp-years">真题溯源 ' + esc(years) + '</span>'
+            + '<span class="mp-trend">' + esc(p.trend || '') + '</span>'
+            + '<span class="mp-advice">🎯 ' + esc(p.advice || '') + '</span>'
+            + '</div>';
     }
     function kpRow(item) {
         var tags = (item.kpNames || []).map(function(n) {
@@ -117,14 +136,18 @@
             + '<span class="pc-notes-text" data-role="notes-status">无笔记</span></button>';
     }
 
-    /* ===== 单个题目（item）渲染：idx 0=母题，1-4=变式 ===== */
-    function renderItem(slotData, idx) {
-        var item = idx === 0 ? slotData : (slotData.variants[idx - 1]);
+    /* ===== 单个题目（item）渲染：idx 0=母题，1-4=变式 =====
+     * node 可以是题位母题（slot）或综合母题（combo），两者结构一致：
+     * { id, type, variants:[...] }；dimNames 决定维度标签（基础题位 5 维 / 综合母题 3 维）
+     */
+    function renderItem(node, idx, dimNames, activeDim) {
+        var dims = dimNames || DIM_NAMES;
+        var item = idx === 0 ? node : (node.variants || [])[idx - 1];
         if (!item) return '';
-        var dimName = DIM_NAMES[idx];
+        var dimName = dims[idx];
         var dimCls = idx === 0 ? '母题' : (item.dimension || dimName);
-        var ch = 'muti-' + slotData.id;   // 如 muti-m01
-        var isChoice = slotData.type === '选择题';
+        var ch = 'muti-' + node.id;   // 如 muti-m01 / muti-m23
+        var isChoice = node.type === '选择题';
 
         // 选项（选择题才渲染；不标注答案，避免剧透）
         var optsHtml = '';
@@ -184,7 +207,9 @@
             + '<span class="filter-hint">每题独立记录掌握度；不会的题先点「去该知识点刷题」复习再回来。</span></div>'
             + masteryPanelHTML(ch, idx);
 
-        var itemActive = (idx === state.dim) ? ' active' : '';
+        // 当前激活维度：题位母题用 state.dim，综合母题用 state.comboDim（由调用方显式传入）
+        var act = (activeDim === undefined || activeDim === null) ? state.dim : activeDim;
+        var itemActive = (idx === act) ? ' active' : '';
         return '<div class="muti-item' + itemActive + '" data-dim="' + idx + '">'
             + '<div class="muti-item-head">'
             +   '<span class="muti-item-dim ' + dimCls + '">' + dimCls + '</span>'
@@ -225,6 +250,7 @@
             +         '<span class="chip diff">' + starText(slotData.difficulty) + '</span>'
             +         '<span class="chip slot-chip">真题题位 #' + slotData.slot + '</span>'
             +       '</div>'
+            +       predictRow(slotData.id)
             +     '</div>'
             +   '</div>'
             +   '<div class="muti-kp-row"><span class="muti-kp-label">母题知识点：</span>'
@@ -247,6 +273,162 @@
             +   '<div class="mp-topic">🚧 ' + esc(plan.part + ' · ' + plan.type + ' · ' + plan.topic) + '（规划中）</div>'
             +   '<div class="mp-hint">下一批补齐 · 结构占位保持 22 题位完整路线图</div>'
             + '</div></div>';
+    }
+
+    /* ======================================================================
+     * 综合母题 12 炼（跨章节压轴 · 2027 预测）
+     * ==================================================================== */
+
+    /* 综合母题统计条 */
+    function renderComboStats() {
+        var wrap = byId('comboStats');
+        if (!wrap) return;
+        if (!COMBO.length) {
+            wrap.innerHTML = '<div class="muti-empty">综合母题数据未加载（请确认 chapters/muti_combo_*.js 已引入）。</div>';
+            return;
+        }
+        var items = 0;
+        var heat5 = 0;
+        var chSet = {};
+        COMBO.forEach(function(c) {
+            items += 1 + (c.variants || []).length;
+            if ((c.predict || {}).heat >= 5) heat5++;
+            (c.chapters || []).forEach(function(ch) { chSet[ch] = 1; });
+        });
+        var partStr = ['高数', '线代', '概率'].map(function(p) {
+            var n = COMBO.filter(function(c) { return c.part === p; }).length;
+            return p + ' ' + n;
+        }).join(' · ');
+        wrap.innerHTML =
+            '<div class="muti-stat-card"><div class="muti-stat-label">综合母题</div>'
+            + '<div class="muti-stat-value">' + COMBO.length + '</div>'
+            + '<div class="muti-stat-sub">' + partStr + '</div></div>'
+            + '<div class="muti-stat-card"><div class="muti-stat-label">训练题量</div>'
+            + '<div class="muti-stat-value">' + items + '</div>'
+            + '<div class="muti-stat-sub">母题 + 综合变式</div></div>'
+            + '<div class="muti-stat-card"><div class="muti-stat-label">必考强度</div>'
+            + '<div class="muti-stat-value">' + heat5 + ' / ' + COMBO.length + '</div>'
+            + '<div class="muti-stat-sub">2027 预测热度 ★5 的题目数</div></div>'
+            + '<div class="muti-stat-card"><div class="muti-stat-label">跨章节覆盖</div>'
+            + '<div class="muti-stat-value">' + Object.keys(chSet).length + '</div>'
+            + '<div class="muti-stat-sub">涉及章节数 · 跨章节综合训练</div></div>';
+    }
+
+    function comboVisible(c) {
+        if (state.comboPart !== 'all' && c.part !== state.comboPart) return false;
+        if (state.comboHeat !== 'all') {
+            var h = (c.predict || {}).heat || 0;
+            if (state.comboHeat === '5' && h < 5) return false;
+            if (state.comboHeat === '4' && h < 4) return false;
+        }
+        return true;
+    }
+
+    /* 综合母题卡片：头部（串联路径 + 2027 预测面板）+ 三维度 tabs + 题项 */
+    function renderComboCard(c) {
+        var p = c.predict || {};
+        var tabsHtml = COMBO_DIMS.map(function(n, i) {
+            var active = (state.comboDim === i) ? ' active' : '';
+            return '<button type="button" class="muti-dim-tab' + active + '" data-dim="' + i + '" data-combo="' + c.id + '">'
+                + (i + 1) + ' ' + n + '</button>';
+        }).join('');
+
+        var chainHtml = c.chain
+            ? '<div class="muti-chain"><span class="mcc-label">🔗 串联路径</span><span class="mcc-text">' + esc(c.chain) + '</span></div>'
+            : '';
+        var chaptersHtml = (c.chapters || []).map(function(ch) {
+            return '<span class="muti-combo-ch">' + esc(ch) + '</span>';
+        }).join('');
+        var predictPanel = '<div class="muti-combo-predict">'
+            + '<div class="mcp-head">'
+            +   '<span class="mcp-heat heat-' + (p.heat || 3) + '">🔥 2027 预测热度 ' + starText(p.heat) + '</span>'
+            +   '<span class="mcp-years">真题溯源：' + esc((p.years || []).join(' · ') || '—') + '</span>'
+            + '</div>'
+            + '<div class="mcp-line">📈 <b>趋势</b>：' + esc(p.trend || '') + '</div>'
+            + '<div class="mcp-line">🎯 <b>策略</b>：' + esc(p.advice || '') + '</div>'
+            + '</div>';
+
+        var itemsHtml = renderItem(c, state.comboDim, COMBO_DIMS, state.comboDim);
+
+        return '<div class="muti-card muti-combo-card" id="card-' + c.id + '" data-combo-id="' + c.id + '" '
+            + 'data-part="' + esc(c.part) + '" data-heat="' + (p.heat || 3) + '">'
+            + '<div class="muti-card-head">'
+            +   '<div class="muti-card-top">'
+            +     '<div class="muti-slot-badge combo-badge">' + c.id + '</div>'
+            +     '<div class="muti-card-title">'
+            +       '<div class="muti-topic">' + esc(c.topic) + '</div>'
+            +       '<div class="muti-meta">'
+            +         '<span class="chip part-' + esc(c.part) + '">' + esc(c.part) + '</span>'
+            +         '<span class="chip">' + esc(c.type) + '</span>'
+            +         '<span class="chip">' + esc(c.score) + '分</span>'
+            +         '<span class="chip diff">' + starText(c.difficulty) + '</span>'
+            +         '<span class="chip slot-chip">跨章节综合</span>'
+            +       '</div>'
+            +     '</div>'
+            +   '</div>'
+            +   chainHtml
+            +   predictPanel
+            +   '<div class="muti-kp-row"><span class="muti-kp-label">涉及章节：</span>' + chaptersHtml
+            +     '<span class="muti-kp-label">知识点：</span>'
+            +     (c.kpNames || []).map(function(n) { return '<span class="muti-kp-tag">' + esc(n) + '</span>'; }).join('')
+            +     (c.chapter ? '<button type="button" class="muti-kp-jump" data-chapter="' + esc(c.chapter) + '">📚 去该知识点刷题 →</button>' : '')
+            +   '</div>'
+            + '</div>'
+            + '<div class="muti-dim-tabs">' + tabsHtml + '</div>'
+            + '<div class="muti-items">' + itemsHtml + '</div>'
+            + '</div>';
+    }
+
+    function renderComboList() {
+        var listEl = byId('comboList');
+        if (!listEl) return;
+        if (!COMBO.length) {
+            listEl.innerHTML = '<div class="muti-empty">综合母题数据未加载。</div>';
+            return;
+        }
+        var shown = COMBO.filter(comboVisible);
+        if (!shown.length) {
+            listEl.innerHTML = '<div class="muti-empty">当前筛选条件下没有综合母题。</div>';
+            return;
+        }
+        listEl.innerHTML = shown.map(renderComboCard).join('');
+        if (window.renderMathWhenReady) window.renderMathWhenReady(listEl);
+        if (window.__mastery && window.__mastery.initAll) window.__mastery.initAll(listEl);
+        if (window.__notes && window.__notes.initAll) window.__notes.initAll(listEl);
+        bindComboEvents();
+    }
+
+    function bindComboEvents() {
+        var listEl = byId('comboList');
+        if (!listEl) return;
+        listEl.querySelectorAll('.muti-dim-tab[data-combo]').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var cid = btn.getAttribute('data-combo');
+                var dim = parseInt(btn.getAttribute('data-dim'), 10);
+                state.comboDim = dim;
+                listEl.querySelectorAll('.muti-dim-tab[data-combo="' + cid + '"]').forEach(function(b) {
+                    b.classList.toggle('active', b === btn);
+                });
+                var combo = null;
+                COMBO.forEach(function(c) { if (c.id === cid) combo = c; });
+                var cardEl = byId('card-' + cid);
+                var itemsWrap = cardEl ? cardEl.querySelector('.muti-items') : null;
+                if (combo && itemsWrap) {
+                    itemsWrap.innerHTML = renderItem(combo, dim, COMBO_DIMS, dim);
+                    if (window.renderMathWhenReady) window.renderMathWhenReady(itemsWrap);
+                    if (window.__mastery && window.__mastery.initAll) window.__mastery.initAll(itemsWrap);
+                    if (window.__notes && window.__notes.initAll) window.__notes.initAll(itemsWrap);
+                }
+            });
+        });
+        listEl.querySelectorAll('.muti-kp-jump').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var ch = btn.getAttribute('data-chapter');
+                if (!ch) return;
+                window.__gotoPractice = ch;
+                if (window.__navigateTo) window.__navigateTo(ch);
+            });
+        });
     }
 
     /* ===== 统计条 ===== */
@@ -384,8 +566,11 @@
         });
     }
 
-    /* ===== 筛选 ===== */
-    function bindPills(containerId, key) {
+    /* ===== 筛选 =====
+     * containerId 药丸容器；key 写入 state 的字段名；
+     * dataKey 药丸上的属性名（默认同 key）；onChange 变更后的重绘回调（默认重绘基础母题列表）
+     */
+    function bindPills(containerId, key, dataKey, onChange) {
         var container = byId(containerId);
         if (!container) return;
         container.addEventListener('click', function(e) {
@@ -393,7 +578,7 @@
             if (!btn) return;
             container.querySelectorAll('.filter-pill').forEach(function(b) { b.classList.remove('active'); });
             btn.classList.add('active');
-            state[key] = btn.getAttribute('data-' + key);
+            state[key] = btn.getAttribute('data-' + (dataKey || key));
             if (key === 'dim') {
                 // 维度筛选 = 切换所有卡片默认打开的维度（懒渲染：重建各卡当前维度项）
                 state.dim = parseInt(state.dim, 10) || 0;
@@ -412,6 +597,8 @@
                 if (window.renderMathWhenReady) window.renderMathWhenReady(els.list);
                 if (window.__mastery && window.__mastery.initAll) window.__mastery.initAll(els.list);
                 if (window.__notes && window.__notes.initAll) window.__notes.initAll(els.list);
+            } else if (onChange) {
+                onChange();
             } else {
                 renderList();
             }
@@ -532,10 +719,14 @@
         bindPills('mutiFilterType', 'type');
         bindPills('mutiFilterDim', 'dim');
         bindPills('mutiFilterMastery', 'mastery');
+        bindPills('comboFilterPart', 'comboPart', 'part', renderComboList);
+        bindPills('comboFilterHeat', 'comboHeat', 'heat', renderComboList);
 
         renderStats();
         renderGrid();
         renderList();
+        renderComboStats();
+        renderComboList();
         renderSpyNav();
 
         // scroll-spy：全局只绑定一次（updateSpy 内部判断 nav 是否存在）
@@ -567,5 +758,5 @@
         setTimeout(function() { obs.disconnect(); }, 30000);
     }
 
-    window.__muti = { DATA: DATA, SLOT_PLAN: SLOT_PLAN, state: state };
+    window.__muti = { DATA: DATA, SLOT_PLAN: SLOT_PLAN, state: state, COMBO: COMBO, PREDICT: PREDICT };
 })();
