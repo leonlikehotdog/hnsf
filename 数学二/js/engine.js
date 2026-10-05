@@ -285,6 +285,7 @@ window.HNSF829 = window.HNSF829 || {};
       session.char = setMonster(node.id, node.name);
     }
     resetMonster();
+    bindMasterEntry();
     // 完整亮相：从暗处浮现 + 光环炸开 + 报名号（1.5s），**每次进关卡都播**，不是只看一次。
     // 阵营决定名牌配色：友方偏蓝紫，反派偏血红。
     if (els.monster) {
@@ -422,6 +423,8 @@ window.HNSF829 = window.HNSF829 || {};
   function close() {
     els.mask.classList.remove('show');
     document.body.classList.remove('no-scroll');
+    if (NS.Master) NS.Master.close();             // 师傅对话框不能跟着"留"在地图页
+    if (NS.AI) NS.AI.stop();                      // 正在生成也要掐掉，别把流写到已卸的节点上
     session = null;
     if (NS.Audio) NS.Audio.setScene('map');       // 回到地图曲
     if (NS.BG) NS.BG.setScene('map');             // 回到较为冷静的星空战场
@@ -460,8 +463,6 @@ window.HNSF829 = window.HNSF829 || {};
         optsHtml +
         linksHtml(q) +
         '<div class="q-feedback" id="qFeedback"></div>' +
-        // AI 区块放在 .q-card 里（不能放进 .q-feedback，因为简答题自评会整体重渲染 .q-feedback）
-        '<div class="ai-block" id="aiBlock"></div>' +
       '</div>';
 
     renderMathLater(els.body);          // 渲染题干与选项里的公式
@@ -484,7 +485,10 @@ window.HNSF829 = window.HNSF829 || {};
     if (q.type !== 'choice') {
       els.foot.querySelector('#btnSubmit').addEventListener('click', submitText);
     }
-    mountAi('before');
+    // 换了一道新题：师傅那边的上下文清空重来（每题一条独立对话）
+    if (NS.Master) {
+      NS.Master.reset({ nodeName: s.node.name, q: q, char: s.char });
+    }
     updateHud();
   }
 
@@ -619,7 +623,8 @@ window.HNSF829 = window.HNSF829 || {};
     });
     renderMathLater(fb);                // 参考答案与要点里也有公式
     els.foot.innerHTML = '<span class="foot-hint">请对照参考答案后点选自评</span>';
-    mountAi('after', val);
+    // 参考答案已经摊在他面前了 —— 师傅这边同步升到"已作答"，好把答案纳入他的判断依据
+    if (NS.Master) NS.Master.update({ chosen: val, phase: 'after' });
   }
 
   function resolve(q, ok, note, lockFeedback, anchor, chosen) {
@@ -675,8 +680,8 @@ window.HNSF829 = window.HNSF829 || {};
     }
     renderMathLater(fb);                // 解析与正确答案里也有公式
 
-    // 作答完毕后，把 AI 区块升级为"带答案与考生选择"的完整版
-    mountAi('after', chosen);
+    // 作答完毕：把判定结果同步给师傅（他才知道该说"对"还是"再想想"）
+    if (NS.Master) NS.Master.update({ chosen: chosen, phase: 'after', ok: ok });
 
     if (lvUp && lvUp.leveledUp) toast('🎉 升级！当前 Lv.' + lvUp.level, 'lvup');
 
@@ -689,20 +694,24 @@ window.HNSF829 = window.HNSF829 || {};
     next.addEventListener('click', nextQuestion);
   }
 
-  /** 挂载/刷新 AI 助教区块（phase='before' 不剧透答案，'after' 才带上答案与考生选择） */
-  function mountAi(phase, chosen) {
-    var el = els.body.querySelector('#aiBlock');
-    if (!el || !NS.AI) return;
-    var s = session;
-    if (!s) return;
-    // 正在生成回答时不重挂，否则流式输出会写到已经脱离文档的节点上。
-    // 注意：不能因为"已有错误提示"就跳过重挂 —— 那样作答后按钮会一直停在作答前的形态。
-    if (NS.AI.streaming && NS.AI.streaming()) return;
-    NS.AI.mount(el, {
-      nodeName: s.node.name,
-      q: s.questions[s.idx],
-      chosen: chosen,
-      phase: phase
+  /**
+   * 头像即入口：点一下台上这位角色 = 请他讲题（「请教师傅」）。
+   * 用 __masterBound 幂等，避免每次进关卡重复叠加监听。
+   */
+  function bindMasterEntry() {
+    var icon = els.monsterIcon;
+    if (!icon || icon.__masterBound) return;
+    icon.__masterBound = true;
+    icon.classList.add('master-entry');
+    icon.setAttribute('role', 'button');
+    icon.setAttribute('tabindex', '0');
+    icon.title = '不会？点我请教他';
+    icon.addEventListener('click', function () { if (NS.Master) NS.Master.toggle(); });
+    icon.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        if (NS.Master) NS.Master.toggle();
+      }
     });
   }
 

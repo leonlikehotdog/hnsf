@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>302 数学二 · 闯关刷题系统 | 华东师范大学</title>
-    <meta name="description" content="围绕考研 302 数学二（华东师范大学 085411 大数据技术与工程）的闯关式刷题系统：考点分层节点地图、章节剧情、羁绊收集、成就系统、错题复盘与考点溯源，支持 LaTeX 公式渲染。">
+    <title>302 数学二 · 闯关刷题系统</title>
+    <meta name="description" content="围绕考研 302 数学二（085411 大数据技术与工程）的闯关式刷题系统：考点分层节点地图、章节剧情、羁绊收集、成就系统、错题复盘与考点溯源，支持 LaTeX 公式渲染。">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <link rel="stylesheet" href="css/katex.min.css">
     <link rel="stylesheet" href="css/style.css">
@@ -142,6 +142,39 @@
     </div>
 </div>
 
+<!-- ============ 请教师傅（作答时点角色头像唤出） ============
+     每题一条独立对话；师傅循序渐进，绝不直接报答案。 -->
+<div class="master-mask" id="masterMask" aria-hidden="true">
+    <div class="master-dialog" id="masterDialog" role="dialog" aria-modal="true" aria-label="请教师傅">
+        <header class="master-head">
+            <div class="master-face">
+                <img class="master-face-img" id="masterAvatar" alt="" hidden>
+                <span class="master-face-emoji" id="masterFace">🥋</span>
+            </div>
+            <div class="master-who">
+                <div class="master-name" id="masterName">师傅</div>
+                <div class="master-sub" id="masterSub"></div>
+            </div>
+            <button class="master-ico" id="masterCfgBtn" type="button" title="模型设置">⚙️</button>
+            <button class="master-ico" id="masterClose" type="button" aria-label="关闭">✕</button>
+        </header>
+        <div class="master-log" id="masterLog"></div>
+        <div class="master-cfg" id="masterCfg" hidden></div>
+        <footer class="master-foot">
+            <div class="master-hintrow">
+                <button class="master-hintbtn" id="masterHintBtn" type="button"></button>
+                <span class="master-hintnote" id="masterHintNote"></span>
+            </div>
+            <div class="master-inputrow">
+                <button class="master-mic" id="masterMic" type="button" title="按一下开始说话" hidden>🎤</button>
+                <input class="master-in" id="masterIn" type="text" autocomplete="off"
+                       placeholder="打字问师傅（他不会直接给你答案）">
+                <button class="master-send" id="masterSend" type="button">发送</button>
+            </div>
+        </footer>
+    </div>
+</div>
+
 <!-- ============ 侧栏面板：成就 / 错题本 / 统计 ============ -->
 <div class="panel-mask" id="panelMask"></div>
 <aside class="panel" id="panel">
@@ -151,7 +184,6 @@
             <button class="panel-tab" data-view="wrong">📕<span class="lbl-long"> 错题本</span><span class="lbl-short"> 错题</span></button>
             <button class="panel-tab" data-view="bond">🤝<span class="lbl-long"> 羁绊录</span><span class="lbl-short"> 羁绊</span></button>
             <button class="panel-tab" data-view="stats">📊<span class="lbl-long"> 统计与玩法</span><span class="lbl-short"> 统计</span></button>
-            <button class="panel-tab" data-view="ai">🤖<span class="lbl-long"> AI 助教</span><span class="lbl-short"> AI</span></button>
         </div>
         <button class="battle-close" id="panelClose" aria-label="关闭面板">✕</button>
     </div>
@@ -160,7 +192,6 @@
         <div class="panel-view" id="view-wrong"></div>
         <div class="panel-view" id="view-bond"></div>
         <div class="panel-view" id="view-stats"></div>
-        <div class="panel-view" id="view-ai"></div>
     </div>
 </aside>
 
@@ -220,6 +251,7 @@
 <script src="js/fx.js"></script>
 <script src="js/engine.js"></script>
 <script src="js/story.js"></script>
+<script src="js/master.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>

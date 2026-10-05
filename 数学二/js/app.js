@@ -121,6 +121,7 @@ window.HNSF829 = window.HNSF829 || {};
     document.addEventListener('keydown', function (e) {
       if (e.key !== 'Escape') return;
       if (NS.Story && NS.Story.handleEsc()) return;      // 剧情卡在最上层，优先关它
+      if (NS.Master && NS.Master.handleEsc()) return;    // 请教师傅的对话框其次
       if ($('#nodeDetail').classList.contains('show')) { $('#nodeDetail').classList.remove('show'); return; }
       if ($('#panel').classList.contains('show')) { togglePanel(false); }
     });
@@ -898,7 +899,6 @@ window.HNSF829 = window.HNSF829 || {};
     renderWrongBook();
     renderBondBook();
     renderStats();
-    renderAiView();
     bindBondBook();
   }
 
@@ -1117,224 +1117,11 @@ window.HNSF829 = window.HNSF829 || {};
     bindHeatmap();
   }
 
-  /** AI 助教独立 Tab。配置块原先压在「统计与玩法」最底部（整页 y≈6840），
-   *  手机上要滚很久才找得到；单独成 Tab 后「成就 → AI 助教」两次点击直达。 */
-  function renderAiView() {
-    var box = $('#view-ai');
-    if (!box) return;
-    box.innerHTML = aiBoxHtml();
-    bindAiBox();
-  }
-
-  /* ---------------- AI 助教设置（密钥只存本机，不进仓库） ---------------- */
+  /* ---------------- 属性转义（题库与配置都按不可信文本处理） ---------------- */
   function escAttr(s) {
     return String(s == null ? '' : s)
       .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-  }
-
-  function aiRow(label, inner) {
-    return '<div class="ai-cfg-row"><span class="ai-cfg-label">' + label + '</span>' +
-      '<span class="ai-cfg-field">' + inner + '</span></div>';
-  }
-
-  function aiStatusHtml() {
-    var AI = NS.AI;
-    if (!AI) return '';
-    var c = AI.resolved();
-    if (c.key && c.model && c.base) {
-      return '✅ 已配置：' + (AI.PRESETS[c.provider] || {}).label + '　·　模型 <code class="inline-code">' + escAttr(c.model) + '</code>';
-    }
-    if (c.key) return '⚠️ 密钥已填，但还缺模型名 —— 点「📋 拉取模型列表」选一个';
-    return 'ℹ️ 还没配置。AI 功能默认关闭，不影响正常刷题。';
-  }
-
-  function aiBoxHtml() {
-    var AI = NS.AI;
-    if (!AI) return '';
-    var cfg = AI.getCfg();
-    var P = AI.PRESETS;
-    var p = P[cfg.provider] || P.zhipu;
-    var opts = Object.keys(P).map(function (k) {
-      return '<option value="' + k + '"' + (cfg.provider === k ? ' selected' : '') + '>' + P[k].label + '</option>';
-    }).join('');
-    return '<div class="audio-box ai-box">' +
-      '<div class="nd-block-title">🤖 AI 助教（答题时讲解 / 归纳 / 出变式题）</div>' +
-      '<div class="ai-cfg">' +
-        aiRow('平台', '<select id="aiProvider" class="ai-field">' + opts + '</select>') +
-        aiRow('接口地址', '<input id="aiBase" class="ai-field" type="text" placeholder="' + escAttr(p.base) + '" value="' + escAttr(cfg.base) + '">') +
-        aiRow('模型名', '<input id="aiModel" class="ai-field" type="text" list="aiModelList" placeholder="' + escAttr(p.model || '点「拉取模型列表」选择') + '" value="' + escAttr(cfg.model) + '"><datalist id="aiModelList"></datalist>') +
-        aiRow('API 密钥', '<input id="aiKey" class="ai-field" type="password" autocomplete="off" placeholder="' +
-          (AI.hasKey() ? '已保存：' + escAttr(AI.maskKey(cfg.key)) + '（留空＝不修改）' : '粘贴你的密钥') + '" value="">' +
-          '<button class="ai-mini" data-ai="eye" type="button">👁 显示</button>') +
-        aiRow('服务端代理', '<label class="ai-check"><input id="aiProxy" type="checkbox"' + (cfg.proxy ? ' checked' : '') + '>启用</label>' +
-          '<input id="aiProxyUrl" class="ai-field" type="text" placeholder="' + escAttr(AI.defaultProxyUrl()) + '" value="' + escAttr(cfg.proxyUrl) + '">') +
-      '</div>' +
-      '<div class="ai-actions2">' +
-        '<button class="btn btn-primary" data-ai="test" type="button">💾 保存并测试连接</button>' +
-        '<button class="btn btn-ghost" data-ai="list" type="button">📋 拉取模型列表</button>' +
-        '<button class="btn btn-ghost danger" data-ai="clear" type="button">🗑 清除密钥</button>' +
-      '</div>' +
-      '<div class="ai-cfg-status" id="aiCfgStatus">' + aiStatusHtml() + '</div>' +
-      '<div class="audio-tip">' +
-        '<b>🔐 密钥只存在你自己的浏览器里</b>（localStorage），不会写进代码、不会随仓库公开、不会上传到任何第三方，' +
-        '每次提问只直接发给上面这个平台。所以本页可以放心部署到公网。' +
-        '<br>换电脑或清了浏览器数据需要重填一次。' +
-        (p.keyUrl ? '<br>去 <a class="ai-link" href="' + p.keyUrl + '" target="_blank" rel="noopener noreferrer">' + p.keyUrl + '</a> 注册并创建密钥（创建后立即复制保存，页面不会再显示）。' : '') +
-        '<br><b>关于费用：</b>' + p.hint +
-        '<br><b>用法：</b>进入任意关卡，题目卡片下方就是 AI 区块 —— 作答前可以问「这题考什么」（不剧透答案），' +
-        '作答后会出现「选项剖析 / 考点归纳 / 真题考法 / 出变式题」四个按钮，还能继续追问。' +
-        '<br><b>提示：</b>想要质量最好的免费模型选 Google Gemini（需挂节点，或勾选上面的「服务端代理」）；' +
-        '不想挂节点又想长期白嫖，选阿里云百炼（送旗舰 qwen3-max 额度）或火山豆包（每天 200 万 token 自动重置）。' +
-        '智谱 GLM 虽然永久免费不限量，但并发限 1、单次约 15~25 秒，模型也偏小，胜在完全不用操心额度。' +
-      '</div>' +
-      '</div>';
-  }
-
-  function bindAiBox() {
-    var box = $('#view-ai .ai-box');
-    if (!box || !NS.AI) return;
-    var AI = NS.AI;
-    var inpProvider = box.querySelector('#aiProvider');
-    var inpBase = box.querySelector('#aiBase');
-    var inpModel = box.querySelector('#aiModel');
-    var inpKey = box.querySelector('#aiKey');
-    var inpProxy = box.querySelector('#aiProxy');
-    var inpProxyUrl = box.querySelector('#aiProxyUrl');
-    var eyeBtn = box.querySelector('[data-ai="eye"]');
-    var status = box.querySelector('#aiCfgStatus');
-    var dl = box.querySelector('#aiModelList');
-
-    /** 保存密钥后同步答题页 AI 区块头部那行小字，否则会一直显示"还没填密钥" */
-    function refreshBattleHeader() {
-      var src = document.querySelector('#aiBlock .ai-src');
-      if (!src) return;
-      var r = AI.resolved();
-      if (r.key && r.base && r.model) {
-        src.className = 'ai-src';
-        src.textContent = (AI.PRESETS[r.provider] || {}).label + ' · ' + r.model;
-      } else {
-        src.className = 'ai-src ai-nokey';
-        src.textContent = '还没填密钥';
-      }
-    }
-
-    function resetKeyPlaceholder() {
-      inpKey.type = 'password';
-      if (eyeBtn) eyeBtn.textContent = '👁 显示';
-      inpKey.placeholder = AI.hasKey()
-        ? '已保存：' + AI.maskKey(AI.getCfg().key) + '（留空＝不修改）'
-        : '粘贴你的密钥';
-    }
-
-    function setStatus(html, cls) {
-      status.innerHTML = html;
-      status.className = 'ai-cfg-status' + (cls ? ' ' + cls : '');
-    }
-
-    // 从表单读值并落盘；密钥留空表示"不修改"
-    function save() {
-      var patch = {
-        provider: inpProvider.value,
-        base: inpBase.value.trim(),
-        model: inpModel.value.trim(),
-        proxy: !!(inpProxy && inpProxy.checked),
-        proxyUrl: inpProxyUrl ? inpProxyUrl.value.trim() : ''
-      };
-      if (inpKey.value.trim()) patch.key = inpKey.value.trim();
-      AI.setCfg(patch);
-      inpKey.value = '';
-      resetKeyPlaceholder();
-      refreshBattleHeader();
-      return AI.resolved();
-    }
-
-    function busy(text) { setStatus(text, 'busy'); }
-
-    // /models 接口个别平台没有，失败时退回发一条极短对话来验证
-    function probe() {
-      return AI.listModels().then(function (ids) {
-        return { models: ids };
-      }).catch(function (err) {
-        return new Promise(function (resolve, reject) {
-          var done = false;
-          AI.stream([{ role: 'user', content: '回复"ok"两个字即可' }], {
-            onDelta: function () { done = true; },
-            onDone: function () { done ? resolve({ viaChat: true }) : reject(new Error('模型没有返回内容，模型名可能不对')); },
-            onError: function (m) { reject(new Error(m)); }
-          });
-        });
-      });
-    }
-
-    function test() {
-      save();
-      var r = AI.resolved();
-      if (!r.key) { setStatus('⚠️ 请先粘贴 API 密钥', 'bad'); return; }
-      if (!r.model) { setStatus('⚠️ 请先填模型名（可点「📋 拉取模型列表」）', 'bad'); return; }
-      busy('⏳ 正在连接 ' + escAttr(r.model) + ' 测试中…');
-      probe().then(function (res) {
-        if (res.models && res.models.length) {
-          dl.innerHTML = res.models.map(function (m) { return '<option value="' + escAttr(m) + '">'; }).join('');
-          setStatus('✅ 连接成功！该平台共 ' + res.models.length + ' 个模型可选，' +
-            '模型名输入框现在有下拉列表了。当前使用：<code class="inline-code">' + escAttr(r.model) + '</code>', 'ok');
-        } else {
-          setStatus('✅ 连接成功，模型已能正常回答。当前使用：<code class="inline-code">' + escAttr(r.model) + '</code>', 'ok');
-        }
-      }).catch(function (err) {
-        setStatus('❌ 失败：' + escAttr(err && err.message ? err.message : err), 'bad');
-      });
-    }
-
-    function listOnly() {
-      save();
-      var r = AI.resolved();
-      if (!r.key) { setStatus('⚠️ 请先粘贴 API 密钥', 'bad'); return; }
-      busy('⏳ 拉取中…');
-      AI.listModels().then(function (ids) {
-        if (!ids.length) { setStatus('⚠️ 平台返回了空列表', 'bad'); return; }
-        dl.innerHTML = ids.map(function (m) { return '<option value="' + escAttr(m) + '">'; }).join('');
-        setStatus('✅ 拉到 ' + ids.length + ' 个模型。点模型名输入框可下拉选择。免费模型通常带 free 字样或名称里有 Flash。', 'ok');
-      }).catch(function (err) {
-        setStatus('❌ 拉取失败：' + escAttr(err && err.message ? err.message : err) +
-          '<br>该平台可能没有 /models 接口，直接点「💾 保存并测试连接」用对话方式验证即可。', 'bad');
-      });
-    }
-
-    box.addEventListener('click', function (e) {
-      var b = e.target.closest('[data-ai]');
-      if (!b) return;
-      if (b.dataset.ai === 'eye') {
-        inpKey.type = inpKey.type === 'password' ? 'text' : 'password';
-        b.textContent = inpKey.type === 'password' ? '👁 显示' : '🙈 隐藏';
-      } else if (b.dataset.ai === 'test') test();
-      else if (b.dataset.ai === 'list') listOnly();
-      else if (b.dataset.ai === 'clear') {
-        AI.clearCfg();
-        // 复原到「预设列表里排第一的那个平台」，这样下拉框显示的和实际生效的默认值一致
-        var dk = Object.keys(AI.PRESETS)[0];
-        var dp = AI.PRESETS[dk];
-        inpKey.value = '';
-        inpProvider.value = dk;
-        inpBase.value = '';
-        inpModel.value = '';
-        inpBase.placeholder = dp.base;
-        inpModel.placeholder = dp.model;
-        dl.innerHTML = '';
-        resetKeyPlaceholder();     // 注意：眼睛按钮的文字要还原到眼睛按钮上，不是这个"清除"按钮
-        refreshBattleHeader();
-        setStatus('已清除本机保存的密钥与设置。', 'ok');
-      }
-    });
-
-    // 切平台时把地址与模型名换成该平台的默认值（用户改过也能覆盖回默认）
-    inpProvider.addEventListener('change', function () {
-      var p = AI.PRESETS[inpProvider.value] || AI.PRESETS.zhipu;
-      inpBase.value = '';
-      inpModel.value = '';
-      inpBase.placeholder = p.base;
-      inpModel.placeholder = p.model || '点「拉取模型列表」选择';
-    });
   }
 
   function audioBoxHtml() {

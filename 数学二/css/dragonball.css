@@ -672,40 +672,15 @@ body.dz .audio-row .btn.on { background: linear-gradient(135deg, #7c3aed, #a855f
 /* 立绘映射说明（已改成一对一固定，不再有随机模式） */
 .mon-mode-hint { font-size: 11.5px; color: var(--txt-dim); margin-bottom: 10px; line-height: 1.7; }
 
-/* ================= AI 助教 ================= */
-/* —— 答题卡片里的 AI 区块 —— */
-.ai-block {
-    margin-top: 14px; padding-top: 12px;
-    border-top: 1px dashed rgba(120, 170, 255, 0.22);
-}
-.ai-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; flex-wrap: wrap; }
-.ai-title { font-size: 13px; font-weight: 700; color: var(--cyan); letter-spacing: .5px; }
-.ai-src { font-size: 11px; color: var(--txt-dim); }
-.ai-src.ai-nokey { color: var(--amber); }
-.ai-btns { display: flex; flex-wrap: wrap; gap: 8px; }
-.ai-btn {
-    font: inherit; font-size: 12.5px; font-weight: 600;
-    padding: 7px 12px; border-radius: 9px; cursor: pointer;
-    color: var(--txt); background: rgba(56, 189, 248, 0.12);
-    border: 1px solid rgba(56, 189, 248, 0.35);
-    transition: transform .12s, background .18s, border-color .18s;
-}
-.ai-btn:hover { background: rgba(56, 189, 248, 0.22); border-color: rgba(56, 189, 248, 0.6); transform: translateY(-1px); }
-.ai-btn:active { transform: translateY(0); }
-.ai-btn.ghost { background: transparent; border-color: var(--line); color: var(--txt-dim); }
-.ai-btn.ghost:hover { color: var(--txt); border-color: rgba(120, 170, 255, 0.4); }
+/* ================= 请教师傅（大模型对话） =================
+   对话框、气泡流、提示分级、语音态都在这里；
+   ⚙️ 里的设置表单复用下面那套 .ai-field / .ai-cfg-* / .ai-cfg-status。 */
 .ai-mini {
     font: inherit; font-size: 11px; padding: 5px 9px; border-radius: 7px; cursor: pointer;
     color: var(--txt-dim); background: transparent; border: 1px solid var(--line);
 }
 .ai-mini:hover { color: var(--txt); border-color: rgba(120, 170, 255, 0.4); }
 
-.ai-out {
-    margin-top: 12px; padding: 12px 14px; border-radius: 10px;
-    background: rgba(8, 14, 30, 0.72); border: 1px solid rgba(120, 170, 255, 0.18);
-    font-size: 13px; line-height: 1.75; color: var(--txt);
-    max-height: 420px; overflow-y: auto;
-}
 .ai-status { font-size: 12px; color: var(--txt-dim); display: flex; align-items: center; gap: 10px; }
 .ai-stop {
     font: inherit; font-size: 11px; padding: 3px 9px; border-radius: 6px; cursor: pointer;
@@ -728,16 +703,8 @@ body.dz .audio-row .btn.on { background: linear-gradient(135deg, #7c3aed, #a855f
     border-radius: 8px; padding: 10px 12px; margin: 8px 0;
     overflow-x: auto; white-space: pre; color: #cfe4ff;
 }
-.ai-followup { display: flex; gap: 8px; margin-top: 10px; }
-.ai-input {
-    flex: 1; font: inherit; font-size: 13px; padding: 8px 11px; border-radius: 9px;
-    color: var(--txt); background: rgba(8, 14, 30, 0.8);
-    border: 1px solid rgba(120, 170, 255, 0.22);
-}
-.ai-input:focus { outline: none; border-color: rgba(56, 189, 248, 0.55); }
-
-/* —— 面板里的 AI 设置区 —— */
-.ai-box .ai-cfg { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
+/* —— 设置表单（在「请教师傅」的 ⚙️ 里） —— */
+.master-cfg .ai-cfg { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
 .ai-cfg-row { display: flex; align-items: center; gap: 10px; }
 .ai-cfg-label { flex: 0 0 66px; font-size: 12px; color: var(--txt-dim); }
 .ai-cfg-field { flex: 1; display: flex; gap: 8px; align-items: center; min-width: 0; flex-wrap: wrap; }
@@ -769,5 +736,171 @@ select.ai-field { cursor: pointer; }
 @media (max-width: 640px) {
     .ai-cfg-row { flex-direction: column; align-items: stretch; gap: 4px; }
     .ai-cfg-label { flex: none; }
-    .ai-out { max-height: 320px; font-size: 12.5px; }
 }
+
+/* ================= 请教师傅 · 对话框 =================
+   入口是关卡里的角色头像（#monsterIcon 加 .master-entry）。 */
+.master-mask {
+    /* 必须高于战斗层(160)与侧栏面板(180/200)，低于 toast(300) —— 成就提示仍要能盖在对话框上 */
+    position: fixed; inset: 0; z-index: 260;
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px;
+    background: rgba(3, 6, 16, 0.72);
+    backdrop-filter: blur(6px);
+    opacity: 0; visibility: hidden; pointer-events: none;
+    transition: opacity .2s, visibility .2s;
+}
+/* 淡出那 200ms 里 visibility 仍是 visible（离散属性过渡期一直算可见），
+   不补 pointer-events 就会"关掉之后第一下点击被它吃掉" */
+.master-mask.show { opacity: 1; visibility: visible; pointer-events: auto; }
+
+.master-dialog {
+    display: flex; flex-direction: column;
+    width: min(720px, 96vw); max-height: min(88vh, 760px);
+    background: linear-gradient(180deg, rgba(17, 26, 48, 0.98), rgba(10, 16, 32, 0.98));
+    border: 1px solid var(--line); border-radius: 16px;
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.6), 0 0 40px rgba(56, 189, 248, 0.08);
+    overflow: hidden;
+    transform: translateY(14px) scale(0.98);
+    transition: transform .22s cubic-bezier(.2, .8, .2, 1);
+}
+.master-mask.show .master-dialog { transform: translateY(0) scale(1); }
+
+/* 作者样式的 display 会盖掉 UA 的 [hidden]，逐个补回来 */
+.master-log[hidden], .master-cfg[hidden], .master-foot[hidden],
+.master-face-img[hidden], .master-mic[hidden] { display: none !important; }
+
+.master-head {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 14px; border-bottom: 1px solid var(--line);
+    background: rgba(9, 14, 28, 0.6);
+}
+.master-face {
+    flex: 0 0 auto; width: 44px; height: 44px; border-radius: 50%;
+    position: relative; display: grid; place-items: center; overflow: hidden;
+    background: radial-gradient(circle at 35% 25%, #1b2b4d, #0a1122);
+    border: 1px solid rgba(120, 170, 255, 0.28);
+}
+.master-face-img {
+    width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%;
+    mix-blend-mode: screen;         /* 纯黑底立绘自动扣底 */
+}
+.master-face-emoji { font-size: 21px; line-height: 1; }
+.master-who { flex: 1; min-width: 0; }
+.master-name { font-size: 14px; font-weight: 700; letter-spacing: .5px; }
+.master-sub {
+    font-size: 11px; color: var(--txt-dim);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.master-ico {
+    flex: 0 0 auto; width: 32px; height: 32px; border-radius: 9px;
+    font: inherit; font-size: 14px; cursor: pointer;
+    color: var(--txt-dim); background: transparent; border: 1px solid var(--line);
+    transition: color .15s, border-color .15s;
+}
+.master-ico:hover { color: var(--txt); border-color: rgba(120, 170, 255, 0.45); }
+
+.master-log {
+    flex: 1; min-height: 150px; overflow-y: auto;
+    padding: 14px; display: flex; flex-direction: column; gap: 10px;
+    background: rgba(6, 10, 22, 0.5);
+}
+.master-msg { display: flex; gap: 8px; align-items: flex-start; }
+.master-msg.is-me { flex-direction: row-reverse; }
+.master-msg-face {
+    flex: 0 0 auto; width: 26px; height: 26px; border-radius: 50%;
+    display: grid; place-items: center; font-size: 14px;
+    background: rgba(120, 170, 255, 0.12); border: 1px solid rgba(120, 170, 255, 0.2);
+}
+.master-bubble {
+    max-width: 78%; padding: 9px 12px; border-radius: 12px;
+    background: rgba(17, 26, 48, 0.92); border: 1px solid rgba(120, 170, 255, 0.18);
+    font-size: 13.5px; line-height: 1.72; word-break: break-word;
+}
+.master-msg.is-me .master-bubble {
+    background: rgba(56, 189, 248, 0.16); border-color: rgba(56, 189, 248, 0.38);
+}
+.master-bubble .ai-text { margin-top: 0; }
+.master-bubble .ai-done { margin-top: 8px; }
+
+/* 提示分级 */
+.master-foot {
+    display: flex; flex-direction: column; gap: 8px;
+    padding: 10px 14px 12px; border-top: 1px solid var(--line);
+    background: rgba(9, 14, 28, 0.6);
+}
+.master-hintrow { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.master-hintbtn {
+    font: inherit; font-size: 12.5px; font-weight: 700;
+    padding: 7px 13px; border-radius: 9px; cursor: pointer;
+    color: #ffe6a8; background: rgba(245, 158, 11, 0.14);
+    border: 1px solid rgba(245, 158, 11, 0.45);
+    transition: background .16s, transform .12s;
+}
+.master-hintbtn:hover:not(:disabled) { background: rgba(245, 158, 11, 0.24); transform: translateY(-1px); }
+.master-hintbtn:disabled, .master-hintbtn.used { opacity: 0.5; cursor: default; }
+.master-hintnote { flex: 1; min-width: 120px; font-size: 11.5px; color: var(--txt-dim); }
+
+.master-inputrow { display: flex; align-items: center; gap: 8px; }
+.master-in {
+    flex: 1; min-width: 0; font: inherit; font-size: 13px; padding: 9px 12px; border-radius: 10px;
+    color: var(--txt); background: rgba(8, 14, 30, 0.85);
+    border: 1px solid rgba(120, 170, 255, 0.22);
+}
+.master-in:focus { outline: none; border-color: rgba(56, 189, 248, 0.55); }
+.master-in:disabled { opacity: 0.55; }
+.master-mic {
+    flex: 0 0 auto; width: 40px; height: 40px; border-radius: 50%; cursor: pointer;
+    font-size: 16px; color: var(--txt); background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--line); transition: background .16s, border-color .16s;
+}
+.master-mic:hover { border-color: rgba(120, 170, 255, 0.45); }
+.master-mic.on {
+    color: #fff; border-color: rgba(251, 113, 133, 0.7); background: rgba(251, 113, 133, 0.25);
+    animation: micPulse 1.1s ease-in-out infinite;
+}
+@keyframes micPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(251, 113, 133, 0.55); }
+    70% { box-shadow: 0 0 0 10px rgba(251, 113, 133, 0); }
+}
+.master-send {
+    flex: 0 0 auto; font: inherit; font-size: 13px; font-weight: 700;
+    padding: 9px 16px; border-radius: 10px; cursor: pointer;
+    color: #04202e; background: linear-gradient(180deg, #7dd3fc, #38bdf8);
+    border: 1px solid rgba(56, 189, 248, 0.6);
+}
+.master-send:hover:not(:disabled) { filter: brightness(1.08); }
+.master-send:disabled { opacity: 0.5; cursor: default; }
+
+/* 设置表单在对话框里：顶部给一条分隔，底部留点空 */
+.master-cfg { flex: 1; min-height: 150px; overflow-y: auto; padding: 14px; }
+
+/* —— 关卡里的入口：角色头像可点 —— */
+.monster-icon.master-entry { cursor: pointer; }
+.monster-icon.master-entry::after {
+    content: '💬'; position: absolute; left: 50%; bottom: -2px; transform: translateX(28px);
+    font-size: 13px; opacity: 0.9;
+    filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.9));
+}
+.monster-icon.master-entry:hover .monster-img,
+.monster-icon.master-entry:hover .monster-emoji {
+    filter: drop-shadow(0 0 14px rgba(56, 189, 248, 0.85));
+}
+.monster-icon.master-entry:focus-visible { outline: 2px solid var(--cyan); outline-offset: 4px; border-radius: 10px; }
+
+@media (max-width: 640px) {
+    .master-mask { padding: 0; align-items: flex-end; }
+    .master-dialog {
+        width: 100%; max-width: none; max-height: 90vh;
+        border-radius: 16px 16px 0 0; transform: translateY(30px);
+    }
+    .master-bubble { max-width: 84%; font-size: 13px; }
+    .master-log { min-height: 110px; }
+    .master-hintnote { flex-basis: 100%; min-width: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .master-mask, .master-dialog, .master-hintbtn, .master-send { transition: none; }
+    .master-mic.on { animation: none; }
+}
+
