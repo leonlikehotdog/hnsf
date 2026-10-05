@@ -486,8 +486,12 @@ window.HNSF829 = window.HNSF829 || {};
       els.foot.querySelector('#btnSubmit').addEventListener('click', submitText);
     }
     // 换了一道新题：师傅那边的上下文清空重来（每题一条独立对话）
+    // nodeId / chap 是给「疑问日记本」用的 —— 一键总结要把考点信息一起入库
     if (NS.Master) {
-      NS.Master.reset({ nodeName: s.node.name, q: q, char: s.char });
+      NS.Master.reset({
+        nodeId: s.node.id, nodeName: s.node.name, chap: s.node.chap,
+        q: q, char: s.char
+      });
     }
     updateHud();
   }

@@ -181,7 +181,9 @@ window.HNSF829 = window.HNSF829 || {};
     if (lv >= HINTS.length) return;
     ctx.hintLevel = lv + 1;
     var h = HINTS[lv];
-    addBubble('me', '给我一点提示（L' + h.n + ' ' + h.name + '）');
+    var label = '给我一点提示（L' + h.n + ' ' + h.name + '）';
+    addBubble('me', esc(label));
+    ctx.asks.push(label);
     syncHint();
     send(h.ask);
   }
@@ -193,6 +195,7 @@ window.HNSF829 = window.HNSF829 || {};
     if (!v) return;
     els.input.value = '';
     addBubble('me', esc(v));
+    ctx.asks.push(v);
     send(v);
   }
 
@@ -261,6 +264,10 @@ window.HNSF829 = window.HNSF829 || {};
     if (els.input) els.input.disabled = lock;
     if (els.send) els.send.disabled = lock;
     if (els.hintBtn) els.hintBtn.disabled = lock || ((ctx && ctx.hintLevel) || 0) >= HINTS.length;
+    if (els.sumBtn) {
+      els.sumBtn.disabled = lock || summing;
+      els.sumBtn.textContent = summing ? '⏳ 总结中…' : '📝 一键总结';
+    }
     if (busy) {
       var btn = els.log && els.log.querySelector('.ai-stop');
       if (btn && !btn.__bound) {
@@ -453,6 +460,104 @@ window.HNSF829 = window.HNSF829 || {};
     });
   }
 
+  /* ---------------- 一键总结 → 疑问日记本 ----------------
+   * 只有点了这颗按钮才写库。总结的是**这道题**这轮对话（每题一张卡），
+   * 失败或没配密钥时退化成手写表单 —— 不做点了没反应的死按钮。 */
+  var summing = false;
+
+  function chapterName(chapId) {
+    var list = (NS.NODES && NS.NODES.meta && NS.NODES.meta.chapters) || [];
+    for (var i = 0; i < list.length; i++) if (list[i].id === chapId) return list[i].name || '';
+    return '';
+  }
+
+  /** 交给日记本的材料：人话版提问 + 师傅的回答 + 题目 + 当时答没答对 */
+  function sumMeta() {
+    var answers = [];
+    (ctx.msgs || []).forEach(function (m) {
+      if (m.role === 'assistant') answers.push(m.content);
+    });
+    return {
+      nodeId: ctx.nodeId,
+      nodeName: ctx.nodeName,
+      chapName: chapterName(ctx.chap),
+      q: ctx.q,
+      asks: (ctx.asks || []).slice(),
+      answers: answers,
+      answered: !!ctx.answered,
+      ok: !!ctx.ok
+    };
+  }
+
+  function echoHtml(item) {
+    var tags = (item.tags || []).map(function (t) {
+      return '<span class="diary-tag">#' + esc(t) + '</span>';
+    }).join('');
+    return '<div class="diary-echo">' +
+      '<div class="diary-row"><b>卡在哪</b><span>' + esc(item.doubt) + '</span></div>' +
+      '<div class="diary-row"><b>怎么想通</b><span>' + esc(item.fix) + '</span></div>' +
+      (tags ? '<div class="diary-foot">' + tags + '</div>' : '') +
+      '<div class="diary-echo-tip">📔 已存入疑问日记 —— 侧栏「📔 疑问日记」里随时回看</div>' +
+      '</div>';
+  }
+
+  function openManual(on) {
+    if (!els.manual) return;
+    if (!on) {
+      els.manual.hidden = true;
+      els.manual.innerHTML = '';
+      return;
+    }
+    els.manual.hidden = false;
+    if (els.manual.innerHTML) return;          // 已经建好就别重建（保住用户输入）
+    els.manual.innerHTML =
+      '<div class="mm-title">✍️ 手动填一张（不花额度）</div>' +
+      '<input class="ai-field" id="mmDoubt" type="text" placeholder="卡在哪（一句话）">' +
+      '<input class="ai-field" id="mmFix" type="text" placeholder="怎么想通的（一句话也行）">' +
+      '<input class="ai-field" id="mmTags" type="text" placeholder="关键词标签，空格分隔">' +
+      '<button class="master-send" id="mmSave" type="button">存 入</button>';
+    els.manual.querySelector('#mmSave').addEventListener('click', function () {
+      if (!NS.Diary) return;
+      var item = NS.Diary.saveManual(sumMeta(), {
+        doubt: els.manual.querySelector('#mmDoubt').value,
+        fix: els.manual.querySelector('#mmFix').value,
+        tags: els.manual.querySelector('#mmTags').value
+      });
+      addBubble('master', '好，这张我替你收进日记本了。');
+      if (NS.Engine) NS.Engine.toast('📔 已存入疑问日记');
+      openManual(false);
+    });
+  }
+
+  function doSummarize() {
+    if (!ctx || summing) return;
+    if (!NS.Diary) return;
+    if (!(ctx.asks || []).length) {
+      note('先问点什么再总结吧 —— 这段对话还是空的（点「给我一点提示」或直接打字都行）。');
+      return;
+    }
+    summing = true;
+    syncUI();
+    var b = addBubble('master', '让我把你刚才卡住的地方捋一捋…');
+    b.say.innerHTML = '<div class="ai-status">正在总结…（免费模型 10~25 秒）</div>';
+
+    NS.Diary.summarize(sumMeta(), function (ok, payload) {
+      summing = false;
+      if (ok) {
+        b.say.innerHTML = echoHtml(payload);
+        if (NS.Engine) NS.Engine.toast('📔 已存入疑问日记');
+        openManual(false);
+      } else {
+        b.say.innerHTML = '';
+        b.tail.innerHTML = '<div class="ai-err">⚠️ 没总结成：' + esc(payload) +
+          '<br>可以用下面的「手动填一张」记下来。</div>';
+        openManual(true);
+      }
+      syncUI();
+      scrollBottom();
+    });
+  }
+
   /* ---------------- 开关 ---------------- */
   function open() {
     if (!els.mask || !ctx) return;
@@ -467,6 +572,9 @@ window.HNSF829 = window.HNSF829 || {};
     if (listening) stopSpeech();
     // 生成中关掉：请求要掐断，busy 也要复位，否则下次进来输入框是死的
     if (busy) { if (NS.AI) NS.AI.stop(); busy = false; syncUI(); }
+    // 总结中关掉同理：abort 后 onDone 不会回调，不复位按钮就永远卡在"总结中…"
+    if (summing) { if (NS.AI) NS.AI.stop(); summing = false; syncUI(); }
+    openManual(false);
     els.mask.classList.remove('show');
     els.mask.setAttribute('aria-hidden', 'true');
     openCfg(false);
@@ -490,13 +598,19 @@ window.HNSF829 = window.HNSF829 || {};
   /** 换到一道新题：上下文清空、提示归零、师傅重新开口 */
   function reset(meta) {
     if (!inited) init();
+    meta = meta || {};
     ctx = {
-      nodeName: (meta && meta.nodeName) || '',
-      q: meta && meta.q,
+      nodeId: meta.nodeId || '',
+      nodeName: meta.nodeName || '',
+      chap: meta.chap || '',
+      q: meta.q,
       chosen: undefined,
       phase: 'before',
-      char: (meta && meta.char) || null,
+      char: meta.char || null,
       msgs: [],
+      asks: [],            // 我"人话版"的提问（给「一键总结」用；msgs 里存的是发给模型的模板）
+      answered: false,
+      ok: false,
       hintLevel: 0,
       reacted: false
     };
@@ -505,6 +619,8 @@ window.HNSF829 = window.HNSF829 || {};
     greet();
     syncHint();
     syncUI();
+    openManual(false);
+    summing = false;
     if (els.sub) els.sub.textContent = (ctx.nodeName ? ctx.nodeName + '　·　' : '') + '每题一条新对话';
   }
 
@@ -515,6 +631,7 @@ window.HNSF829 = window.HNSF829 || {};
     if (meta.q) ctx.q = meta.q;
     if ('chosen' in meta) ctx.chosen = meta.chosen;
     if (meta.phase === 'after') ctx.phase = 'after';
+    if (typeof meta.ok === 'boolean') { ctx.answered = true; ctx.ok = meta.ok; }
     // 只有他真的给出判定（答对/答错）才说那句本地反应，且每题只说一次
     if (ctx.phase === 'after' && !ctx.reacted && typeof meta.ok === 'boolean') {
       ctx.reacted = true;
@@ -547,6 +664,7 @@ window.HNSF829 = window.HNSF829 || {};
       log: $('masterLog'), cfg: $('masterCfg'),
       foot: document.querySelector('.master-foot'),
       hintBtn: $('masterHintBtn'), hintNote: $('masterHintNote'),
+      sumBtn: $('masterSumBtn'), manual: $('masterManual'),
       input: $('masterIn'), send: $('masterSend'), mic: $('masterMic')
     };
     if (!els.mask) return;
@@ -568,6 +686,7 @@ window.HNSF829 = window.HNSF829 || {};
     });
 
     els.hintBtn.addEventListener('click', askHint);
+    els.sumBtn.addEventListener('click', doSummarize);
     els.send.addEventListener('click', submitText);
     els.input.addEventListener('keydown', function (e) {
       if (e.key === 'Enter') { e.preventDefault(); submitText(); }
@@ -611,13 +730,16 @@ window.HNSF829 = window.HNSF829 || {};
     toggle: toggle,
     isOpen: isOpen,
     handleEsc: handleEsc,
-    /** 诊断用：语音是否可用 / 当前提示级数 */
+    summarize: doSummarize,
+    /** 诊断用：语音是否可用 / 当前提示级数 / 我提过几个问题 */
     info: function () {
       return {
         speech: speechOK,
         hintLevel: (ctx && ctx.hintLevel) || 0,
         rounds: (ctx && ctx.msgs.length) || 0,
+        asks: (ctx && ctx.asks.length) || 0,
         phase: ctx && ctx.phase,
+        nodeId: ctx && ctx.nodeId,
         open: isOpen()
       };
     }

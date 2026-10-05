@@ -904,3 +904,97 @@ select.ai-field { cursor: pointer; }
     .master-mic.on { animation: none; }
 }
 
+/* ================= 疑问日记本 ================= */
+/* —— 对话框里的「一键总结」按钮（青色，和琥珀色的提示按钮区分开） —— */
+.master-sumbtn {
+    font: inherit; font-size: 12.5px; font-weight: 700;
+    padding: 7px 13px; border-radius: 9px; cursor: pointer;
+    color: #cdefff; background: rgba(56, 189, 248, 0.14);
+    border: 1px solid rgba(56, 189, 248, 0.45);
+    transition: background .16s, transform .12s;
+}
+.master-sumbtn:hover:not(:disabled) { background: rgba(56, 189, 248, 0.24); transform: translateY(-1px); }
+.master-sumbtn:disabled { opacity: 0.5; cursor: default; }
+
+/* —— 手写兜底表单 —— */
+.master-manual {
+    display: flex; flex-direction: column; gap: 7px;
+    padding: 10px; border-radius: 10px;
+    background: rgba(8, 14, 30, 0.6); border: 1px dashed rgba(120, 170, 255, 0.28);
+}
+.mm-title { font-size: 12px; font-weight: 700; color: var(--cyan); }
+.master-manual .master-send { align-self: flex-end; }
+
+/* —— 侧栏「📔 疑问日记」 —— */
+.diary-count { font-size: 11.5px; font-weight: 400; color: var(--txt-dim); }
+.diary-empty {
+    font-size: 12.5px; line-height: 1.85; color: var(--txt-dim);
+    padding: 14px; border-radius: 10px;
+    background: rgba(8, 14, 30, 0.5); border: 1px dashed rgba(120, 170, 255, 0.2);
+}
+.diary-search { display: flex; gap: 8px; margin-bottom: 10px; align-items: center; }
+.diary-cloud { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+.diary-tag {
+    font: inherit; font-size: 11.5px; font-weight: 600;
+    padding: 4px 9px; border-radius: 99px; cursor: pointer;
+    color: #9fe3ff; background: rgba(56, 189, 248, 0.12);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+}
+.diary-tag:hover { background: rgba(56, 189, 248, 0.22); }
+.diary-tag.on { color: #04202e; background: #38bdf8; border-color: #38bdf8; }
+.diary-tag i { font-style: normal; opacity: .65; margin-left: 4px; font-size: 10.5px; }
+
+.diary-card {
+    margin-bottom: 12px; padding: 12px; border-radius: 12px;
+    background: rgba(17, 26, 48, 0.72); border: 1px solid rgba(120, 170, 255, 0.16);
+}
+.diary-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+.diary-date { font-size: 11.5px; color: var(--txt-dim); font-variant-numeric: tabular-nums; }
+.diary-node { font-size: 12.5px; font-weight: 700; color: var(--gold); }
+.diary-src {
+    font-size: 10.5px; padding: 2px 7px; border-radius: 99px;
+    color: var(--txt-dim); border: 1px solid var(--line);
+}
+.diary-del {
+    margin-left: auto; font: inherit; font-size: 12px; cursor: pointer;
+    padding: 3px 8px; border-radius: 7px; color: var(--txt-dim);
+    background: transparent; border: 1px solid transparent;
+}
+.diary-del:hover { color: var(--rose); border-color: rgba(251, 113, 133, 0.4); }
+.diary-del.sure { color: #fff; background: rgba(251, 113, 133, 0.45); border-color: rgba(251, 113, 133, 0.7); }
+
+.diary-stem {
+    font-size: 12px; color: var(--txt-dim); line-height: 1.7; margin-bottom: 8px;
+    padding-left: 9px; border-left: 2px solid rgba(120, 170, 255, 0.25);
+    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+}
+.diary-stem .katex { font-size: 0.95em; }
+.diary-asks { margin-bottom: 8px; }
+.diary-ask { font-size: 12px; color: #cfe4ff; line-height: 1.7; }
+.diary-row { display: flex; gap: 8px; font-size: 12.5px; line-height: 1.75; margin-bottom: 5px; }
+.diary-row b {
+    flex: 0 0 58px; font-size: 11.5px; font-weight: 700;
+    color: var(--cyan); padding-top: 1px;
+}
+.diary-row span { flex: 1; min-width: 0; color: var(--txt); word-break: break-word; }
+.diary-foot { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 9px; }
+.diary-go {
+    margin-left: auto; font: inherit; font-size: 11.5px; font-weight: 700; cursor: pointer;
+    padding: 5px 11px; border-radius: 8px; color: var(--txt);
+    background: rgba(255, 255, 255, 0.05); border: 1px solid var(--line);
+}
+.diary-go:hover { border-color: rgba(120, 170, 255, 0.45); }
+
+/* 对话框里总结成功后的回显卡（和侧栏卡片同源，去掉外层卡片壳） */
+.diary-echo { margin: 2px 0; }
+.diary-echo-tip {
+    margin-top: 8px; padding-top: 7px; font-size: 11.5px; color: var(--txt-dim);
+    border-top: 1px dashed rgba(120, 170, 255, 0.18);
+}
+
+@media (max-width: 640px) {
+    .master-hintrow .master-sumbtn { flex: 1; }
+    .diary-row b { flex-basis: 52px; }
+    .diary-stem { -webkit-line-clamp: 2; }
+}
+

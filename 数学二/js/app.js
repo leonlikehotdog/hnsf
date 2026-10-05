@@ -900,6 +900,7 @@ window.HNSF829 = window.HNSF829 || {};
     renderBondBook();
     renderStats();
     bindBondBook();
+    if (NS.Diary) { NS.Diary.bind(); NS.Diary.render(); }
   }
 
   function renderAchievements() {
@@ -1255,6 +1256,7 @@ window.HNSF829 = window.HNSF829 || {};
 
   NS.App = {
     launchNode: launchNode, renderMap: renderMap, openPanel: openPanel,
+    closePanel: function () { togglePanel(false); },
     orbInfo: orbInfo, bondStripHtml: bondStripHtml, bondBookHtml: bondBookHtml
   };
 })(window.HNSF829);

@@ -163,6 +163,8 @@
         <footer class="master-foot">
             <div class="master-hintrow">
                 <button class="master-hintbtn" id="masterHintBtn" type="button"></button>
+                <button class="master-sumbtn" id="masterSumBtn" type="button"
+                        title="把这段答疑压成一张疑问卡片，存进「疑问日记」">📝 一键总结</button>
                 <span class="master-hintnote" id="masterHintNote"></span>
             </div>
             <div class="master-inputrow">
@@ -171,6 +173,8 @@
                        placeholder="打字问师傅（他不会直接给你答案）">
                 <button class="master-send" id="masterSend" type="button">发送</button>
             </div>
+            <!-- AI 总结失败 / 没配密钥时的手写兜底（默认隐藏） -->
+            <div class="master-manual" id="masterManual" hidden></div>
         </footer>
     </div>
 </div>
@@ -183,6 +187,7 @@
             <button class="panel-tab active" data-view="ach">🏅 成就</button>
             <button class="panel-tab" data-view="wrong">📕<span class="lbl-long"> 错题本</span><span class="lbl-short"> 错题</span></button>
             <button class="panel-tab" data-view="bond">🤝<span class="lbl-long"> 羁绊录</span><span class="lbl-short"> 羁绊</span></button>
+            <button class="panel-tab" data-view="diary">📔<span class="lbl-long"> 疑问日记</span><span class="lbl-short"> 日记</span></button>
             <button class="panel-tab" data-view="stats">📊<span class="lbl-long"> 统计与玩法</span><span class="lbl-short"> 统计</span></button>
         </div>
         <button class="battle-close" id="panelClose" aria-label="关闭面板">✕</button>
@@ -191,6 +196,7 @@
         <div class="panel-view active" id="view-ach"></div>
         <div class="panel-view" id="view-wrong"></div>
         <div class="panel-view" id="view-bond"></div>
+        <div class="panel-view" id="view-diary"></div>
         <div class="panel-view" id="view-stats"></div>
     </div>
 </aside>
@@ -251,6 +257,7 @@
 <script src="js/fx.js"></script>
 <script src="js/engine.js"></script>
 <script src="js/story.js"></script>
+<script src="js/diary.js"></script>
 <script src="js/master.js"></script>
 <script src="js/app.js"></script>
 </body>
