@@ -502,6 +502,14 @@ window.HNSF829 = window.HNSF829 || {};
     save(); emit();
   }
 
+  /** 用外部数据整体替换存档（云端同步「下载」用）：先与 DEFAULTS 合并，避免缺字段 */
+  function replace(obj) {
+    var st = Object.assign(JSON.parse(JSON.stringify(DEFAULTS)), obj || {});
+    st.v = VERSION;
+    state = st;
+    save(); emit();
+  }
+
   function raw() { return state; }
 
   NS.Store = {
@@ -531,6 +539,7 @@ window.HNSF829 = window.HNSF829 || {};
     snapshot: snapshot,
     subscribe: subscribe,
     reset: reset,
+    replace: replace,
     raw: raw,
     PASS_RATE: PASS_RATE
   };

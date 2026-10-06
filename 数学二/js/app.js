@@ -20,7 +20,9 @@ window.HNSF829 = window.HNSF829 || {};
   // 主题 / 背景图偏好故意沿用 829 的 key：两门课同域，换科目不用重设外观
   var THEME_KEY = 'hnsf829_theme_v1';
   var BG_KEY = 'hnsf829_bgimg_v1';            // 是否启用自定义背景图
+  var LP_KEY = 'hnsf302_lowpower_v1';         // 低功耗模式（治手机发热；fx.js 读同一 key）
   var bgImgOn = false;
+  var lpOn = false;
   // 七龙珠：把「全部考点」均分成 7 档，第 7 颗 = 全部通关
   // （节点数从 21 涨到 69，不能再写死「每 3 个一颗」，否则 23 颗龙珠都点不完）
   var ORB_TOTAL = NODES.length;
@@ -60,6 +62,8 @@ window.HNSF829 = window.HNSF829 || {};
     applyTheme(themeOn);
     bgImgOn = loadBgPref();
     if (NS.BG) NS.BG.setImageMode(bgImgOn);
+    lpOn = NS.BG && NS.BG.lowPowerOn ? NS.BG.lowPowerOn() : false;
+    applyLowPower(lpOn);                       // 同步 html.lowpower 类（fx.js 已按同一 key 初始化）
     syncAudioBtns();
     if (NS.Audio) NS.Audio.setScene('map');    // 地图曲（首次交互后才真正出声）
     if (NS.BG) NS.BG.setScene('map');          // 地图战场背景
@@ -266,7 +270,7 @@ window.HNSF829 = window.HNSF829 || {};
       return '<div class="tier-col" style="left:' + left + 'px;width:' + dim.colW + 'px;--tc:' + t.color + '">' +
         '<div class="tier-title">' + t.name + '</div>' +
         '<div class="tier-desc">' + t.desc + '</div>' +
-        '</div>';
+      '</div>';
     }).join('');
     // 章分组带：虚线分隔 + 左上角标签，把 69 个球按教材章切成一目了然的段
     var bandHtml = chapterBands.map(function (b) {
@@ -729,6 +733,14 @@ window.HNSF829 = window.HNSF829 || {};
     try { localStorage.setItem(BG_KEY, bgImgOn ? '1' : '0'); } catch (e) {}
   }
 
+  /** 低功耗模式：治手机发热（停 Canvas 主循环 + 暂停视频 + 关全部 CSS 动画） */
+  function applyLowPower(on) {
+    lpOn = !!on;
+    if (NS.BG && NS.BG.setLowPower) NS.BG.setLowPower(lpOn);
+    else document.documentElement.classList.toggle('lowpower', lpOn);
+    try { localStorage.setItem(LP_KEY, lpOn ? '1' : '0'); } catch (e) {}
+  }
+
   function syncAudioBtns() {
     var m = $('#btnMusic'), s = $('#btnSfx');
     if (m) {
@@ -1097,6 +1109,7 @@ window.HNSF829 = window.HNSF829 || {};
     }).join('') + '</div>' +
       masteryHeatHtml() +
       audioBoxHtml() +
+      cloudBoxHtml() +
       monsterBoxHtml() +
       '<div class="play-tips"><div class="nd-block-title">🎮 玩法说明</div><ul>' +
       '<li>考点按「基础简易 → 综合应用 → 创新拓展」分层，同层内按历年真题<b>分值占比从高到低</b>排列，圆越大分值越高。</li>' +
@@ -1115,6 +1128,7 @@ window.HNSF829 = window.HNSF829 || {};
       '</ul></div>';
 
     bindAudioBox();
+    bindCloudBox();
     bindHeatmap();
   }
 
@@ -1144,10 +1158,14 @@ window.HNSF829 = window.HNSF829 || {};
       '<div class="audio-row"><span>动态背景</span>' +
         '<button class="btn ' + (bgImgOn ? 'on' : '') + '" data-au="bgimg">' + (bgImgOn ? '背景视频' : '程序化战场') + '</button>' +
       '</div>' +
+      '<div class="audio-row"><span>低功耗模式</span>' +
+        '<button class="btn ' + (lpOn ? 'on' : '') + '" data-au="lowpower">' + (lpOn ? '开启' : '关闭') + '</button>' +
+      '</div>' +
       '<div class="audio-tip">🎵 BGM 与音效全部由 Web Audio <b>实时合成</b>（原创热血摇滚：鼓组 + 贝斯 + 失真和弦 + 主旋律），不加载任何外部音频文件。<br>' +
         '🎸 <b>做题时 BGM 默认播放</b>：进关卡会切到一首<b>独立的 E 小调 122 BPM 战斗曲</b>（与地图曲同属热血摇滚，但调式、和声进行、鼓组与旋律全部另写，不会听混）。读题嫌吵就切成「静音」，只保留打击音效。<br>' +
         '浏览器规定必须与页面交互一次才能出声，若没声音请先点一下页面。</div>' +
       '<div class="audio-tip" style="margin-top:10px">🎬 <b>动态背景</b>：默认使用 <code class="inline-code">数学二/assets/bg.mp4</code> 作为底图，由 <code class="inline-code">js/fx.js</code> 逐帧绘制到画布上（自动 cover 裁切 + 压暗保证文字可读），气焰 / 闪电 / 碎石 / 冲击波等动态图层会继续叠加。想换视频用同名文件覆盖即可；视频缺失或无法播放时自动降级回 <code class="inline-code">bg-map.jpg</code> / <code class="inline-code">bg-battle.jpg</code>，再降级到纯程序化背景。关掉开关则直接回到纯程序化背景。</div>' +
+      '<div class="audio-tip" style="margin-top:10px">🔋 <b>低功耗模式</b>（<b>手机默认开启</b>）：关掉整个 Canvas 主循环，只画一帧静态底图，同时暂停背景视频、去掉发光模糊（shadowBlur）、关掉全部 CSS 动画 —— 手机发热与掉电会明显下降。想保留满帧动态背景就切成「关闭」（移动端仍限 30fps）。</div>' +
       '</div>';
   }
 
@@ -1194,14 +1212,157 @@ window.HNSF829 = window.HNSF829 || {};
       '</div>';
   }
 
+  /* ---------------- ☁️ 云端同步 ---------------- */
+  function fmtTime(ts) {
+    if (!ts) return '从未同步';
+    var d = new Date(ts), p = function (n) { return (n < 10 ? '0' : '') + n; };
+    return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()) + ' ' +
+      p(d.getHours()) + ':' + p(d.getMinutes());
+  }
+
+  function cloudBoxHtml() {
+    var C = NS.Cloud;
+    if (!C) return '';
+    var c = C.code();
+    return '<div class="audio-box cloud-box">' +
+      '<div class="nd-block-title">☁️ 云端同步</div>' +
+      '<div class="audio-row"><span>同步码</span>' +
+        '<input class="cloud-code" type="text" spellcheck="false" autocomplete="off" ' +
+          'placeholder="点「随机生成」或手填 ' + C.minCode + ' 位以上" value="' + escAttr(c) + '">' +
+      '</div>' +
+      '<div class="audio-row"><span></span>' +
+        '<button class="btn" data-cl="gen">🎲 随机生成</button>' +
+        '<button class="btn" data-cl="copy">📋 复制</button>' +
+        '<button class="btn" data-cl="clear">🗑 清除</button>' +
+      '</div>' +
+      '<div class="audio-row"><span>进度</span>' +
+        '<button class="btn" data-cl="push">⬆️ 上传本机</button>' +
+        '<button class="btn" data-cl="pull">⬇️ 下载云端</button>' +
+      '</div>' +
+      '<div class="cloud-status" data-cl="status">本机同步码：' + (C.codeOk(c) ? '已设置' : '未设置') +
+        '　·　最后同步：' + fmtTime(C.lastSync()) + '</div>' +
+      '<div class="audio-tip">换个设备想接着刷？<b>两台设备填同一个同步码</b>即可：先在 A 机「⬆️ 上传本机」，再到 B 机填同一个码点「⬇️ 下载云端」。<br>' +
+        '⚠️ <b>下载 = 用云端整份覆盖本机</b>（含错题本、疑问日记），会丢掉本机没上传的进度，所以要点两下确认。<br>' +
+        '⚠️ <b>同步码就是你的密码</b>：它是唯一凭证，丢了或忘了谁都找不回来，请自己记好（可复制到备忘录）。码越长越安全，建议直接用「🎲 随机生成」。</div>' +
+      '</div>';
+  }
+
+  var pullArmed = 0;            // 「下载」是整份覆盖本机，点两下确认（不弹系统框）
+
+  function cloudStatus(msg, kind) {
+    var el = $('#view-stats [data-cl="status"]');
+    if (!el) return;
+    el.textContent = msg;
+    el.className = 'cloud-status' + (kind ? ' ' + kind : '');
+  }
+  function cloudIdle() {
+    var C = NS.Cloud;
+    if (!C) return;
+    var c = C.code();
+    cloudStatus('本机同步码：' + (C.codeOk(c) ? '已设置' : '未设置') +
+      '　·　最后同步：' + fmtTime(C.lastSync()), '');
+  }
+
+  function bindCloudBox() {
+    var C = NS.Cloud;
+    var box = $('#view-stats .cloud-box');
+    if (!C || !box) return;
+    var input = box.querySelector('.cloud-code');
+    var genB = box.querySelector('[data-cl="gen"]');
+    var copyB = box.querySelector('[data-cl="copy"]');
+    var clearB = box.querySelector('[data-cl="clear"]');
+    var pushB = box.querySelector('[data-cl="push"]');
+    var pullB = box.querySelector('[data-cl="pull"]');
+    var saveCode = function () { C.setCode(input.value); };
+    var armReset = function () {
+      pullArmed = 0;
+      pullB.textContent = '⬇️ 下载云端';
+      pullB.classList.remove('danger');
+    };
+
+    genB.addEventListener('click', function () {
+      input.value = C.genCode();
+      saveCode();
+      cloudStatus('已生成新同步码。请点「⬆️ 上传本机」把它写进云端；另一台设备填同一个码再「下载云端」。', 'ok');
+    });
+    copyB.addEventListener('click', function () {
+      saveCode();
+      var v = input.value.trim();
+      if (!v) { cloudStatus('还没有同步码，先点「🎲 随机生成」', 'warn'); return; }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(v).then(function () {
+          cloudStatus('同步码已复制到剪贴板', 'ok');
+        }, function () {
+          input.select(); cloudStatus('请手动复制选中的同步码', 'warn');
+        });
+      } else {
+        input.select(); cloudStatus('请手动复制选中的同步码', 'warn');
+      }
+    });
+    clearB.addEventListener('click', function () {
+      input.value = '';
+      C.setCode('');
+      cloudStatus('已清除本机同步码（云端那份数据没有被删除，填回原码还能取到）', 'warn');
+    });
+    input.addEventListener('change', function () { saveCode(); cloudIdle(); });
+
+    pushB.addEventListener('click', function () {
+      saveCode();
+      if (!C.codeOk(input.value)) { cloudStatus('同步码至少要 ' + C.minCode + ' 位', 'warn'); return; }
+      pushB.disabled = true;
+      cloudStatus('正在上传本机进度…');
+      C.push(function (ok, info) {
+        pushB.disabled = false;
+        if (!ok) {
+          cloudStatus('上传失败：' + info.message, 'err');
+          Engine.toast('☁️ 上传失败：' + info.message);
+          return;
+        }
+        cloudStatus('✅ 已上传本机进度（' + fmtTime(info.at) + '）', 'ok');
+        Engine.toast('☁️ 进度已上传到云端');
+      });
+    });
+
+    pullB.addEventListener('click', function () {
+      saveCode();
+      if (!C.codeOk(input.value)) { cloudStatus('同步码至少要 ' + C.minCode + ' 位', 'warn'); return; }
+      var now = Date.now();
+      if (!(pullArmed && now - pullArmed < 4000)) {          // 第一下：只是上膛
+        pullArmed = now;
+        pullB.textContent = '⚠️ 会覆盖本机，再点一次';
+        pullB.classList.add('danger');
+        cloudStatus('下载会用云端进度**覆盖本机全部进度**（错题本、疑问日记也在内）。确认请再点一次按钮。', 'warn');
+        setTimeout(function () { if (Date.now() - pullArmed >= 3900) armReset(); }, 4000);
+        return;
+      }
+      armReset();
+      cloudStatus('正在下载云端进度…');
+      C.pull(function (ok, info) {
+        if (!ok) {
+          cloudStatus('下载失败：' + info.message, 'err');
+          Engine.toast('☁️ 下载失败：' + info.message);
+          return;
+        }
+        if (info.empty) {
+          cloudStatus('这个同步码在云端还没有数据 —— 先去另一台设备点「⬆️ 上传本机」。', 'warn');
+          return;
+        }
+        cloudStatus('✅ 已用云端进度覆盖本机（云端时间 ' + fmtTime(info.at) + '）', 'ok');
+        Engine.toast('☁️ 已下载云端进度，本机已更新');
+        renderMap(); renderHud();                            // 解锁状态与 HUD 都要重算
+      });
+    });
+  }
+
   function bindAudioBox() {
-    // 用 :not 明确排除角色立绘素材区（它复用了 .audio-box 的样式）
-    var box = $('#view-stats .audio-box:not(.monster-box)');
+    // 用 :not 明确排除角色立绘素材区与云端同步区（它们都复用了 .audio-box 的样式）
+    var box = $('#view-stats .audio-box:not(.monster-box):not(.cloud-box)');
     if (!box) return;
     var mBtn = box.querySelector('[data-au="music"]');
     var sBtn = box.querySelector('[data-au="sfx"]');
     var tBtn = box.querySelector('[data-au="theme"]');
     var bBtn = box.querySelector('[data-au="bgimg"]');
+    var lpBtn = box.querySelector('[data-au="lowpower"]');
     var mibBtn = box.querySelector('[data-au="mib"]');
     var vol = box.querySelector('[data-au="vol"]');
 
@@ -1239,8 +1400,17 @@ window.HNSF829 = window.HNSF829 || {};
       bBtn.classList.toggle('on', bgImgOn);
       bBtn.textContent = bgImgOn ? '背景视频' : '程序化战场';
       Engine.toast(bgImgOn
-        ? '🎬 已启用背景视频（加载失败会自动降级到静态底图）'
+        ? (lpOn ? '🎬 已切到背景视频，但低功耗模式下仍是静态画面（关掉低功耗才会动）'
+                : '🎬 已启用背景视频（加载失败会自动降级到静态底图）')
         : '🌌 已切回程序化战场背景');
+    });
+    lpBtn.addEventListener('click', function () {
+      applyLowPower(!lpOn);
+      lpBtn.classList.toggle('on', lpOn);
+      lpBtn.textContent = lpOn ? '开启' : '关闭';
+      Engine.toast(lpOn
+        ? '🔋 低功耗模式已开启：背景转为静态画面，动画全部暂停（手机更省电、不烫）'
+        : '🌌 低功耗模式已关闭：动态背景恢复' + (bgImgOn ? '' : '（当前为程序化战场）'));
     });
   }
 

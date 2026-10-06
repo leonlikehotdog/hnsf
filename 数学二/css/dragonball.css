@@ -413,6 +413,16 @@ body.dz ::-webkit-scrollbar-thumb {
     .monster.enter .monster-name { animation: none !important; }
 }
 
+/* ================= 低功耗模式 =================
+   移动端（≤860px）默认开启，桌面端默认关闭，可在「📊 统计与玩法 → 音频与主题」
+   手动切换（见 app.js applyLowPower / fx.js setLowPower）。开启时：
+     · fx.js 停掉 Canvas 主循环（只画一帧静态底图）+ 暂停背景视频 + 去 shadowBlur；
+     · 本规则关掉全部 CSS 动画（保留过渡，交互动效不受影响）。
+   这是治手机发热的关键一刀：前台逐帧重绘 + 视频解码 + 无限动画叠加是发热主因。 */
+html.lowpower *, html.lowpower *::before, html.lowpower *::after {
+    animation: none !important;
+}
+
 /* ================= 实体怪物立绘 =================
    图片放在 829/monsters/ 下（文件名见 monsters/monsters.js），
    缺图时自动回退成 emoji，不会报错。 */
@@ -648,6 +658,22 @@ body.dz .audio-row .btn.on { background: linear-gradient(135deg, #7c3aed, #a855f
     background: #a855f7; cursor: pointer;
 }
 .audio-tip { font-size: 11.5px; color: var(--txt-dim); line-height: 1.6; }
+
+/* ================= ☁️ 云端同步 ================= */
+.cloud-code {
+    flex: 1; min-width: 0; font: inherit; font-size: 12.5px; letter-spacing: 0.4px;
+    padding: 6px 10px; border-radius: 8px; color: #eaf2ff;
+    background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.16); outline: none;
+}
+.cloud-code:focus { border-color: rgba(56, 189, 248, 0.7); box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.15); }
+.cloud-code::placeholder { color: rgba(255, 255, 255, 0.32); }
+.cloud-status { font-size: 11.5px; color: var(--txt-dim); margin: 2px 0 8px; line-height: 1.5; }
+.cloud-status.ok { color: #5ee08a; }
+.cloud-status.warn { color: #ffc857; }
+.cloud-status.err { color: #ff7b7b; }
+.audio-row .btn.danger {
+    background: rgba(255, 80, 80, 0.18); border-color: rgba(255, 80, 80, 0.6); color: #ffb3b3;
+}
 
 /* 怪物立绘素材清单 */
 .mon-grid {

@@ -16,11 +16,32 @@ window.HNSF829 = window.HNSF829 || {};
 
   var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  /* ---------------- 低功耗模式 ----------------
+     手机发热的主因不是后台进程（切后台已由 visibilitychange 停掉），而是**前台一直
+     满负荷重绘**：Canvas 每帧全屏重绘 + 背景视频逐帧解码 + Web Audio 实时合成 +
+     CSS 无限动画叠在一起。这里给一个总开关：
+       · 开 = 停掉 Canvas 主循环（只画一帧静态底图）+ 暂停背景视频 + 关掉全部 CSS 动画；
+       · 关 = 恢复动态背景，但移动端仍限 30fps、降粒子、去 shadowBlur（见下）。
+     默认值：移动端（≤860px，与 style.css 媒体查询同一条件）开启，桌面端关闭。
+     用户可以手动改，偏好与主题/背景图同前缀。 */
+  var LP_KEY = 'hnsf302_lowpower_v1';
+  function mobileViewNow() { return window.innerWidth <= 860; }
+  function readLowPower() {
+    try { var v = localStorage.getItem(LP_KEY); if (v !== null) return v === '1'; } catch (e) {}
+    return mobileViewNow();                     // 移动端默认开
+  }
+  var lowPower = readLowPower();
+  if (lowPower) document.documentElement.classList.add('lowpower');
+  /** 需要「别动」的地方统一问它：系统减动效 或 低功耗模式 */
+  function motionOff() { return reduced || lowPower; }
+
   /* ============================================================
    * 一、动态战场背景
    * ============================================================ */
   var BG = (function () {
     var cv, cx, W = 0, H = 0, dpr = 1, raf = null, running = false, t0 = 0;
+    var mobileV = mobileViewNow();              // 缓存的移动端判定（resize 时更新，避免每帧读 innerWidth）
+    var lastDraw = 0;                           // 上一帧真正绘制的时刻，用于帧率上限
     var clouds = [], stars = [], auras = [], embers = [], debris = [], cracks = [], flames = [];
     var bolts = [], shock = null, boltTimer = 4000;
 
@@ -56,14 +77,14 @@ window.HNSF829 = window.HNSF829 || {};
     }
 
     function probeVideo() {
-      if (!imgMode || vidTried) return;
+      if (!imgMode || vidTried || lowPower) return;   // 低功耗：不下载也不解码视频
       vidTried = true;
       vidEl = document.getElementById('bgVideo');
       if (!vidEl) return;
       vidEl.muted = true;                       // 必须静音，否则自动播放会被浏览器拦截
       vidEl.loop = true;                        // 素材首尾同帧，直接交给浏览器无缝循环
       vidEl.src = VIDEO_SRC;
-      vidEl.addEventListener('canplay', function () { vidOk = true; });
+      vidEl.addEventListener('canplay', function () { vidOk = true; if (lowPower) drawOnce(); });
       vidEl.addEventListener('error', function () { vidOk = false; });
       playEl(vidEl);
     }
@@ -74,7 +95,7 @@ window.HNSF829 = window.HNSF829 || {};
       vidRetryBound = true;
       document.addEventListener('pointerdown', function retry() {
         document.removeEventListener('pointerdown', retry);
-        if (!imgMode || !vidEl) return;
+        if (!imgMode || !vidEl || lowPower) return;
         if (!vidOk) playEl(vidEl);
         else if (vidEl.paused && !vidEl.ended) playEl(vidEl);
       });
@@ -85,7 +106,7 @@ window.HNSF829 = window.HNSF829 || {};
     }
 
     /** 可用的视频帧：探测到并且拿到宽高才算就绪，否则返回 false 走降级 */
-    function videoReadyNow() { return !!(imgMode && vidOk && vReady(vidEl)); }
+    function videoReadyNow() { return !!(imgMode && !lowPower && vidOk && vReady(vidEl)); }
 
     /* 底图/视频通用压暗层：保证前景文字始终可读 */
     function dimOverlay(a0, a1, a2) {
@@ -127,8 +148,8 @@ window.HNSF829 = window.HNSF829 || {};
       var def = SCENES[key];
       if (!def || !def.img) return;
       var img = new Image();
-      img.onload = function () { baseImgs[key] = { ok: true, img: img }; };
-      img.onerror = function () { baseImgs[key] = { ok: false, img: null }; };
+      img.onload = function () { baseImgs[key] = { ok: true, img: img }; if (lowPower) drawOnce(); };
+      img.onerror = function () { baseImgs[key] = { ok: false, img: null }; if (lowPower) drawOnce(); };
       img.src = def.img;
     }
 
@@ -139,6 +160,7 @@ window.HNSF829 = window.HNSF829 || {};
       vidTried = false; vidOk = false;
       if (!imgMode) stopVideo();
       if (imgMode) { probeVideo(); bindVideoRetry(); probe(sceneKey); }
+      if (lowPower) drawOnce();                  // 低功耗下没有主循环，改完底图要补画一帧
     }
 
     function imagesOn() { return imgMode; }
@@ -148,7 +170,7 @@ window.HNSF829 = window.HNSF829 || {};
       sceneKey = key;
       probe(key);
       // 场景能量强度不同，需按新的 intensity 重建粒子，否则视觉不一致
-      if (W && H) build();
+      if (W && H) { build(); if (lowPower) drawOnce(); }
     }
 
     function cfg() { return SCENES[sceneKey] || SCENES.map; }
@@ -157,22 +179,27 @@ window.HNSF829 = window.HNSF829 || {};
     /* ---------- 尺寸与粒子重建 ---------- */
     function resize() {
       if (!cv) return;
-      dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      mobileV = mobileViewNow();
+      // 渲染分辨率封顶：移动端 GPU 逐像素成本高，1.5 倍 DPR 在 3x 屏上要多算 4 倍像素
+      dpr = Math.min(window.devicePixelRatio || 1, lowPower ? 1 : (mobileV ? 1.25 : 1.5));
       W = window.innerWidth; H = window.innerHeight;
       cv.width = Math.floor(W * dpr); cv.height = Math.floor(H * dpr);
       cv.style.width = W + 'px'; cv.style.height = H + 'px';
       cx.setTransform(dpr, 0, 0, dpr, 0, 0);
       build();
+      if (lowPower) drawOnce();               // 低功耗下没有主循环，尺寸变了要补画一帧
     }
 
     function build() {
       var area = W * H;
       var p = power();
-      var starN = Math.min(320, Math.max(90, Math.round(area / 9000)));
-      var auraN = reduced ? 0 : Math.min(70, Math.round(Math.max(18, area / 34000) * p));
-      var emberN = reduced ? 0 : Math.min(90, Math.round(Math.max(16, area / 26000) * p));
-      var debN = reduced ? 0 : Math.min(26, Math.round(Math.max(8, area / 90000) * p));
-      var flameN = reduced ? 0 : Math.min(30, Math.round(Math.max(12, area / 60000) * p));
+      // 移动端 / 低功耗按比例降粒子：重绘成本基本与粒子数成正比
+      var scale = lowPower ? 0.5 : (mobileV ? 0.45 : 1);
+      var starN = Math.min(320, Math.max(70, Math.round(area / 9000 * (mobileV ? 0.6 : 1))));
+      var auraN = reduced ? 0 : Math.min(70, Math.round(Math.max(18, area / 34000) * p * scale));
+      var emberN = reduced ? 0 : Math.min(90, Math.round(Math.max(16, area / 26000) * p * scale));
+      var debN = reduced ? 0 : Math.min(26, Math.round(Math.max(8, area / 90000) * p * scale));
+      var flameN = reduced ? 0 : Math.min(30, Math.round(Math.max(12, area / 60000) * p * scale));
 
       stars = [];
       for (var i = 0; i < starN; i++) {
@@ -203,7 +230,7 @@ window.HNSF829 = window.HNSF829 || {};
     /* ---------- 龟裂地面（战斗破坏感） ---------- */
     function buildCracks() {
       cracks = [];
-      var n = Math.max(5, Math.round(W / 240));
+      var n = Math.max(4, Math.round(W / (mobileV ? 420 : 240)));
       for (var i = 0; i < n; i++) {
         var x = (i + 0.5) / n * W + (Math.random() - 0.5) * W / n;
         var y = H * (0.72 + Math.random() * 0.26);
@@ -290,12 +317,13 @@ window.HNSF829 = window.HNSF829 || {};
     }
 
     /* ---------- 主循环 ---------- */
-    function frame(now) {
-      if (!running) return;
-      if (!t0) t0 = now;
-      var dt = Math.min(50, now - t0); t0 = now;
+    /* draw() 只负责「画一帧」；rAF 的节奏控制交给 frame()，
+       这样低功耗模式下也能单独画一帧静态底图。 */
+    var softGlow = 1;                            // 移动端去掉 shadowBlur（移动 GPU 上极贵）
+    function draw(now, dt) {
       var k = dt / 16.67;
       var p = power();
+      softGlow = mobileV ? 0 : 1;
 
       cx.clearRect(0, 0, W, H);
 
@@ -343,7 +371,7 @@ window.HNSF829 = window.HNSF829 || {};
           cx.strokeStyle = 'rgba(196,181,253,' + a + ')';
           cx.lineWidth = ck.w;
           cx.shadowColor = 'rgba(124,58,237,0.85)';
-          cx.shadowBlur = 14;
+          cx.shadowBlur = 14 * softGlow;
           cx.beginPath();
           ck.pts.forEach(function (pt, i) { i ? cx.lineTo(pt.x, pt.y) : cx.moveTo(pt.x, pt.y); });
           cx.stroke();
@@ -444,7 +472,7 @@ window.HNSF829 = window.HNSF829 || {};
         cx.strokeStyle = 'rgba(' + shock.c + ',' + (0.8 * sa) + ')';
         cx.lineWidth = 6 * sa + 1.5;
         cx.shadowColor = 'rgba(' + shock.c + ',0.9)';
-        cx.shadowBlur = 30;
+        cx.shadowBlur = 30 * softGlow;
         cx.beginPath();
         cx.ellipse(shock.x, shock.y, shock.r, shock.r * 0.34, 0, 0, Math.PI * 2);
         cx.stroke();
@@ -454,7 +482,7 @@ window.HNSF829 = window.HNSF829 || {};
 
       // 9) 闪电
       boltTimer -= dt;
-      if (bolts.length < 2 && boltTimer <= 0 && !reduced) {
+      if (bolts.length < 2 && boltTimer <= 0 && !motionOff()) {
         bolts.push(makeBolt());
         boltTimer = (2600 + Math.random() * 5200) / p;
       }
@@ -464,19 +492,36 @@ window.HNSF829 = window.HNSF829 || {};
         if (ba <= 0) return false;
         cx.save();
         cx.strokeStyle = 'rgba(200,240,255,' + (0.9 * ba) + ')';
-        cx.lineWidth = 2.2; cx.shadowColor = 'rgba(150,220,255,0.9)'; cx.shadowBlur = 24;
+        cx.lineWidth = 2.2; cx.shadowColor = 'rgba(150,220,255,0.9)'; cx.shadowBlur = 24 * softGlow;
         cx.beginPath();
         b.segs.forEach(function (s, i) { i ? cx.lineTo(s.x, s.y) : cx.moveTo(s.x, s.y); });
         cx.stroke();
         cx.restore();
         return true;
       });
+    }
 
+    /** 主循环：带帧率上限（移动端 30fps / 桌面 60fps），低功耗模式不排帧 */
+    function frame(now) {
+      if (!running || lowPower) { raf = null; return; }
+      var gap = 1000 / (mobileV ? 30 : 60) - 2;   // 减 2ms 容差，否则 60Hz 屏会因 16.6<16.67 掉到 30fps
+      if (now - lastDraw < gap) { raf = requestAnimationFrame(frame); return; }
+      lastDraw = now;
+      if (!t0) t0 = now;
+      var dt = Math.min(50, now - t0); t0 = now;
+      draw(now, dt);
       raf = requestAnimationFrame(frame);
+    }
+
+    /** 只画一帧（低功耗模式的静态底图） */
+    function drawOnce() {
+      if (!cv) return;
+      draw(performance.now ? performance.now() : Date.now(), 16.67);
     }
 
     /** 蓄气爆发：地面冲击环（由升级 / 通关 / 神龙触发） */
     function charge() {
+      if (lowPower) return;                     // 低功耗下没有循环来推进它，直接跳过
       shock = {
         x: W / 2, y: H * 0.82,
         r: 20, max: Math.max(W, H) * 0.72,
@@ -492,18 +537,51 @@ window.HNSF829 = window.HNSF829 || {};
       cx = cv.getContext('2d');
       resize();
       running = true; t0 = 0;
-      raf = requestAnimationFrame(frame);
+      if (lowPower) drawOnce();                  // 低功耗：只画一帧静态底图，不启动主循环
+      else raf = requestAnimationFrame(frame);
       window.addEventListener('resize', function () { resize(); });
       document.addEventListener('visibilitychange', function () {
         if (document.hidden) { running = false; if (raf) cancelAnimationFrame(raf); raf = null; }
-        else if (!running) { running = true; t0 = 0; raf = requestAnimationFrame(frame); }
+        else if (!running) {
+          running = true; t0 = 0;
+          if (lowPower) drawOnce(); else raf = requestAnimationFrame(frame);
+        }
       });
+    }
+
+    /** 开/关低功耗模式：停掉主循环 + 暂停视频，或恢复动态背景 */
+    function setLowPower(on) {
+      on = !!on;
+      if (on === lowPower) {                     // 值没变就只对齐类名，绝不重排主循环
+        document.documentElement.classList.toggle('lowpower', on);
+        return;
+      }
+      lowPower = on;
+      if (lowPower) document.documentElement.classList.add('lowpower');
+      else document.documentElement.classList.remove('lowpower');
+      try { localStorage.setItem(LP_KEY, on ? '1' : '0'); } catch (e) {}
+      if (!cv) return;
+      mobileV = mobileViewNow();
+      if (on) {
+        running = false;
+        if (raf) { cancelAnimationFrame(raf); raf = null; }
+        stopVideo();
+        resize();                                // 重建粒子 + 补画一帧静态底图（内部会 drawOnce）
+      } else {
+        running = true; t0 = 0; lastDraw = 0;
+        if (vidEl && vidOk) playEl(vidEl);       // 之前只是被暂停，恢复播放即可
+        if (imgMode) { probeVideo(); bindVideoRetry(); }
+        raf = requestAnimationFrame(frame);
+      }
     }
 
     return {
       start: start, resize: resize, setScene: setScene, charge: charge,
       setImageMode: setImageMode, imagesOn: imagesOn, videoReady: videoReadyNow,
-      scene: function () { return sceneKey; }
+      scene: function () { return sceneKey; },
+      setLowPower: setLowPower,
+      lowPowerOn: function () { return lowPower; },
+      fps: function () { return lowPower ? 0 : (mobileV ? 30 : 60); }
     };
   })();
 
@@ -521,7 +599,7 @@ window.HNSF829 = window.HNSF829 || {};
     /** 全屏闪光：color 为 rgb 字符串，strength 0-1 */
     function flash(color, strength) {
       var el = ensureEl();
-      if (!el || reduced) return;
+      if (!el || motionOff()) return;
       el.style.background = 'radial-gradient(circle at 50% 45%, rgba(' + color + ',' + (0.55 * (strength || 1)) + '), rgba(' + color + ',0) 70%)';
       el.classList.remove('go');
       void el.offsetWidth;
@@ -533,7 +611,7 @@ window.HNSF829 = window.HNSF829 || {};
 
     /** 震屏 */
     function shake(level) {
-      if (reduced) return;
+      if (motionOff()) return;
       var body = document.body;
       body.classList.remove('shake-1', 'shake-2', 'shake-3');
       void body.offsetWidth;
@@ -543,7 +621,7 @@ window.HNSF829 = window.HNSF829 || {};
 
     /** 在指定坐标爆气（答对时用） */
     function burst(x, y, color) {
-      if (reduced) return;
+      if (motionOff()) return;
       var d = document.createElement('div');
       d.className = 'fx-burst';
       d.style.left = x + 'px'; d.style.top = y + 'px';
@@ -566,7 +644,7 @@ window.HNSF829 = window.HNSF829 || {};
 
     /** 升级 / 通关：金色气浪 + 地面冲击环 */
     function powerUp(color) {
-      if (reduced) return;
+      if (motionOff()) return;
       flash(color || '168,85,247', 1);
       shake(2);
       BG.charge();
@@ -579,7 +657,7 @@ window.HNSF829 = window.HNSF829 || {};
 
     /** 神龙降临：多重金光环 + 长时间闪光 + 连续冲击 */
     function dragon() {
-      if (!reduced) {
+      if (!motionOff()) {
         flash('196,181,253', 1);
         shake(3);
         BG.charge();
