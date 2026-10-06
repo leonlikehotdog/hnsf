@@ -671,8 +671,7 @@ window.HNSF829 = window.HNSF829 || {};
           sum.formulas.map(function (f) { return '<li>' + sumEsc(f) + '</li>'; }).join('') + '</ul></div>'
         : '') +
       '<div class="nd-block"><div class="nd-block-title">🔗 知识点溯源</div>' +
-        '<div class="nd-source">' + n.source + '</div>' +
-        '<div class="nd-source">目标院校：' + NS.NODES.meta.target + '</div></div>' +
+        '<div class="nd-source">' + n.source + '</div></div>' +
       '<div class="nd-block"><div class="nd-block-title">📊 本关题量</div>' +
         '<div class="nd-source">共 ' + qs.length + ' 题　' + typeStr + '</div>' +
         '<div class="nd-source">通关线：正确率 ≥ ' + Math.round(Store.PASS_RATE * 100) + '%' +

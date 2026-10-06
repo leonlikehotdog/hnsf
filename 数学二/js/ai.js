@@ -6,8 +6,8 @@
  *
  * 设计原则：
  *   1. 纯前端直连，不需要后端（已实测各平台 OPTIONS 预检通过）
- *   2. 绝不把 API Key 写进代码/仓库 —— 由使用者在页面里自行填写，
- *      只存本机浏览器 localStorage。这样公网部署也不会泄露密钥。
+ *   2. 密钥默认由使用者在页面里自行填写、只存本机 localStorage；
+ *      **本项目是单人自用**，所以另留了下面的 BUILTIN 内置默认（见第 3 条）
  *   3. 免费优先：默认智谱 GLM（官方定价 0 元、永久免费、中文最强）
  *   4. 模型名可编辑 + 可一键拉取平台模型列表，避免官方改模型名后失效
  *
@@ -21,6 +21,30 @@ window.HNSF829 = window.HNSF829 || {};
 
   // 故意沿用 829 的 key：两门课同域，密钥与平台配置只需填一次
   var CFG_KEY = 'hnsf829_ai_v1';
+
+  /* ---------------- 内置默认配置（单机自用） ----------------
+     用途：把平台、模型、密钥写在这里，**换设备/换浏览器打开就能直接用**，
+           不必再到 ⚙️ 里重新粘一遍（手机端尤其省事）。
+     生效规则：本机 localStorage 里存了密钥 → 以本机那份为准；
+               没有（新设备、清过缓存）→ 用这里的。
+     留空字符串 = 不启用内置，行为与以前完全一致。
+
+     ⚠️ 两点必须知道：
+       1. 本站是**公网静态站点**，写在这里的 key 任何人打开页面源码都能看到。
+          只有「确认这个 key 只给自己用、且不怕被翻到」时才填。
+          建议用免费档的 key（GLM / 豆包 / 百炼都有免费额度），别填绑了付费的。
+       2. 提交进 git 后，key 也会留在仓库历史里，事后改代码删不掉历史记录。
+          真要作废只能去平台后台把 key 停掉、重建一把。
+  */
+  var BUILTIN = {
+    provider: 'deepseek',                  // 'dashscope' | 'gemini' | 'doubao' | 'zhipu' | ...（见下方 PRESETS）
+    base: '',                              // 留空 = 用该平台预设地址 https://api.deepseek.com
+    model: '',                             // 留空 = 用该平台预设模型名（deepseek 预设即 deepseek-flash）
+    key: 'sk-7046b277d9c34b5092e1da9c72cf08bc',
+    proxy: false,                          // 是否走服务端代理（Gemini 在国内需要）
+    proxyUrl: ''                           // 留空 = 用默认 api/ai
+  };
+  var builtinOn = false;   // 本机是否正在使用内置配置（供界面提示）
 
   /* ---------------- 平台预设 ---------------- */
   var PRESETS = {
@@ -116,25 +140,40 @@ window.HNSF829 = window.HNSF829 || {};
     }
   };
 
-  /* ---------------- 配置读写（只存本机） ---------------- */
+  /* ---------------- 配置读写（优先本机，其次内置默认） ---------------- */
   function getCfg() {
     var d = { provider: 'dashscope', base: '', model: '', key: '', proxy: false, proxyUrl: '' };
-    try {
-      var o = JSON.parse(localStorage.getItem(CFG_KEY) || '{}');
-      if (o.provider) d.provider = o.provider;
-      if (typeof o.base === 'string') d.base = o.base;
-      if (typeof o.model === 'string') d.model = o.model;
-      if (typeof o.key === 'string') d.key = o.key;
-      if (typeof o.proxy === 'boolean') d.proxy = o.proxy;
-      if (typeof o.proxyUrl === 'string') d.proxyUrl = o.proxyUrl;
-    } catch (e) {}
+    var o = {};
+    try { o = JSON.parse(localStorage.getItem(CFG_KEY) || '{}') || {}; } catch (e) { o = {}; }
+
+    // 1) 本机没填过密钥 → 铺上内置默认（新设备/清缓存后即开即用）
+    var localKey = (typeof o.key === 'string' ? o.key : '').trim();
+    builtinOn = !localKey && !!(BUILTIN.key || '').trim();
+    if (builtinOn) {
+      ['provider', 'base', 'model', 'key', 'proxy', 'proxyUrl'].forEach(function (k) {
+        if (BUILTIN[k]) d[k] = BUILTIN[k];
+      });
+    }
+
+    // 2) 本机已存的非空项覆盖内置（留空 = 沿用内置/预设，不会被空串抹掉）
+    if (o.provider) d.provider = o.provider;
+    if (typeof o.base === 'string' && o.base.trim()) d.base = o.base;
+    if (typeof o.model === 'string' && o.model.trim()) d.model = o.model;
+    if (localKey) d.key = localKey;
+    if (typeof o.proxy === 'boolean') d.proxy = o.proxy;
+    if (typeof o.proxyUrl === 'string' && o.proxyUrl.trim()) d.proxyUrl = o.proxyUrl;
     return d;
   }
 
   function setCfg(patch) {
     var c = getCfg();
     Object.keys(patch || {}).forEach(function (k) { c[k] = patch[k]; });
-    try { localStorage.setItem(CFG_KEY, JSON.stringify(c)); } catch (e) {}
+    // 来自内置默认的密钥**不落盘**：本机存空串 = 「沿用内置」。
+    // 否则用户只是改个平台/模型，就把内置 key 复制进了这台浏览器，
+    // 以后改 ai.js 里的 BUILTIN.key 反而不会生效（本机那份旧 key 会一直赢）。
+    var toStore = JSON.parse(JSON.stringify(c));
+    if (BUILTIN.key && toStore.key === BUILTIN.key) toStore.key = '';
+    try { localStorage.setItem(CFG_KEY, JSON.stringify(toStore)); } catch (e) {}
     return c;
   }
 
@@ -409,12 +448,17 @@ window.HNSF829 = window.HNSF829 || {};
     stream: stream,
     questionText: questionText,
     mdLite: mdLite,
+    /** 当前生效的密钥是否来自代码里的内置默认（供界面提示用，避免用户疑惑"我没填怎么就能用"） */
+    usingBuiltin: function () { getCfg(); return builtinOn; },
+    /** 内置默认是否已配置（只看代码，不看本机） */
+    hasBuiltin: function () { return !!(BUILTIN.key || '').trim(); },
     /** 诊断用 */
     info: function () {
       var r = resolved();
       return {
         provider: r.provider, base: r.base, model: r.model,
-        hasKey: !!r.key, keyMasked: maskKey(r.key), ready: ready()
+        hasKey: !!r.key, keyMasked: maskKey(r.key), ready: ready(),
+        builtin: builtinOn
       };
     }
   };

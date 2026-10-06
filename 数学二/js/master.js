@@ -381,10 +381,16 @@ window.HNSF829 = window.HNSF829 || {};
     var AI = NS.AI;
     if (!AI) return '';
     var c = AI.resolved();
+    // 用的是代码里内置的密钥时，明确说清楚 —— 否则用户会疑惑「我没填怎么就能用」，
+    // 而且换设备后压根不会想到还需要配置。
+    var tag = AI.usingBuiltin && AI.usingBuiltin()
+      ? '<br>ℹ️ 当前用的是<b>项目内置密钥</b>（写在 js/ai.js 的 BUILTIN 里），所以换设备、换浏览器都不用再填。' +
+        '想改用别的平台或自己的密钥，就在下面填，填了会覆盖内置的那份。'
+      : '';
     if (c.key && c.model && c.base) {
-      return '✅ 已配置：' + esc((AI.PRESETS[c.provider] || {}).label) + '　·　模型 <code class="inline-code">' + esc(c.model) + '</code>';
+      return '✅ 已配置：' + esc((AI.PRESETS[c.provider] || {}).label) + '　·　模型 <code class="inline-code">' + esc(c.model) + '</code>' + tag;
     }
-    if (c.key) return '⚠️ 密钥已填，但还缺模型名 —— 点「📋 拉取模型列表」选一个';
+    if (c.key) return '⚠️ 密钥已填，但还缺模型名 —— 点「📋 拉取模型列表」选一个' + tag;
     return 'ℹ️ 还没配置。填一个免费平台的密钥就能请动师傅（不影响正常刷题）。';
   }
 
