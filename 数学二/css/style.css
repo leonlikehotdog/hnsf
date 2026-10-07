@@ -474,6 +474,29 @@ ul { list-style: none; }
     .battle-figure { display: none; }   /* 空地不够站人：面板头部的 150px 立绘继续代表角色 */
 }
 .q-card { animation: pop 0.18s ease-out; }
+
+/* ---- 限时条（选择 / 填空）----
+   宽度由 JS 按剩余时间直接设置（不是 CSS 动画），低功耗模式下照常工作。 */
+.q-clock { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.q-clock-num {
+    flex: 0 0 auto; min-width: 42px;
+    font-size: 13px; font-weight: 800; letter-spacing: 0.5px;
+    font-variant-numeric: tabular-nums;
+    color: var(--txt-dim);
+}
+.q-clock-bar {
+    flex: 1; height: 5px; border-radius: 99px;
+    background: rgba(255,255,255,0.08); overflow: hidden;
+}
+.q-clock-bar i {
+    display: block; height: 100%; width: 100%;
+    background: linear-gradient(90deg, #34d399, #38bdf8);
+}
+.q-clock.warn .q-clock-num { color: #fcd34d; }
+.q-clock.warn .q-clock-bar i { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+.q-clock.danger .q-clock-num { color: #fda4af; }
+.q-clock.danger .q-clock-bar i { background: linear-gradient(90deg, #e11d48, #fb7185); }
+
 .q-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
 .tag {
     font-size: 11.5px; padding: 3px 10px; border-radius: 99px;

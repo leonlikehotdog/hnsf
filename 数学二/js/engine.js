@@ -421,6 +421,7 @@ window.HNSF829 = window.HNSF829 || {};
   }
 
   function close() {
+    stopClock();
     els.mask.classList.remove('show');
     document.body.classList.remove('no-scroll');
     if (NS.Master) NS.Master.close();             // 师傅对话框不能跟着"留"在地图页
@@ -431,6 +432,117 @@ window.HNSF829 = window.HNSF829 || {};
     if (NS.FX) NS.FX.resetCombo();
     if (onExitCb) onExitCb();
   }
+
+  /* ---------------- 限时（只对选择 / 填空计时） ----------------
+   * 目的不是「考试压时间」，而是把注意力钉在当下这道题上：
+   *   · 计算 / 证明题不计时 —— 数学需要思考时间，秒表只会逼出焦虑；
+   *   · 选择 / 填空给一个够用但不宽裕的时限，超时按答错结算（断连击 + 进错题本 + 不给经验）。
+   * 强度三档（宽松 ×1.5 / 标准 ×1 / 严格 ×0.7），开关与档位存在本机。
+   * 切到后台自动暂停：后台定时器会被节流，不暂停会把「去倒杯水」误判成超时。 */
+  var TIMER_KEY = 'hnsf302_timer_v1';
+  var TIMER_BASE = {                       // 秒：各题型在 基础 / 真题 / 拔高 下的时限
+    choice: { basic: 60, exam: 90, hard: 120 },
+    blank: { basic: 90, exam: 120, hard: 150 }
+  };
+  var TIMER_FACTOR = { loose: 1.5, std: 1, tight: 0.7 };
+
+  function timerCfg() {
+    var o = {};
+    try { o = JSON.parse(localStorage.getItem(TIMER_KEY) || '{}') || {}; } catch (e) { o = {}; }
+    return { on: o.on !== false, level: TIMER_FACTOR[o.level] ? o.level : 'std' };
+  }
+  function setTimerCfg(patch) {
+    var c = timerCfg();
+    if (patch) {
+      if ('on' in patch) c.on = !!patch.on;
+      if (patch.level && TIMER_FACTOR[patch.level]) c.level = patch.level;
+    }
+    try { localStorage.setItem(TIMER_KEY, JSON.stringify(c)); } catch (e) {}
+    return c;
+  }
+  /** 该题时限（秒）；0 表示不限时（非选择/填空，或用户关了限时） */
+  function timerLimitSec(q) {
+    if (!q || (q.type !== 'choice' && q.type !== 'blank')) return 0;
+    var cfg = timerCfg();
+    if (!cfg.on) return 0;
+    var byType = TIMER_BASE[q.type];
+    var base = byType[q.diff] || byType.exam;
+    return Math.round(base * TIMER_FACTOR[cfg.level]);
+  }
+
+  var clock = null;          // { total, deadline, tid, pausedAt, box, num, bar }
+
+  function stopClock() {
+    if (clock && clock.tid) clearInterval(clock.tid);
+    clock = null;
+  }
+
+  function paintClock(left) {
+    if (!clock) return;
+    var sec = Math.max(0, Math.ceil(left / 1000));
+    var pct = clock.total ? Math.max(0, Math.min(100, left / clock.total * 100)) : 0;
+    if (clock.num) clock.num.textContent = sec + 's';
+    if (clock.bar) clock.bar.style.width = pct + '%';
+    if (clock.box) {
+      clock.box.classList.toggle('warn', sec <= 15 && sec > 5);
+      clock.box.classList.toggle('danger', sec <= 5);
+    }
+  }
+
+  function tickClock() {
+    if (!clock) return;
+    var left = clock.deadline - Date.now();
+    if (left <= 0) { paintClock(0); timeUp(); return; }
+    paintClock(left);
+  }
+
+  /** 每渲染完一道题调用：给选择 / 填空起表；其它题型把计时条移除 */
+  function startClock(q) {
+    stopClock();
+    var box = els.body.querySelector('.q-clock');
+    if (!box) return;
+    var sec = timerLimitSec(q);
+    if (!sec) { if (box.parentNode) box.parentNode.removeChild(box); return; }
+    clock = {
+      total: sec * 1000, deadline: Date.now() + sec * 1000, tid: 0, pausedAt: 0,
+      box: box, num: box.querySelector('.q-clock-num'), bar: box.querySelector('.q-clock-bar i')
+    };
+    paintClock(clock.total);
+    clock.tid = setInterval(tickClock, 200);
+  }
+
+  /** 超时 = 这题按答错结算：断连击、进错题本、不给经验，并摊开答案 */
+  function timeUp() {
+    var s = session;
+    stopClock();
+    if (!s || s.locked) return;
+    var q = s.questions[s.idx];
+    s.locked = true;
+    if (NS.Audio) NS.Audio.sfx('wrong');
+    if (NS.FX) NS.FX.shake(1);
+    if (q.type === 'choice') {
+      els.body.querySelectorAll('.opt').forEach(function (btn) {
+        btn.disabled = true;
+        if (+btn.dataset.i === q.answer) btn.classList.add('right');
+      });
+    }
+    var input = els.body.querySelector('#qInput');
+    if (input) input.disabled = true;
+    resolve(q, false, '⏱ 超时未作答', false, null, input ? input.value : null);
+  }
+
+  document.addEventListener('visibilitychange', function () {
+    if (!clock) return;
+    if (document.visibilityState === 'hidden') {
+      clock.pausedAt = Date.now();
+      if (clock.tid) { clearInterval(clock.tid); clock.tid = 0; }
+    } else if (clock.pausedAt) {
+      clock.deadline += Date.now() - clock.pausedAt;
+      clock.pausedAt = 0;
+      clock.tid = setInterval(tickClock, 200);
+      tickClock();
+    }
+  });
 
   /* ---------------- 渲染当前题 ---------------- */
   function renderQuestion() {
@@ -459,6 +571,9 @@ window.HNSF829 = window.HNSF829 || {};
           '<span class="tag tag-score">真题权重 ' + (q.score || 3) + '</span>' +
           '<span class="tag tag-xp">+' + xpFor(q) + ' XP</span>' +
         '</div>' +
+        ((q.type === 'choice' || q.type === 'blank')
+          ? '<div class="q-clock"><span class="q-clock-num">--</span><div class="q-clock-bar"><i></i></div></div>'
+          : '') +
         '<div class="q-stem">' + fmt(q.stem) + '</div>' +
         optsHtml +
         linksHtml(q) +
@@ -493,6 +608,7 @@ window.HNSF829 = window.HNSF829 || {};
         q: q, char: s.char
       });
     }
+    startClock(q);          // 选择/填空起表；其它题型跳过
     updateHud();
   }
 
@@ -633,6 +749,7 @@ window.HNSF829 = window.HNSF829 || {};
 
   function resolve(q, ok, note, lockFeedback, anchor, chosen) {
     var s = session;
+    stopClock();            // 一旦作答（含超时），计时立刻停
     s.log.push({ qid: q.id, ok: ok });
 
     // 先落库统计（含错题本、全局连击与成就判定），再结算经验，保证 HUD 数字与存档一致
@@ -1000,6 +1117,8 @@ window.HNSF829 = window.HNSF829 || {};
     LEVEL_LABEL: LEVEL_LABEL,
     DIFF_LABEL: DIFF_LABEL,
     RARITY: RARITY,
-    renderMath: renderMath
+    renderMath: renderMath,
+    timerCfg: timerCfg,
+    setTimerCfg: setTimerCfg
   };
 })(window.HNSF829);

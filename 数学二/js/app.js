@@ -1141,6 +1141,8 @@ window.HNSF829 = window.HNSF829 || {};
   function audioBoxHtml() {
     var m = NS.Audio.isMusicOn(), s = NS.Audio.isSfxOn(), v = Math.round(NS.Audio.getVolume() * 100);
     var mib = NS.Audio.isMusicInBattle();
+    var tc = Engine.timerCfg ? Engine.timerCfg() : { on: false, level: 'std' };
+    var TLV = { loose: '宽松', std: '标准', tight: '严格' };
     return '<div class="audio-box">' +
       '<div class="nd-block-title">🎧 音频与主题</div>' +
       '<div class="audio-row"><span>背景音乐</span>' +
@@ -1160,11 +1162,18 @@ window.HNSF829 = window.HNSF829 || {};
       '<div class="audio-row"><span>低功耗模式</span>' +
         '<button class="btn ' + (lpOn ? 'on' : '') + '" data-au="lowpower">' + (lpOn ? '开启' : '关闭') + '</button>' +
       '</div>' +
+      '<div class="audio-row"><span>限时作答</span>' +
+        '<button class="btn ' + (tc.on ? 'on' : '') + '" data-au="timer">' + (tc.on ? '开启' : '关闭') + '</button>' +
+        ['loose', 'std', 'tight'].map(function (lv) {
+          return '<button class="btn ' + (tc.level === lv ? 'on' : '') + '" data-au="timer-lv" data-lv="' + lv + '">' + TLV[lv] + '</button>';
+        }).join('') +
+      '</div>' +
       '<div class="audio-tip">🎵 BGM 与音效全部由 Web Audio <b>实时合成</b>（原创热血摇滚：鼓组 + 贝斯 + 失真和弦 + 主旋律），不加载任何外部音频文件。<br>' +
         '🎸 <b>做题时 BGM 默认播放</b>：进关卡会切到一首<b>独立的 E 小调 122 BPM 战斗曲</b>（与地图曲同属热血摇滚，但调式、和声进行、鼓组与旋律全部另写，不会听混）。读题嫌吵就切成「静音」，只保留打击音效。<br>' +
         '浏览器规定必须与页面交互一次才能出声，若没声音请先点一下页面。</div>' +
       '<div class="audio-tip" style="margin-top:10px">🎬 <b>动态背景</b>：默认使用 <code class="inline-code">数学二/assets/bg.mp4</code> 作为底图，由 <code class="inline-code">js/fx.js</code> 逐帧绘制到画布上（自动 cover 裁切 + 压暗保证文字可读），气焰 / 闪电 / 碎石 / 冲击波等动态图层会继续叠加。想换视频用同名文件覆盖即可；视频缺失或无法播放时自动降级回 <code class="inline-code">bg-map.jpg</code> / <code class="inline-code">bg-battle.jpg</code>，再降级到纯程序化背景。关掉开关则直接回到纯程序化背景。</div>' +
       '<div class="audio-tip" style="margin-top:10px">🔋 <b>低功耗模式</b>（<b>手机默认开启</b>）：关掉整个 Canvas 主循环，只画一帧静态底图，同时暂停背景视频、去掉发光模糊（shadowBlur）、关掉全部 CSS 动画 —— 手机发热与掉电会明显下降。想保留满帧动态背景就切成「关闭」（移动端仍限 30fps）。</div>' +
+      '<div class="audio-tip" style="margin-top:10px">⏱ <b>限时作答</b>（<b>只对选择题 / 填空题计时</b>）：计算与证明题<b>不计时</b>——数学需要思考时间，秒表只会逼出焦虑。超时按<b>答错</b>结算（断连击、进错题本、不给经验），并直接摊开答案。强度：宽松 ×1.5 / 标准 ×1 / 严格 ×0.7。切到后台会自动暂停计时。</div>' +
       '</div>';
   }
 
@@ -1365,6 +1374,8 @@ window.HNSF829 = window.HNSF829 || {};
     var lpBtn = box.querySelector('[data-au="lowpower"]');
     var mibBtn = box.querySelector('[data-au="mib"]');
     var vol = box.querySelector('[data-au="vol"]');
+    var tmBtn = box.querySelector('[data-au="timer"]');
+    var lvBtns = box.querySelectorAll('[data-au="timer-lv"]');
 
     mibBtn.addEventListener('click', function () {
       NS.Audio.setMusicInBattle(!NS.Audio.isMusicInBattle());
@@ -1411,6 +1422,21 @@ window.HNSF829 = window.HNSF829 || {};
       Engine.toast(lpOn
         ? '🔋 低功耗模式已开启：背景转为静态画面，动画全部暂停（手机更省电、不烫）'
         : '🌌 低功耗模式已关闭：动态背景恢复' + (bgImgOn ? '' : '（当前为程序化战场）'));
+    });
+    if (tmBtn) tmBtn.addEventListener('click', function () {
+      var c = Engine.setTimerCfg({ on: !Engine.timerCfg().on });
+      tmBtn.classList.toggle('on', c.on);
+      tmBtn.textContent = c.on ? '开启' : '关闭';
+      Engine.toast(c.on
+        ? '⏱ 已开启限时作答：选择 / 填空开始倒计时，超时按答错结算'
+        : '⏱ 已关闭限时：所有题型都不再计时');
+    });
+    lvBtns.forEach(function (b) {
+      b.addEventListener('click', function () {
+        var c = Engine.setTimerCfg({ level: b.dataset.lv });
+        lvBtns.forEach(function (x) { x.classList.toggle('on', x.dataset.lv === c.level); });
+        Engine.toast('⏱ 限时强度已切到「' + ({ loose: '宽松', std: '标准', tight: '严格' }[c.level]) + '」');
+      });
     });
   }
 
