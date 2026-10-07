@@ -139,6 +139,8 @@ window.HNSF829 = window.HNSF829 || {};
 
   function save() {
     try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* 隐私模式下静默失败 */ }
+    // 通知云同步模块：本机进度有更新（cloud.js 未加载时静默跳过）→ 触发防抖自动上传
+    try { if (NS.Cloud && NS.Cloud.onLocalSave) NS.Cloud.onLocalSave(); } catch (e) {}
   }
 
   // 迁移表与 load() 都已就位，现在才真正读取存档

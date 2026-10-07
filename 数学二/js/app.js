@@ -1239,10 +1239,11 @@ window.HNSF829 = window.HNSF829 || {};
         '<button class="btn" data-cl="pull">⬇️ 下载云端</button>' +
       '</div>' +
       '<div class="cloud-status" data-cl="status">本机同步码：' + (C.codeOk(c) ? '已设置' : '未设置') +
-        '　·　最后同步：' + fmtTime(C.lastSync()) + '</div>' +
-      '<div class="audio-tip">换个设备想接着刷？<b>两台设备填同一个同步码</b>即可：先在 A 机「⬆️ 上传本机」，再到 B 机填同一个码点「⬇️ 下载云端」。<br>' +
+        '　·　自动同步：已开启　·　最后同步：' + fmtTime(C.lastSync()) + '</div>' +
+      '<div class="audio-tip"><b>已开启自动同步</b>：打开页面会自动从云端恢复进度，练习后自动上传 —— 换设备、清缓存、换域名都不用管。<br>' +
+        '下面的按钮只在偶尔需要时手动用：A 机「⬆️ 上传本机」，B 机填同一个同步码点「⬇️ 下载云端」。<br>' +
         '⚠️ <b>下载 = 用云端整份覆盖本机</b>（含错题本、疑问日记），会丢掉本机没上传的进度，所以要点两下确认。<br>' +
-        '⚠️ <b>同步码就是你的密码</b>：它是唯一凭证，丢了或忘了谁都找不回来，请自己记好（可复制到备忘录）。码越长越安全，建议直接用「🎲 随机生成」。</div>' +
+        '⚠️ <b>同步码就是你的密码</b>：它是唯一凭证，丢了或忘了谁都找不回来。默认已内置一个固定码，若改掉它请自己记好。</div>' +
       '</div>';
   }
 
@@ -1259,7 +1260,7 @@ window.HNSF829 = window.HNSF829 || {};
     if (!C) return;
     var c = C.code();
     cloudStatus('本机同步码：' + (C.codeOk(c) ? '已设置' : '未设置') +
-      '　·　最后同步：' + fmtTime(C.lastSync()), '');
+      '　·　自动同步：已开启　·　最后同步：' + fmtTime(C.lastSync()), '');
   }
 
   function bindCloudBox() {
@@ -1282,7 +1283,7 @@ window.HNSF829 = window.HNSF829 || {};
     genB.addEventListener('click', function () {
       input.value = C.genCode();
       saveCode();
-      cloudStatus('已生成新同步码。请点「⬆️ 上传本机」把它写进云端；另一台设备填同一个码再「下载云端」。', 'ok');
+      cloudStatus('已生成新同步码。本机会自动把进度上传到云端（也可点「⬆️ 上传本机」立即上传）；另一台设备填同一个码即可自动恢复。', 'ok');
     });
     copyB.addEventListener('click', function () {
       saveCode();
