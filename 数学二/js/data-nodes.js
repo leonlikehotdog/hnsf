@@ -853,7 +853,7 @@ window.HNSF829_NODES = {
         '任一解都是基础解系的线性组合'
       ],
       source: '同济《线性代数》第六版 第3章 · 数二必考大题',
-      req: ['xd-vec-max'], reqLevel: 2, wip: true
+      req: ['xd-mat-rank'], reqLevel: 2, wip: false
     },
     {
       id: 'xd-solve-nonhomo', tier: 2, module: 'xd', chap: 'xd-c4', weight: 3, icon: '🧷',
@@ -866,7 +866,7 @@ window.HNSF829_NODES = {
         '（η₁+η₂)/2 之类组合是否为解要回代验证'
       ],
       source: '同济《线性代数》第六版 第3章 · 数二必考大题',
-      req: ['xd-solve-homo'], reqLevel: 2, wip: true
+      req: ['xd-solve-homo'], reqLevel: 2, wip: false
     },
     {
       id: 'xd-solve-param', tier: 3, module: 'xd', chap: 'xd-c4', weight: 3, icon: '🎛️',
@@ -879,7 +879,7 @@ window.HNSF829_NODES = {
         '讨论要穷尽，别漏参数值'
       ],
       source: '同济《线性代数》第六版 第3章 · 数二线代压轴常客',
-      req: ['xd-solve-nonhomo'], reqLevel: 4, wip: true
+      req: ['xd-solve-nonhomo'], reqLevel: 4, wip: false
     },
     {
       id: 'xd-solve-common', tier: 3, module: 'xd', chap: 'xd-c4', weight: 2, icon: '🔀',
@@ -892,7 +892,7 @@ window.HNSF829_NODES = {
         '已知同解求参数：先解一个再代入另一个'
       ],
       source: '同济《线性代数》第六版 第3章 · 数二选择压轴',
-      req: ['xd-solve-nonhomo'], reqLevel: 4, wip: true
+      req: ['xd-solve-nonhomo'], reqLevel: 4, wip: false
     },
 
     /* ============================================================
@@ -922,7 +922,7 @@ window.HNSF829_NODES = {
         '步骤：求 λ → 求特征向量 → 拼成 P'
       ],
       source: '同济《线性代数》第六版 第5章 · 数二线代固定大题',
-      req: ['xd-eig-calc'], reqLevel: 2, wip: true
+      req: ['xd-eig-calc'], reqLevel: 2, wip: false
     },
     {
       id: 'xd-eig-sym', tier: 2, module: 'xd', chap: 'xd-c5', weight: 3, icon: '🪞',
@@ -935,7 +935,7 @@ window.HNSF829_NODES = {
         '最后必须单位化：QᵀAQ = Λ，Q 为正交矩阵'
       ],
       source: '同济《线性代数》第六版 第5章 · 数二二次型前置',
-      req: ['xd-eig-sim'], reqLevel: 2, wip: true
+      req: ['xd-eig-sim'], reqLevel: 2, wip: false
     },
     {
       id: 'xd-eig-abstract', tier: 3, module: 'xd', chap: 'xd-c5', weight: 2, icon: '🌀',
@@ -948,7 +948,7 @@ window.HNSF829_NODES = {
         'A 与 Aᵀ 特征值相同（但特征向量一般不同）'
       ],
       source: '同济《线性代数》第六版 第5章 · 数二线代压轴',
-      req: ['xd-eig-sym'], reqLevel: 4, wip: true
+      req: ['xd-eig-sym'], reqLevel: 4, wip: false
     },
 
     /* ============================================================
@@ -965,7 +965,7 @@ window.HNSF829_NODES = {
         '变量替换 x = Cy 后 f = yᵀ(CᵀAC)y'
       ],
       source: '同济《线性代数》第六版 第5章 · 二次型第一问',
-      req: ['xd-eig-calc'], reqLevel: 1, wip: true
+      req: ['xd-eig-calc'], reqLevel: 1, wip: false
     },
     {
       id: 'xd-qf-standard', tier: 2, module: 'xd', chap: 'xd-c6', weight: 3, icon: '📐',
@@ -978,7 +978,7 @@ window.HNSF829_NODES = {
         '正交变换保持几何形状（长度不变）'
       ],
       source: '同济《线性代数》第六版 第5章 · 数二线代固定大题',
-      req: ['xd-qf-mat', 'xd-eig-sym'], reqLevel: 2, wip: true
+      req: ['xd-qf-mat', 'xd-eig-sym'], reqLevel: 2, wip: false
     },
     {
       id: 'xd-qf-inertia', tier: 2, module: 'xd', chap: 'xd-c6', weight: 2, icon: '⚖️',
@@ -991,7 +991,7 @@ window.HNSF829_NODES = {
         '合同不要求相似；相似也不一定合同'
       ],
       source: '同济《线性代数》第六版 第5章 · 数二选择辨析',
-      req: ['xd-qf-standard'], reqLevel: 2, wip: true
+      req: ['xd-qf-standard'], reqLevel: 2, wip: false
     },
     {
       id: 'xd-qf-positive', tier: 2, module: 'xd', chap: 'xd-c6', weight: 2, icon: '✅',
@@ -1004,7 +1004,7 @@ window.HNSF829_NODES = {
         '必要条件：主对角元全大于零（可用来快速排除）'
       ],
       source: '同济《线性代数》第六版 第5章 · 数二必考题型',
-      req: ['xd-qf-standard'], reqLevel: 2, wip: true
+      req: ['xd-qf-standard'], reqLevel: 2, wip: false
     }
   ]
 };
