@@ -754,7 +754,7 @@ window.HNSF829_NODES = {
         '初等变换不改变矩阵的秩'
       ],
       source: '同济《线性代数》第六版 第3章 · 理解秩与可逆的钥匙',
-      req: ['xd-mat-op'], reqLevel: 2, wip: true
+      req: ['xd-mat-op'], reqLevel: 2, wip: false
     },
     {
       id: 'xd-mat-rank', tier: 1, module: 'xd', chap: 'xd-c2', weight: 3, icon: '🏅',
@@ -780,7 +780,7 @@ window.HNSF829_NODES = {
         'r(A) = r(AᵀA) = r(AAᵀ)'
       ],
       source: '同济《线性代数》第六版 第3章 · 数二线代压轴',
-      req: ['xd-mat-rank'], reqLevel: 4, wip: true
+      req: ['xd-mat-rank'], reqLevel: 4, wip: false
     },
 
     /* ============================================================
@@ -797,7 +797,7 @@ window.HNSF829_NODES = {
         '非齐次有解 ⇔ β 落在向量组张成的空间里'
       ],
       source: '同济《线性代数》第六版 第4章 · 与方程组是一回事',
-      req: ['xd-mat-rank'], reqLevel: 1, wip: true
+      req: ['xd-mat-rank'], reqLevel: 1, wip: false
     },
     {
       id: 'xd-vec-dep', tier: 2, module: 'xd', chap: 'xd-c3', weight: 3, icon: '🪢',
@@ -810,7 +810,7 @@ window.HNSF829_NODES = {
         '证明无关：设 Σkᵢαᵢ = 0 推出所有 kᵢ = 0'
       ],
       source: '同济《线性代数》第六版 第4章 · 数二证明题核心',
-      req: ['xd-vec-comb'], reqLevel: 2, wip: true
+      req: ['xd-vec-comb'], reqLevel: 2, wip: false
     },
     {
       id: 'xd-vec-max', tier: 2, module: 'xd', chap: 'xd-c3', weight: 2, icon: '🎖️',
@@ -823,7 +823,7 @@ window.HNSF829_NODES = {
         '其余向量用极大无关组表示：继续化行最简'
       ],
       source: '同济《线性代数》第六版 第4章 · 数二计算题常客',
-      req: ['xd-vec-dep'], reqLevel: 2, wip: true
+      req: ['xd-vec-dep'], reqLevel: 2, wip: false
     },
     {
       id: 'xd-vec-equiv', tier: 2, module: 'xd', chap: 'xd-c3', weight: 2, icon: '♻️',
@@ -836,7 +836,7 @@ window.HNSF829_NODES = {
         '等价具有传递性'
       ],
       source: '同济《线性代数》第六版 第4章 · 数二选择题辨析',
-      req: ['xd-vec-max'], reqLevel: 2, wip: true
+      req: ['xd-vec-max'], reqLevel: 2, wip: false
     },
 
     /* ============================================================
