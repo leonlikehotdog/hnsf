@@ -816,8 +816,10 @@ window.HNSF829 = window.HNSF829 || {};
     return '<button type="button" class="' + cls + '" data-bond="' + n.id + '"' +
       ' style="--aura:' + ((m && m.aura) || '#8aa0c4') + '"' +
       ' title="' + escAttr(n.name + '　·　' + ((m && m.name) || '') + (got ? '（已结伴）' : '（还没通过）')) + '">' +
-      '<span class="bond-fb">' + fb + '</span>' +
+      // 头像在前、emoji 兜底在后：CSS 用 `.bond-img + .bond-fb` 把兜底藏起来。
+      // 图片加载失败时 onerror 会移除 img，兜底 emoji 自动露出来（不会再叠在头像上）。
       (url ? '<img class="bond-img" src="' + url + '" alt="" loading="lazy" decoding="async" onerror="this.remove()">' : '') +
+      '<span class="bond-fb">' + fb + '</span>' +
       '</button>';
   }
 
