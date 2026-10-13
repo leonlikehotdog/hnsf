@@ -450,22 +450,19 @@ window.HNSF829 = window.HNSF829 || {};
       case 'open':
         [69, 76].forEach(function (n, k) { tone(t + k * 0.06, midi(n), 0.16, 'triangle', 0.1, sfxBus); });
         break;
-      case 'correct':   // 会心一击：底鼓冲击 + 破空上扫 + 明亮大三和弦齐鸣 + 金属闪光
-        sweep(t, 165, 46, 0.18, 'sine', 0.32);                 // 打中的那一下「咚」
-        sweep(t + 0.005, 300, 2600, 0.16, 'sawtooth', 0.09);   // 破空「唰——」
-        [76, 80, 83].forEach(function (n, k) {                 // E5-G#5-B5 大三和弦，快速上扫齐鸣
-          tone(t + 0.045 + k * 0.012, midi(n), 0.32, 'square', 0.105, sfxBus);
-        });
-        tone(t + 0.045, midi(88), 0.3, 'triangle', 0.085, sfxBus);   // 高八度闪光
-        tone(t + 0.14, midi(95), 0.34, 'triangle', 0.055, sfxBus);   // 尾音继续上扬
-        noiseHit(t, 0.2, 3400, 0.2);                                 // 金属气爆
+      case 'correct':   // 会心爆击：低频冲击波 + 爆炸 + 失真和弦墙 + 金属镲
+        sweep(t, 200, 36, 0.55, 'sine', 0.42);                  // 冲击波：爆炸的心脏（那口「轰」）
+        explode(t, 0.5, 0.34);                                  // 宽频爆裂，亮→暗扫下去
+        powerChord(t + 0.03, 76, 0.6, 0.5, [0, 7, 12]);         // E5+B5+E6 五度堆叠的失真和弦墙
+        noiseHit(t + 0.02, 0.5, 8000, 0.11);                    // 金属镲余韵
+        tone(t + 0.06, midi(95), 0.4, 'triangle', 0.06, sfxBus);// 高音上扬的「气」
         break;
-      case 'wrong':     // 被击中：失重下坠 + 小二度不谐和 + 闷雷重击
-        sweep(t, 1100, 80, 0.32, 'sawtooth', 0.12);            // 一声闷头下坠
-        tone(t + 0.02, midi(45), 0.22, 'square', 0.11, sfxBus);
-        tone(t + 0.035, midi(44), 0.24, 'square', 0.1, sfxBus); // 小二度打架，听着就「错」
-        sweep(t + 0.15, 130, 40, 0.4, 'sine', 0.3);             // 低频闷雷落地
-        noiseHit(t, 0.34, 240, 0.2);
+      case 'wrong':     // 被轰飞：失重下坠 + 闷雷冲击波 + 爆炸 + 不谐和失真低频
+        sweep(t, 1400, 70, 0.34, 'sawtooth', 0.12);             // 先失重下坠
+        sweep(t + 0.09, 150, 28, 0.7, 'sine', 0.42);            // 比答对更闷、更重的落地冲击波
+        explode(t + 0.07, 0.55, 0.3);
+        powerChord(t + 0.09, 40, 0.7, 0.5, [0, 1]);             // E2 与 F2 小二度撞在一起 → 刺耳的「错」
+        noiseHit(t, 0.35, 240, 0.22);
         break;
       case 'combo':     // 连击：金属高音，随连击数升高
         var c = Math.min(12, opt || 3);
@@ -530,6 +527,40 @@ window.HNSF829 = window.HNSF829 || {};
     env(g, t, 0.002, decay, peak);
     n.connect(bp); bp.connect(g); g.connect(sfxBus);
     n.start(t); n.stop(t + decay + 0.1);
+  }
+
+  /** 爆炸噪声：宽频噪声 + 低通从亮扫到暗。
+   *  noiseHit 是窄带的「啪」，这个才是「轰」——低通一路扫下去的那一下才是爆炸的形体。 */
+  function explode(t, dur, peak) {
+    var n = ctx.createBufferSource(); n.buffer = noiseBuf;
+    var lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.Q.value = 1.1;
+    lp.frequency.setValueAtTime(7000, t);
+    lp.frequency.exponentialRampToValueAtTime(160, t + dur * 0.85);
+    var g = ctx.createGain();
+    env(g, t, 0.003, dur, peak);
+    n.connect(lp); lp.connect(g); g.connect(sfxBus);
+    n.start(t); n.stop(t + dur + 0.15);
+  }
+
+  /** 失真强力和弦：「燃」主要靠它——单音变成厚而毛糙的和弦墙。
+   *  每个音两根锯齿左右各失谐 8 音分叠加，再灌进波形整形器过载。
+   *  semis = 相对根音的半音偏移数组（如 [0,7,12] = 五度堆叠）。 */
+  function powerChord(t, root, dur, peak, semis) {
+    var ws = ctx.createWaveShaper();
+    ws.curve = makeCurve(12); ws.oversample = '2x';
+    var drive = ctx.createGain(); drive.gain.value = 0.28;   // 进失真的量：越大越毛糙
+    var g = ctx.createGain();
+    env(g, t, 0.006, dur, peak);
+    drive.connect(ws); ws.connect(g); g.connect(sfxBus);
+    (semis || [0]).forEach(function (s) {
+      [-8, 8].forEach(function (cents) {
+        var o = ctx.createOscillator();
+        o.type = 'sawtooth';
+        o.frequency.value = midi(root + s) * Math.pow(2, cents / 1200);
+        o.connect(drive);
+        o.start(t); o.stop(t + dur + 0.1);
+      });
+    });
   }
 
   /* ---------------- 开关 ---------------- */
