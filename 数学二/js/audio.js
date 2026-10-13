@@ -450,16 +450,22 @@ window.HNSF829 = window.HNSF829 || {};
       case 'open':
         [69, 76].forEach(function (n, k) { tone(t + k * 0.06, midi(n), 0.16, 'triangle', 0.1, sfxBus); });
         break;
-      case 'correct':   // 会心一击：上行双音 + 气爆
-        tone(t, midi(76), 0.12, 'square', 0.14, sfxBus);
-        tone(t + 0.07, midi(83), 0.22, 'square', 0.13, sfxBus);
-        tone(t + 0.07, midi(88), 0.24, 'triangle', 0.07, sfxBus);
-        noiseHit(t, 0.18, 2600, 0.16);
+      case 'correct':   // 会心一击：底鼓冲击 + 破空上扫 + 明亮大三和弦齐鸣 + 金属闪光
+        sweep(t, 165, 46, 0.18, 'sine', 0.32);                 // 打中的那一下「咚」
+        sweep(t + 0.005, 300, 2600, 0.16, 'sawtooth', 0.09);   // 破空「唰——」
+        [76, 80, 83].forEach(function (n, k) {                 // E5-G#5-B5 大三和弦，快速上扫齐鸣
+          tone(t + 0.045 + k * 0.012, midi(n), 0.32, 'square', 0.105, sfxBus);
+        });
+        tone(t + 0.045, midi(88), 0.3, 'triangle', 0.085, sfxBus);   // 高八度闪光
+        tone(t + 0.14, midi(95), 0.34, 'triangle', 0.055, sfxBus);   // 尾音继续上扬
+        noiseHit(t, 0.2, 3400, 0.2);                                 // 金属气爆
         break;
-      case 'wrong':     // 被打中：下行 + 闷响
-        tone(t, midi(57), 0.18, 'sawtooth', 0.12, sfxBus);
-        tone(t + 0.09, midi(48), 0.3, 'sawtooth', 0.12, sfxBus);
-        noiseHit(t, 0.22, 400, 0.2);
+      case 'wrong':     // 被击中：失重下坠 + 小二度不谐和 + 闷雷重击
+        sweep(t, 1100, 80, 0.32, 'sawtooth', 0.12);            // 一声闷头下坠
+        tone(t + 0.02, midi(45), 0.22, 'square', 0.11, sfxBus);
+        tone(t + 0.035, midi(44), 0.24, 'square', 0.1, sfxBus); // 小二度打架，听着就「错」
+        sweep(t + 0.15, 130, 40, 0.4, 'sine', 0.3);             // 低频闷雷落地
+        noiseHit(t, 0.34, 240, 0.2);
         break;
       case 'combo':     // 连击：金属高音，随连击数升高
         var c = Math.min(12, opt || 3);
