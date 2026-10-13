@@ -450,12 +450,26 @@ window.HNSF829 = window.HNSF829 || {};
       case 'open':
         [69, 76].forEach(function (n, k) { tone(t + k * 0.06, midi(n), 0.16, 'triangle', 0.1, sfxBus); });
         break;
-      case 'correct':   // 会心爆击：低频冲击波 + 爆炸 + 失真和弦墙 + 金属镲
-        sweep(t, 200, 36, 0.55, 'sine', 0.42);                  // 冲击波：爆炸的心脏（那口「轰」）
-        explode(t, 0.5, 0.34);                                  // 宽频爆裂，亮→暗扫下去
-        powerChord(t + 0.03, 76, 0.6, 0.5, [0, 7, 12]);         // E5+B5+E6 五度堆叠的失真和弦墙
-        noiseHit(t + 0.02, 0.5, 8000, 0.11);                    // 金属镲余韵
-        tone(t + 0.06, midi(95), 0.4, 'triangle', 0.06, sfxBus);// 高音上扬的「气」
+      case 'correct':   // 斩杀（王者荣耀式击杀感）：落地重击 + 金属「叮」 + 上行凯歌 + 落定和弦
+        // opt = 当前连击数：连击越高，凯歌级数越长、落定和弦越厚 —— 首杀→双杀→三杀→超神
+        var tier = opt >= 10 ? 3 : opt >= 5 ? 2 : opt >= 2 ? 1 : 0;
+        sweep(t, 190, 34, 0.5, 'sine', 0.42);                  // 斩落的重击（那口「咚」）
+        explode(t, 0.45, 0.32);                                // 爆裂
+        noiseHit(t + 0.02, 0.45, 7500, 0.1);                   // 金属镲
+        tone(t + 0.03, midi(98), 0.5, 'triangle', 0.075, sfxBus);   // 击杀标记的「叮——」
+        tone(t + 0.03, midi(103), 0.32, 'sine', 0.035, sfxBus);
+        // 上行凯歌：连击越高级数越长（首杀 3 音 → 超神 6 音）
+        var motif = [76, 80, 83];
+        if (tier >= 1) motif.push(88);
+        if (tier >= 2) motif.push(91);
+        if (tier >= 3) motif.push(95);
+        motif.forEach(function (n, k) {
+          tone(t + 0.06 + k * 0.07, midi(n), 0.22, 'sawtooth', 0.115, sfxBus);
+        });
+        // 落定和弦：凯歌定型，铜管齐奏感（三杀以上加进大三度，更"亮"）
+        powerChord(t + 0.06 + motif.length * 0.07, 76, 0.45 + tier * 0.15, 0.45,
+                   tier >= 2 ? [0, 4, 7, 12] : [0, 7, 12]);
+        tone(t + 0.1, midi(95 + tier), 0.42, 'triangle', 0.05, sfxBus);   // 尾端高音「气」
         break;
       case 'wrong':     // 被轰飞：失重下坠 + 闷雷冲击波 + 爆炸 + 不谐和失真低频
         sweep(t, 1400, 70, 0.34, 'sawtooth', 0.12);             // 先失重下坠

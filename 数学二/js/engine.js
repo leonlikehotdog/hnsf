@@ -1050,7 +1050,7 @@ window.HNSF829 = window.HNSF829 || {};
     NS.FX.combo(combo);
     if (combo >= 3) NS.FX.label('连击 × ' + combo, 'combo');
     if (NS.Audio) {
-      NS.Audio.sfx('correct');
+      NS.Audio.sfx('correct', combo);            // 传连击数：击杀音随连击升级（首杀→双杀→三杀→超神）
       if (combo >= 3) NS.Audio.sfx('combo', combo);
     }
     // 里程碑：金色气浪 + 冲击环 + 提示
