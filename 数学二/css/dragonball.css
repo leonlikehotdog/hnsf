@@ -98,6 +98,111 @@ body.dz .map-scroll { position: relative; z-index: 2; }
     100% { opacity: 0; transform: translate(-50%, -62px) scale(0.98); }
 }
 
+/* ================= 必杀过场（答对时的一次性 CG） =================
+   参考格斗游戏「必杀/终结技」的节奏，不是靠画面量：
+     硬切黑场定格 → 速度线收束 + 立绘推近 → 命中白闪/震屏 → K.O. 定格 → 淡出
+   全程只用 transform / opacity / filter —— 交给 GPU 合成，不重排不重绘。
+   ⚠️ 零新增文件：立绘是复用战斗页那张（同一个 URL，浏览器只下载一次），
+      没有图片/视频/音频请求；总时长 0.95s，且点击/按键可立即跳过。
+   ⚠️ 低功耗模式：手机默认开着它，而 html.lowpower 那条规则会干掉所有
+      animation。过场是「一次性」的（0.95s 就结束，不像背景那样持续重绘），
+      所以**只有它被允许豁免**（见本段末尾的 !important 规则），否则手机端永远看不到。
+      同时低功耗下砍掉最费的两样：带遮罩的速度线、大范围 drop-shadow。 */
+.cutin {
+    position: fixed; inset: 0; z-index: 396; overflow: hidden; cursor: pointer;
+    /* 黑场：中心留一点透光，让立绘有"从暗处推出来"的层次 */
+    background: radial-gradient(circle at 62% 46%, rgba(8, 12, 26, 0.62), rgba(2, 3, 8, 0.97) 72%);
+    animation: cutinFade 0.95s ease-out forwards;
+}
+/* 上下黑边：电影感，同时也是"定格"的视觉信号 */
+.cutin-bar { position: absolute; left: 0; right: 0; height: 9vh; background: #04060d; transform-origin: center; }
+.cutin-bar.t { top: 0; }
+.cutin-bar.b { bottom: 0; }
+.cutin .cutin-bar { animation: cutinBar 0.95s cubic-bezier(0.2, 0.9, 0.2, 1) forwards; }
+/* 速度线：重复锥形渐变 + 径向遮罩，中心掏空，向外放射 */
+.cutin-lines {
+    position: absolute; inset: -25%;
+    background: repeating-conic-gradient(from 0deg at 50% 50%,
+        rgba(255, 255, 255, 0) 0deg 2.3deg, rgba(255, 255, 255, 0.5) 2.3deg 3deg);
+    -webkit-mask-image: radial-gradient(circle at 50% 50%, transparent 20%, #000 44%, transparent 76%);
+    mask-image: radial-gradient(circle at 50% 50%, transparent 20%, #000 44%, transparent 76%);
+    opacity: 0;
+    animation: cutinLines 0.5s ease-out 0.04s forwards;
+}
+/* 立绘：从右侧大幅推近后急停，急停那一下正好是命中 */
+.cutin-art {
+    position: absolute; right: 1vw; bottom: 0; height: 94%; width: auto;
+    object-fit: contain; object-position: bottom;
+    mix-blend-mode: screen;                      /* 与 .fullbody-img 一致：黑底自动扣底 */
+    filter: drop-shadow(0 0 28px var(--aura, #a855f7));
+    opacity: 0;
+    animation: cutinArt 0.95s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.cutin-name {
+    position: absolute; left: 4vw; bottom: 17vh;
+    font-size: clamp(20px, 4.6vw, 32px); font-weight: 900; letter-spacing: 4px;
+    color: var(--aura, #fff);
+    text-shadow: 0 0 20px currentColor, 0 4px 14px rgba(0, 0, 0, 0.85);
+    opacity: 0;
+    animation: cutinName 0.7s ease-out 0.15s forwards;
+}
+/* K.O.：命中定格字，红青分离的色差是关键（廉价但有效的"冲击"感） */
+.cutin-ko {
+    position: absolute; left: 0; right: 0; top: 36%; text-align: center;
+    font-size: clamp(54px, 13vw, 96px); font-weight: 900; font-style: italic; letter-spacing: 8px;
+    color: #fff;
+    text-shadow: 5px 0 rgba(255, 40, 90, 0.85), -5px 0 rgba(0, 190, 255, 0.85),
+                 0 0 44px rgba(255, 220, 150, 0.9);
+    opacity: 0;
+    animation: cutinKo 0.46s cubic-bezier(0.2, 1.5, 0.4, 1) 0.29s forwards;
+}
+@keyframes cutinFade { 0% { opacity: 1; } 76% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes cutinBar {
+    0% { transform: scaleY(0); }
+    13% { transform: scaleY(1); }
+    82% { transform: scaleY(1); }
+    100% { transform: scaleY(0); }
+}
+@keyframes cutinLines {
+    0% { opacity: 0; transform: scale(2.15) rotate(-9deg); }
+    20% { opacity: 1; }
+    100% { opacity: 0; transform: scale(1) rotate(0deg); }
+}
+@keyframes cutinArt {
+    0% { opacity: 0; transform: scale(1.52) translateX(7%); }
+    12% { opacity: 1; }
+    33% { transform: scale(1.01) translateX(0); }     /* 急停 = 命中 */
+    40% { transform: scale(1.07) translateX(-1%); }   /* 回弹一下，制造"力道" */
+    78% { opacity: 1; transform: scale(1.05); }
+    100% { opacity: 0; transform: scale(1.03); }
+}
+@keyframes cutinName {
+    0% { opacity: 0; transform: translateY(18px); }
+    26% { opacity: 1; transform: translateY(0); }
+    80% { opacity: 1; }
+    100% { opacity: 0; }
+}
+@keyframes cutinKo {
+    0% { opacity: 0; transform: scale(3.4); }
+    46% { opacity: 1; transform: scale(0.93); }
+    66% { transform: scale(1.03); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+/* ---- 低功耗模式的豁免与降配 ----
+   1) 把被 html.lowpower * 关掉的过场动画逐条放回来。
+      `!important` 对 `!important` 时比特异性：`html.lowpower .cutin .cutin-ko` 是 (0,3,1)，
+      比 `html.lowpower *` 的 (0,1,1) 高，所以能盖住。
+   2) 同时砍掉两处大面积合成开销：带 mask 的放射速度线、以及全屏立绘的 drop-shadow。
+      这样手机端仍能看到「定格 → 推近 → 命中白闪 → K.O.」的完整节奏。 */
+html.lowpower .cutin { animation: cutinFade 0.95s ease-out forwards !important; }
+html.lowpower .cutin .cutin-bar { animation: cutinBar 0.95s cubic-bezier(0.2, 0.9, 0.2, 1) forwards !important; }
+html.lowpower .cutin .cutin-art { animation: cutinArt 0.95s cubic-bezier(0.16, 1, 0.3, 1) forwards !important; }
+html.lowpower .cutin .cutin-name { animation: cutinName 0.7s ease-out 0.15s forwards !important; }
+html.lowpower .cutin .cutin-ko { animation: cutinKo 0.46s cubic-bezier(0.2, 1.5, 0.4, 1) 0.29s forwards !important; }
+html.lowpower .cutin .cutin-lines { display: none !important; }
+html.lowpower .cutin .cutin-art { filter: none !important; }
+
 /* 震屏 */
 body.shake-1 .hud, body.shake-1 .map-scroll, body.shake-1 .battle-panel { animation: shakeX 0.42s; }
 body.shake-2 .hud, body.shake-2 .map-scroll, body.shake-2 .battle-panel { animation: shakeX 0.5s; }

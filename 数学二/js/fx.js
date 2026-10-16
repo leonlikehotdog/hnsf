@@ -589,7 +589,7 @@ window.HNSF829 = window.HNSF829 || {};
    * 二、屏幕级反馈特效
    * ============================================================ */
   var FX = (function () {
-    var flashEl, comboLevel = 0;
+    var flashEl, comboLevel = 0, cutinEl = null;   // cutinEl：当前正在播放的必杀过场
 
     function ensureEl() {
       if (!flashEl) flashEl = document.getElementById('fxFlash');
@@ -686,9 +686,80 @@ window.HNSF829 = window.HNSF829 || {};
       setTimeout(function () { d.remove(); }, 1100);
     }
 
+    /** 必杀过场：答对时的一次性 CG。
+     *  节奏：硬切黑场定格 → 速度线收束 + 立绘推近 → 命中（白闪/震屏/冲击波）→ K.O. → 淡出
+     *  opt：{ src: 立绘地址, name: 角色名, color: 气场色 }，都可不给。
+     *  · 立绘由调用方给「战斗页那张」的同一 URL，浏览器不会二次下载；缺图只是没有立绘
+     *  · 全程只用 transform/opacity（CSS 里），GPU 合成，不重排不重绘
+     *  · **低功耗模式照常播**：手机默认开着低功耗，而它是靠"停主循环"省电的，
+     *    这个过场是一次性的（0.95s 结束、点一下可跳过），不属于持续重绘，
+     *    所以 CSS 里专门给它开了豁免，并砍掉了速度线与 drop-shadow 这两处大开销。
+     *    只有系统级 prefers-reduced-motion（用户明确要求减少动效）才完全不播。
+     *  · 过场期间吞掉输入：避免"过场盖着的时候误点到下面的选项"；点一下即可跳过 */
+    function cutin(opt) {
+      if (reduced) return;
+      if (cutinEl && cutinEl._end) cutinEl._end();        // 上一段没放完就先收掉，绝不叠加
+      opt = opt || {};
+      var box = document.createElement('div');
+      box.className = 'cutin';
+      if (opt.color) box.style.setProperty('--aura', opt.color);
+
+      var lines = document.createElement('div');
+      lines.className = 'cutin-lines';
+      box.appendChild(lines);
+
+      if (opt.src) {
+        var art = document.createElement('img');
+        art.className = 'cutin-art';
+        art.alt = '';
+        art.onerror = function () { art.remove(); };      // 立绘缺失 → 直接拿掉，不留破图
+        art.src = opt.src;
+        box.appendChild(art);
+      }
+
+      ['t', 'b'].forEach(function (k) {
+        var bar = document.createElement('div');
+        bar.className = 'cutin-bar ' + k;
+        box.appendChild(bar);
+      });
+
+      if (opt.name) {
+        var nm = document.createElement('div');
+        nm.className = 'cutin-name';
+        nm.textContent = opt.name;                        // textContent：角色名不参与拼 HTML
+        box.appendChild(nm);
+      }
+
+      var ko = document.createElement('div');
+      ko.className = 'cutin-ko';
+      ko.textContent = 'K.O.';
+      box.appendChild(ko);
+
+      document.body.appendChild(box);
+
+      var done = false, timers = [];
+      function end() {
+        if (done) return;
+        done = true;
+        timers.forEach(clearTimeout);
+        document.removeEventListener('pointerdown', end, true);
+        document.removeEventListener('keydown', end, true);
+        box.remove();
+        if (cutinEl === box) cutinEl = null;
+      }
+      box._end = end;
+      cutinEl = box;
+
+      // 命中打点：立绘急停的那一刻（CSS 的 33%）补白闪 + 三级震屏 + 蓄气冲击波
+      timers.push(setTimeout(function () { flash('255,255,255', 1); shake(3); BG.charge(); }, 330));
+      timers.push(setTimeout(end, 990));                  // 比 CSS 的 0.95s 略长，等淡出收尾
+      document.addEventListener('pointerdown', end, true); // 点一下就跳过
+      document.addEventListener('keydown', end, true);
+    }
+
     return {
       flash: flash, shake: shake, burst: burst, combo: combo, resetCombo: resetCombo,
-      powerUp: powerUp, dragon: dragon, label: label
+      powerUp: powerUp, dragon: dragon, label: label, cutin: cutin
     };
   })();
 

@@ -1047,6 +1047,12 @@ window.HNSF829 = window.HNSF829 || {};
     NS.FX.flash('255,190,80', 0.75);
     NS.FX.shake(1);
     NS.FX.label('认可！', 'hit');
+    // 必杀过场：立绘/角色名/气场色直接沿用战斗页那块（同一个 URL，浏览器只下载一次）
+    NS.FX.cutin({
+      src: els.fullBodyImg ? els.fullBodyImg.getAttribute('data-src') || '' : '',
+      name: els.fullBodyName ? els.fullBodyName.textContent : '',
+      color: (els.fullBodyName && els.fullBodyName.style.color) || ''
+    });
     NS.FX.combo(combo);
     if (combo >= 3) NS.FX.label('连击 × ' + combo, 'combo');
     if (NS.Audio) {
