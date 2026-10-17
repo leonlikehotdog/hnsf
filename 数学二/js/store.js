@@ -25,6 +25,7 @@ window.HNSF829 = window.HNSF829 || {};
     achievements: {},   // id -> 获得时间戳
     wrongCleanedFlag: false,
     nodeStats: {},      // nodeId -> { answered, correct } 累计作答，用于「考点掌握度热力图」
+    zt: {},             // 真题关（独立统计）：parentId -> { answered, correct, cleared, perfect, times, best, ts }
     bestRunRate: 0,     // 单局最高正确率
     bestRunCombo: 0,    // 单局最高连击
     loot: { opened: 0, tiers: {} },  // 通关宝箱：累计开箱次数 + 各稀有度命中数（id -> 次数）
@@ -138,6 +139,9 @@ window.HNSF829 = window.HNSF829 || {};
   }
 
   function save() {
+    // ⚠️ 「本机最后一次保存」的时间戳必须跟着存档走（而不是存一个独立的日期键）——
+    //    云同步的新旧判定全靠它；分开存放时任何一个键单独丢失，判定就会乱猜。
+    state.ts = Date.now();
     try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* 隐私模式下静默失败 */ }
     // 通知云同步模块：本机进度有更新（cloud.js 未加载时静默跳过）→ 触发防抖自动上传
     try { if (NS.Cloud && NS.Cloud.onLocalSave) NS.Cloud.onLocalSave(); } catch (e) {}
@@ -177,7 +181,7 @@ window.HNSF829 = window.HNSF829 || {};
 
   /* ---------------- 答题记录 ---------------- */
   // 返回 { achievements: 新解锁成就, streak: 当前全局连击数 }
-  function recordAnswer(nodeId, qid, correct) {
+  function recordAnswer(nodeId, qid, correct, picked) {
     state.stats.answered++;
     if (correct) {
       state.stats.correct++;
@@ -187,11 +191,14 @@ window.HNSF829 = window.HNSF829 || {};
       state.streak = 0;                       // 答错即断连
     }
     if (qid) {
-      if (correct) {
-        if (state.wrong[qid]) state.wrong[qid].resolved = true;
-      } else {
+      // ⚠️ 这里**不再**一答对就销账：「练」不等于「验」。
+      //    错题必须经过回炉间的两段验证（第二段要真·隔天）才会 resolved，见 hlAdvance。
+      if (!correct) {
         var w = state.wrong[qid] || { node: nodeId, ts: Date.now(), resolved: false, times: 0 };
         w.node = nodeId; w.times = (w.times || 0) + 1; w.ts = Date.now();
+        w.resolved = false;
+        // 记下「当时选了什么」——回炉间的诊断屏全靠它
+        if (picked != null) w.picked = picked;
         state.wrong[qid] = w;
       }
     }
@@ -203,7 +210,7 @@ window.HNSF829 = window.HNSF829 || {};
       if (correct) ns.correct++;
       state.nodeStats[nodeId] = ns;
     }
-    if (nodeId) state.lastNodeId = nodeId;
+    if (nodeId && nodeId.indexOf('zt-') !== 0) state.lastNodeId = nodeId;
     var gained = checkAchievements();
     save();
     emit();
@@ -415,8 +422,10 @@ window.HNSF829 = window.HNSF829 || {};
     return Object.keys(state.wrong)
       .filter(function (qid) { return !state.wrong[qid].resolved; })
       .map(function (qid) {
-        var w = state.wrong[qid];
-        return { qid: qid, node: w.node, times: w.times, ts: w.ts };
+        var w = hlRec(qid), now = Date.now();
+        return { qid: qid, node: w.node, times: w.times, ts: w.ts,
+                 stage: w.stage || 0, need: HL_RESOLVE_AT, due: w.due || 0,
+                 picked: w.picked, stuck: !!w.stuck, ready: now >= (w.due || 0) };
       })
       .sort(function (a, b) { return b.ts - a.ts; });
   }
@@ -436,6 +445,111 @@ window.HNSF829 = window.HNSF829 || {};
     state.wrongCleanedFlag = true;
     save(); checkAchievements(); emit();
     return list.length;
+  }
+
+  /* ---------------- 回炉 · 错题分段（复盘的动作） ----------------
+   * 复盘要有实体，所以错题不再「答对一次就销账」，而要经过两段验证：
+   *   stage 0 新错 → 1 做对同类变式 → 2 隔天再做对一次 = 出炉
+   * 第二段必须跨过凌晨 4 点（真·隔天）—— 这是整套「强制」的落点，
+   * 而且它说得出口：记忆需要间隔，不是罚你。
+   * 同一题连错 2 次 → 从自动队列移出（stuck），交给师傅讲，避免挫败堆积。
+   */
+  var HL_RESOLVE_AT = 2;      // 两段验证
+  var HL_FAIL_LIMIT = 2;      // 连错上限：到了就撤出自动队列
+
+  /** 下一个「凌晨 4 点」——熬夜党第二天凌晨 3 点回炉也不会被算成没过一天 */
+  function nextResetAt(ts) {
+    var now = ts || Date.now();
+    var d = new Date(now);
+    d.setHours(4, 0, 0, 0);
+    if (d.getTime() <= now) d.setDate(d.getDate() + 1);
+    return d.getTime();
+  }
+
+  /** 取错题记录（顺带补全旧档缺的字段，不动任何已通关进度） */
+  function hlRec(qid) {
+    var w = state.wrong[qid];
+    if (!w) return null;
+    if (w.stage == null) w.stage = 0;
+    if (w.due == null) w.due = 0;
+    if (w.fails == null) w.fails = 0;
+    if (!w.usedVariants) w.usedVariants = [];
+    return w;
+  }
+
+  /** 单题回炉状态 */
+  function hlState(qid) {
+    var w = hlRec(qid);
+    if (!w) return null;
+    var now = Date.now();
+    return {
+      qid: qid, node: w.node, stage: w.stage || 0, due: w.due || 0, need: HL_RESOLVE_AT,
+      fails: w.fails || 0, stuck: !!w.stuck, resolved: !!w.resolved,
+      picked: w.picked, times: w.times || 0,
+      usedVariants: (w.usedVariants || []).slice(),
+      ready: !w.resolved && now >= (w.due || 0)
+    };
+  }
+
+  /** 回炉队列：ready 现在就能验；pending 要等天亮；stuck 连错太多已撤下 */
+  function hlQueue(limit) {
+    var now = Date.now(), ready = [], pending = [], stuck = [];
+    Object.keys(state.wrong).forEach(function (qid) {
+      var w = hlRec(qid);
+      if (!w || w.resolved) return;
+      if (w.stuck) { stuck.push(qid); return; }
+      (now >= (w.due || 0) ? ready : pending).push(qid);
+    });
+    // 阶数高的先验（快出炉的优先收口），再按错次多的先来
+    ready.sort(function (a, b) {
+      var wa = state.wrong[a], wb = state.wrong[b];
+      if ((wa.stage || 0) !== (wb.stage || 0)) return (wb.stage || 0) - (wa.stage || 0);
+      return (wb.times || 0) - (wa.times || 0);
+    });
+    pending.sort(function (a, b) { return (state.wrong[a].due || 0) - (state.wrong[b].due || 0); });
+    return { ready: limit ? ready.slice(0, limit) : ready, pending: pending, stuck: stuck };
+  }
+
+  /**
+   * 回炉间判定。ok = 这次（变式或原题）答对了。
+   * 返回 { gated } = 还没到间隔、这次不能算进度（真·隔天的落点）
+   *      { graduated } = 出炉；{ stuck } = 连错到上限已撤下
+   */
+  function hlAdvance(qid, ok, variantIdx) {
+    var w = hlRec(qid);
+    if (!w) return null;
+    var now = Date.now();
+    if (!ok) {
+      w.fails = (w.fails || 0) + 1;
+      if (w.fails >= HL_FAIL_LIMIT) w.stuck = true;
+      save(); checkAchievements(); emit();
+      return { ok: false, stage: w.stage || 0, fails: w.fails, stuck: !!w.stuck, need: HL_RESOLVE_AT };
+    }
+    if (now < (w.due || 0)) {
+      save(); emit();
+      return { ok: true, gated: true, stage: w.stage || 0, due: w.due, need: HL_RESOLVE_AT };
+    }
+    w.stage = (w.stage || 0) + 1;
+    w.fails = 0; w.stuck = false;
+    if (variantIdx != null && w.usedVariants.indexOf(variantIdx) < 0) w.usedVariants.push(variantIdx);
+    var graduated = w.stage >= HL_RESOLVE_AT;
+    if (graduated) { w.resolved = true; w.due = 0; }
+    else { w.due = nextResetAt(now); }        // 下一段必须隔天
+    save(); checkAchievements(); emit();
+    return { ok: true, stage: w.stage, graduated: graduated, due: w.due, need: HL_RESOLVE_AT };
+  }
+
+  /** 回炉总览（HUD / 面板用） */
+  function hlSummary() {
+    var q = hlQueue();
+    var open = 0, out = 0;
+    Object.keys(state.wrong).forEach(function (qid) {
+      var w = hlRec(qid);
+      if (!w) return;
+      if (w.resolved) out++; else open++;
+    });
+    return { open: open, out: out, total: open + out,
+             ready: q.ready.length, pending: q.pending.length, stuck: q.stuck.length };
   }
 
   /* ---------------- 成就 ---------------- */
@@ -495,6 +609,205 @@ window.HNSF829 = window.HNSF829 || {};
     });
   }
 
+  /* ============================================================
+   * 真题关（独立统计）
+   * ------------------------------------------------------------
+   * 设计约束：真题是「检验」，不是「考点」。
+   *   · 通关记录写进独立的 state.zt，绝不进 state.cleared —— 
+   *     否则 snapshot().clearedCount 会被撑破，七龙珠 / 满星数 / 章节全清全乱。
+   *   · 掌握度、最弱考点、考试面板都只遍历 NS.NODES，天然不含 zt-*，无需额外过滤。
+   *   · 解锁门槛：母考点通关（Store.isCleared(parent)），见 app.js。
+   * ============================================================ */
+  function ztState() { state.zt = state.zt || {}; return state.zt; }
+
+  function ztRec(parentId) {
+    var z = ztState();
+    return z[parentId] || (z[parentId] = {
+      answered: 0, correct: 0, cleared: false, perfect: false, times: 0, best: 0, ts: 0
+    });
+  }
+
+  function ztCleared(parentId) {
+    var z = ztState()[parentId];
+    return !!(z && z.cleared);
+  }
+
+  function ztMastery(parentId) {
+    var z = ztState()[parentId];
+    if (!z || !z.answered) return { answered: 0, correct: 0, rate: null, level: 0, cleared: false };
+    var rate = z.correct / z.answered;
+    return {
+      answered: z.answered, correct: z.correct, rate: rate, cleared: !!z.cleared,
+      level: rate >= 0.85 ? 3 : rate >= 0.6 ? 2 : 1
+    };
+  }
+
+  /** 真题关答题：全局经验/连击/错题本照记，但考点掌握度写到 zt 里 */
+  function ztRecord(parentId, qid, correct, picked) {
+    state.stats.answered++;
+    if (correct) {
+      state.stats.correct++;
+      state.streak = (state.streak || 0) + 1;
+      if (state.streak > state.stats.maxCombo) state.stats.maxCombo = state.streak;
+    } else {
+      state.streak = 0;
+    }
+    if (qid) {
+      // 同 recordAnswer：不再一答对就销账，真题错题也要回炉
+      if (!correct) {
+        var w = state.wrong[qid] || { node: parentId, ts: Date.now(), resolved: false, times: 0 };
+        w.node = parentId; w.times = (w.times || 0) + 1; w.ts = Date.now();
+        w.resolved = false;
+        if (picked != null) w.picked = picked;
+        state.wrong[qid] = w;
+      }
+    }
+    var z = ztRec(parentId);
+    z.answered++;
+    if (correct) z.correct++;
+    var gained = checkAchievements();
+    save();
+    return { achievements: gained, streak: state.streak || 0 };
+  }
+
+  /** 真题关通关结算：与 finishNode 同规则（≥60%），但结果只落进 state.zt */
+  function ztFinish(parentId, result) {
+    var total = result.total || 0, correct = result.correct || 0;
+    var rate = total ? correct / total : 0;
+    var pass = rate >= PASS_RATE;
+    var perfect = total > 0 && correct === total;
+    var z = ztRec(parentId);
+    var firstClear = pass && !z.cleared;
+    var firstPerfect = perfect && !z.perfect;
+    var prevBest = z.best || 0;
+
+    var bonus = 0;
+    if (pass) {
+      bonus += 60;
+      if (firstClear) bonus += 40;
+      if (firstPerfect) bonus += 30;
+      z.times++;
+      z.best = Math.max(z.best, rate);
+      z.ts = Date.now();
+      z.cleared = true;
+    }
+    if (perfect) z.perfect = true;
+
+    var before = levelInfo(state.xp).level;
+    state.xp += bonus;
+    save();
+    var newAch = checkAchievements();
+    var after = levelInfo(state.xp);
+    emit();
+    return {
+      pass: pass, perfect: perfect, firstClear: firstClear, rate: rate, bonus: bonus,
+      leveledUp: after.level > before, level: after.level,
+      newAchievements: newAch, prevBest: prevBest,
+      runCombo: result.maxCombo || 0, newRecord: {},
+      bestRunRate: state.bestRunRate || 0, bestRunCombo: state.bestRunCombo || 0
+    };
+  }
+
+  /** 真题总览：已通关数 / 总数（给 HUD 与总览面板用） */
+  function ztSummary() {
+    var z = ztState(), done = 0, ans = 0, cor = 0;
+    Object.keys(z).forEach(function (k) {
+      if (z[k].cleared) done++;
+      ans += z[k].answered; cor += z[k].correct;
+    });
+    return { cleared: done, answered: ans, correct: cor };
+  }
+
+  /* ---------------- 复盘 · 信任度与考场预测（只读） ----------------
+   * 「复盘」不是把原题再刷一遍，而是给练过的东西「验分」。所以先把信任度分四档：
+   *   blank    空白   —— 还没练过（不计入任何分）
+   *   half     未通关 —— 练过但没通关，只算半信
+   *   claimed  待验证 —— 通关了，但没在真题里验过（练习阶段的正确率再高也不能当成会）
+   *   verified 已坐实 —— 通关 + 真题已过 + 错题已清
+   * 每档有一个「可信上限」cap；把 cap 打折掉的部分按真题分值折算出来，就是「虚分」。
+   *
+   * 虚分不是游戏奖励，是考场上真会丢的分 —— 复盘的全部意义就是把它坐实。
+   * 复盘本身不发奖励：它唯一的产出是「可信度」（也就是分数）。
+   *
+   * ⚠️ 纯读，不写存档：通关数 / 七龙珠 / 掌握度热力图 / 成就全都不受影响。
+   *    想收紧或放松这一套，只改 TRUST_CAP 一处。
+   */
+  var EXAM_FULL = 150;                                     // 302 数学二满分
+  var TRUST_CAP = { blank: 0, half: 0.5, claimed: 0.7, verified: 1 };
+  var TRUST_LABEL = { blank: '空白', half: '未通关', claimed: '待验证', verified: '已坐实' };
+
+  /** nodeId -> 该考点未消化错题数 */
+  function openWrongMap() {
+    var m = {};
+    wrongList().forEach(function (w) { m[w.node] = (m[w.node] || 0) + 1; });
+    return m;
+  }
+
+  /** 单个考点的信任度 */
+  function trust(nodeId, wrongMap) {
+    var m = mastery(nodeId);
+    if (!m.answered) {
+      return { node: nodeId, state: 'blank', label: TRUST_LABEL.blank,
+               rate: null, cap: 0, credible: 0, openWrong: 0 };
+    }
+    var open = (wrongMap || openWrongMap())[nodeId] || 0;
+    var st = !isCleared(nodeId) ? 'half'
+           : (ztCleared(nodeId) && open === 0) ? 'verified'
+           : 'claimed';
+    var cap = TRUST_CAP[st];
+    return {
+      node: nodeId, state: st, label: TRUST_LABEL[st],
+      rate: m.rate, cap: cap, credible: Math.min(m.rate, cap), openWrong: open
+    };
+  }
+
+  /** 考场预测：把信任度按真题分值占比折算成 150 分制 */
+  function scoreForecast() {
+    var list = nodes();
+    // weight 合计 300 ↔ 150 分制，即 1 weight = 0.5 分
+    var totalW = list.reduce(function (s, n) { return s + n.weight; }, 0) || 1;
+    var perW = EXAM_FULL / totalW;
+    var wm = openWrongMap();
+
+    var rows = list.map(function (n) {
+      var t = trust(n.id, wm);
+      var paper = t.rate == null ? 0 : t.rate;
+      return {
+        node: n, weight: n.weight, state: t.state, label: t.label,
+        rate: t.rate, credible: t.credible, openWrong: t.openWrong,
+        fullPts: n.weight * perW,                    // 该考点满分值
+        paperPts: n.weight * paper * perW,           // 「你以为拿到」的分
+        realPts: n.weight * t.credible * perW        // 折算后可信的分
+      };
+    });
+
+    var paperSum = 0, realSum = 0, covered = 0;
+    rows.forEach(function (r) {
+      paperSum += r.paperPts;
+      realSum += r.realPts;
+      if (r.state !== 'blank') covered += r.fullPts;
+    });
+    var fakeRows = rows
+      .filter(function (r) { return r.paperPts - r.realPts > 0.05; })
+      .sort(function (a, b) { return (b.paperPts - b.realPts) - (a.paperPts - a.realPts); });
+
+    function r1(v) { return Math.round(v * 10) / 10; }
+    return {
+      full: EXAM_FULL,
+      expected: r1(realSum),                         // 预计得分（已打折）
+      paper: r1(paperSum),                           // 纸面分（不打折）
+      fake: r1(paperSum - realSum),                  // 虚分
+      covered: r1(covered),                          // 已覆盖分值
+      blank: r1(EXAM_FULL - covered),                // 还没碰的分值
+      perWeight: perW,
+      rows: rows, fakeRows: fakeRows,
+      touched: rows.filter(function (r) { return r.state !== 'blank'; }).length,
+      half: rows.filter(function (r) { return r.state === 'half'; }).length,
+      claimed: rows.filter(function (r) { return r.state === 'claimed'; }).length,
+      verified: rows.filter(function (r) { return r.state === 'verified'; }).length
+    };
+  }
+
   /* ---------------- 订阅 / 重置 ---------------- */
   function subscribe(fn) { listeners.push(fn); }
   function emit() { listeners.forEach(function (fn) { try { fn(state); } catch (e) {} }); }
@@ -527,6 +840,22 @@ window.HNSF829 = window.HNSF829 || {};
     weakestNodes: weakestNodes,
     records: records,
     finishNode: finishNode,
+    ztCleared: ztCleared,
+    ztMastery: ztMastery,
+    ztRecord: ztRecord,
+    ztFinish: ztFinish,
+    ztSummary: ztSummary,
+    trust: trust,
+    openWrongMap: openWrongMap,
+    scoreForecast: scoreForecast,
+    EXAM_FULL: EXAM_FULL,
+    hlState: hlState,
+    hlQueue: hlQueue,
+    hlAdvance: hlAdvance,
+    hlSummary: hlSummary,
+    hlRec: hlRec,
+    nextResetAt: nextResetAt,
+    HL_RESOLVE_AT: HL_RESOLVE_AT,
     addXp: addXp,
     openLoot: openLoot,
     lootStats: lootStats,

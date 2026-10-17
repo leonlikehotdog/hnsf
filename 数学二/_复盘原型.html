@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>回炉间 · PC 原型稿</title>
+<link rel="stylesheet" href="js/katex.min.css">
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 30px 34px 90px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+    background:
+      radial-gradient(1200px 600px at 15% -10%, rgba(56,189,248,.14), transparent 60%),
+      radial-gradient(900px 500px at 90% 10%, rgba(167,139,250,.13), transparent 60%),
+      #070b17;
+    color: #dce9ff; font-size: 15px; line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1340px; margin: 0 auto; }
+  h1 { font-size: 23px; margin: 0 0 6px; letter-spacing: .5px; }
+  h1 em { color: #f5b731; font-style: normal; }
+  .lead { color: #8aa0c4; font-size: 13.5px; max-width: 900px; }
+  .chips { display: flex; gap: 8px; margin: 16px 0 34px; flex-wrap: wrap; }
+  .chip { border: 1px solid rgba(120,170,255,.28); background: rgba(56,189,248,.10);
+          color: #9fd4ff; padding: 5px 13px; border-radius: 999px; font-size: 12.5px; }
+  .chip.g { border-color: rgba(52,211,153,.35); background: rgba(52,211,153,.10); color: #86efc0; }
+  .chip.y { border-color: rgba(245,183,49,.35); background: rgba(245,183,49,.10); color: #ffd98a; }
+
+  section { margin: 38px 0 0; }
+  .sec-title { font-size: 16.5px; font-weight: 800; color: #eaf3ff; margin: 0 0 3px; }
+  .sec-title b { color: #f5b731; margin-right: 8px; }
+  .sec-sub { color: #8aa0c4; font-size: 13px; margin: 0 0 15px; }
+  .card { background: rgba(17,26,48,.92); border: 1px solid rgba(120,170,255,.16);
+          border-radius: 16px; padding: 18px 20px; box-shadow: 0 18px 44px rgba(0,0,0,.45); }
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; align-items: start; }
+  .grid2 { display: grid; grid-template-columns: 1.05fr .95fr; gap: 16px; align-items: start; }
+  .tag { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 6px;
+         border: 1px solid rgba(255,255,255,.16); color: #bcd2f0; margin-right: 6px; }
+  .tag.exam { background: rgba(245,183,49,.16); border-color: rgba(245,183,49,.45); color: #ffd98a; }
+  .tag.rose { background: rgba(251,113,133,.14); border-color: rgba(251,113,133,.4); color: #ffb3c0; }
+  .tag.green { background: rgba(52,211,153,.14); border-color: rgba(52,211,153,.4); color: #86efc0; }
+  kbd { display: inline-block; min-width: 22px; text-align: center; padding: 1px 6px;
+        border-radius: 5px; background: #1a2540; border: 1px solid rgba(120,170,255,.3);
+        border-bottom-width: 2px; font-size: 11.5px; font-family: ui-monospace, Consolas, monospace; color: #cfe3ff; }
+
+  /* ── 暗影球 ── */
+  .shadow-node { text-align: center; padding: 6px 0 2px; }
+  .orb { position: relative; width: 96px; height: 96px; margin: 0 auto; border-radius: 50%;
+         background: radial-gradient(circle at 34% 28%, #2a3a5c, #0a1122 72%);
+         border: 2px solid rgba(120,170,255,.35);
+         display: flex; align-items: center; justify-content: center; font-size: 34px;
+         filter: saturate(.55) brightness(.85);
+         box-shadow: inset 0 0 26px rgba(0,0,0,.7); }
+  .crack { position: absolute; inset: -3px; border-radius: 50%; pointer-events: none;
+           background:
+             conic-gradient(from 20deg, transparent 0 62%, rgba(251,113,133,.55) 63% 66%, transparent 67%),
+             conic-gradient(from 180deg, transparent 0 40%, rgba(251,113,133,.45) 41% 44%, transparent 45%); }
+  .debt { display: inline-block; margin-top: 10px; font-size: 12px; color: #ffb3c0;
+          border: 1px solid rgba(251,113,133,.4); background: rgba(251,113,133,.10);
+          padding: 3px 10px; border-radius: 999px; }
+  .sat { display: inline-flex; align-items: center; gap: 6px; margin-top: 8px; font-size: 12px;
+         color: #8aa0c4; border: 1px dashed rgba(255,255,255,.22); padding: 3px 10px; border-radius: 999px; }
+
+  /* ── 选项 ── */
+  .opt { display: flex; gap: 10px; align-items: flex-start; padding: 11px 14px; border-radius: 12px;
+         border: 1px solid rgba(120,170,255,.18); background: rgba(12,20,40,.7);
+         margin-bottom: 9px; font-size: 14px; }
+  .opt .k { flex: 0 0 22px; height: 22px; border-radius: 50%; display: flex; align-items: center;
+            justify-content: center; font-size: 12px; font-weight: 800;
+            background: rgba(120,170,255,.16); color: #cfe3ff; }
+  .opt.bad { border-color: rgba(251,113,133,.5); background: rgba(251,113,133,.10); }
+  .opt.bad .k { background: #fb7185; color: #2b0510; }
+  .opt.good { border-color: rgba(52,211,153,.55); background: rgba(52,211,153,.10); }
+  .opt.good .k { background: #34d399; color: #06251b; }
+  .note { margin-top: 9px; padding: 10px 13px; border-radius: 11px; font-size: 13.5px; line-height: 1.75; }
+  .note.bad { background: rgba(251,113,133,.09); border-left: 3px solid #fb7185; color: #ffd0d8; }
+  .note.good { background: rgba(52,211,153,.09); border-left: 3px solid #34d399; color: #c9f7e3; }
+  .master { margin-top: 12px; padding: 11px 14px; border-radius: 12px; font-size: 13.5px;
+            background: linear-gradient(135deg, rgba(56,189,248,.13), rgba(167,139,250,.11));
+            border: 1px solid rgba(120,170,255,.28); }
+  .master b { color: #9fd4ff; }
+
+  .screen-head { display: flex; justify-content: space-between; align-items: center;
+                 font-size: 12.5px; color: #8aa0c4; margin-bottom: 12px; }
+  .screen-head b { color: #f5b731; font-size: 13px; }
+  .bar { height: 6px; border-radius: 999px; background: rgba(255,255,255,.09); overflow: hidden; margin-top: 10px; }
+  .bar i { display: block; height: 100%; width: 66%; background: linear-gradient(90deg, #f5b731, #ffcd5a); }
+
+  .loot { display: flex; align-items: center; gap: 14px; }
+  .chest { font-size: 40px; position: relative; filter: grayscale(.6) brightness(.8); }
+  .chest .lock { position: absolute; right: -6px; bottom: -4px; font-size: 18px; }
+  .stone { font-size: 12px; color: #ffd98a; border: 1px solid rgba(245,183,49,.4);
+           background: rgba(245,183,49,.10); padding: 3px 9px; border-radius: 999px; }
+  pre { background: #0a121f; border: 1px solid rgba(120,170,255,.16); border-radius: 12px;
+        padding: 14px 16px; overflow: auto; font-size: 12.5px; line-height: 1.7; color: #b9cdea;
+        font-family: ui-monospace, Consolas, monospace; }
+  .keys { display: grid; grid-template-columns: repeat(2, 1fr); gap: 7px 18px; font-size: 13px; color: #b9cdea; }
+  .dim { color: #7c90b3; }
+  .foot { margin-top: 42px; padding-top: 18px; border-top: 1px solid rgba(120,170,255,.14);
+          color: #7c90b3; font-size: 12.5px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>回炉间 · <em>PC 原型稿</em></h1>
+  <p class="lead">把「错题本」从一份会自己划勾的清单，改成一间要你亲自下场的小关卡。核心只有一句话：
+    <b>你永远不会在复盘里见到原题 —— 出的是同类变式。</b>内容全部用你仓库里的真题/题库真实数据，配色沿用现有主题。</p>
+  <div class="chips">
+    <span class="chip y">强制力度：卡奖励口（宝箱 · 真题卫星 · 章 Boss）</span>
+    <span class="chip g">间隔：真·隔天（最后一段必须次日）</span>
+    <span class="chip">内容：无变式题自动换数字</span>
+    <span class="chip">范围：仅 PC</span>
+  </div>
+
+  <!-- ══════════ 0. 病灶 ══════════ -->
+  <section>
+    <div class="sec-title"><b>0 ·</b>先说病灶：现在的复盘为什么一定没人做</div>
+    <p class="sec-sub">三条代码级事实，不是"用户懒"。</p>
+    <div class="grid3">
+      <div class="card">
+        <span class="tag rose">store.js:191</span>
+        <div style="margin-top:8px;font-size:14px">错题<b>答对一次就自动销账</b>。</div>
+        <div class="dim" style="font-size:12.5px;margin-top:6px">
+          <code>if (correct) state.wrong[qid].resolved = true</code><br>
+          这不是复盘，是划勾 —— 没有间隔，「当时懂了」和「明天还记得」没被区分。
+        </div>
+      </div>
+      <div class="card">
+        <span class="tag rose">app.js:1086</span>
+        <div style="margin-top:8px;font-size:14px">复盘出的是<b>原题</b>。</div>
+        <div class="dim" style="font-size:12.5px;margin-top:6px">
+          <code>retryQuestions()</code> 把同一道题重开一遍。<br>
+          人最讨厌"这题我做过了" —— 重复就是惩罚。
+        </div>
+      </div>
+      <div class="card">
+        <span class="tag rose">面板 Tab</span>
+        <div style="margin-top:8px;font-size:14px">复盘是个<b>无尽清单</b>。</div>
+        <div class="dim" style="font-size:12.5px;margin-top:6px">
+          没有开始、没有终点、没有演出。<br>
+          清单类的东西天生让人拖延，因为看不到头。
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ 1. 地图上的暗影 ══════════ -->
+  <section>
+    <div class="sec-title"><b>1 ·</b>错题长在你的考点球上</div>
+    <p class="sec-sub">未消化的错题 = 暗影裂纹。球变暗、掌握度环蒙灰（仅视觉降档，不改数据）。欠账越多，裂得越狠。</p>
+    <div class="grid3">
+      <div class="card">
+        <div class="shadow-node">
+          <div class="orb">🐣<span class="crack"></span></div>
+          <div style="margin-top:10px;font-weight:700">连续性与间断点</div>
+          <div class="dim" style="font-size:12px">掌握 88%</div>
+          <div class="debt">🩸 欠账 3 道</div>
+        </div>
+      </div>
+      <div class="card">
+        <div style="font-size:14.5px;font-weight:700;margin-bottom:8px">🔒 真题卫星被封印</div>
+        <div class="dim" style="font-size:13px">
+          门槛从「考点通关」升级成「考点通关 + <b style="color:#ffd98a">复盘出炉</b>」。<br><br>
+          练 → <b style="color:#ffd98a">复</b> → 验：<br>
+          不复盘就拿不到真题 —— 这是最自然的一处卡点，也最说得出口。
+        </div>
+      </div>
+      <div class="card">
+        <div style="font-size:14.5px;font-weight:700;margin-bottom:8px">⚔️ 结算宝箱 · 暗影封印</div>
+        <div class="loot" style="margin:10px 0 6px">
+          <div class="chest">🎁<span class="lock">🔒</span></div>
+          <div class="dim" style="font-size:13px">通关宝箱被封印：<br>现场打掉 <b style="color:#ffd98a">1 道</b>（从 3 道里挑）才能开箱。</div>
+        </div>
+        <div class="dim" style="font-size:12.5px">损失厌恶：箱子就在眼前。人不为"变强"做题，会为"别丢掉"做题。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ 2. 回炉间三屏 ══════════ -->
+  <section>
+    <div class="sec-title"><b>2 ·</b>回炉间：一局 3 分钟，三道屏</div>
+    <p class="sec-sub">题目用真实的 <code>lf-1</code>（极限的 ε-δ 定义）。诊断文案直接取自你题库里已经写好的
+      <code>optionNotes</code> —— 那是逐选项写的「谁会选它、为什么」，本来就在，只是从没被用在复盘上。</p>
+
+    <div class="card" style="margin-bottom:16px;display:flex;justify-content:space-between;align-items:center">
+      <div>
+        <span class="tag">回炉间</span><span class="tag exam">第 1 章</span>
+        <b style="margin-left:4px">极限的定义与性质</b>
+        <span class="dim" style="font-size:12.5px;margin-left:8px">对手：你自己的暗影</span>
+      </div>
+      <div style="min-width:190px">
+        <div class="screen-head" style="margin:0"><span>回炉进度</span><b>6 / 9</b></div>
+        <div class="bar"><i></i></div>
+      </div>
+    </div>
+
+    <div class="grid3">
+      <!-- 屏 1 -->
+      <div class="card">
+        <div class="screen-head"><b>① 诊断屏</b><span>15 秒 · 不给做题</span></div>
+        <div style="font-size:13.5px;color:#c7d8f2">当时你选了 <b style="color:#ffb3c0">B</b>：</div>
+        <div class="opt bad" style="margin-top:9px">
+          <span class="k">B</span><span>∃ε&gt;0, ∀δ&gt;0，当 0&lt;|x−x₀|&lt;δ 时，恒有 |f(x)−A|&lt;ε</span>
+        </div>
+        <div class="note bad">
+          量词顺序被颠倒，写成「存在一个 ε，对任意 δ」，把「任意小」偷换成「存在一个小」；
+          <b>只记住「有两个正数」而没记清谁控制谁</b>的同学最容易选它。
+        </div>
+        <div class="opt good" style="margin-top:12px">
+          <span class="k">A</span><span>∀ε&gt;0, ∃δ&gt;0，当 0&lt;|x−x₀|&lt;δ 时，恒有 |f(x)−A|&lt;ε</span>
+        </div>
+        <div class="master">
+          🥋 <b>师傅</b>：你不是不会极限，是<b>量词的次序</b>没记牢 —— 记住「任意 ε 决定后面所有的 δ」，
+          这一族的题你就全通了。
+        </div>
+      </div>
+
+      <!-- 屏 2 -->
+      <div class="card">
+        <div class="screen-head"><b>② 变形屏</b><span>同类变式 · 不是原题</span></div>
+        <div style="font-size:12.5px;color:#8aa0c4;margin-bottom:8px">
+          <span class="tag rose">同一坑再考一次</span>第 2 次变形会更狠
+        </div>
+        <div style="font-size:14px">
+          把 \(x\to x_0\) 换成 \(x\to+\infty\)，则 \(\lim\limits_{x\to+\infty}f(x)=A\) 的定义是（ ）
+        </div>
+        <div style="margin-top:11px">
+          <div class="opt"><span class="k">A</span><span>\(\forall\varepsilon&gt;0,\ \exists X&gt;0\)，当 \(x&gt;X\) 时，恒有 \(|f(x)-A|&lt;\varepsilon\)</span></div>
+          <div class="opt"><span class="k">B</span><span>\(\exists\varepsilon&gt;0,\ \forall X&gt;0\)，当 \(x&gt;X\) 时，恒有 \(|f(x)-A|&lt;\varepsilon\)</span></div>
+          <div class="opt"><span class="k">C</span><span>\(\forall X&gt;0,\ \exists\varepsilon&gt;0\)，当 \(x&gt;\varepsilon\) 时，恒有 \(|f(x)-A|&lt;X\)</span></div>
+          <div class="opt"><span class="k">D</span><span>\(\forall\varepsilon&gt;0,\ \exists X&gt;0\)，当 \(|x|&gt;X\) 时，恒有 \(|f(x)-A|&lt;\varepsilon\)</span></div>
+        </div>
+        <div class="dim" style="font-size:12px;margin-top:6px">
+          D 项是原题 D 项（漏条件）的变体：把「去心邻域」漏成「\(x\to 0\) vs \(x\to\infty\)」——
+          同一类错误换了个位置，这才是有效的复盘。
+        </div>
+      </div>
+
+      <!-- 屏 3 -->
+      <div class="card">
+        <div class="screen-head"><b>③ 归位屏</b><span>收束 · 有终点</span></div>
+        <div style="text-align:center;padding:14px 0 6px">
+          <div style="font-size:34px">🔥</div>
+          <div style="font-size:17px;font-weight:800;color:#86efc0;margin-top:6px">出炉！</div>
+          <div class="dim" style="font-size:12.5px;margin-top:4px">这道错题已完成第 1 / 2 段</div>
+        </div>
+        <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
+          <span class="stone">🪨 回炉石 +2</span>
+          <span class="stone">🔥 连续回炉 3 天</span>
+        </div>
+        <div class="note good" style="margin-top:14px">
+          <b>还差一段：</b>明天回炉间会把它重新排给你（变形题会再换一次），
+          做完才算「出炉」，真题卫星才点亮。<br>
+          <span class="dim">这不是罚你 —— 记忆需要间隔，一天一次最快。</span>
+        </div>
+        <div class="dim" style="font-size:12px;margin-top:10px">
+          · 同一题连错 2 次 → 自动从回炉间移除，交给师傅讲课（防挫败堆积）<br>
+          · 单题只出现 2 次，不做无限循环
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ 3. 键盘 ══════════ -->
+  <section>
+    <div class="sec-title"><b>3 ·</b>PC 专属：全键盘流</div>
+    <p class="sec-sub">鼠标基本不用碰。整个回炉间按键盘设计，效率就是"有趣"的一部分。</p>
+    <div class="grid2">
+      <div class="card">
+        <div class="keys">
+          <div><kbd>1</kbd><kbd>2</kbd><kbd>3</kbd><kbd>4</kbd> 选选项 / 直接判分</div>
+          <div><kbd>Enter</kbd> 提交 / 进入下一屏</div>
+          <div><kbd>Space</kbd> 跳过诊断屏</div>
+          <div><kbd>R</kbd> 回看原题与当时错解</div>
+          <div><kbd>H</kbd> 请师傅提示（会记录，影响成就）</div>
+          <div><kbd>Esc</kbd> 退出（进度保留，已出炉的不会退）</div>
+        </div>
+        <div class="dim" style="font-size:12.5px;margin-top:12px">
+          左栏放「你当时的错解 + 诊断」，右栏放「变形题作答」——一屏之内完成"认账 → 重做"，不需要来回翻。
+        </div>
+      </div>
+      <div class="card">
+        <div style="font-weight:800;margin-bottom:8px">一局的节奏</div>
+        <div class="dim" style="font-size:13px;line-height:1.9">
+          一次进 <b style="color:#ffd98a">8–12 道</b>（按间隔到期 + 错次排序），<b style="color:#ffd98a">3–5 分钟</b>打完。<br>
+          有开始、有进度条、有结算、有演出（<code>fx.powerUp</code> + 破茧）。<br>
+          清零时给一次「今日欠账清零」的定格画面 —— 复盘需要一个"完了"的瞬间。
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ 4. 数据 ══════════ -->
+  <section>
+    <div class="sec-title"><b>4 ·</b>数据落地（P0，半天）</div>
+    <p class="sec-sub">不动界面也能先修好"复盘失效"的根。旧存档缺字段一律按新错处理，不回退任何已通关进度。</p>
+    <div class="grid2">
+      <div>
+<pre>// store.js —— state.wrong[qid] 从布尔升级成段位
+{
+  node, ts, times,            // 已有
+  picked: 1,                  // ★新增：学生当时选了什么（下标或文本）
+                              //   没它就没有「诊断屏」
+  stage: 1,                   // 0 新错 → 1 变形题答对 → 2 隔天再答对 → 3 出炉
+  due: 1792280000000,         // ★新增：下次可回炉时间
+  usedVariants: [0],          // ★新增：用过哪些变式，避免重复
+  rightStreak: 0              // 连错 2 次就移出回炉间，交给师傅
+}</pre>
+      </div>
+      <div>
+<pre>// 判定规则（唯一的强制点）
+function advance(qid, okIsVariant) {
+  const w = state.wrong[qid];
+  if (!w) return;
+  if (!okIsVariant) { w.rightStreak = 0; return; }   // 答错：只清连对
+  if (Date.now() < w.due) return;                    // 没到间隔：不给进度
+  w.stage++;
+  w.usedVariants.push(curVariant);
+  w.due = nextDay04(w.ts);                           // ★ 真·隔天
+  if (w.stage >= 3) resolveWrong(qid, true);         // 出炉
+}
+
+// recordAnswer 不再一答对就销账
+// if (correct) state.wrong[qid].resolved = true;   ← 删掉这行</pre>
+      </div>
+    </div>
+    <p class="sec-sub" style="margin-top:14px">
+      <b style="color:#ffd98a">容错两处：</b>① 隔天按「跨过凌晨 4 点」算，熬夜党不会被卡；
+      ② <code>due</code> 依赖系统时间，自用系统不设防。
+    </p>
+  </section>
+
+  <!-- ══════════ 5. 内容 ══════════ -->
+  <section>
+    <div class="sec-title"><b>5 ·</b>"自动换数字"要说清楚：这不是正则能做的</div>
+    <p class="sec-sub">你选了自动换数字，但必须诚实说一句：386 道没有变式的题，换数字后<b>答案也跟着变</b>，
+      靠脚本正则改不出来。这条路只能这么走 👇</p>
+    <div class="card">
+      <div class="grid2" style="gap:22px">
+        <div>
+          <div style="font-weight:800;color:#ffd98a;margin-bottom:6px">✅ 可行做法：离线生成 + 交叉验算</div>
+          <div class="dim" style="font-size:13px;line-height:1.9">
+            按你题库现有的 <code>variants: [{stem, hint}]</code> 约定（hint 里带答案/思路），
+            <b>逐题生成一道同结构、换参数的变式</b>，写进 data-q-*.js。<br>
+            · 选择题：必须给出新的正确项，并保证它恰好有一个最优解<br>
+            · 填空题：必须重新算出新答案，且加进可接受写法数组<br>
+            · 解答题 / 证明题：<b>这类不要换数字</b> → 结构性变式或降级为「看解析复述」自评
+          </div>
+        </div>
+        <div>
+          <div style="font-weight:800;color:#ffb3c0;margin-bottom:6px">⚠️ 一条铁律</div>
+          <div class="dim" style="font-size:13px;line-height:1.9">
+            <b>生成错的变式，比没有变式更糟。</b>考研数学二靠这个提分，答案错了会直接教坏人。<br><br>
+            所以：<br>
+            · 生成后逐题验算，脚本只能查结构（选项数/答案存在/LaTeX 闭合），
+              数值必须真算一遍<br>
+            · 优先补<b>高频易错</b>的题，不追求 100% 覆盖<br>
+            · 没变式的题在回炉间里直接标「原题重做」，不假装它是变式
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="foot">
+    原型稿 · 未接任何真实逻辑，纯静态。<br>
+    三条已定：卡奖励口 / 真·隔天 / 自动换数字。若视觉与节奏 OK，下一步是按 P0 → P1（地图暗影 + 宝箱封印）→ P2（回炉间三屏）逐步落地。
+  </div>
+
+</div>
+
+<script src="js/katex.min.js"></script>
+<script src="js/auto-render.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (typeof renderMathInElement === 'function') {
+      renderMathInElement(document.body, {
+        delimiters: [
+          { left: '\\(', right: '\\)', display: false },
+          { left: '\\[', right: '\\]', display: true }
+        ],
+        throwOnError: false
+      });
+    }
+  });
+</script>
+</body>
+</html>

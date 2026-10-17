@@ -1,0 +1,362 @@
+  1 2011-1  选择题 | 已知当 $x\to 0$ 时，$f(x)=3\sin x-\sin 3x$ 与 $cx^{k}$ 是等价无穷小，则（ ） ᐸA. $k=1,c=4$ ᐧ B. $k=1,c=-4$ ᐧ C. $k=3,c=4$ ᐧ D. $k=3,c=-4$ᐳ
+  2 2011-2  选择题 | 已知 $f(x)$ 在 $x=0$ 处可导，且 $f(0)=0$，则 $\lim_{x\to 0}\frac{x^{2}f(x)-2f(x^{3})}{x^{3}}=$（ ） ᐸA. $-2f^{\prime}(0)$ ᐧ B. $-f^{\prime}(0)$ ᐧ C. $f^{\prime}(0)$ ᐧ D. $0$ᐳ
+  3 2011-3  选择题 | 函数 $f(x)=\ln|(x-1)(x-2)(x-3)|$ 的驻点个数为（ ） ᐸA. $0$ ᐧ B. $1$ ᐧ C. $2$ ᐧ D. $3$ᐳ
+  4 2011-4  选择题 | 微分方程 $y^{\prime\prime}-\lambda^{2}y=e^{\lambda x}+e^{-\lambda x}(\lambda>0)$ 的特解形式为（ ） ᐸA. $a(e^{\lambda x}+e^{-\lambda x} ᐧ B. $ax(e^{\lambda x}+e^{-\lambda x ᐧ C. $x(ae^{\lambda x}+be^{-\lambda  ᐧ D. $x^{2}(ae^{\lambda x}+be^{-\lamᐳ
+  5 2011-5  选择题 | 设函数 $f(x),g(x)$ 均有二阶连续导数，满足 $f(0)>0,g(0)<0$，且 $f^{\prime}(0)=g^{\prime}(0)=0$，则函数 $z=f(x)g(y)$ 在点 $(0,0)$ 处取得极小值的一个充分条件是（ ） ᐸA. $f^{\prime\prime}(0)<0,g^{\prim ᐧ B. $f^{\prime\prime}(0)<0,g^{\prim ᐧ C. $f^{\prime\prime}(0)>0,g^{\prim ᐧ D. $f^{\prime\prime}(0)>0,g^{\primᐳ
+  6 2011-6  选择题 | 设 $I=\int_{0}^{\frac{\pi}{4}}\ln\sin x~dx$，$J=\int_{0}^{\frac{\pi}{4}}\ln\cot x~dx$，$K=\int_{0}^{\frac{\pi}{4}}\ln\cos x~dx$，则 $I,J,K$ 的大小关系是（ ） ᐸA. $I<J<K$ ᐧ B. $I<K<J$ ᐧ C. $J<I<K$ ᐧ D. $K<J<I$ᐳ
+  7 2011-7  选择题 | 设 $\boldsymbol{A}$ 为 $3$ 阶矩阵，将 $\boldsymbol{A}$ 的第 $2$ 列加到第 $1$ 列得矩阵 $\boldsymbol{B}$，再交换 $\boldsymbol{B}$ 的第 $2$ 行与第 $3$ 行得单位矩阵，记 $\boldsymbol{P}_{1}=(\begin{matrix ᐸA. $\boldsymbol{P}_{1}\boldsymbol{ ᐧ B. $\boldsymbol{P}_{1}^{-1}\boldsy ᐧ C. $\boldsymbol{P}_{2}\boldsymbol{ ᐧ D. $\boldsymbol{P}_{2}\boldsymbol{ᐳ
+  8 2011-8  选择题 | 设 $\boldsymbol{A}=(\boldsymbol{\alpha}_{1},\boldsymbol{\alpha}_{2},\boldsymbol{\alpha}_{3},\boldsymbol{\alpha}_{4})$ 是 $4$ 阶矩阵，$\boldsymbol{A}^{*}$ 为 $\boldsymbol{A} ᐸA. $\boldsymbol{\alpha}_{1},\bolds ᐧ B. $\boldsymbol{\alpha}_{1},\bolds ᐧ C. $\boldsymbol{\alpha}_{1},\bolds ᐧ D. $\boldsymbol{\alpha}_{2},\boldsᐳ
+  9 2011-9  填空题 | $\lim_{x\to 0}(1+2x)^{\frac{1}{x}}=$
+ 10 2011-10 填空题 | 微分方程 $y^{\prime}-y=e^{x}\cos x$ 满足条件 $y(0)=0$ 的解为
+ 11 2011-11 填空题 | 曲线 $y=\int_{0}^{x}\tan t~dt(0\leq x\leq \frac{\pi}{4})$ 的弧长 $s=$
+ 12 2011-12 填空题 | 设函数 $f(x)=\{\begin{matrix}\lambda e^{-\lambda x},&x>0 \0,&x\leq 0\end{matrix}.$，其中 $\lambda>0$，则 $\int_{-\infty}^{+\infty}xf(x)~dx=$
+ 13 2011-13 填空题 | 设平面区域 $D$ 由直线 $y=x$，圆 $x^{2}+y^{2}=2y$ 及 $y$ 轴围成，则二重积分 $\iint_{D}xyd\sigma=$
+ 14 2011-14 填空题 | 二次型 $f(x_{1},x_{2},x_{3})=x_{1}^{2}+3x_{2}^{2}+x_{3}^{2}+2x_{1}x_{2}+2x_{1}x_{3}+2x_{2}x_{3}$ 的正惯性指数为
+ 15 2011-15 解答题 | 已知函数 $F(x)=\frac{\int_{0}^{x}\ln(1+t^{2})~dt}{x^{a}}$， 设 $\lim_{x\to+\infty}F(x)=\lim_{x\to 0^{+}}F(x)=0$，试求 $a$ 的取值范围。
+ 16 2011-16 解答题 | 设函数 $y=y(x)$ 由参数方程 $\{\begin{matrix}x=\frac{1}{3}t^{3}+t+\frac{1}{3} \y=\frac{1}{3}t^{3}-t+\frac{1}{3}\end{matrix}.$ 确定，求 $y=y(x)$ 的极值和曲线 $y=y(x)$ 的凹凸区间及拐点。
+ 17 2011-17 解答题 | 设函数 $z=f(xy,yg(x))$，其中函数 $f$ 具有二阶连续偏导数，函数 $g(x)$ 可导且在 $x=1$ 处取得极值 $g(1)=1$，求 $.\frac{\partial^{2}z}{\partial x\partial y}|_{\substack{x=1\\\y=1}}$。
+ 18 2011-18 解答题 | 设函数 $y(x)$ 具有二阶导数，且曲线 $l:y=y(x)$ 与直线 $y=x$ 相切于原点，记 $\alpha$ 为曲线 $l$ 在点 $(x,y)$ 处切线的倾角，若 $\frac{d\alpha}{dx}=\frac{dy}{dx}$，求 $y(x)$ 的表达式。
+ 19 2011-19 解答题 | （I）证明：对任意的正整数 $n$，都有 $\frac{1}{n+1}<\ln(1+\frac{1}{n})<\frac{1}{n}$ 成立。 （II）设 $a_{n}=1+\frac{1}{2}+\frac{1}{3}+\cdots+\frac{1}{n}-\ln n(n=1,2,\cdots)$，证明数列 $\{a_{n}\
+ 20 2011-20 解答题 | 一容器的内侧是由曲线绕 $y$ 轴旋转一周而成的曲面，该曲线由 $x^{2}+y^{2}=2y(y\geq \frac{1}{2})$ 与 $x^{2}+y^{2}=1(y\leq \frac{1}{2})$ 连接而成。 （I）求容器的容积； （II）若将容器内盛满的水从容器顶部全部抽出，至少需要做多少功？长度单位为 $m$，重
+ 21 2011-21 解答题 | 已知函数 $f(x,y)$ 具有二阶连续偏导数，且 $f(1,y)=0$，$f(x,1)=0$，$\iint_{D}f(x,y)~dx~dy=a$，其中 $D=\{(x,y)\middle|0\leq x\leq 1,0\leq y\leq 1\}$。计算二重积分 $I=\iint_{D}xyf_{xy}^{\prime\pri
+ 22 2011-22 解答题 | 设向量组 $\boldsymbol{\alpha}_{1}=(1,0,1)^{T}$，$\boldsymbol{\alpha}_{2}=(0,1,1)^{T}$，$\boldsymbol{\alpha}_{3}=(1,3,5)^{T}$， 不能由向量组 $\boldsymbol{\beta}_{1}=(1,1,1)^{T}$，$
+ 23 2011-23 解答题 | $\boldsymbol{A}$ 为三阶实对称矩阵，$\boldsymbol{A}$ 的秩为 $2$，即 $r(\boldsymbol{A})=2$，且 $\boldsymbol{A}(\begin{matrix}1&1 \0&0 \-1&1\end{matrix})=(\begin{matrix}-1&1 \0 &0 \1&1
+ 24 2012-1  选择题 | 曲线 $y=\frac{x^{2}+x}{x^{2}-1}$ 渐近线的条数为（ ） ᐸA. $0$ ᐧ B. $1$ ᐧ C. $2$ ᐧ D. $3$ᐳ
+ 25 2012-2  选择题 | 设函数 $f(x)=(e^{x}-1)(e^{2x}-2)\cdots(e^{nx}-n)$，其中 $n$ 为正整数，则 $f^{\prime}(0)=$（ ） ᐸA. $(-1)^{n-1}(n-1)!$ ᐧ B. $(-1)^{n}(n-1)!$ ᐧ C. $(-1)^{n-1}n!$ ᐧ D. $(-1)^{n}n!$ᐳ
+ 26 2012-3  选择题 | 设 $a_{n}>0(n=1,2,\cdots)$，$S_{n}=a_{1}+a_{2}+\cdots+a_{n}$，则数列 $\{S_{n}\}$ 有界是数列 $\{a_{n}\}$ 收敛的（ ） ᐸA. 充分必要条件 ᐧ B. 充分非必要条件 ᐧ C. 必要非充分条件 ᐧ D. 既非充分也非必要条件ᐳ
+ 27 2012-4  选择题 | 设 $I_{k}=\int_{2}^{k}e^{x}\sin x~dx(k=1,2,3)$，则有（ ） ᐸA. $I_{1}<I_{2}<I_{3}$ ᐧ B. $I_{2}<I_{1}<I_{3}$ ᐧ C. $I_{1}<I_{3}<I_{2}$ ᐧ D. $I_{1}<I_{2}<I_{3}$ᐳ
+ 28 2012-5  选择题 | 设函数 $f(x,y)$ 可微，且对任意 $x,y$ 都有 $\frac{\partial f(x,y)}{\partial x}>0$，$\frac{\partial f(x,y)}{\partial y}<0$，$f(x_{1},y_{1})<f(x_{2},y_{2})$ 成立的一个充分条件是（ ） ᐸA. $x_{1}>x_{2},y_{1}<y_{2}$ ᐧ B. $x_{1}>x_{2},y_{1}>y_{2}$ ᐧ C. $x_{1}<x_{2},y_{1}<y_{2}$ ᐧ D. $x_{1}<x_{2},y_{1}>y_{2}$ᐳ
+ 29 2012-6  选择题 | 设区域 $D$ 由曲线 $y=\sin x$，$x=\pm\frac{\pi}{2}$，$y=1$ 围成，则 $\iint_{D}(x^{5}y-1)~dx~dy=$（ ） ᐸA. $\pi$ ᐧ B. $2$ ᐧ C. $-2$ ᐧ D. $-\pi$ᐳ
+ 30 2012-7  选择题 | 设 $\boldsymbol{\alpha}_{1} = \begin{pmatrix} 0 \0 \c_{1} \end{pmatrix}$，$\boldsymbol{\alpha}_{2} = \begin{pmatrix} 0 \1 \c_{2}\end{pmatrix}$，$\boldsymbol{\alpha}_{3} ᐸA. $\boldsymbol{\alpha}_{1},\bolds ᐧ B. $\boldsymbol{\alpha}_{1},\bolds ᐧ C. $\boldsymbol{\alpha}_{1},\bolds ᐧ D. $\boldsymbol{\alpha}_{2},\boldsᐳ
+ 31 2012-8  选择题 | 设 $\boldsymbol{A}$ 为 $3$ 阶矩阵，$\boldsymbol{P}$ 为 $3$ 阶可逆矩阵，且 $\boldsymbol{P}^{-1}\boldsymbol{A}\boldsymbol{P}=(\begin{matrix}1&0&0 \0&1&0 \0&0&2\end{matrix})$，$\bolds ᐸA. $(\begin{matrix}1&0&0 \0&2&0 \0 ᐧ B. $(\begin{matrix}1&0&0 \0&1&0 \0 ᐧ C. $(\begin{matrix}2&0&0 \0&1&0 \0 ᐧ D. $(\begin{matrix}2&0&0 \0&2&0 \0ᐳ
+ 32 2012-9  填空题 | 设 $y=y(x)$ 是由方程 $x^{2}-y+1=e^{y}$ 所确定的隐函数，则 $.\frac{d^{2}y}{dx^{2}}|_{x=0}=$ ________。
+ 33 2012-10 填空题 | 计算 $\lim_{n\to\infty}n(\frac{1}{1+n^{2}}+\frac{1}{2^{2}+n^{2}}+\cdots+\frac{1}{n^{2}+n^{2}})=$ ________。
+ 34 2012-11 填空题 | 设 $z=f(\ln x+\frac{1}{y})$，其中函数 $f(u)$ 可微，则 $x\frac{\partial z}{\partial x}+y^{2}\frac{\partial z}{\partial y}=$ ________。
+ 35 2012-12 填空题 | 微分方程 $ydx+(x-3y^{2})dy=0$ 满足初始条件 $.y|_{x=1}=1$ 的解为________。
+ 36 2012-13 填空题 | 曲线 $y=x^{2}+x(x<0)$ 上曲率为 $\frac{\sqrt{2}}{2}$ 的点的坐标是________。
+ 37 2012-14 填空题 | 设 $\boldsymbol{A}$ 为 $3$ 阶矩阵，$|\boldsymbol{A}|=3$，$\boldsymbol{A}^{*}$ 为 $\boldsymbol{A}$ 的伴随矩阵，若交换 $\boldsymbol{A}$ 的第一行与第二行得到矩阵 $\boldsymbol{B}$，则 $|\boldsymbol{B}
+ 38 2012-15 解答题 | 已知函数 $f(x)=\frac{1+x}{\sin x}-\frac{1}{x}$，记 $a=\lim_{x\to 0}f(x)$。 （1）求 $a$ 的值； （2）若当 $x\to 0$ 时，$f(x)-a$ 是 $x^{k}$ 的同阶无穷小，求 $k$。
+ 39 2012-16 解答题 | 求 $f(x,y)=xe^{-\frac{x^{2}+y^{2}}{2}}$ 的极值。
+ 40 2012-17 解答题 | 过点 $(0,1)$ 作曲线 $L:y=\ln x$ 的切线，切点为 $\boldsymbol{A}$，又 $L$ 与 $x$ 轴交于 $\boldsymbol{B}$ 点，区域 $D$ 由 $L$ 与直线 $\boldsymbol{A}\boldsymbol{B}$ 及 $x$ 轴围成，求区域 $D$ 的面积及 $D$ 绕 $
+ 41 2012-18 解答题 | 计算二重积分 $\iint_{D}xyd\sigma$，其中区域 $D$ 为曲线 $r=1+\cos\theta(0\leq\theta\leq\pi)$ 与极轴围成。
+ 42 2012-19 解答题 | 已知函数 $f(x)$ 满足方程 $f^{\prime\prime}(x)+f^{\prime}(x)-2f(x)=0$ 及 $f^{\prime}(x)+f(x)=2e^{x}$。 （1）求表达式 $f(x)$； （2）求曲线 $y=f(x^{2})\int_{0}^{x}f(-t^{2})~dt$ 的拐点。
+ 43 2012-20 解答题 | 证明： $x\ln\frac{1+x}{1-x}+\cos x\geq 1+\frac{x^{2}}{2},\quad -1<x<1$。
+ 44 2012-21 解答题 | （1）证明方程 $x^{n}+x^{n-1}+\cdots+x=1(n>1.$ 的整数$.)$ 在区间 $(\frac{1}{2},1)$ 内有且仅有一个实根； （2）记（1）中的实根为 $x_{n}$，证明 $\lim_{n\to\infty}x_{n}$ 存在，并求此极限。
+ 45 2012-22 解答题 | 设 $\boldsymbol{A}=(\begin{matrix}1&a&0&0 \0&1&a&0 \0&0&1&a \a&0&0&1\end{matrix})$，$\boldsymbol{b}=(\begin{matrix}1 \-1 \0 \0 \end{matrix})$。 （Ⅰ）求 $|\boldsymbol{A}|$；
+ 46 2012-23 解答题 | 三阶矩阵 $\boldsymbol{A}=(\begin{matrix}1&0&1 \0&1&1 \-1&0&a\end{matrix})$，$\boldsymbol{A}^{T}$ 为矩阵 $\boldsymbol{A}$ 的转置，已知 $r(\boldsymbol{A}^{T}\boldsymbol{A})=2$，且二次型 
+ 47 2013-1  选择题 | 设 $\cos x-1=x\sin\alpha(x)$，其中 $|\alpha(x)|<\frac{\pi}{2}$，则当 $x\to 0$ 时，$\alpha(x)$ 是（ ） ᐸA. 比 $x$ 高阶的无穷小 ᐧ B. 比 $x$ 低阶的无穷小 ᐧ C. 与 $x$ 同阶但不等价的无穷小 ᐧ D. 与 $x$ 等价的无穷小ᐳ
+ 48 2013-2  选择题 | 设函数 $y=f(x)$ 由方程 $\cos(xy)-\ln y+x=1$ 确定，则 $\lim_{n\to\infty}n[f(\frac{2}{n})-1]=$（ ） ᐸA. $2$ ᐧ B. $1$ ᐧ C. $-1$ ᐧ D. $-2$ᐳ
+ 49 2013-3  选择题 | 设函数 $f(x)=\{\begin{matrix}\sin x,&0\leq x<\pi\\2,&\pi\leq x\leq 2\pi\end{matrix}.$，$F(x)=\int_{0}^{x}f(t)~dt$，则（ ） ᐸA. $x=\pi$ 是函数 $F(x)$ 的跳跃间断点 ᐧ B. $x=\pi$ 是函数 $F(x)$ 的可去间断点 ᐧ C. $F(x)$ 在 $x=\pi$ 处连续但不可导 ᐧ D. $F(x)$ 在 $x=\pi$ 处可导ᐳ
+ 50 2013-4  选择题 | 设函数 $f(x)=\{\begin{matrix}\frac{1}{(x-1)^{\alpha-1}},&1<x<e\\\frac{1}{x(\ln x)^{\alpha+1}},&x\geq e\end{matrix}.$， 若反常积分 $\int_{1}^{+\infty}f(x)~dx$ 收敛，则（ ） ᐸA. $\alpha<-2$ ᐧ B. $\alpha>2$ ᐧ C. $-2<\alpha<0$ ᐧ D. $0<\alpha<2$ᐳ
+ 51 2013-5  选择题 | 设 $z=\frac{y}{x}f(xy)$，其中函数 $f$ 可微，则 $\frac{x}{y}\frac{\partial z}{\partial x}+\frac{\partial z}{\partial y}=$（ ） ᐸA. $2yf^{\prime}(xy)$ ᐧ B. $-2yf^{\prime}(xy)$ ᐧ C. $\frac{2}{x}f(xy)$ ᐧ D. $-\frac{2}{x}f(xy)$ᐳ
+ 52 2013-6  选择题 | 设 $D_{k}$ 是圆域 $D=\{(x,y)\middle|x^{2}+y^{2}\leq 1\}$ 在第 $k$ 象限的部分，记 $I_{k}=\iint_{D_{k}}(y-x)~dx~dy(k=1,2,3,4)$，则（ ） ᐸA. $I_{1}>0$ ᐧ B. $I_{2}>0$ ᐧ C. $I_{3}>0$ ᐧ D. $I_{4}>0$ᐳ
+ 53 2013-7  选择题 | 设矩阵 $\boldsymbol{A},\boldsymbol{B},\boldsymbol{C}$ 均为 $n$ 阶矩阵，若 $\boldsymbol{A}\boldsymbol{B}=\boldsymbol{C}$，且 $\boldsymbol{B}$ 可逆，则（ ） ᐸA. 矩阵 $\boldsymbol{C}$ 的行向量组与矩阵 $\ ᐧ B. 矩阵 $\boldsymbol{C}$ 的列向量组与矩阵 $\ ᐧ C. 矩阵 $\boldsymbol{C}$ 的行向量组与矩阵 $\ ᐧ D. 矩阵 $\boldsymbol{C}$ 的行向量组与矩阵 $\ᐳ
+ 54 2013-8  选择题 | 矩阵 $(\begin{matrix}1&a&1\\a&b&a\\1&a&1\end{matrix})$ 与 $(\begin{matrix}2&0&0\\0&b&0\\0&0&0\end{matrix})$ 相似的充分必要条件为（ ） ᐸA. $a=0,b=2$ ᐧ B. $a=0,b$ 为任意常数 ᐧ C. $a=2,b=0$ ᐧ D. $a=2,b$ 为任意常数ᐳ
+ 55 2013-9  填空题 | $\lim_{x\to\infty}(2-\frac{\ln(1+x)}{x})^{\frac{1}{x}}=$
+ 56 2013-10 填空题 | 设函数 $f(x)=\int_{-1}^{x}\sqrt{1-e^{t}}~dt$，则 $y=f(x)$ 的反函数 $x=f^{-1}(y)$ 在 $y=0$ 处的导数 $.\frac{dx}{dy}|_{y=0}=$
+ 57 2013-11 填空题 | 设封闭曲线 $L$ 的极坐标方程为 $r=\cos 3\theta(-\frac{\pi}{6}\leq \theta\leq \frac{\pi}{6})$，则 $L$ 所围成的平面图形的面积为
+ 58 2013-12 填空题 | 曲线 $\{\begin{matrix}x=\arctan t\\y=\ln\sqrt{1+t^{2}}\end{matrix}.$ 上对应于 $t=1$ 的点处的法线方程为
+ 59 2013-13 填空题 | 已知 $y_{1}=e^{3x}-xe^{2x}$，$y_{2}=e^{x}-xe^{2x}$，$y_{3}=-xe^{2x}$ 是某二阶常系数非齐次线性微分方程的 $3$ 个解，该方程满足条件 $.y|_{x=0}=0$，$.y^{\prime}|_{x=0}=1$ 的解为 $y=$
+ 60 2013-14 填空题 | 设 $\boldsymbol{A}=(a_{ij})$ 是三阶非零矩阵，$|\boldsymbol{A}|$ 为 $\boldsymbol{A}$ 的行列式，$A_{ij}$ 为 $a_{ij}$ 的代数余子式，若 $a_{ij}+A_{ij}=0(i,j=1,2,3)$，则 $|\boldsymbol{A}|=$
+ 61 2013-15 解答题 | 当 $x\to 0$ 时，$1-\cos x\cos 2x\cos 3x$ 与 $ax^{n}$ 为等价无穷小，求 $n$ 与 $a$ 的值。
+ 62 2013-16 解答题 | 设 $D$ 是由曲线 $y=x^{\frac{1}{3}}$，直线 $x=a(a>0)$ 及 $x$ 轴所围成的平面图形，$V_{x},V_{y}$ 分别是 $D$ 绕 $x$ 轴、$y$ 轴旋转一周所得旋转体的体积，若 $V_{y}=10V_{x}$，求 $a$ 的值。
+ 63 2013-17 解答题 | 设平面内区域 $D$ 由直线 $x=3y$，$y=3x$ 及 $x+y=8$ 围成，计算 $\iint_{D}x^{2}~dx~dy$。
+ 64 2013-18 解答题 | 设奇函数 $f(x)$ 在 $[-1,1]$ 上具有二阶导数，且 $f(1)=1$。证明： （I）存在 $\xi\in(0,1)$，使得 $f^{\prime}(\xi)=1$； （II）存在 $\eta\in(0,1)$，使得 $f^{\prime\prime}(\eta)+f^{\prime}(\eta)=1$。
+ 65 2013-19 解答题 | 求曲线 $x^{3}-xy+y^{3}=1(x\geq 0,y\geq 0)$ 上的点到坐标原点的最长距离与最短距离。
+ 66 2013-20 解答题 | 设函数 $f(x)=\ln x+\frac{1}{x}$。 （I）求 $f(x)$ 的最小值； （II）设数列 $\{x_{n}\}$ 满足 $\ln x_{n}+\frac{1}{x_{n}}<1$，证明 $\lim_{n\to\infty}x_{n}$ 存在，并求此极限。
+ 67 2013-21 解答题 | 设曲线 $L$ 的方程为 $y=\frac{1}{4}x^{2}-\frac{1}{2}\ln x(1\leq x\leq e)$。 （1）求 $L$ 的弧长； （2）设 $D$ 是由曲线 $L$，直线 $x=1,x=e$ 及 $x$ 轴所围平面图形，求 $D$ 的形心的横坐标。
+ 68 2013-22 解答题 | 设 $\boldsymbol{A}=(\begin{matrix}1&a\\1&0\end{matrix}),\boldsymbol{B}=(\begin{matrix}0&1\\1&b\end{matrix})$，当 $a,b$ 为何值时，存在矩阵 $\boldsymbol{C}$ 使得 $\boldsymbol{A}\bol
+ 69 2013-23 解答题 | 设二次型 $f(x_{1},x_{2},x_{3})=2(a_{1}x_{1}+a_{2}x_{2}+a_{3}x_{3})^{2}+(b_{1}x_{1}+b_{2}x_{2}+b_{3}x_{3})^{2}$， 记 $\boldsymbol{\alpha}=(\begin{matrix}a_{1}\\a_{2}\\a_{3}
+ 70 2014-1  选择题 | 当 $x\to 0^{+}$ 时，若 $\ln^{\alpha}(1+2x)$，$(1-\cos x)^{\frac{1}{\alpha}}$ 均是比 $x$ 高阶的无穷小，则 $\alpha$ 的可能取值范围是（ ） ᐸA. $(2,+\infty)$ ᐧ B. $(1,2)$ ᐧ C. $(\frac{1}{2},1)$ ᐧ D. $(0,\frac{1}{2})$ᐳ
+ 71 2014-2  选择题 | 下列曲线有渐近线的是（ ） ᐸA. $y=x+\sin x$ ᐧ B. $y=x^{2}+\sin x$ ᐧ C. $y=x+\sin \frac{1}{x}$ ᐧ D. $y=x^{2}+\sin \frac{1}{x}$ᐳ
+ 72 2014-3  选择题 | 设函数 $f(x)$ 具有二阶导数，$g(x)=f(0)(1-x)+f(1)x$，则在 $[0,1]$ 上（ ） ᐸA. 当 $f^{\prime}(x)\geq 0$ 时，$f(x) ᐧ B. 当 $f^{\prime}(x)\geq 0$ 时，$f(x) ᐧ C. 当 $f^{\prime\prime}(x)\geq 0$ 时 ᐧ D. 当 $f^{\prime\prime}(x)\geq 0$ 时ᐳ
+ 73 2014-4  选择题 | 曲线 $\{\begin{matrix}x=t^{2}+7\\y=t^{2}+4t+1\end{matrix}.$ 上对应于 $t=1$ 的点处的曲率半径是（ ） ᐸA. $\frac{\sqrt{10}}{50}$ ᐧ B. $\frac{\sqrt{10}}{100}$ ᐧ C. $10\sqrt{10}$ ᐧ D. $5\sqrt{10}$ᐳ
+ 74 2014-5  选择题 | 设函数 $f(x)=\arctan x$，若 $f(x)=xf^{\prime}(\xi)$，则 $\lim_{x\to 0}\frac{\xi^{2}}{x^{2}}=$（ ） ᐸA. $1$ ᐧ B. $\frac{2}{3}$ ᐧ C. $\frac{1}{2}$ ᐧ D. $\frac{1}{3}$ᐳ
+ 75 2014-6  选择题 | 设 $u(x,y)$ 在平面有界闭区域 $D$ 上连续，在 $D$ 的内部具有二阶连续偏导数，且满足 $\frac{\partial^{2}u}{\partial x\partial y}\neq 0$ 及 $\frac{\partial^{2}u}{\partial x^{2}}+\frac{\partial^{2}u}{\p ᐸA. $u(x,y)$ 的最大值点和最小值点必定都在区域 $D$ 的 ᐧ B. $u(x,y)$ 的最大值点和最小值点必定都在区域 $D$ 的 ᐧ C. $u(x,y)$ 的最大值点在区域 $D$ 的内部，最小值点在 ᐧ D. $u(x,y)$ 的最小值点在区域 $D$ 的内部，最大值点在ᐳ
+ 76 2014-7  选择题 | 行列式 $|\begin{matrix}0&a&b&0\\a&0&0&b\\0&c&d&0\\c&0&0&d\end{matrix}|$ 等于（ ） ᐸA. $(ad-bc)^{2}$ ᐧ B. $-(ad-bc)^{2}$ ᐧ C. $a^{2}d^{2}-b^{2}c^{2}$ ᐧ D. $-a^{2}d^{2}+b^{2}c^{2}$ᐳ
+ 77 2014-8  选择题 | 设 $\boldsymbol{\alpha}_{1},\boldsymbol{\alpha}_{2},\boldsymbol{\alpha}_{3}$ 是三维向量，则对任意的常数 $k,l$，向量 $\boldsymbol{\alpha}_{1}+k\boldsymbol{\alpha}_{3}$，$\boldsymbol{\a ᐸA. 必要而非充分条件 ᐧ B. 充分而非必要条件 ᐧ C. 充分必要条件 ᐧ D. 非充分非必要条件ᐳ
+ 78 2014-9  填空题 | $\int_{-\infty}^{1}\frac{1}{x^{2}+2x+5}~dx=$________。
+ 79 2014-10 填空题 | 设 $f(x)$ 为周期为 $4$ 的可导奇函数，且 $f^{\prime}(x)=2(x-1)$，$x\in [0,2]$，则 $f(7)=$________。
+ 80 2014-11 填空题 | 设 $z=z(x,y)$ 是由方程 $e^{2yz}+x+y^{2}+z=\frac{7}{4}$ 确定的函数，则 $.dz|_{(\frac{1}{2},\frac{1}{2})}=$________。
+ 81 2014-12 填空题 | 曲线 $L$ 的极坐标方程为 $r=\theta$，则 $L$ 在点 $(r,\theta)=(\frac{\pi}{2},\frac{\pi}{2})$ 处的切线方程为________。
+ 82 2014-13 填空题 | 一根长为 $1$ 的细棒位于 $x$ 轴的区间 $[0,1]$ 上，若其线密度 $\rho(x)=-x^{2}+2x+1$，则该细棒的质心坐标 $\overline{x}=$________。
+ 83 2014-14 填空题 | 设二次型 $f(x_{1},x_{2},x_{3})=x_{1}^{2}-x_{2}^{2}+2ax_{1}x_{3}+4x_{2}x_{3}$ 的负惯性指数是 $1$，则 $a$ 的取值范围是________。
+ 84 2014-15 解答题 | 求极限 $\lim_{x\to+\infty}\frac{\int_{1}^{x}(t^{2}(e^{\frac{1}{t}}-1)-t)~dt}{x^{2}\ln(1+\frac{1}{x})}$。
+ 85 2014-16 解答题 | 已知函数 $y=y(x)$ 满足微分方程 $x^{2}+y^{2}y^{\prime}=1-y^{\prime}$，且 $y(2)=0$，求 $y(x)$ 的极大值和极小值。
+ 86 2014-17 解答题 | 设平面区域 $D=\{(x,y)\middle|1\leq x^{2}+y^{2}\leq 4,x\geq 0,y\geq 0\}$。计算 $\iint_{D}\frac{x\sin(\pi\sqrt{x^{2}+y^{2}})}{x+y}~dx~dy$。
+ 87 2014-18 解答题 | 设函数 $f(u)$ 具有二阶连续导数，$z=f(e^{x}\cos y)$ 满足 $\frac{\partial^{2}z}{\partial x^{2}}+\frac{\partial^{2}z}{\partial y^{2}}=(4z+e^{x}\cos y)e^{2x}$。若 $f(0)=0,f^{\prime}(0)=
+ 88 2014-19 解答题 | 设函数 $f(x),g(x)$ 在区间 $[a,b]$ 上连续，且 $f(x)$ 单调增加，$0\leq g(x)\leq 1$，证明： （1）$0\leq \int_{a}^{x}g(t)~dt\leq x-a,\quad x\in [a,b]$； （2）$\int_{a}^{a+\int_{a}^{b}g(t)~dt}f(x
+ 89 2014-20 解答题 | 设函数 $f(x)=\frac{x}{1+x}$，$x\in [0,1]$，定义函数列 $f_{1}(x)=f(x),\quad f_{2}(x)=f(f_{1}(x)),\quad \cdots,\quad f_{n}(x)=f(f_{n-1}(x)),\quad \cdots$ 设 $S_{n}$ 是曲线 $y=f_{n}(
+ 90 2014-21 解答题 | 已知函数 $f(x,y)$ 满足 $\frac{\partial f}{\partial y}=2(y+1)$，且 $f(y,y)=(y+1)^{2}-(2-y)\ln y$，求曲线 $f(x,y)=0$ 所成的图形绕直线 $y=-1$ 旋转所成的旋转体的体积。
+ 91 2014-22 解答题 | 设 $\boldsymbol{A}=(\begin{matrix}1&-2&3&-4\\0&1&-1&1\\1&2&0&3\end{matrix})$，$\boldsymbol{E}$ 为三阶单位矩阵。 （1）求方程组 $\boldsymbol{A}\boldsymbol{X}=\boldsymbol{0}$ 的一个基础解系； 
+ 92 2014-23 解答题 | 证明 $n$ 阶矩阵 $(\begin{matrix}1&1&\cdots&1\\1&1&\cdots&1\\\vdots&\vdots&&\vdots\\1&1&\cdots&1\end{matrix})$ 与 $(\begin{matrix}0&\cdots&0&1\\0&\cdots&0&2\\\vdots&\vdots&
+ 93 2015-1  选择题 | 下列反常积分收敛的是（ ） ᐸA. $\int_{2}^{+\infty}\frac{1}{\sq ᐧ B. $\int_{2}^{+\infty}\frac{\ln x} ᐧ C. $\int_{2}^{+\infty}\frac{1}{x \ ᐧ D. $\int_{2}^{+\infty}\frac{x}{e^{ᐳ
+ 94 2015-2  选择题 | 函数 $f(x)=\lim_{t\to 0}(1+\frac{\sin t}{x})^{\frac{x^{2}}{t}}$ 在 $(-\infty,+\infty)$ 内（ ） ᐸA. 连续 ᐧ B. 有可去间断点 ᐧ C. 有跳跃间断点 ᐧ D. 有无穷间断点ᐳ
+ 95 2015-3  选择题 | 设函数 $f(x)=\{\begin{matrix}x^{\alpha}\cos \frac{1}{x^{\beta}},&x>0\\0,&x\leq 0\end{matrix}.$，$(\alpha>0,\beta>0)$， 若 $f^{\prime}(x)$ 在 $x=0$ 处连续，则（ ） ᐸA. $\alpha-\beta>0$ ᐧ B. $0<\alpha-\beta\leq 1$ ᐧ C. $\alpha-\beta>2$ ᐧ D. $0<\alpha-\beta\leq 2$ᐳ
+ 96 2015-4  选择题 | 设函数 $f(x)$ 在 $(-\infty,+\infty)$ 内连续，其中二阶导数 $f^{\prime\prime}(x)$ 的图形如图所示，则曲线 $y=f(x)$ 的拐点的个数为（ ） ᐸA. $0$ ᐧ B. $1$ ᐧ C. $2$ ᐧ D. $3$ᐳ
+ 97 2015-5  选择题 | 设函数 $f(u,v)$ 满足 $f(x+\frac{y}{x},y)=x^{2}-y^{2}$，则 $.\frac{\partial f}{\partial u}|_{\substack{u=1\\v=1}}$ 与 $.\frac{\partial f}{\partial v}|_{\substack{u=1\\v=1}}$  ᐸA. $\frac{1}{2},0$ ᐧ B. $0,\frac{1}{2}$ ᐧ C. $-\frac{1}{2},0$ ᐧ D. $0,-\frac{1}{2}$ᐳ
+ 98 2015-6  选择题 | 设 $D$ 是第一象限由曲线 $2xy=1$，$4xy=1$ 与直线 $y=x$，$y=3x$ 围成的平面区域，函数 $f(x,y)$ 在 $D$ 上连续，则 $\iint_{D}f(x,y)~dx~dy=$（ ） ᐸA. $\int_{\frac{\pi}{4}}^{\frac{\p ᐧ B. $\int_{\frac{\pi}{4}}^{\frac{\p ᐧ C. $\int_{\frac{\pi}{4}}^{\frac{\p ᐧ D. $\int_{\frac{\pi}{4}}^{\frac{\pᐳ
+ 99 2015-7  选择题 | 设矩阵 $\boldsymbol{A}=(\begin{matrix}1&1&1\\1&2&a\\1&4&a^{2}\end{matrix})$，$\boldsymbol{b}=(\begin{matrix}1\\2\\d\end{matrix})$。若集合 $\Omega=\{1,2\}$，则线性方程组 $\boldsymbo ᐸA. $a\notin\Omega,d\notin\Omega$ ᐧ B. $a\notin\Omega,d\in\Omega$ ᐧ C. $a\in\Omega,d\notin\Omega$ ᐧ D. $a\in\Omega,d\in\Omega$ᐳ
+100 2015-8  选择题 | 设二次型 $f(x_{1},x_{2},x_{3})$ 在正交变换 $\boldsymbol{x}=\boldsymbol{P}\boldsymbol{y}$ 下的标准形为 $2y_{1}^{2}+y_{2}^{2}-y_{3}^{2}$，其中 $\boldsymbol{P}=(\boldsymbol{e}_{1},\bolds ᐸA. $2y_{1}^{2}-y_{2}^{2}+y_{3}^{2} ᐧ B. $2y_{1}^{2}+y_{2}^{2}-y_{3}^{2} ᐧ C. $2y_{1}^{2}-y_{2}^{2}-y_{3}^{2} ᐧ D. $2y_{1}^{2}+y_{2}^{2}+y_{3}^{2}ᐳ
+101 2015-9  填空题 | $\{\begin{matrix}x=\arctan t\\y=t^{3}+t\end{matrix}.$，则 $.\frac{d^{2}y}{dx^{2}}|_{t=1}=$
+102 2015-10 填空题 | 函数 $f(x)=x^{2}\cdot 2^{x}$ 在 $x=0$ 处的 $n$ 阶导数 $f^{(n)}(0)=$
+103 2015-11 填空题 | 设 $f(x)$ 连续，$\varphi(x)=x\int_{0}^{x^{2}}f(t)~dt$，若 $\varphi(1)=1,\varphi^{\prime}(1)=5$，则 $f(1)=$
+104 2015-12 填空题 | 设函数 $y=y(x)$ 是微分方程 $y^{\prime\prime}+y^{\prime}-2y=0$ 的解，且在 $x=0$ 处 $y(x)$ 取得极值 $3$，则 $y(x)=$
+105 2015-13 填空题 | 若函数 $z=z(x,y)$ 由方程 $e^{x+2y+3z}+xyz=1$ 确定，则 $.dz|_{(0,0)}=$
+106 2015-14 填空题 | 若 $3$ 阶矩阵 $\boldsymbol{A}$ 的特征值为 $2,-2,1$，$\boldsymbol{B}=\boldsymbol{A}^{2}-\boldsymbol{A}+\boldsymbol{E}$，其中 $\boldsymbol{E}$ 为 $3$ 阶单位阵，则行列式 $|\boldsymbol{B}|=$
+107 2015-15 解答题 | 设函数 $f(x)=\ln(1+x)+ax+bx\sin x$，$g(x)=kx^{3}$。若 $f(x)$ 与 $g(x)$ 在 $x\to 0$ 时是等价无穷小，求 $a,b,k$ 的值。
+108 2015-16 解答题 | 设 $A>0$，$D$ 是由曲线段 $y=A\sin x(0\leq x\leq \frac{\pi}{2})$ 及直线 $y=0$，$x=\frac{\pi}{2}$ 所围成的平面区域，$V_{1}$，$V_{2}$ 分别表示 $D$ 绕 $x$ 轴与绕 $y$ 轴旋转成旋转体的体积，若 $V_{1}=V_{2}$，求 $A$
+109 2015-17 解答题 | 已知函数 $f(x,y)$ 满足 $f_{xy}^{\prime\prime}(x,y)=2(y+1)e^{x}$，$f_{x}^{\prime}(x,0)=(x+1)e^{x}$，$f(0,y)=y^{2}+2y$，求 $f(x,y)$ 的极值。
+110 2015-18 解答题 | 计算二重积分 $\iint_{D}x(x+y)~dx~dy$，其中 $D=\{(x,y)\middle|x^{2}+y^{2}\leq 2,y\geq x^{2}\}$。
+111 2015-19 解答题 | 已知函数 $f(x)=\int_{x}^{1}\sqrt{1+t^{2}}~dt+\int_{1}^{x^{2}}\sqrt{1+t}~dt$，求 $f(x)$ 零点的个数。
+112 2015-20 解答题 | 已知高温物体置于低温介质中，任一时刻该物体温度对时间的变化率与该时刻物体和介质的温差成正比，现将一初始温度为 $120^\circC$ 的物体在 $20^\circC$ 的恒温介质中冷却，$30min$ 后该物体降至 $30^\circC$，若要将该物体的温度继续降至 $21^\circC$，还需冷却多长时间？
+113 2015-21 解答题 | 已知函数 $f(x)$ 在区间 $[a,+\infty)$ 上具有 $2$ 阶导数，$f(a)=0$，$f^{\prime}(x)>0$，$f^{\prime\prime}(x)>0$。设 $b>a$，曲线 $y=f(x)$ 在点 $(b,f(b))$ 处的切线与 $x$ 轴的交点是 $(x_{0},0)$，证明 $a<x_{0
+114 2015-22 解答题 | 设矩阵 $\boldsymbol{A}=(\begin{matrix}a&1&0\\1&a&-1\\0&1&a\end{matrix})$ 且 $\boldsymbol{A}^{3}=\boldsymbol{O}$。 （1）求 $a$ 的值； （2）若矩阵 $\boldsymbol{X}$ 满足 $\boldsymbol{X}-
+115 2015-23 解答题 | 设矩阵 $\boldsymbol{A}=(\begin{matrix}0&-2&3\\1&-3&3\\1&-2&a\end{matrix})$ 相似于矩阵 $\boldsymbol{B}=(\begin{matrix}1&2&0\\0&b&0\\0&3&1\end{matrix})$。 （1）求 $a,b$ 的值； （2）求可逆
+116 2016-1  选择题 | 设 $a_{1}=x(\cos\sqrt{x}-1)$，$a_{2}=\sqrt{x}\ln(1+\sqrt[3]{x})$，$a_{3}=\sqrt[3]{x+1}-1$。当 $x\to 0^{+}$ 时，以上 $3$ 个无穷小量按照从低阶到高阶的排序是： ᐸA. $a_{1},a_{2},a_{3}$。 ᐧ B. $a_{2},a_{3},a_{1}$。 ᐧ C. $a_{2},a_{1},a_{3}$。 ᐧ D. $a_{3},a_{2},a_{1}$。ᐳ
+117 2016-2  选择题 | 已知函数 $f(x)$ 满足： $$ f(x)= \begin{cases} 2(x-1), & x<1,\\ \ln x, & x\geqslant 1. \end{cases} $$ 则 $f(x)$ 的一个原函数是： ᐸA. $x<1$ 时，$F(x)=(x-1)^2$；$x\geqsl ᐧ B. $x<1$ 时，$F(x)=(x-1)^2$；$x\geqsl ᐧ C. $x<1$ 时，$F(x)=(x-1)^2$；$x\geqsl ᐧ D. $x<1$ 时，$F(x)=(x-1)^2$；$x\geqslᐳ
+118 2016-3  选择题 | 反常积分 $$ (1) \int_{-\infty}^{0}\frac{e^{1/x}}{x^{2}}dx,\qquad (2) \int_{0}^{+\infty}\frac{e^{1/x}}{x^{2}}dx $$ 的敛散性为： ᐸA. (1) 收敛，(2) 收敛。 ᐧ B. (1) 收敛，(2) 发散。 ᐧ C. (1) 发散，(2) 收敛。 ᐧ D. (1) 发散，(2) 发散。ᐳ
+119 2016-4  选择题 | 设函数 $f(x)$ 在 $(-\infty,+\infty)$ 内连续，其导函数的图形如图所示，则： ᐸA. 函数 $f(x)$ 有 $2$ 个极值点，曲线 $y=f(x) ᐧ B. 函数 $f(x)$ 有 $2$ 个极值点，曲线 $y=f(x) ᐧ C. 函数 $f(x)$ 有 $3$ 个极值点，曲线 $y=f(x) ᐧ D. 函数 $f(x)$ 有 $3$ 个极值点，曲线 $y=f(x)ᐳ
+120 2016-5  选择题 | 设函数 $f_i(x)(i=1,2)$ 具有二阶连续导数，且 $f_i''(x_0)<0(i=1,2)$。若两条曲线 $y=f_i(x)(i=1,2)$ 在点 $(x_0,y_0)$ 处具有公切线 $y=g(x)$，且在该点处曲线 $y=f_1(x)$ 的曲率大于曲线 $y=f_2(x)$ 的曲率，则在 $x_0$ 的某个邻域内 ᐸA. $f_1(x)\leqslant f_2(x)\leqslan ᐧ B. $f_2(x)\leqslant f_1(x)\leqslan ᐧ C. $f_1(x)\leqslant g(x)\leqslant  ᐧ D. $f_2(x)\leqslant g(x)\leqslant ᐳ
+121 2016-6  选择题 | 已知函数 $f(x,y)=\frac{e^{x}}{x-y}$，则： ᐸA. $f'_x-f'_y=0$。 ᐧ B. $f'_x+f'_y=0$。 ᐧ C. $f'_x-f'_y=f$。 ᐧ D. $f'_x+f'_y=f$。ᐳ
+122 2016-7  选择题 | 设 $\boldsymbol{A}$，$\boldsymbol{B}$ 是可逆矩阵，且 $\boldsymbol{A}$ 与 $\boldsymbol{B}$ 相似，则下列结论错误的是： ᐸA. $\boldsymbol{A}^{T}$ 与 $\boldsy ᐧ B. $\boldsymbol{A}^{-1}$ 与 $\bolds ᐧ C. $\boldsymbol{A}^{T}+\boldsymbol ᐧ D. $\boldsymbol{A}^{-1}+\boldsymboᐳ
+123 2016-8  选择题 | 设二次型 $$ f(x_1,x_2,x_3)=a(x_1^2+x_2^2+x_3^2)+2x_1x_2+2x_2x_3+2x_1x_3 $$ 的正、负惯性指数分别为 $1,2$，则： ᐸA. $a>1$。 ᐧ B. $a<-2$。 ᐧ C. $-2<a<1$。 ᐧ D. $a=1$ 与 $a=-2$。ᐳ
+124 2016-9  填空题 | 曲线 $$ y=\frac{x^3}{1+x^2}+\arctan(1+x^2) $$ 的斜渐近线方程为 ________。
+125 2016-10 填空题 | 极限 $$ \lim_{n\to\infty}\frac{1}{n^{2}}(\sin\frac{1}{n}+2\sin\frac{2}{n}+\cdots+n\sin\frac{n}{n})= $$ ________。
+126 2016-11 填空题 | 以 $y=x^{2}-e^{x}$ 和 $y=x^{2}$ 为特解的一阶非齐次线性微分方程为 ________。
+127 2016-12 填空题 | 已知函数 $f(x)$ 在 $(-\infty,+\infty)$ 上连续，且 $$ f(x)=(x+1)^2+2\int_0^x f(t)dt, $$ 则当 $n\geqslant 2$ 时，$f^{(n)}(0)=$ ________。
+128 2016-13 填空题 | 已知动点 $P$ 在曲线 $y=x^3$ 上运动，记坐标原点与点 $P$ 间的距离为 $l$。若点 $P$ 的横坐标对时间的变化率为常数 $v_0$，则当点 $P$ 运动到点 $(1,1)$ 时，$l$ 对时间的变化率是 ________。
+129 2016-14 填空题 | 设矩阵 $$ \begin{pmatrix} a&-1&-1\\ -1&a&-1\\ -1&-1&a \end{pmatrix} $$ 与 $$ \begin{pmatrix} 1&1&0\\ 0&-1&1\\ 1&0&1 \end{pmatrix} $$ 等价，则 $a=$ ________。
+130 2016-15 解答题 | 求极限 $$ \lim_{x\to0}(\cos2x+2x\sin x)^{1/x^4}. $$
+131 2016-16 解答题 | 设函数 $$ f(x)=\int_0^1|t^2-x^2|dt\qquad (x>0), $$ 求 $f'(x)$ 并求 $f(x)$ 的最小值。
+132 2016-17 解答题 | 已知函数 $z=z(x,y)$ 由方程 $$ (x^2+y^2)z+\ln z+2(x+y+1)=0 $$ 确定，求 $z=z(x,y)$ 的极值。
+133 2016-18 解答题 | 设 $D$ 是由直线 $y=1$，$y=x$，$y=-x$ 围成的有界区域，计算二重积分 $$ \iint_D\frac{x^2-xy-y^2}{x^2+y^2}dxdy. $$
+134 2016-19 解答题 | 已知 $y_1(x)=e^x$，$y_2(x)=\mu(x)e^x$ 是二阶微分方程 $$ (2x-1)y''-(2x+1)y'+2y=0 $$ 的两个解，若 $\mu(-1)=e$，$\mu(0)=-1$，求 $\mu(x)$ 并写出该微分方程的通解。
+135 2016-20 解答题 | 设 $D$ 是由曲线 $$ y=\sqrt{1-x^2}\quad (0\leqslant x\leqslant1) $$ 与参数方程 $$ x=\cos^3t,\qquad y=\sin^3t,\qquad 0\leqslant t\leqslant\frac{\pi}{2} $$ 围成的平面区域，求 $D$ 绕 $x$ 轴旋
+136 2016-21 解答题 | 已知 $f(x)$ 在 $[0,\frac{3\pi}{2}]$ 上连续，在 $(0,\frac{3\pi}{2})$ 内是函数 $$ \frac{\cos x}{2x-3\pi} $$ 的一个原函数，且 $f(0)=0$。 （1）求 $f(x)$ 在区间 $[0,\frac{3\pi}{2}]$ 上的平均值； （2）证明 $f
+137 2016-22 解答题 | 设矩阵 $$ \boldsymbol{A}= \begin{pmatrix} 1&1&1-a\\ 1&0&a\\ a+1&1&a+1 \end{pmatrix}, \qquad \boldsymbol{\beta}= \begin{pmatrix} 0\\ 1\\ 2a-2 \end{pmatrix}, $$ 且方程组 $\bo
+138 2016-23 解答题 | 已知矩阵 $$ \boldsymbol{A}= \begin{pmatrix} 0&-1&1\\ 2&-3&0\\ 0&0&0 \end{pmatrix}. $$ （1）求 $\boldsymbol{A}^{99}$； （2）设 $3$ 阶矩阵 $\boldsymbol{B}=(\boldsymbol{\alpha}_{1},\
+139 2017-1  选择题 | 若函数 $$ f(x)= \begin{cases} \frac{1-\cos\sqrt{x}}{ax}, & x>0,\\ b, & x\le 0 \end{cases} $$ 在 $x=0$ 处连续，则（ ） ᐸA. $ab=\frac{1}{2}$ ᐧ B. $ab=-\frac{1}{2}$ ᐧ C. $ab=0$ ᐧ D. $ab=2$ᐳ
+140 2017-2  选择题 | 设二阶可导函数 $f(x)$ 满足 $$ f(1)=f(-1)=1,\qquad f(0)=-1,\qquad f''(x)>0, $$ 则（ ） ᐸA. $\int_{-1}^{1} f(x)dx>0$ ᐧ B. $\int_{-1}^{1} f(x)dx<0$ ᐧ C. $\int_{-1}^{0} f(x)dx>\int_{0}^ ᐧ D. $\int_{-1}^{0} f(x)dx<\int_{0}^ᐳ
+141 2017-3  选择题 | 设数列 $\{x_n\}$ 收敛，则（ ） ᐸA. 当 $\lim\limits_{n\to\infty}\sin ᐧ B. 当 $\lim\limits_{n\to\infty}(x_n ᐧ C. 当 $\lim\limits_{n\to\infty}(x_n ᐧ D. 当 $\lim\limits_{n\to\infty}(x_nᐳ
+142 2017-4  选择题 | 微分方程的特解可设为（ ） ᐸA. $Ae^{2x}+e^{2x}(B\cos2x+C\sin2x ᐧ B. $Axe^{2x}+e^{2x}(B\cos2x+C\sin2 ᐧ C. $Ae^{2x}+xe^{2x}(B\cos2x+C\sin2 ᐧ D. $Axe^{2x}+e^{2x}(B\cos2x+C\sin2ᐳ
+143 2017-5  选择题 | 设 $f(x,y)$ 具有一阶偏导数，且对任意 $(x,y)$，都有 $$ \frac{\partial f}{\partial x}>0,\qquad \frac{\partial f}{\partial y}<0, $$ 则（ ） ᐸA. $f(0,0)>f(1,1)$ ᐧ B. $f(0,0)<f(1,1)$ ᐧ C. $f(0,1)>f(1,0)$ ᐧ D. $f(0,1)<f(1,0)$ᐳ
+144 2017-6  选择题 | 甲、乙两人赛跑。计时开始时，甲在乙前方 $10m$ 处。图中实线表示甲的速度曲线 $v=v_1(t)$，虚线表示乙的速度曲线 $v=v_2(t)$。三块阴影部分面积的数值依次为 $10,20,3$。计时开始后乙追上甲的时刻记为 $t_0$，则（ ） ᐸA. $t_0=10$ ᐧ B. $15<t_0<20$ ᐧ C. $t_0=25$ ᐧ D. $t_0>25$ᐳ
+145 2017-7  选择题 | 设 $\boldsymbol A$ 为三阶矩阵，$\boldsymbol P=(\boldsymbol\alpha_1,\boldsymbol\alpha_2,\boldsymbol\alpha_3)$ 为可逆矩阵，且 $$ \boldsymbol P^{-1}\boldsymbol A\boldsymbol P= \begin ᐸA. $\boldsymbol\alpha_1+\boldsymbo ᐧ B. $\boldsymbol\alpha_2+2\boldsymb ᐧ C. $\boldsymbol\alpha_2+\boldsymbo ᐧ D. $\boldsymbol\alpha_1+2\boldsymbᐳ
+146 2017-8  选择题 | 设矩阵 $$ \boldsymbol A= \begin{pmatrix} 2&0&0\\ 0&2&1\\ 0&0&1 \end{pmatrix},\quad \boldsymbol B= \begin{pmatrix} 2&1&0\\ 0&2&0\\ 0&0&1 \end{pmatrix},\quad \boldsymbol  ᐸA. $\boldsymbol A$ 与 $\boldsymbol  ᐧ B. $\boldsymbol A$ 与 $\boldsymbol  ᐧ C. $\boldsymbol A$ 与 $\boldsymbol  ᐧ D. $\boldsymbol A$ 与 $\boldsymbol ᐳ
+147 2017-9  填空题 | 曲线 $$ y=x(1+\arcsin\frac{2}{x}) $$ 的斜渐近线方程为 ______
+148 2017-10 填空题 | 设函数 $y=y(x)$ 由参数方程 $$ \begin{cases} x=t+e^t,\\ y=\sin t \end{cases} $$ 确定，则 $$ .\frac{d^2y}{dx^2}|_{t=0}= $$
+149 2017-11 填空题 | $$ \int_{0}^{+\infty}\frac{\ln(1+x)}{(1+x)^2}dx= $$
+150 2017-12 填空题 | 设函数 $f(x,y)$ 具有一阶连续偏导数，且 $$ df(x,y)=ye^ydx+x(1+y)e^ydy,\qquad f(0,0)=0, $$ 则 $f(x,y)=$ ______
+151 2017-13 填空题 | $$ \int_0^1dy\int_y^1\frac{\tan x}{x}dx= $$
+152 2017-14 填空题 | 设矩阵 $$ \boldsymbol A= \begin{pmatrix} 4&1&-2\\ 1&2&a\\ 3&1&-1 \end{pmatrix} $$ 的一个特征向量为 $$ \begin{pmatrix} 1\\ 1\\ 2 \end{pmatrix}, $$ 则 $a=$ ______
+153 2017-15 解答题 | 求极限 $$ \lim_{x\to0^+} \frac{\displaystyle\int_0^x\sqrt{x-t}e^tdt}{\sqrt{x^3}}. $$
+154 2017-16 解答题 | 设函数 $f(u,v)$ 具有二阶连续偏导数， $$ y=f(e^x,\cos x), $$ 求 $$ .\frac{dy}{dx}|_{x=0}, \qquad .\frac{d^2y}{dx^2}|_{x=0}. $$
+155 2017-17 解答题 | 求 $$ \lim_{n\to\infty}\sum_{k=1}^n\frac{k}{n^2}\ln(1+\frac{k}{n}). $$
+156 2017-18 解答题 | 已知函数 $y(x)$ 由方程 $$ x^3+y^3-3x+3y-2=0 $$ 确定，求 $y(x)$ 的极值。
+157 2017-19 解答题 | 设函数 $f(x)$ 在区间 $[0,1]$ 上具有二阶导数，且 $$ f(1)>0,\qquad \lim_{x\to0^+}\frac{f(x)}{x}<0. $$ 证明： （1）方程 $f(x)=0$ 在区间 $(0,1)$ 内至少存在一个实根； （2）方程 $$ f(x)f''(x)+(f'(x))^2=0 $$ 在区间
+158 2017-20 解答题 | 已知平面区域 $$ D=\{(x,y)\mid x^2+y^2\le2y\}, $$ 计算二重积分 $$ \iint_D(x+1)^2dxdy. $$
+159 2017-21 解答题 | 设 $y(x)$ 是区间 $(0,\frac32)$ 内的可导函数，且 $y(1)=0$。点 $P$ 是曲线 $L:y=y(x)$ 上任意一点，$L$ 在点 $P$ 处的切线与 $y$ 轴相交于点 $(0,Y_p)$，法线与 $x$ 轴相交于点 $(X_p,0)$。若 $X_p=Y_p$，求 $L$ 上点的坐标 $(x,y)$ 
+160 2017-22 解答题 | 设 $3$ 阶矩阵 $$ \boldsymbol A=(\boldsymbol\alpha_1,\boldsymbol\alpha_2,\boldsymbol\alpha_3) $$ 有 $3$ 个不同的特征值，且 $$ \boldsymbol\alpha_3=\boldsymbol\alpha_1+2\boldsymbol\a
+161 2017-23 解答题 | 设二次型 $$ f(x_1,x_2,x_3) = 2x_1^2-x_2^2+ax_3^2 +2x_1x_2-8x_1x_3+2x_2x_3 $$ 在正交变换 $\boldsymbol X=\boldsymbol Q\boldsymbol Y$ 下的标准型为 $$ \lambda_1y_1^2+\lambda_2y_2^2. $$
+162 2018-1  选择题 | 若 $$ \lim_{x \to 0}(e^{x}+a x^{2}+b x)^{\frac{1}{x^{2}}}=1, $$ 则 $()$ > ᐸA. $a=\frac{1}{2},b=-1$ ᐧ B. $a=-\frac{1}{2},b=-1$ ᐧ C. $a=\frac{1}{2},b=1$ ᐧ D. $a=-\frac{1}{2},b=1$ᐳ
+163 2018-2  选择题 | 下列函数中，在 $x=0$ 处不可导的是 $()$ > ᐸA. $f(x)=|x|\sin |x|$ ᐧ B. $f(x)=|x|\sin \sqrt{|x|}$ ᐧ C. $f(x)=\cos |x|$ ᐧ D. $f(x)=\cos \sqrt{|x|}$ᐳ
+164 2018-3  选择题 | 设 $$ f(x)= \begin{cases} -1, & x<0,\\ 1, & x\geq 0, \end{cases} \qquad g(x)= \begin{cases} 2-a x, & x\leq -1,\\ x, & -1<x<0,\\ x-b, & x\geq 0. \end{cases} $$ 若 $f(x) ᐸA. $a=3,b=1$ ᐧ B. $a=3,b=2$ ᐧ C. $a=-3,b=1$ ᐧ D. $a=-3,b=2$ᐳ
+165 2018-4  选择题 | 设函数 $f(x)$ 在 $[0,1]$ 上二阶可导，且 $$ \int_0^1 f(x)dx=0, $$ 则 $()$ > ᐸA. 当 $f'(x)<0$ 时，$f(\frac12)<0$ ᐧ B. 当 $f''(x)<0$ 时，$f(\frac12)<0$ ᐧ C. 当 $f'(x)>0$ 时，$f(\frac12)<0$ ᐧ D. 当 $f''(x)>0$ 时，$f(\frac12)<0$ᐳ
+166 2018-5  选择题 | 设 $$ M=\int_{-\frac{\pi}{2}}^{\frac{\pi}{2}}\frac{(1+x)^2}{1+x^2}dx,\quad N=\int_{-\frac{\pi}{2}}^{\frac{\pi}{2}}\frac{1+x}{e^x}dx,\quad K=\int_{-\frac{\pi}{2}}^{\fr ᐸA. $M>N>K$ ᐧ B. $M>K>N$ ᐧ C. $K>M>N$ ᐧ D. $K>N>M$ᐳ
+167 2018-6  选择题 | $$ \int_{-1}^{0}dx\int_{-x}^{2-x^{2}}(1-xy)dy + \int_{0}^{1}dx\int_{x}^{2-x^{2}}(1-xy)dy = () $$ > ᐸA. $\frac{5}{3}$ ᐧ B. $\frac{5}{6}$ ᐧ C. $\frac{7}{3}$ ᐧ D. $\frac{7}{6}$ᐳ
+168 2018-7  选择题 | 下列矩阵中，与矩阵 $$ \begin{pmatrix} 1&1&0\\ 0&1&1\\ 0&0&1 \end{pmatrix} $$ 相似的是 $()$ > ᐸA. $\begin{pmatrix}1&1&-1\\0&1&1\\ ᐧ B. $\begin{pmatrix}1&0&-1\\0&1&1\\ ᐧ C. $\begin{pmatrix}1&1&-1\\0&1&0\\ ᐧ D. $\begin{pmatrix}1&0&-1\\0&1&0\\ᐳ
+169 2018-8  选择题 | 设 $\boldsymbol A,\boldsymbol B$ 为 $n$ 阶矩阵，记 $r(\boldsymbol X)$ 为矩阵 $\boldsymbol X$ 的秩，$(\boldsymbol X,\boldsymbol Y)$ 表示分块矩阵，则 $()$ > ᐸA. $r(\boldsymbol A,\boldsymbol A\ ᐧ B. $r(\boldsymbol A,\boldsymbol B\ ᐧ C. $r(\boldsymbol A,\boldsymbol B) ᐧ D. $r(\boldsymbol A,\boldsymbol B)ᐳ
+170 2018-9  填空题 | $$ \lim_{x\to+\infty}x^2[\arctan(x+1)-\arctan x] = \underline{\qquad} $$ >
+171 2018-10 填空题 | 曲线 $$ y=x^2+2\ln x $$ 在其拐点处的切线方程是 $\underline{\qquad}$ >
+172 2018-11 填空题 | $$ \int_{5}^{+\infty}\frac{1}{x^2-4x+3}dx = \underline{\qquad} $$ >
+173 2018-12 填空题 | 曲线 $$ \begin{cases} x=\cos^3 t,\\ y=\sin^3 t \end{cases} $$ 在 $t=\frac{\pi}{4}$ 对应点处的曲率为 $\underline{\qquad}$ >
+174 2018-13 填空题 | 设函数 $z=z(x,y)$ 由方程 $$ \ln z+e^{z-1}=xy $$ 确定，则 $$ .\frac{\partial z}{\partial x}|_{(2,\frac12)} = \underline{\qquad} $$ >
+175 2018-14 填空题 | 设 $\boldsymbol A$ 为 $3$ 阶矩阵，$\boldsymbol\alpha_1,\boldsymbol\alpha_2,\boldsymbol\alpha_3$ 为线性无关的向量组。若 $$ \boldsymbol A\boldsymbol\alpha_1=2\boldsymbol\alpha_1+\bolds
+176 2018-15 解答题 | 求不定积分 $$ \int e^{2x}\arctan\sqrt{e^x-1}dx. $$
+177 2018-16 解答题 | 已知连续函数 $f(x)$ 满足 $$ \int_0^x f(t)dt+\int_0^x t f(x-t)dt=ax^2. $$ （1）求 $f(x)$； （2）若 $f(x)$ 在区间 $[0,1]$ 上的平均值为 $1$，求 $a$ 的值。
+178 2018-17 解答题 | 设平面区域 $D$ 由曲线 $$ \begin{cases} x=t-\sin t,\\ y=1-\cos t \end{cases} \qquad 0\leq t\leq 2\pi $$ 与 $x$ 轴围成，计算二重积分 $$ \iint_D(x+2y)dxdy. $$
+179 2018-18 解答题 | 已知常数 $k\geq \ln2-1$。证明： $$ (x-1)(x-\ln^2x+2k\ln x-1)\geq 0,\qquad x>0. $$
+180 2018-19 解答题 | 将长为 $2m$ 的铁丝分成三段，依次围成圆、正方形与正三角形。问：三个图形的面积和是否存在最小值？若存在，求出最小值。
+181 2018-20 解答题 | 已知曲线 $$ L:y=\frac49x^2\quad (x\geq 0), $$ 点 $O(0,0)$，点 $A(0,1)$。设 $P$ 是 $L$ 上的动点，$S$ 是直线 $OA$ 与直线 $AP$ 及曲线 $L$ 所围成图形的面积。若 $P$ 运动到点 $(3,4)$ 时沿 $x$ 轴正向的速度是 $4$，求此时 $S$
+182 2018-21 解答题 | 设数列 $\{x_n\}$ 满足： $$ x_1>0,\qquad x_n e^{x_{n+1}}=e^{x_n}-1\quad(n=1,2,\cdots). $$ 证明 $\{x_n\}$ 收敛，并求 $$ \lim_{n\to\infty}x_n. $$
+183 2018-22 解答题 | 设实二次型 $$ f(x_1,x_2,x_3) = (x_1-x_2+x_3)^2+(x_2+x_3)^2+(x_1+a x_3)^2, $$ 其中 $a$ 是参数。 （1）求 $f(x_1,x_2,x_3)=0$ 的解； （2）求 $f(x_1,x_2,x_3)$ 的规范形。
+184 2018-23 解答题 | 已知 $a$ 是常数，且矩阵 $$ \boldsymbol A= \begin{pmatrix} 1&2&a\\ 1&3&0\\ 2&7&-a \end{pmatrix} $$ 可经初等列变换化为矩阵 $$ \boldsymbol B= \begin{pmatrix} 1&a&2\\ 0&1&1\\ -1&1&1 \end{pm
+185 2019-1  选择题 | 当 $x\to 0$ 时，若 $x-\tan x$ 与 $x^{k}$ 为同阶无穷小量，则 $k=$ ᐸA. $1$ ᐧ B. $2$ ᐧ C. $3$ ᐧ D. $4$ᐳ
+186 2019-2  选择题 | 函数 $y=x\sin x+2\cos x(0<x<2\pi)$ 的拐点为 ᐸA. $(\frac{\pi}{2},\frac{\pi}{2})$ ᐧ B. $(0,2)$ ᐧ C. $(\pi,-2)$ ᐧ D. $(\frac{3\pi}{2},-\frac{3\pi}{2ᐳ
+187 2019-3  选择题 | 下列反常积分发散的是 ᐸA. $\int_{0}^{+\infty}xe^{-x}dx$ ᐧ B. $\int_{0}^{+\infty}xe^{-x^{2}}d ᐧ C. $\int_{0}^{+\infty}\frac{\arcta ᐧ D. $\int_{0}^{+\infty}\frac{x}{1+xᐳ
+188 2019-4  选择题 | 微分方程 $y''+ay'+by=ce^{x}$ 的通解为 $$ y=(C_{1}+C_{2}x)e^{-x}+e^{x}, $$ 则 $a,b,c$ 的值为 ᐸA. $1,0,1$ ᐧ B. $1,0,2$ ᐧ C. $2,1,3$ ᐧ D. $2,1,4$ᐳ
+189 2019-5  选择题 | 已知积分区域 $$ D=\{(x,y)\mid |x|+|y|\le \frac{\pi}{2}\}, $$ 且 $$ I_{1}=\iint_{D}\sqrt{x^{2}+y^{2}}dxdy, $$ $$ I_{2}=\iint_{D}\sin\sqrt{x^{2}+y^{2}}dxdy, $$ $$ I_{3}=\iint ᐸA. $I_{3}<I_{2}<I_{1}$ ᐧ B. $I_{1}<I_{2}<I_{3}$ ᐧ C. $I_{2}<I_{1}<I_{3}$ ᐧ D. $I_{2}<I_{3}<I_{1}$ᐳ
+190 2019-6  选择题 | 已知 $f(x),g(x)$ 二阶可导且在 $x=a$ 处连续，则 $f(x),g(x)$ 相切于 $a$ 且曲率相等是 $$ \lim_{x\to a}\frac{f(x)-g(x)}{(x-a)^2}=0 $$ 的 ᐸA. 充分非必要条件 ᐧ B. 充分必要条件 ᐧ C. 必要非充分条件 ᐧ D. 既非充分又非必要条件ᐳ
+191 2019-7  选择题 | 设 $\boldsymbol{A}$ 是四阶矩阵，$\boldsymbol{A}^{*}$ 是 $\boldsymbol{A}$ 的伴随矩阵。若线性方程组 $$ \boldsymbol{A}\boldsymbol{x}=\boldsymbol{0} $$ 的基础解系中只有 $2$ 个向量，则 $\boldsymbol{A}^{* ᐸA. $0$ ᐧ B. $1$ ᐧ C. $2$ ᐧ D. $3$ᐳ
+192 2019-8  选择题 | 设 $\boldsymbol{A}$ 是 $3$ 阶实对称矩阵，$\boldsymbol{E}$ 是 $3$ 阶单位矩阵。若 $$ \boldsymbol{A}^{2}+\boldsymbol{A}=2\boldsymbol{E},\qquad |\boldsymbol{A}|=4, $$ 则二次型 $\boldsymbol{X ᐸA. $y_{1}^{2}+y_{2}^{2}+y_{3}^{2}$ ᐧ B. $y_{1}^{2}+y_{2}^{2}-y_{3}^{2}$ ᐧ C. $y_{1}^{2}-y_{2}^{2}-y_{3}^{2}$ ᐧ D. $-y_{1}^{2}-y_{2}^{2}-y_{3}^{2}ᐳ
+193 2019-9  填空题 | $$ \lim_{x\to 0}(x+2^{x})^{\frac{2}{x}}= $$
+194 2019-10 填空题 | 曲线 $$ \begin{cases} x=t-\sin t,\\ y=1-\cos t \end{cases} $$ 在对应点 $t=\frac{3\pi}{2}$ 处切线在轴上的截距为
+195 2019-11 填空题 | 设函数 $f(u)$ 可导，$z=yf(\frac{y^{2}}{x})$，则 $$ 2x\frac{\partial z}{\partial x}+y\frac{\partial z}{\partial y}= $$
+196 2019-12 填空题 | 函数 $y=\ln\cos x(0\le x\le \frac{\pi}{6})$ 的弧长为
+197 2019-13 填空题 | 已知函数 $$ f(x)=x\int_1^x\frac{\sin t^2}{t}dt, $$ 则 $$ \int_0^1f(x)dx= $$
+198 2019-14 填空题 | 已知矩阵 $$ \boldsymbol{A}= \begin{pmatrix} 1&-1&0&0\\ -2&1&-1&1\\ 3&-2&2&-1\\ 0&0&3&4 \end{pmatrix}, $$ $A_{ij}$ 表示 $\boldsymbol{A}$ 中 $(i,j)$ 元的代数余子式，则 $$ A_{11}-A_{12
+199 2019-15 解答题 | 已知 $$ f(x)= \begin{cases} x^{2x}, & x>0,\\ xe^x+1, & x\le 0, \end{cases} $$ 求 $f(x)$ 的极值。
+200 2019-16 解答题 | 求不定积分 $$ \int\frac{3x+6}{(x-1)^2(x^2+x+1)}dx. $$
+201 2019-17 解答题 | $y=y(x)$ 是微分方程 $$ y'-xy=\frac{1}{2\sqrt{x}}e^{x^2/2} $$ 满足 $y(1)=\sqrt e$ 的特解。 （1）求 $y=y(x)$； （2）$D=\{(x,y)\mid 1\le x\le2,0\le y\le y(x)\}$，求平面区域 $D$ 绕 $x$ 轴旋转成的旋转体
+202 2019-18 解答题 | 已知平面区域 $D$ 满足 $$ |x|\le y,\qquad (x^2+y^2)^3\le y^4, $$ 求 $$ \iint_D\frac{x+y}{\sqrt{x^2+y^2}}dxdy. $$
+203 2019-19 解答题 | 设 $n$ 为正整数，记 $S_n$ 为曲线 $$ y=e^{-x}\sin x\qquad (0\le x\le n\pi) $$ 与 $x$ 轴之间图形的面积。求 $S_n$，并求 $\lim_{n\to\infty}S_n$。
+204 2019-20 解答题 | 已知函数 $u(x,y)$ 满足 $$ 2\frac{\partial^{2}u}{\partial x^{2}} -2\frac{\partial^{2}u}{\partial y^{2}} +3\frac{\partial u}{\partial x} +3\frac{\partial u}{\partial y}=0. $
+205 2019-21 解答题 | 已知函数 $f(x)$ 在 $[0,1]$ 上具有二阶导数，且 $$ f(0)=0,\qquad f(1)=1,\qquad \int_0^1f(x)dx=1. $$ 证明： （1）存在 $\xi\in(0,1)$，使得 $f'(\xi)=0$； （2）存在 $\eta\in(0,1)$，使得 $f''(\eta)<-2$。
+206 2019-22 解答题 | 已知向量组 $$ (I)\quad \boldsymbol{\alpha}_{1}= \begin{pmatrix}1\\1\\4\end{pmatrix}, \quad \boldsymbol{\alpha}_{2}= \begin{pmatrix}1\\0\\4\end{pmatrix}, \quad \boldsymbol
+207 2019-23 解答题 | 已知矩阵 $$ \boldsymbol{A}= \begin{pmatrix} -2&-2&1\\ 2&x&-2\\ 0&0&-2 \end{pmatrix}, \qquad \boldsymbol{B}= \begin{pmatrix} 2&1&0\\ 0&-1&0\\ 0&0&y \end{pmatrix} $$ 相似。 （
+208 2020-1  选择题 | 当 $x \to 0^{+}$ 时，下列无穷小量中阶最高的是 ᐸA. $\int_{0}^{x}{( e^{t^{2}} - 1 ) ᐧ B. $\int_{0}^{x}{\ln ( 1 + \sqrt{t ᐧ C. $\int_{0}^{\sin x}{\sin t^{2} ~ ᐧ D. $\int_{0}^{1-\cos x}{\sqrt{\sinᐳ 〖KP:等价无穷小与无穷小阶的比较；变上限积分的等价估计；基本等价式：$e^u-1\sim u$，$\ln(1+u)\sim u$，$\sin u\sim u$，$1-\cos x\sim〗
+209 2020-2  选择题 | 函数 $f( x ) = \frac{e^{\frac{1}{x-1}} \ln | 1+x |}{( e^{x} - 1 )( x-2 )}$ 的第二类间断点的个数为 ᐸA. $1$ 个 ᐧ B. $2$ 个 ᐧ C. $3$ 个 ᐧ D. $4$ 个ᐳ 〖KP:函数间断点的判定；可去间断点与第二类间断点；等价无穷小 $\ln(1+x)\sim x$，$e^x-1\sim x$；指数函数 $e^{1/(x-1)}$ 在 $x=1$ 两侧的极〗
+210 2020-3  选择题 | $\int_{0}^{1}{\frac{\arcsin \sqrt{x}}{\sqrt{x( 1-x )}} ~d x} =$ ᐸA. $\frac{\pi^{2}}{4}$ ᐧ B. $\frac{\pi^{2}}{8}$ ᐧ C. $\frac{\pi}{4}$ ᐧ D. $\frac{\pi}{8}$ᐳ 〖KP:定积分换元法；反三角函数求导；根式积分中令 $u=\arcsin\sqrt{x}$ 的常用换元。〗
+211 2020-4  选择题 | 已知函数 $f( x ) = x^{2} \ln ( 1-x )$，当 $n \geq 3$ 时，$f^{( n )}( 0 ) =$ ᐸA. $-\frac{n!}{n-2}$ ᐧ B. $\frac{n!}{n-2}$ ᐧ C. $-\frac{( n-2 )!}{n}$ ᐧ D. $\frac{( n-2 )!}{n}$ᐳ 〖KP:麦克劳林展开；幂级数系数与高阶导数的关系；公式：若 $f(x)=\sum a_nx^n$，则 $f^{(n)}(0)=n!a_n$。〗
+212 2020-5  选择题 | 关于函数 $$ f(x,y)= \begin{cases} xy, & xy\ne 0,\\ x, & y=0,\\ y, & x=0, \end{cases} $$ 给出下列结论： 1. $.\frac{\partial f}{\partial x}|_{(0,0)}=1$ 2. $.\frac{\partial^2 f}{\ ᐸA. $4$ ᐧ B. $3$ ᐧ C. $2$ ᐧ D. $1$ᐳ 〖KP:多元函数偏导数的定义；二阶混合偏导数存在性的判定；二元函数极限与累次极限；分段函数在坐标轴附近的极限分析。〗
+213 2020-6  选择题 | 设函数 $f( x )$ 在区间 $[ -2,2 ]$ 上可导，且 $f^{\prime}( x ) > f( x ) > 0$，则 ᐸA. $\frac{f( -2 )}{f( -1 )} > 1$ ᐧ B. $\frac{f( 0 )}{f( -1 )} > e$ ᐧ C. $\frac{f( 1 )}{f( -1 )} < e^{2} ᐧ D. $\frac{f( 2 )}{f( -1 )} < e^{3}ᐳ 〖KP:构造辅助函数；单调性判定；微分不等式 $f'(x)>f(x)$ 的处理；指数因子法。〗
+214 2020-7  选择题 | 设 4 阶矩阵 $\boldsymbol{A}=(a_{ij})$ 不可逆，$a_{12}$ 的代数余子式 $A_{12}\ne 0$。记 $\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\boldsymbol{\alpha}_3,\boldsymbol{\alpha}_4$ 为矩阵 $ ᐸA. $\boldsymbol{x}=k_1\boldsymbol{ ᐧ B. $\boldsymbol{x}=k_1\boldsymbol{ ᐧ C. $\boldsymbol{x}=k_1\boldsymbol{ ᐧ D. $\boldsymbol{x}=k_1\boldsymbol{ᐳ 〖KP:矩阵秩与伴随矩阵的性质；伴随矩阵公式 $\boldsymbol{A}^\boldsymbol{A}=|\boldsymbol{A}|\boldsymbol{I}$；代数余子式与矩阵〗
+215 2020-8  选择题 | 设 $\boldsymbol{A}$ 为 3 阶矩阵，$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2$ 为 $\boldsymbol{A}$ 的属于特征值 $1$ 的线性无关特征向量，$\boldsymbol{\alpha}_3$ 为 $\boldsymbol{A}$ 的属于特征值 $- ᐸA. $(\boldsymbol{\alpha}_1+\boldsy ᐧ B. $(\boldsymbol{\alpha}_1+\boldsy ᐧ C. $(\boldsymbol{\alpha}_1+\boldsy ᐧ D. $(\boldsymbol{\alpha}_1+\boldsyᐳ 〖KP:特征向量与相似对角化；相似变换 $\boldsymbol{P}^{-1}\boldsymbol{A}\boldsymbol{P}$ 中 $\boldsymbol{P}$ 的列向量含〗
+216 2020-9  填空题 | 设 $$ \begin{cases} x=\sqrt{t^2+1},\\ y=\ln(t+\sqrt{t^2+1}), \end{cases} $$ 则 $.\frac{d^2y}{dx^2}|_{t=1}=$ 〖KP:参数方程求导；二阶导数公式：〗
+217 2020-10 填空题 | $\int_{0}^{1}{d y \int_{\sqrt{y}}^{1}{\sqrt{x^{3}+1} ~d x}} =$ 〖KP:二重积分交换积分次序；平面区域表示；一元积分换元法。〗
+218 2020-11 填空题 | 设 $z = \arctan [ xy + \sin ( x+y ) ]$，则 $. d z |_{( 0,\pi )} =$ 〖KP:多元复合函数微分法；全微分公式；反正切函数求导。〗
+219 2020-12 填空题 | 斜边长为 $2a$ 的等腰直角三角形平板铅直地沉没在水中，且斜边与水面相齐。记重力加速度为 $g$，水的密度为 $\rho$，则该平板一侧所受的水压力为 〖KP:定积分的物理应用；液体静压力计算；三角形相似与截面宽度函数。〗
+220 2020-13 填空题 | 设 $y = y( x )$ 满足 $y^{\prime\prime} + 2y^{\prime} + y = 0$，且 $y( 0 ) = 0$，$y^{\prime}( 0 ) = 1$，则 $\int_{0}^{+\infty}{y( x ) ~d x} =$ 〖KP:二阶常系数齐次线性微分方程；重根情形通解；广义积分计算。〗
+221 2020-14 填空题 | 行列式 $$ \begin{vmatrix} a&0&-1&1\\ 0&a&1&-1\\ -1&1&a&0\\ 1&-1&0&a \end{vmatrix} = $$ ### 3. 解答题 〖KP:行列式计算；分块矩阵；形如 $\begin{pmatrix}C&D\\D&C\end{pmatrix}$ 的矩阵行列式；矩阵特征值与行列式的关系。〗
+222 2020-15 解答题 | 求曲线 $y = \frac{x^{1+x}}{( 1+x )^{x}} ( x>0 )$ 的斜渐近线方程。 〖KP:斜渐近线的求法；对数化简；泰勒展开：〗
+223 2020-16 解答题 | 已知函数 $f( x )$ 连续且 $\lim\limits_{x\to 0}{\frac{f( x )}{x}} = 1$，$g( x )=\int_{0}^{1}{f( xt ) ~d t}$，求 $g^{\prime}( x )$，并证明 $g^{\prime}( x )$ 在 $x=0$ 处连续。 〖KP:含参积分函数；变量替换；导数定义；极限与积分的综合应用；函数在一点处连续性的证明。〗
+224 2020-17 解答题 | 求函数 $f( x,y )=x^{3}+8y^{3}-xy$ 的极值。 〖KP:多元函数驻点；Hessian 判别法；二元函数极值判定。〗
+225 2020-18 解答题 | 设函数 $f( x )$ 的定义域为 $( 0,+\infty )$ 且满足 $$ 2f( x )+x^{2}f( \frac{1}{x} )=\frac{x^{2}+2x}{\sqrt{1+x^{2}}} $$ 求 $f( x )$，并求曲线 $y=f( x )$，$y=\frac{1}{2}$，$y=\frac{\sqrt{ 〖KP:函数方程求解；变量替换 $x\mapsto \frac1x$；曲线围成图形的旋转体体积；壳层法；三角换元。〗
+226 2020-19 解答题 | 设平面区域 $D$ 由直线 $x=1$，$x=2$，$y=x$ 与 $x$ 轴围成。计算 $$ \iint_{D}{\frac{\sqrt{x^{2}+y^{2}}}{x} ~d x ~d y} $$ 〖KP:二重积分区域分析；极坐标变换；积分区域边界在极坐标中的表示；三角函数积分 $\int \sec^3\thetad\theta$。〗
+227 2020-20 解答题 | 设函数 $f( x )=\int_{1}^{x}{e^{t^{2}} ~d t}$。 1. 证明：存在 $\xi \in ( 1,2 )$，使得 $f( \xi )=( 2-\xi )e^{\xi^{2}}$； 2. 证明：存在 $\eta \in ( 1,2 )$，使得 $f( 2 )=\ln 2 \cdot \eta e^{ 〖KP:变上限积分函数；零点存在定理；柯西中值定理；构造辅助函数证明存在性命题。〗
+228 2020-21 解答题 | 设函数 $f( x )$ 可导，且 $f^{\prime}( x )>0$，曲线 $y=f( x )( x\geq 0 )$ 经过坐标原点 $O$。$M$ 为其上任意一点，点 $M$ 处的切线与 $x$ 轴交于点 $T$，又 $MP$ 垂直 $x$ 轴于点 $P$。已知由曲线 $y=f( x )$、直线 $MP$ 以及 $x$  〖KP:曲线切线方程；几何面积与定积分；可降阶微分方程；分离变量法；曲线族常数的确定。〗
+229 2020-22 解答题 | 设二次型 $$ f(x_1,x_2,x_3)=x_1^2+x_2^2+x_3^2+2ax_1x_2+2ax_1x_3+2ax_2x_3 $$ 经过可逆线性变换 $$ \begin{pmatrix} x_1\\ x_2\\ x_3 \end{pmatrix} = \boldsymbol{P} \begin{pmatrix} y_1 〖KP:二次型矩阵表示；合同变换与惯性定理；二次型的秩与正惯性指数；配方法构造可逆线性变换。〗
+230 2020-23 解答题 | 设 $\boldsymbol{A}$ 为 2 阶矩阵，$\boldsymbol{P}=(\boldsymbol{\alpha},\boldsymbol{A}\boldsymbol{\alpha})$，其中 $\boldsymbol{\alpha}$ 是非零向量且不是 $\boldsymbol{A}$ 的特征向量。 1. 证明 $ 〖KP:矩阵特征向量的定义；可逆矩阵的判定；相似变换；矩阵多项式关系；二阶矩阵对角化判定。〗
+231 2021-1  选择题 | 当 $x \to 0$ 时，$\int_{0}^{x^{2}} (e^{t}-1) d t$ 是 $x^{7}$ 的 ᐸA. 低阶无穷小 ᐧ B. 等价无穷小 ᐧ C. 高阶无穷小 ᐧ D. 同阶但非等价无穷小ᐳ 〖KP:无穷小的比较与阶的判定；等价无穷小 $e^t-1\sim t$；变上限积分的渐近估计。〗
+232 2021-2  选择题 | 函数 $$ f(x)= \begin{cases} \frac{e^x-1}{x}, & x\ne 0,\\ 1, & x=0 \end{cases} $$ 在 $x=0$ 处 ᐸA. 连续且取极大值 ᐧ B. 连续且取极小值 ᐧ C. 可导且导数为 $0$ ᐧ D. 可导且导数不为 $0$ᐳ 〖KP:函数在一点连续的判定；导数定义；指数函数的泰勒展开或重要极限。〗
+233 2021-3  选择题 | 有一圆柱体底面半径与高随时间变化的速率分别为 $2 cm/s$、$-3 cm/s$。当底面半径为 $10 cm$，高为 $5 cm$ 时，圆柱体的体积与表面积随时间变化的速率分别为 ᐸA. $125\pi cm^{3}/s$，$40\pi cm^{2} ᐧ B. $125\pi cm^{3}/s$，$-40\pi cm^{2 ᐧ C. $-100\pi cm^{3}/s$，$40\pi cm^{2 ᐧ D. $-100\pi cm^{3}/s$，$-40\pi cm^{ᐳ 〖KP:相关变化率；多元函数的全微分与链式法则；圆柱体体积、表面积公式。〗
+234 2021-4  选择题 | 设函数 $f(x)=ax-b\ln x$，其中 $a>0$。若 $f(x)$ 有两个零点，则 $\frac{b}{a}$ 的取值范围是 ᐸA. $(e,+\infty)$ ᐧ B. $(0,e)$ ᐧ C. $(0,\frac{1}{e})$ ᐧ D. $(\frac{1}{e},+\infty)$ᐳ 〖KP:函数零点个数的判定；导数与单调性、极值；含对数函数的参数讨论。〗
+235 2021-5  选择题 | 设函数 $f(x)=\sec x$ 在 $x=0$ 处的 2 次泰勒多项式为 $1+ax+bx^2$，则 ᐸA. $a=1$，$b=-\frac{1}{2}$ ᐧ B. $a=1$，$b=\frac{1}{2}$ ᐧ C. $a=0$，$b=-\frac{1}{2}$ ᐧ D. $a=0$，$b=\frac{1}{2}$ᐳ 〖KP:泰勒公式与泰勒多项式；三角函数的导数；二阶泰勒多项式系数的确定。〗
+236 2021-6  选择题 | 设函数 $f(x,y)$ 可微，且 $$ f(x+1,e^x)=x^2(x+1),\qquad f(x,x^2)=2x^2\ln x, $$ 则 $d f(1,1)=$ ᐸA. $dx+dy$ ᐧ B. $dx-dy$ ᐧ C. $dy$ ᐧ D. $-dy$ᐳ 〖KP:复合函数求导；二元函数的全微分；由不同参数曲线上的函数关系确定偏导数。〗
+237 2021-7  选择题 | 设函数 $f(x)$ 在区间 $[0,1]$ 上连续，则 $$ \int_{0}^{1} f(x)dx= $$ ᐸA. $\lim_{n \to \infty}\sum_{k=1}^ ᐧ B. $\lim_{n \to \infty}\sum_{k=1}^ ᐧ C. $\lim_{n \to \infty}\sum_{k=1}^ ᐧ D. $\lim_{n \to \infty}\sum_{k=1}^ᐳ 〖KP:定积分的黎曼和定义；等分求和与中点取样。〗
+238 2021-8  选择题 | 二次型 $$ f(x_1,x_2,x_3)=(x_1+x_2)^2+(x_2+x_3)^2-(x_3-x_1)^2 $$ 的正惯性指数与负惯性指数依次为 ᐸA. $2,0$ ᐧ B. $1,1$ ᐧ C. $2,1$ ᐧ D. $1,2$ᐳ 〖KP:二次型与实对称矩阵；二次型的矩阵表示；特征值与正、负惯性指数。〗
+239 2021-9  选择题 | 设 3 阶矩阵 $\boldsymbol{A}=(\boldsymbol{\alpha}_{1},\boldsymbol{\alpha}_{2},\boldsymbol{\alpha}_{3})$，$\boldsymbol{B}=(\boldsymbol{\beta}_{1},\boldsymbol{\beta}_{2},\bo ᐸA. $\boldsymbol{A}\boldsymbol{x}=0 ᐧ B. $\boldsymbol{A}^{T}\boldsymbol{ ᐧ C. $\boldsymbol{B}\boldsymbol{x}=0 ᐧ D. $\boldsymbol{B}^{T}\boldsymbol{ᐳ 〖KP:向量组的线性表示；矩阵分解；齐次线性方程组的解空间与转置矩阵。〗
+240 2021-10 选择题 | 已知矩阵 $$ \boldsymbol{A}=\begin{pmatrix} 1 & 0 & -1 \\ 2 & -1 & 1 \\ -1 & 2 & -5 \end{pmatrix}. $$ 若存在下三角可逆矩阵 $\boldsymbol{P}$ 和上三角可逆矩阵 $\boldsymbol{Q}$，使 $\boldsymbol ᐸA. $\begin{pmatrix}1 & 0 & 0 \0 &  ᐧ B. $\begin{pmatrix}1 & 0 & 0 \2 &  ᐧ C. $\begin{pmatrix}1 & 0 & 0 \2 &  ᐧ D. $\begin{pmatrix}1 & 0 & 0 \0 & ᐳ 〖KP:矩阵的初等变换；初等矩阵与矩阵乘法；下三角、上三角可逆矩阵；矩阵的等价标准形。〗
+241 2021-11 填空题 | $$ \int_{-\infty}^{+\infty} |x|3^{-x^2}dx= \underline{\hspace{6em}} $$ 〖KP:广义积分；偶函数积分；换元积分法；指数型积分的收敛性。〗
+242 2021-12 填空题 | 设函数 $y=y(x)$ 由参数方程 $$ \begin{cases} x=2e^t+t+1,\\ y=4(t-1)e^t+t^2 \end{cases} $$ 确定，则 $$ .\frac{d^2 y}{d x^2}|_{t=0}= \underline{\hspace{6em}} $$ 〖KP:参数方程确定的函数的一阶、二阶导数；参数求导法；复合函数求导。〗
+243 2021-13 填空题 | 设函数 $z=z(x,y)$ 由方程 $$ (x+1)z+y\ln z-\arctan(2xy)=1 $$ 确定，则 $$ .\frac{\partial z}{\partial x}|_{(0,2)}= \underline{\hspace{6em}} $$ 〖KP:隐函数的存在与求导；多元复合函数的偏导数；隐函数偏导公式。〗
+244 2021-14 填空题 | 已知函数 $$ f(t)=\int_{1}^{t} dx \int_{\sqrt{x}}^{1} \sin \frac{x}{y}dy, $$ 则 $$ f'(\frac{\pi}{2})= \underline{\hspace{18em}} $$ 〖KP:变上限积分求导；微积分基本定理；定积分换元法。〗
+245 2021-15 填空题 | 微分方程 $y'''-y=0$ 的通解 $$ y= \underline{\hspace{24em}} $$ 〖KP:常系数齐次线性微分方程；特征方程；共轭复根对应的实通解。〗
+246 2021-16 填空题 | 多项式 $$ f(x)=|\begin{array}{cccc} x & x & 1 & 2x \\ 1 & x & 2 & -1 \\ 2 & 1 & x & 1 \\ 2 & -1 & 1 & x \end{array}| $$ 中 $x^3$ 项的系数为 $\underline{\hspace{6em}}$ 〖KP:行列式按行（列）展开；多项式系数的提取；代数余子式。〗
+247 2021-17 解答题 | 求极限 $$ \lim_{x \to 0} (\frac{1+\int_{0}^{x} e^{t^{2}} d t}{e^{x}-1}-\frac{1}{\sin x}). $$ 〖KP:函数极限；等价无穷小与泰勒展开；变上限积分的渐近展开；通分处理相消型极限。〗
+248 2021-18 解答题 | 已知 $$ f(x)=\frac{x|x|}{1+x}, $$ 求 $f(x)$ 的凹凸性及渐近线。 〖KP:含绝对值函数的分段讨论；导数与凹凸性；垂直渐近线与斜渐近线。〗
+249 2021-19 解答题 | $f(x)$ 满足 $$ \int \frac{f(x)}{\sqrt{x}} dx=\frac{1}{6}x^{2}-x+C, $$ $L$ 为曲线 $y=f(x)$，其中 $4 \le x \le 9$。$L$ 的弧长为 $s$，$L$ 绕 $x$ 轴旋转一周所形成的曲面的面积为 $A$，求 $s$ 和 $A$。 〖KP:不定积分与被积函数的确定；平面曲线弧长公式；绕 $x$ 轴旋转的曲面面积公式；定积分计算。〗
+250 2021-20 解答题 | 函数 $y=y(x)$ 的微分方程 $$ xy'-6y=-6, $$ 满足 $y(\sqrt{3})=10$。 1. 求 $y(x)$； 2. $P$ 为曲线 $y=y(x)$ 上的一点，曲线在点 $P$ 的法线在 $y$ 轴上的截距为 $I_y$。为使 $I_y$ 最小，求 $P$ 的坐标。 〖KP:一阶线性微分方程；初值问题；曲线法线方程；函数最值。〗
+251 2021-21 解答题 | 曲线 $$ (x^{2}+y^{2})^{2}=x^{2}-y^{2}, $$ 其中 $x \ge 0,y \ge 0$，与 $x$ 轴围成的区域为 $D$，求 $$ \iint_{D} xy dxdy. $$ 〖KP:二重积分；极坐标变换；极坐标下的面积元；三角函数换元。〗
+252 2021-22 解答题 | 设矩阵 $$ \boldsymbol{A}=\begin{pmatrix} 2 & 1 & 0 \\ 1 & 2 & 0 \\ 1 & a & b \end{pmatrix} $$ 仅有两个不同的特征值。若 $\boldsymbol{A}$ 相似于对角矩阵，求 $a,b$ 的值，并求可逆矩阵 $\boldsymbol{P}$，使 〖KP:矩阵的特征值与特征向量；特征多项式；矩阵可对角化的充要条件；相似对角化。〗
+253 2022-1  选择题 | 若当 $x \to 0$ 时，$a( x ), \beta( x )$ 是非零无穷小量，则以下的命题中， ① 若 $a( x ) \sim \beta( x )$，则 $a^{2}( x ) \sim \beta^{2}( x )$； ② 若 $a^{2}( x ) \sim \beta^{2}( x )$，则 $a( x )  ᐸA. $①③$ ᐧ B. $①④$ ᐧ C. $①③④$ ᐧ D. $②③④$ᐳ
+254 2022-2  选择题 | $\int_{0}^{2} dy \int_{y}^{2} \frac{y}{\sqrt{( 1 + x^{3} )}} ~dx = ( )$ ᐸA. $\frac{\sqrt{2}}{6}$ ᐧ B. $\frac{1}{3}$ ᐧ C. $\frac{\sqrt{2}}{3}$ ᐧ D. $\frac{2}{3}$ᐳ
+255 2022-3  选择题 | 设 $f( x )$ 在 $x = x_{0}$ 处有二阶导数，则 $( )$ ᐸA. 当 $f( x )$ 在 $x_{0}$ 的某邻域内单调增加时 ᐧ B. 当 $f^{\prime}( x_{0} ) > 0$ 时，$ ᐧ C. 当 $f( x )$ 在 $x_{0}$ 的某邻域内是凹函数时 ᐧ D. 当 $f^{\prime\prime}( x_{0} ) > ᐳ
+256 2022-4  选择题 | 已知 $f( t )$ 连续，令 $F( x,y ) = \int_{0}^{x-y} ( x - y - t ) f( t ) ~dt$ 则 $( )$ ᐸA. $\frac{\partial F}{\partial x}  ᐧ B. $\frac{\partial F}{\partial x}  ᐧ C. $\frac{\partial F}{\partial x}  ᐧ D. $\frac{\partial F}{\partial x} ᐳ
+257 2022-5  选择题 | 设 $p$ 为常数，若反常积分 $\int_{0}^{1} \frac{\ln x}{x^{p}( 1-x )^{1-p}} ~dx$ 收敛，则 $p$ 的取值范围是 $( )$ ᐸA. $( -1,1 )$ ᐧ B. $( -1,2 )$ ᐧ C. $( -\infty,1 )$ ᐧ D. $( -\infty,2 )$ᐳ
+258 2022-6  选择题 | 设数列 $\{ x_{n} \}$ 满足 $- \frac{\pi}{2} \le x_{n} \le \frac{\pi}{2}$，则 $( )$ ᐸA. 若 $\lim_{n \to \infty} \cos( \s ᐧ B. 若 $\lim_{n \to \infty} \sin( \c ᐧ C. 若 $\lim_{n \to \infty} \cos( \s ᐧ D. 若 $\lim_{n \to \infty} \sin( \cᐳ
+259 2022-7  选择题 | 若 $I_{1} = \int_{0}^{1} \frac{x}{2( 1 + \cos x )} ~dx,\quad I_{2} = \int_{0}^{1} \frac{\ln( 1 + x )}{1 + \cos x} ~dx,\quad I_{3} = \int_{0}^{1} \frac{2x}{1 + \sin x} ᐸA. $I_{1} < I_{2} < I_{3}$ ᐧ B. $I_{2} < I_{1} < I_{3}$ ᐧ C. $I_{1} < I_{3} < I_{2}$ ᐧ D. $I_{3} < I_{2} < I_{1}$ᐳ
+260 2022-8  选择题 | 设矩阵 $\boldsymbol{A} = ( \begin{array}{ccc} 1 & 0 & 0 \0 & -1 & 0 \0 & 0 & 0 \end{array} )$ 则 $\boldsymbol{A}$ 的特征值为 $1,-1,0$ 的充分必要条件是 $( )$ ᐸA. 存在可逆矩阵 $\boldsymbol{P}, \boldsy ᐧ B. 存在可逆矩阵 $\boldsymbol{P}$，使得 $\bo ᐧ C. 存在正交矩阵 $\boldsymbol{Q}$，使得 $\bo ᐧ D. 存在可逆矩阵 $\boldsymbol{P}$，使得 $\boᐳ
+261 2022-9  选择题 | 设矩阵 $\boldsymbol{A} = ( \begin{array}{ccc} 1 & 1 & 1 \1 & a & a^{2} \1 & b & b^{2} \end{array} ),\quad \boldsymbol{b} = ( \begin{array}{c} 1 \2 \4 \end{array} )$ 则线性 ᐸA. 无解 ᐧ B. 有解 ᐧ C. 有无穷多解或无解 ᐧ D. 有唯一解或无解ᐳ
+262 2022-10 选择题 | 设 $\boldsymbol{a}_{1} = ( \begin{array}{c} \lambda \1 \1 \end{array} ),\quad \boldsymbol{a}_{2} = ( \begin{array}{c} 1 \\lambda \1 \end{array} ),\quad \boldsymbol{a} ᐸA. $\{ 0,1 \}$ ᐧ B. $\{ \lambda \mid \lambda \in \m ᐧ C. $\{ \lambda \mid \lambda \in \m ᐧ D. $\{ \lambda \mid \lambda \in \mᐳ
+263 2022-11 填空题 | $\lim_{x \to 0} ( \frac{1 + e^{x}}{2} )^{\cot x} = \underline{\hspace{4em}}$
+264 2022-12 填空题 | 已知函数 $y = y( x )$ 由方程 $x^{2} + xy + y^{3} = 3$ 确定，则 $y^{\prime\prime}( 1 ) = \underline{\hspace{4em}}$
+265 2022-13 填空题 | $\int_{0}^{1} \frac{2x + 3}{x^{2} - x + 1} ~dx = \underline{\hspace{4em}}$
+266 2022-14 填空题 | 微分方程 $y^{\prime\prime\prime} - 2y^{\prime\prime} + 5y^{\prime} = 0$ 的通解为 $y( x ) = \underline{\hspace{10em}}$
+267 2022-15 填空题 | 已知曲线 $L$ 的极坐标方程为 $r = \sin 3\theta \quad ( 0 \le \theta \le \frac{\pi}{3} )$ 则 $L$ 围成的有界区域的面积为 $\underline{\hspace{4em}}$
+268 2022-16 填空题 | 设 $\boldsymbol{A}$ 为 $3$ 阶矩阵，交换 $\boldsymbol{A}$ 的第 $2$ 行和第 $3$ 行，再将第 $2$ 列的 $-1$ 倍加到第 $1$ 列，得到矩阵 $( \begin{array}{ccc} -2 & 1 & -1 \1 & -1 & 0 \-1 & 0 & 0 \end{arra
+269 2022-17 解答题 | 已知函数 $f( x )$ 在 $x = 1$ 处可导，且 $\lim_{x \to 0} \frac{f( e^{x^{2}} ) - 3f( 1 + \sin^{2}x )}{x^{2}} = 2$ 求 $f^{\prime}( 1 )$.
+270 2022-18 解答题 | 设函数 $y( x )$ 是微分方程 $2x y^{\prime} - 4y = 2\ln x - 1$ 的满足条件 $y( 1 ) = \frac{1}{4}$ 的解，求曲线 $y = y( x )$ 在 $[ 1,e ]$ 上的弧长.
+271 2022-19 解答题 | 已知平面区域 $D = \{ ( x,y ) \mid y - 2 \le x \le \sqrt{4 - y^{2}},0 \le y \le 2 \}$ 计算 $I = \iint_{D} \frac{( x-y )^{2}}{x^{2} + y^{2}} ~dx ~dy$
+272 2022-20 解答题 | 已知可微函数 $f( u,v )$ 满足 $\frac{\partial f( u,v )}{\partial u} - \frac{\partial f( u,v )}{\partial v} = 2( u-v )e^{-( u+v )}$ 且 $f( u,0 ) = u^{2}e^{-u}$ （I） 记 $g( x,y ) 
+273 2022-21 解答题 | 设函数 $f( x )$ 在 $( -\infty,+\infty )$ 上有二阶连续导数，证明： $f^{\prime\prime}( x ) \ge 0$ 的充分必要条件是对任意不同的实数 $a,b$，都有 $f( \frac{a+b}{2} ) \le \frac{1}{b-a}\int_{a}^{b} f( x ) ~d
+274 2022-22 解答题 | 已知二次型 $f( x_{1},x_{2},x_{3} ) = 3x_{1}^{2} + 4x_{2}^{2} + 3x_{3}^{2} + 2x_{1}x_{3}$ （I） 求正交矩阵 $\boldsymbol{Q}$，使正交变换 $\boldsymbol{x} = \boldsymbol{Q}\boldsymbol{y}$ 
+275 2023-1  选择题 | 曲线 $$ y=x\ln(e+\frac{1}{x-1}) $$ 的斜渐近线方程为（ ）。 ᐸA. $y=x+e$ ᐧ B. $y=x+\frac{1}{e}$ ᐧ C. $y=x$ ᐧ D. $y=x-\frac{1}{e}$ᐳ 〖KP:斜渐近线的斜率与截距的极限求法；对数函数的等价无穷小；无穷远处的极限。〗
+276 2023-2  选择题 | 函数 $$ f(x)= \begin{cases} \frac{1}{\sqrt{1+x^2}}, & x\le 0,\$$0.6em] (x+1)\cos x, & x>0 \end{cases} $$ 的一个原函数为（ ）。 $$ F(x)= \begin{cases} \ln(\sqrt{1+x^2}-x), & x\le ᐸA. ᐧ B. ᐧ C. ᐧ D.ᐳ 〖KP:分段函数原函数的存在条件；基本积分公式与分部积分法；原函数在分段点处的连续性、可导性。〗
+277 2023-3  选择题 | 已知数列 $\{x_n\}$，$\{y_n\}$ 满足 $$ x_1=y_1=\frac12,\qquad x_{n+1}=\sin x_n,\qquad y_{n+1}=y_n^2\quad (n=1,2,\cdots), $$ 则当 $n\to\infty$ 时，（ ）。 ᐸA. $x_n$ 是 $y_n$ 的高阶无穷小 ᐧ B. $y_n$ 是 $x_n$ 的高阶无穷小 ᐧ C. $x_n$ 与 $y_n$ 是等价无穷小 ᐧ D. $x_n$ 与 $y_n$ 是同阶但不等价的无穷小ᐳ 〖KP:递推数列的单调有界性与极限；高阶无穷小的判定；三角函数不等式与比较法。〗
+278 2023-4  选择题 | 若微分方程 $$ y''+ay'+by=0 $$ 的解在 $(-\infty,+\infty)$ 上有界，则（ ）。 ᐸA. $a<0,b>0$ ᐧ B. $a>0,b>0$ ᐧ C. $a=0,b>0$ ᐧ D. $a=0,b<0$ᐳ 〖KP:二阶常系数齐次线性微分方程；特征方程及其根的分类；解在全实轴上有界的条件。〗
+279 2023-5  选择题 | 设函数 $y=f(x)$ 由 $$ \begin{cases} x=2t+|t|,\\ y=|t|\sin t \end{cases} $$ 确定，则（ ）。 ᐸA. $f(x)$ 连续，$f'(0)$ 不存在 ᐧ B. $f'(0)$ 存在，$f'(x)$ 在 $x=0$ 处不连续 ᐧ C. $f'(x)$ 连续，$f''(0)$ 不存在 ᐧ D. $f''(0)$ 存在，$f''(x)$ 在 $x=0$ 处不ᐳ 〖KP:参数方程化为显函数；分段函数的一阶、二阶可导性；利用左右导数判定导数连续性。〗
+280 2023-6  选择题 | 若函数 $$ f(a)=\int_2^{+\infty}\frac{1}{x(\ln x)^{a+1}}dx $$ 在 $a=a_0$ 处取得最小值，则 $a_0=$（ ）。 ᐸA. $-\frac{1}{\ln(\ln 2)}$ ᐧ B. $-\ln(\ln 2)$ ᐧ C. $\frac{1}{\ln 2}$ ᐧ D. $\ln 2$ᐳ 〖KP:含参数的反常积分；$p$ 型反常积分的收敛条件；参数函数的单调性与最值。〗
+281 2023-7  选择题 | 设函数 $$ f(x)=(x^2+a)e^x, $$ 若 $f(x)$ 没有极值点，但曲线 $y=f(x)$ 有拐点，则 $a$ 的取值范围是（ ）。 ᐸA. $[0,1)$ ᐧ B. $[1,+\infty)$ ᐧ C. $[1,2)$ ᐧ D. $[2,+\infty)$ᐳ 〖KP:一元函数极值点的导数符号判定；拐点的二阶导数变号判定；二次三项式恒非负与判别式。〗
+282 2023-8  选择题 | 设 $\boldsymbol A,\boldsymbol B$ 为 $n$ 阶可逆矩阵，$\boldsymbol E$ 为 $n$ 阶单位矩阵，$\boldsymbol M^*$ 为矩阵 $\boldsymbol M$ 的伴随矩阵，则 $$ \begin{pmatrix} \boldsymbol A & \boldsymbol  ᐸA. ᐧ B. ᐧ C. ᐧ D.ᐳ 〖KP:分块上三角矩阵的行列式与逆矩阵；伴随矩阵公式；矩阵乘法的顺序。〗
+283 2023-9  选择题 | 二次型 $$ f(x_1,x_2,x_3)=(x_1+x_2)^2+(x_1+x_3)^2-4(x_2-x_3)^2 $$ 的规范形为（ ）。 ᐸA. $y_1^2+y_2^2$ ᐧ B. $y_1^2-y_2^2$ ᐧ C. $y_1^2+y_2^2-4y_3^2$ ᐧ D. $y_1^2+y_2^2-y_3^2$ᐳ 〖KP:二次型及其对应实对称矩阵；特征值与二次型的标准形；二次型的秩与正、负惯性指数。〗
+284 2023-10 选择题 | 已知向量 $$ \boldsymbol a_1= \begin{pmatrix} 1\\ 2\\ 3 \end{pmatrix},\quad \boldsymbol a_2= \begin{pmatrix} 2\\ 1\\ 1 \end{pmatrix},\quad \boldsymbol\beta_1= \begin{pmat ᐸA. ᐧ B. ᐧ C. ᐧ D.ᐳ 〖KP:向量的线性表示与线性子空间；两个向量组张成空间的交；齐次线性方程组的参数解。〗
+285 2023-11 填空题 | 当 $x\to 0$ 时，函数 $$ f(x)=ax+bx^2+\ln(1+x) $$ 与 $$ g(x)=e^{x^2}-\cos x $$ 是等价无穷小，则 $$ ab=\underline{\hspace{3em}}. $$ 〖KP:常用函数的泰勒（皮亚诺）展开；等价无穷小的定义与比较；无穷小的主部判定。〗
+286 2023-12 填空题 | 曲线 $$ y=\int_{-\sqrt3}^{x}\sqrt{3-t^2}dt $$ 的弧长为 $$ \underline{\hspace{3em}}. $$ 〖KP:微积分基本定理；平面曲线弧长公式；根式积分与反三角函数原函数。〗
+287 2023-13 填空题 | 设函数 $z=z(x,y)$ 由 $$ e^z+xz=2x-y $$ 确定，则 $$ .\frac{\partial^2 z}{\partial x^2}|_{(1,1)} =\underline{\hspace{3em}}. $$ 〖KP:隐函数的存在条件；隐函数的一阶、二阶偏导数；复合函数的偏导法则。〗
+288 2023-14 填空题 | 曲线 $$ 3x^3=y^5+2y^3 $$ 在 $x=1$ 对应点处的法线斜率为 $$ \underline{\hspace{3em}}. $$ 〖KP:隐函数的求导；曲线切线与法线的斜率关系；对应点的确定。〗
+289 2023-15 填空题 | 设连续函数 $f(x)$ 满足 $$ f(x+2)-f(x)=x,\qquad \int_0^2 f(x)dx=0, $$ 则 $$ \int_1^3 f(x)dx=\underline{\hspace{3em}}. $$ 〖KP:函数关系式在定积分中的应用；定积分的区间可加性；换元积分法。〗
+290 2023-16 填空题 | 已知线性方程组 $$ \begin{cases} ax_1+x_3=1,\\ x_1+ax_2+x_3=0,\\ x_1+2x_2+ax_3=0,\\ ax_1+bx_2=2 \end{cases} $$ 有解，其中 $a,b$ 为常数。若 $$ \begin{vmatrix} a&0&1\\ 1&a&1\\ 1&2&a \en 〖KP:线性方程组有解的秩条件；增广矩阵与行列式；按列展开行列式。〗
+291 2023-17 解答题 | 设曲线 $\boldsymbol L:y=y(x)$（$x>e$）经过点 $(e^2,0)$，且 $\boldsymbol L$ 上任一点 $P(x,y)$ 到 $y$ 轴的距离等于该点处切线在 $y$ 轴上的截距。 1. 求 $y(x)$； 2. 在 $\boldsymbol L$ 上求一点，使该点处的切线与两坐标轴所围三角形
+292 2023-18 解答题 | 求函数 $$ f(x,y)=xe^{\cos y}+\frac{x^2}{2} $$ 的极值。
+293 2023-19 解答题 | 已知平面区域 $$ D=\{(x,y)\mid 0\le y\le \frac{1}{x\sqrt{1+x^2}},x\ge 1\}. $$ 1. 求 $D$ 的面积； 2. 求 $D$ 绕 $x$ 轴旋转所成旋转体的体积。
+294 2023-20 解答题 | 设平面有界区域 $D$ 位于第一象限，由曲线 $$ x^2+y^2-xy=1,\qquad x^2+y^2-xy=2 $$ 与直线 $$ y=\sqrt3x,\qquad y=0 $$ 围成，计算 $$ \iint_D \frac{1}{3x^2+y^2}dxdy. $$
+295 2023-21 解答题 | 设函数 $f(x)$ 在 $[-a,a]$ 上具有二阶连续导数。证明： 1. 若 $f(0)=0$，则存在 $\xi\in(-a,a)$，使得 $$ f''(\xi)=\frac{f(a)+f(-a)}{a^2}; $$ 2. 若 $f(x)$ 在 $(-a,a)$ 内取得极值，则存在 $\eta\in(-a,a)$，使得 $$
+296 2023-22 解答题 | 设矩阵 $\boldsymbol A$ 满足：对任意 $x_1,x_2,x_3$，均有 $$ \boldsymbol A \begin{pmatrix} x_1\\ x_2\\ x_3 \end{pmatrix} = \begin{pmatrix} x_1+x_2+x_3\\ 2x_1-x_2+x_3\\ x_2-x_3 \en
+297 2024-1  选择题 | 函数 $$ f(x)=|x|^{\frac{1}{(1-x)(x-2)}} $$ 的第一类间断点的个数为（ ） ᐸA. $3$ ᐧ B. $2$ ᐧ C. $1$ ᐧ D. $0$ᐳ 〖KP:函数间断点的分类；指数型函数极限的处理方法；第一类间断点与第二类间断点的判定；重要等价无穷小 $\ln(1+t)\sim t$。〗
+298 2024-2  选择题 | 已知 $$ \{ \begin{aligned} x &= 1+t^3,\\ y &= e^{t^2}, \end{aligned} . $$ 则 $$ \lim_{x\to+\infty}x[f(2+\frac{2}{x})-f(2)] $$ 等于（ ） ᐸA. $2e$ ᐧ B. $\frac{4}{3}e$ ᐧ C. $\frac{2}{3}e$ ᐧ D. $\frac{e}{3}$ᐳ 〖KP:参数方程确定函数的导数；函数在一点处的导数定义；复合极限与增量形式；局部线性近似。〗
+299 2024-3  选择题 | 已知 $$ f(x)=\int_0^{\sin x}\sin t^3dt,\qquad g(x)=\int_0^x f(t)dt, $$ 则（ ） ᐸA. $f(x)$ 为奇函数，$g(x)$ 为奇函数 ᐧ B. $f(x)$ 为奇函数，$g(x)$ 为偶函数 ᐧ C. $f(x)$ 为偶函数，$g(x)$ 为偶函数 ᐧ D. $f(x)$ 为偶函数，$g(x)$ 为奇函数ᐳ 〖KP:奇偶函数的判定；变上限积分函数的奇偶性；奇函数积分得到偶函数、偶函数积分得到奇函数的常用结论；复合函数奇偶性的判断。〗
+300 2024-4  选择题 | 已知数列 $\{a_n\}$（$a_n\ne 0$），若 $\{a_n\}$ 发散，则（ ） ᐸA. $\{a_n+\frac{1}{a_n}\}$ 发散 ᐧ B. $\{a_n-\frac{1}{a_n}\}$ 发散 ᐧ C. $\{e^{a_n}+\frac{1}{e^{a_n}}\}$ ᐧ D. $\{e^{a_n}-\frac{1}{e^{a_n}}\}$ᐳ 〖KP:数列收敛与发散；反例法判断命题真假；连续严格单调函数及反函数；收敛数列在连续函数下的极限性质。〗
+301 2024-5  选择题 | 已知函数 $$ f(x,y)= \begin{cases} (x^2+y^2)\sin\frac{1}{xy}, & xy\ne 0,\\ 0, & xy=0, \end{cases} $$ 则在点 $(0,0)$ 处（ ） ᐸA. $\frac{\partial f}{\partial x}$ ᐧ B. $\frac{\partial f}{\partial x}$ ᐧ C. $\frac{\partial f}{\partial x}$ ᐧ D. $\frac{\partial f}{\partial x}$ᐳ 〖KP:二元函数在一点处的偏导数；二元函数可微的定义；偏导数连续与可微的关系；多元函数极限的路径判别法。〗
+302 2024-6  选择题 | 设 $f(x,y)$ 为连续函数，则 $$ \int_{\pi/6}^{\pi/2}dx\int_{\sin x}^{1}f(x,y)dy = () $$ ᐸA. $\displaystyle \int_{1/2}^{1}dy ᐧ B. $\displaystyle \int_{1/2}^{1}dy ᐧ C. $\displaystyle \int_0^{1/2}dy\i ᐧ D. $\displaystyle \int_0^{1/2}dy\iᐳ 〖KP:二重积分的积分区域；改变二重积分的积分次序；三角函数 $\sin x$ 在区间 $[\frac{\pi}{6},\frac{\pi}{2}]$ 上的单调性；由区域图形确定积分上下限〗
+303 2024-7  选择题 | 设非负函数 $f(x)$ 在 $[0,+\infty)$ 上连续，给出三个命题： 1. 若 $\int_0^{+\infty}f^2(x)dx$ 收敛，则 $\int_0^{+\infty}f(x)dx$ 收敛； 2. 若存在 $p>1$，使极限 $\lim_{x\to+\infty}x^p f(x)$ 存在，则 $\int_0 ᐸA. $0$ ᐧ B. $1$ ᐧ C. $2$ ᐧ D. $3$ᐳ 〖KP:反常积分的收敛性；比较判别法；$p$ 型积分 $\int^\infty \frac{1}{x^p}dx$ 的收敛条件；通过反例判断命题真假。〗
+304 2024-8  选择题 | 设 $\boldsymbol A$ 为三阶矩阵， $$ \boldsymbol P= \begin{pmatrix} 1&0&0\\ 0&1&0\\ 1&0&1 \end{pmatrix}, $$ 若 $$ \boldsymbol P^T\boldsymbol A\boldsymbol P^2= \begin{pmatrix}  ᐸA. $\begin{pmatrix} c&0&0\0&a&0\0& ᐧ B. $\begin{pmatrix} b&0&0\0&c&0\0& ᐧ C. $\begin{pmatrix} a&0&0\0&b&0\0& ᐧ D. $\begin{pmatrix} c&0&0\0&b&0\0&ᐳ 〖KP:矩阵乘法；可逆矩阵与等价变形；转置矩阵；通过代入验证矩阵表达式。〗
+305 2024-9  选择题 | 设 $\boldsymbol A$ 为 $4$ 阶矩阵，$\boldsymbol A^*$ 为 $\boldsymbol A$ 的伴随矩阵。若 $$ \boldsymbol A(\boldsymbol A-\boldsymbol A^*)=\boldsymbol O,\qquad \boldsymbol A\ne \boldsy ᐸA. $0$ 或 $1$ ᐧ B. $1$ 或 $3$ ᐧ C. $2$ 或 $3$ ᐧ D. $1$ 或 $2$ᐳ 〖KP:伴随矩阵的基本性质；矩阵秩与可逆性的关系；幂零矩阵 $A^2=O$ 的秩性质；秩、像空间与核空间的关系。〗
+306 2024-10 选择题 | 设 $\boldsymbol A,\boldsymbol B$ 均为 $2$ 阶矩阵，且 $\boldsymbol A\boldsymbol B=\boldsymbol B\boldsymbol A$，则“$\boldsymbol A$ 有两个不相等的特征值”是“$\boldsymbol B$ 可对角化”的（ ） ᐸA. 充要条件 ᐧ B. 充分不必要条件 ᐧ C. 必要不充分条件 ᐧ D. 既不充分也不必要条件ᐳ 〖KP:矩阵可对角化的判定；二阶矩阵特征值与特征向量；可交换矩阵对特征子空间的保持性；充分条件与必要条件的判断。〗
+307 2024-11 填空题 | 曲线 $y^2=x$ 在点 $(0,0)$ 处的曲率圆方程为 ______ 〖KP:曲率与曲率半径；参数方程下的曲率计算；曲率圆与曲率中心；抛物线在顶点处的几何性质。〗
+308 2024-12 填空题 | 函数 $$ f(x,y)=2x^3-9x^2-6y^4+12x+24y $$ 的极值点为 ______ 〖KP:多元函数驻点；二元函数极值的二阶充分条件；Hessian 判别法；偏导数计算。〗
+309 2024-13 填空题 | 微分方程 $$ y'=\frac{1}{(x+y)^2} $$ 满足初始条件 $y(1)=0$ 的解为 ______ 〖KP:一阶微分方程的变量代换；可分离变量微分方程；初始条件确定积分常数；隐式解的表示。〗
+310 2024-14 填空题 | 已知函数 $$ f(x)=x^2(e^x-1), $$ 则 $$ f^{(5)}(1)=\underline{\qquad} $$ 〖KP:高阶导数；莱布尼茨公式；指数函数求导；多项式高阶导数。〗
+311 2024-15 填空题 | 某物体以速度 $$ v(t)=t+k\sin\pi t $$ 做直线运动。若它从 $t=0$ 到 $t=3$ 的平均速度是 $\frac52$，则 $k=$ ______ 〖KP:平均速度的积分表示；定积分计算；三角函数积分；参数求解。〗
+312 2024-16 填空题 | 设向量 $$ \boldsymbol\alpha_1= \begin{pmatrix} a\\ 1\\ -1\\ 1 \end{pmatrix},\quad \boldsymbol\alpha_2= \begin{pmatrix} 1\\ 1\\ b\\ a \end{pmatrix},\quad \boldsymbol\alp 〖KP:向量组线性相关与线性无关；矩阵秩的判定；三阶子式判别法；参数方程组求解。〗
+313 2024-17 解答题 | 设平面有界区域 $D$ 位于第一象限，由曲线 $$ xy=\frac13,\qquad xy=3 $$ 与直线 $$ y=\frac13x,\qquad y=3x $$ 围成，计算 $$ \iint_D(1+x-y)dxdy. $$ 〖KP:二重积分的几何意义；平面区域的对称性；极坐标变换；二重积分的变量代换与计算。〗
+314 2024-18 解答题 | 设 $y=y(x)$ 满足方程 $$ x^2y''+xy'-9y=0, $$ 且 $$ y\big|_{x=1}=2,\qquad y'\big|_{x=1}=6. $$ 1. 利用变换 $x=e^t$ 化简方程，并求 $y(x)$； 2. 求 $$ \int_1^2 y(x)\sqrt{4-x^2}dx. $$ 〖KP:欧拉方程；变量代换 $x=e^t$；二阶常系数线性微分方程；定积分的换元法。〗
+315 2024-19 解答题 | 设 $t>0$，曲线 $$ y=\sqrt{x}e^{-x} $$ 与直线 $x=t,x=2t$ 及 $x$ 轴所围平面图形绕 $x$ 轴旋转所得的旋转体体积为 $V(t)$，求 $V(t)$ 的最大值。 〖KP:旋转体体积公式；含参数积分求导；函数单调性与最值；指数函数积分。〗
+316 2024-20 解答题 | 设 $f(u,v)$ 具有二阶连续偏导， $$ g(x,y)=f(2x+y,3x-y), $$ 且满足 $$ \frac{\partial^2g}{\partial x^2} +\frac{\partial^2g}{\partial x\partial y} -6\frac{\partial^2g}{\partial y^2}= 〖KP:多元复合函数求偏导；二阶偏导数与链式法则；偏微分方程的简单积分；利用边界条件确定任意函数。〗
+317 2024-21 解答题 | 设函数 $f(x)$ 具有二阶导数，且 $$ f'(0)=f'(1),\qquad |f''(x)|\le 1. $$ 证明： 1. 当 $x\in(0,1)$ 时， $$ |f(x)-f(0)(1-x)-f(1)x|\le \frac{x(1-x)}{2}; $$ 2. $$ |\int_0^1 f(x)dx-\frac{f( 〖KP:拉格朗日插值误差估计；二阶导数有界条件；凸函数与凹函数的性质；定积分不等式。〗
+318 2024-22 解答题 | 设矩阵 $$ \boldsymbol A= \begin{pmatrix} 0&1&a\\ 1&0&1 \end{pmatrix},\qquad \boldsymbol B= \begin{pmatrix} 1&1\\ 1&1\\ b&2 \end{pmatrix}, $$ 二次型 $$ f(x_1,x_2,x_3)=\bold 〖KP:齐次线性方程组解空间的包含关系；矩阵秩与方程组解空间；二次型的矩阵表示；实对称矩阵的正交对角化。〗
+319 2025-1  选择题 | 设函数 $z = z( x, y )$ 由 $z + \ln z - \int_{y}^{x} e^{-t^{2}} ~d t = 0$ 确定，则 $\frac{\partial z}{\partial x} + \frac{\partial z}{\partial y} =$ ᐸA. $\frac{z}{z + 1}( e^{-x^{2}} -  ᐧ B. $\frac{z}{z + 1}( e^{-x^{2}} +  ᐧ C. $-\frac{z}{z + 1}( e^{-x^{2}} - ᐧ D. $-\frac{z}{z + 1}( e^{-x^{2}} +ᐳ 〖KP:二元隐函数的偏导数；复合函数求导法则；变上、下限积分的求导公式。〗
+320 2025-2  选择题 | 已知函数 $f( x ) = \int_{0}^{x} e^{t^{2}} \sin t ~d t$，$g( x ) = \int_{0}^{x} e^{t^{2}} ~d t \cdot \sin^{2} x$，则 ᐸA. $x = 0$ 是 $f( x )$ 的极值点，也是 $g(  ᐧ B. $x = 0$ 是 $f( x )$ 的极值点，$( 0, 0 ᐧ C. $x = 0$ 是 $f( x )$ 的极值点，$( 0, 0 ᐧ D. $( 0, 0 )$ 是曲线 $y = f( x )$ 的极值ᐳ 〖KP:变上限积分函数的求导；函数极值的二阶导数判别法；拐点的判定；乘积求导法则与等价无穷小展开。〗
+321 2025-3  选择题 | 如果对微分方程 $y^{\prime\prime} - 2a y^{\prime} + ( a + 2 ) y = 0$ 的任一解 $y( x )$，反常积分 $\int_{0}^{+\infty} y( x ) ~d x$ 均收敛，那么 $a$ 的取值范围是 ᐸA. $( -2, -1 ]$ ᐧ B. $( -\infty, -1 ]$ ᐧ C. $( -2, 0 )$ ᐧ D. $( -\infty, 0 )$ᐳ 〖KP:二阶常系数齐次线性微分方程；特征方程与特征根；指数衰减解的反常积分收敛性；二次方程根的实部判定。〗
+322 2025-4  选择题 | 设函数 $f( x )$，$g( x )$ 在 $x = 0$ 的某去心邻域内有定义且恒不为零.若当 $x \to 0$ 时，$f( x )$ 是 $g( x )$ 的高阶无穷小，则当 $x \to 0$ 时， ᐸA. $f( x ) + g( x ) = O( g( x ) )$ ᐧ B. $f( x ) g( x ) = o( f^{2}( x )  ᐧ C. $f( x ) = o( e^{g( x )} - 1 )$. ᐧ D. $f( x ) = o( g^{2}( x ) )$.ᐳ 〖KP:高阶无穷小与 $o$ 记号；等价无穷小；指数函数的等价无穷小关系；渐近比较与反例法。〗
+323 2025-5  选择题 | 设函数 $f( x, y )$ 连续，则 $\int_{-2}^{2} ~d x \int_{4 - x^{2}}^{4} f( x, y ) ~d y =$ ᐸA. $\int_{0}^{4} [ \int_{-2}^{-\sq ᐧ B. $\int_{0}^{4} [ \int_{-2}^{\sqr ᐧ C. $\int_{0}^{4} [ \int_{-2}^{-\sq ᐧ D. $2 \int_{0}^{4} ~d y \int_{\sqrᐳ 〖KP:二重积分的积分区域表示；交换二次积分次序；抛物线围成区域的分割。〗
+324 2025-6  选择题 | 设单位质点 $P$，$Q$ 分别位于点 $( 0, 0 )$ 和 $( 0, 1 )$ 处，$P$ 从点 $( 0, 0 )$ 出发沿 $x$ 轴正向移动，记 $G$ 为引力常量，则当质点 $P$ 移动到点 $( 1, 0 )$ 时，克服质点 $Q$ 的引力所做的功为 ᐸA. $\int_{0}^{1} \frac{G}{x^{2} +  ᐧ B. $\int_{0}^{1} \frac{Gx}{( x^{2} ᐧ C. $\int_{0}^{1} \frac{G}{( x^{2}  ᐧ D. $\int_{0}^{1} \frac{G( x + 1 )}ᐳ 〖KP:万有引力定律；向量力的分解；变力做功的线积分；“克服阻力做功”的符号处理。〗
+325 2025-7  选择题 | 设函数 $f( x )$ 连续，给出下列四个条件： ① $\lim_{x \to 0} \frac{| f( x ) | - f( 0 )}{x}$ 存在； ② $\lim_{x \to 0} \frac{f( x ) - | f( 0 ) |}{x}$ 存在； ③ $\lim_{x \to 0} \frac{| f( x )  ᐸA. 1 ᐧ B. 2 ᐧ C. 3 ᐧ D. 4ᐳ 〖KP:导数定义；连续函数与绝对值函数；双侧极限存在的必要条件；分情形讨论。〗
+326 2025-8  选择题 | 设矩阵 $\boldsymbol{A} = \begin{pmatrix} 1 & 2 & 0 \2 & a & 0 \0 & 0 & b \end{pmatrix}$ 有一个正特征值和两个负特征值，则 ᐸA. $a > 4$，$b > 0$ ᐧ B. $a < 4$，$b > 0$ ᐧ C. $a > 4$，$b < 0$ ᐧ D. $a < 4$，$b < 0$ᐳ 〖KP:分块对角矩阵的特征值；特征多项式；一元二次方程根与系数关系；特征值符号的判定。〗
+327 2025-9  选择题 | 下列矩阵中，可以经过若干初等变换得到矩阵 $\begin{pmatrix} 1 & 1 & 0 & 1 \0 & 0 & 1 & 2 \0 & 0 & 0 & 0 \end{pmatrix}$ 的是 ᐸA. $\begin{pmatrix} 1 & 1 & 0 & 1  ᐧ B. $\begin{pmatrix} 1 & 1 & 0 & 1  ᐧ C. $\begin{pmatrix} 1 & 0 & 0 & 1  ᐧ D. $\begin{pmatrix} 1 & 1 & 2 & 3 ᐳ 〖KP:矩阵的初等行变换；行等价矩阵；阶梯形矩阵；行最简形的识别。〗
+328 2025-10 选择题 | 设 3 阶矩阵 $\boldsymbol{A}$，$\boldsymbol{B}$ 满足 $r( \boldsymbol{A}\boldsymbol{B} ) = r( \boldsymbol{B}\boldsymbol{A} ) + 1$，则 ᐸA. 方程组 $( \boldsymbol{A} + \boldsy ᐧ B. 方程组 $\boldsymbol{A}\boldsymbol{ ᐧ C. 方程组 $\boldsymbol{A}\boldsymbol{ ᐧ D. 方程组 $\boldsymbol{A}\boldsymbol{ᐳ 〖KP:矩阵秩的性质；秩与零空间维数的关系；齐次线性方程组解空间的维数；子空间维数公式。〗
+329 2025-11 填空题 | 设 $\int_{1}^{+\infty} \frac{a}{x( 2x + a )} ~d x = \ln 2$，则 $a =$ ________. 〖KP:反常积分；部分分式分解；含参数反常积分的收敛性；对数函数的绝对值与定义域。〗
+330 2025-12 填空题 | 曲线 $y = \sqrt[3]{x^{3} - 3x^{2} + 1}$ 的渐近线方程为 ________. 〖KP:曲线渐近线；斜渐近线的求法；立方差公式与有理化思想；无穷远处极限。〗
+331 2025-13 填空题 | $\lim_{n \to \infty} \frac{1}{n^{2}} [ \ln \frac{1}{n} + 2 \ln \frac{2}{n} + \cdots + ( n - 1 ) \ln \frac{n - 1}{n} ] =$ ________. 〖KP:定积分的黎曼和定义；含对数函数的极限；函数 $x\ln x$ 在端点处的连续延拓；分部积分。〗
+332 2025-14 填空题 | 已知函数 $y = y( x )$ 由 $\{ \begin{aligned} x &= \ln ( 1 + 2t ), \2t - \int_{1}^{y + t^{2}} e^{-u^{2}} ~d u &= 0 \end{aligned} .$ 确定，则 $. \frac{d y}{d x} |_{x = 0} =$ __ 〖KP:参数方程求导；隐函数求导；变上限积分求导；链式法则。〗
+333 2025-15 填空题 | 微分方程 $( 2y - 3x ) d x + ( 2x - 5y ) d y = 0$ 满足条件 $y( 1 ) = 1$ 的解为 ________. 〖KP:一阶恰当微分方程；恰当方程的判定；原函数的构造；初始条件的代入。〗
+334 2025-16 填空题 | 设矩阵 $\boldsymbol{A} = ( \boldsymbol{\alpha}_{1}, \boldsymbol{\alpha}_{2}, \boldsymbol{\alpha}_{3}, \boldsymbol{\alpha}_{4} )$.若 $\boldsymbol{\alpha}_{1}$，$\boldsymbo 〖KP:向量组的线性相关与线性无关；矩阵的秩；齐次线性方程组基础解系；非齐次线性方程组通解结构。〗
+335 2025-17 解答题 | （本题满分 10 分） 计算 $\int_{0}^{1} \frac{1}{( x + 1 )( x^{2} - 2x + 2 )} ~d x$. 解： 设 $\frac{1}{( 1 + x )( x^{2} - 2x + 2 )} = \frac{a}{1 + x} + \frac{bx + c}{x^{2} - 2x +  〖KP:有理函数积分；部分分式分解；配方；对数函数与反正切函数积分。〗
+336 2025-18 解答题 | （本题满分 12 分） 设函数 $f( x )$ 在 $x = 0$ 处连续，且 $\lim_{x \to 0} \frac{x f( x ) - e^{2 \sin x} + 1}{\ln ( 1 + x ) + \ln ( 1 - x )} = -3$，证明 $f( x )$ 在 $x = 0$ 处可导，并求 $f^{\pr 〖KP:等价无穷小；函数连续性；导数定义；指数函数、三角函数与对数函数的泰勒展开；利用极限反求导数。〗
+337 2025-19 解答题 | （本题满分 12 分） 设函数 $f( x, y )$ 可微且满足 $d f( x, y ) = -2x e^{-y} d x + e^{-y}( x^{2} - y - 1 ) d y$，$f( 0, 0 ) = 2$，求 $f( x, y )$，并求 $f( x, y )$ 的极值. 解： 由题意知 $f_{x}^{\pri 〖KP:全微分；由偏导数恢复二元函数；二元函数驻点；二阶偏导数判别法；二元函数全局最值的辅助判定。〗
+338 2025-20 解答题 | （本题满分 12 分） 已知平面有界区域 $D = \{ ( x, y ) \mid x^{2} + y^{2} \le 4x,x^{2} + y^{2} \le 4y \}$，计算 $\iint_{D} ( x - y )^{2} d x d y$. 解： 由区域关于直线 $y = x$ 对称，记第一部分区域为 $D_{1}$ 〖KP:二重积分；极坐标变换；极坐标下积分区域的确定；对称性；三角函数积分。〗
+339 2025-21 解答题 | （本题满分 12 分） 设函数 $f( x )$ 在区间 $( a, b )$ 内可导，证明：导函数 $f^{\prime}( x )$ 在 $( a, b )$ 内严格单调递增的充分必要条件是：对 $( a, b )$ 内任意的 $x_{1}$，$x_{2}$，$x_{3}$，当 $x_{1} < x_{2} < x_{3}$ 〖KP:拉格朗日中值定理；导数单调性；割线斜率与切线斜率；充分必要条件证明；单侧极限与导数定义。〗
+340 2025-22 解答题 | （本题满分 12 分） 已知矩阵 $\boldsymbol{A} = \begin{pmatrix} 4 & 1 & -2 \1 & 1 & 1 \-2 & 1 & a \end{pmatrix}$， $\boldsymbol{B} = \begin{pmatrix} k & 0 & 0 \0 & 6 & 0 \0 & 0 &  〖KP:实对称矩阵；合同与惯性定理；行列式；正交相似对角化；特征值、特征向量与正交规范化。〗
+341 2026-1  选择题 | 已知当 $x \to 0$ 时，$a x^{2} + b x + \arcsin x$ 与 $\sqrt[3]{1 + x^{2}} - 1$ 是等价无穷小，则 ᐸA. $a = \frac{1}{3},b = -1$ ᐧ B. $a = \frac{1}{3},b = 1$ ᐧ C. $a = \frac{2}{3},b = -1$ ᐧ D. $a = \frac{2}{3},b = 1$ᐳ 〖KP:等价无穷小的定义与判定；初等函数在 $x=0$ 处的泰勒展开；无穷小阶数比较与待定系数法。〗
+342 2026-2  选择题 | 设 $y_1(x),y_2(x)$ 是某二阶非齐次线性微分方程的两个特解.若常数 $\lambda,\mu$ 使得 $2\lambda y_1(x)+\mu y_2(x)$ 是该方程的解，$\lambda y_1(x)-2\mu y_2(x)$ 是该方程对应齐次方程的解，则 ᐸA. $\lambda=\frac15,\mu=\frac25$ ᐧ B. $\lambda=\frac25,\mu=\frac15$ ᐧ C. $\lambda=\frac14,\mu=\frac12$ ᐧ D. $\lambda=\frac12,\mu=\frac14$ᐳ 〖KP:二阶线性非齐次微分方程解的结构；线性微分算子的线性性；非齐次方程特解线性组合的判定。〗
+343 2026-3  选择题 | 设函数 $z=z(x,y)$ 由方程 $x-az=e^{y+az}$（$a$ 为非零常数）确定，则 ᐸA. $\frac{\partial z}{\partial x}- ᐧ B. $\frac{\partial z}{\partial x}+ ᐧ C. $\frac{\partial z}{\partial x}- ᐧ D. $\frac{\partial z}{\partial x}+ᐳ 〖KP:多元隐函数求导；偏导数运算；指数复合函数的求导。〗
+344 2026-4  选择题 | 设线密度为 $1$ 的细直棒两端点分别位于 $(-1,0)$ 和 $(1,0)$，质量为 $m$ 的质点位于 $(0,1)$，$G$ 为引力常量，则该细直棒对该质点的引力大小为 ᐸA. $\displaystyle \int_0^1 \frac{2 ᐧ B. $\displaystyle \int_0^1 \frac{2 ᐧ C. $\displaystyle \int_0^1 \frac{2 ᐧ D. $\displaystyle \int_0^1 \frac{2ᐳ 〖KP:定积分的物理应用；微元法；对称性分析；万有引力分解。〗
+345 2026-5  选择题 | 设函数 $f(x)$ 在区间 $[-1,1]$ 上有定义，则 ᐸA. 当 $f(x)$ 在 $(-1,0)$ 单调递减、在 $(0, ᐧ B. 当 $f(0)$ 是极小值时，$f(x)$ 在 $(-1,0) ᐧ C. 当 $f(x)$ 的图形在 $[-1,1]$ 上是凹的时，$\ ᐧ D. 当 $\frac{f(x)-f(1)}{x-1}$ 在 $[-ᐳ 〖KP:极值的定义；单调性与极值的关系；凸凹性与割线斜率的关系；反例法判定命题真假。〗
+346 2026-6  选择题 | 已知函数 $$ f(x)=\int_1^{x^3}\frac{e^t}{1+t^2}dt, $$ $f$ 的反函数为 $g$，则 ᐸA. $g(0)=1,g'(0)=\frac{3e}{2}$ ᐧ B. $g(0)=1,g'(0)=\frac{2}{3e}$ ᐧ C. $g(1)=0,g'(1)=\frac{3e}{2}$ ᐧ D. $g(1)=0,g'(1)=\frac{2}{3e}$ᐳ 〖KP:变上限积分求导；反函数的值与导数；链式法则。〗
+347 2026-7  选择题 | 设函数 $f(x,y)$ 在区域 $$ D=\{(x,y)\mid 0\le x\le 1,0\le y\le 1\} $$ 上连续，且 $f(x,y)=f(y,x)$，则 $$ \iint_D f(x,y)dxdy= $$ ᐸA. $\displaystyle 2\lim_{n\to\inft ᐧ B. $\displaystyle \frac12\lim_{n\t ᐧ C. $\displaystyle 2\lim_{n\to\inft ᐧ D. $\displaystyle \frac12\lim_{n\tᐳ 〖KP:二重积分的对称性；二重积分的黎曼和定义；积分区域的划分与面积微元。〗
+348 2026-8  选择题 | 单位矩阵经过若干次互换两行得到的矩阵称为置换矩阵.设 $\boldsymbol A$ 为 $n$ 阶置换矩阵，$\boldsymbol A^*$ 为 $\boldsymbol A$ 的伴随矩阵，则 ᐸA. $\boldsymbol A^*$ 为置换矩阵 ᐧ B. $\boldsymbol A^{-1}$ 为置换矩阵 ᐧ C. $\boldsymbol A^{-1}=\boldsymbol ᐧ D. $\boldsymbol A^{-1}=-\boldsymboᐳ 〖KP:置换矩阵的性质；逆矩阵与转置矩阵；伴随矩阵公式；行列式的符号。〗
+349 2026-9  选择题 | 设矩阵 $$ \boldsymbol A= \begin{pmatrix} 1&0&1\\ 0&0&1\\ 1&1&3\\ 1&1&1 \end{pmatrix}, \qquad \boldsymbol C= \begin{pmatrix} 2&0\\ 1&1\\ 1&1\\ a&b \end{pmatrix}. $$ 若存在矩 ᐸA. $a=-1,b=-1$ ᐧ B. $a=2,b=2$ ᐧ C. $a=-1,b=2$ ᐧ D. $a=2,b=-1$ᐳ 〖KP:矩阵方程 $\boldsymbol A\boldsymbol B=\boldsymbol C$ 的可解性；列空间与线性表示；线性方程组求解。〗
+350 2026-10 选择题 | 设三阶矩阵 $\boldsymbol A,\boldsymbol B$ 满足 $$ \boldsymbol A\boldsymbol B+\boldsymbol B\boldsymbol A=\boldsymbol A^2+\boldsymbol B^2, $$ 且 $\boldsymbol A\ne \boldsymbol B ᐸA. $(\boldsymbol A-\boldsymbol B)^ ᐧ B. $\boldsymbol A-\boldsymbol B$ 只 ᐧ C. $\boldsymbol A,\boldsymbol B$ 不 ᐧ D. $\boldsymbol A-\boldsymbol B$ 只ᐳ 〖KP:矩阵多项式运算；幂零矩阵；特征值与特征向量；对角矩阵的性质。〗
+351 2026-11 填空题 | 设 $p$ 为常数，若反常积分 $$ \int_0^{+\infty}\frac{\arctan x}{x^p(x+1)}dx $$ 收敛，则 $p$ 的取值范围是 ________. 〖KP:反常积分的敛散性；无穷区间与瑕点处的分别讨论；等价无穷小与比较判别法。〗
+352 2026-12 填空题 | $$ \lim_{x\to 0}(\frac1x-\frac{\ln(1+x)}{x\sin x})=\underline{\qquad\qquad}. $$ 〖KP:极限运算；泰勒展开；等价无穷小；初等函数局部展开。〗
+353 2026-13 填空题 | 曲线 $$ x^2+2\sqrt3xy+y^2=1 $$ 在点 $(0,1)$ 处的曲率半径为 ________. 〖KP:隐函数求导；曲率公式；曲率半径的定义。〗
+354 2026-14 填空题 | 已知函数 $f(x,y)$ 可微，且 $$ df(0,0)=\pidx+3dy. $$ 记 $$ g(x)=f(\ln x,\sin \pi x), $$ 则 $$ g'(1)=\underline{\qquad\qquad}. $$ 〖KP:全微分与偏导数；多元复合函数求导；链式法则。〗
+355 2026-15 填空题 | 函数 $$ f(x)=\ln(2+x) $$ 在区间 $[0,2]$ 上的平均值为 ________. 〖KP:函数平均值公式；定积分计算；对数函数积分。〗
+356 2026-16 填空题 | 设矩阵 $$ \boldsymbol A= \begin{pmatrix} 1&b&-1\\ a+2&3&-3a \end{pmatrix}. $$ 若二次型 $$ \boldsymbol x^T(\boldsymbol A\boldsymbol A^T)\boldsymbol x $$ 的规范形为 $y_1^2$，则 $a+b 〖KP:二次型的规范形；矩阵秩与二次型秩；矩阵 $\boldsymbol A\boldsymbol A^T$ 的秩；行向量线性相关。〗
+357 2026-17 解答题 | （本题满分 `10` 分） 计算 $$ I=\int_{-1}^1 dx\int_{|x|}^{\sqrt{2-x^2}} y\sin\sqrt{x^2+y^2}dy. $$ 解： 改用极坐标 $$ x=r\cos\theta,\qquad y=r\sin\theta. $$ 区域对应为 $$ 0\le r\le \sqrt2, 〖KP:二重积分的计算；积分区域转换；极坐标变换；分部积分。〗
+358 2026-18 解答题 | （本题满分 `12` 分） 已知函数 $g(x)$ 连续.设 $$ f(x)=\int_0^{x^2} g(xt)dt, $$ 求 $f'(x)$ 的表达式，并判断 $f'(x)$ 在 $x=0$ 处的连续性. 解： 当 $x\ne 0$ 时，令 $u=xt$，则 $$ f(x)=\int_0^{x^2} g(xt)dt =\f 〖KP:含参变量积分求导；变量代换；导数定义；积分中值定理；连续性判定。〗
+359 2026-19 解答题 | （本题满分 `10` 分） 求函数 $$ f(x,y)=(2x^2-y^2)e^x $$ 的极值. 解： 先求偏导： $$ f_x=e^x(2x^2+4x-y^2),\qquad f_y=-2ye^x. $$ 令 $$ f_x=0,\qquad f_y=0, $$ 得驻点 $$ (0,0),\qquad (-2,0). $$ 再 〖KP:多元函数偏导数；驻点求法；二阶偏导判别法；多元函数极值。〗
+360 2026-20 解答题 | （本题满分 `12` 分） 已知 $M(x_0,y_0)$ 是曲线 $$ y=\frac{1}{1+x^2}\qquad (x\ge 0) $$ 的拐点，$O$ 为原点.记 $D$ 是第一象限中以曲线 $$ y=\frac{1}{1+x^2}\qquad (x\ge x_0), $$ 线段 $OM$ 及 $x$ 正半轴为边界的无 〖KP:拐点的判定；导数与曲线凹凸性；旋转体体积；广义积分；三角反函数积分。〗
+361 2026-21 解答题 | （本题满分 `12` 分） 求微分方程 $$ x^2y''-2xy'-(y')^2=0\qquad (x>2) $$ 满足条件 $$ y\big|_{x=3}=\frac12,\qquad y'\big|_{x=3}=-9 $$ 的解. 解： 方程不显含 $y$，令 $$ p=y', $$ 则 $$ x^2p'-2xp-p^2= 〖KP:不显含 $y$ 的二阶微分方程降阶；伯努利方程与变量代换；一阶线性微分方程；初值问题。〗
+362 2026-22 解答题 | （本题满分 `12` 分） 已知向量组 $$ \boldsymbol{\alpha}_1= \begin{pmatrix} 1\\ 0\\ -1\\ -1 \end{pmatrix}, \qquad \boldsymbol{\alpha}_2= \begin{pmatrix} 1\\ -1\\ 0\\ -2 \end{pmatr 〖KP:向量组的线性相关与线性无关；极大线性无关组；矩阵的列分解；矩阵乘法结合律；特殊矩阵幂的计算。〗

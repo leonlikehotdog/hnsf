@@ -1,23 +1,22 @@
 /* ============================================================
- * 302 数学二 闯关系统 · ☁️ 云端进度同步（Supabase）
+ * 302 数学二 闯关系统 · ☁️ 云端进度同步（Supabase —— 单一事实源）
  * ------------------------------------------------------------
- * 解决的问题：进度存在 localStorage，**按 origin 隔离** —— 手机 / 电脑天然两套，
- * 换域名（每次部署的快照域名都不同）也会看成"新玩家"。这里把存档搬到云端。
+ * 规则只有一条线，没有别的分支：
+ *   1. 进度只有一份：云端 math2_saves 按「同步码」的那一行。
+ *   2. 开机：拉这一行 → 有就把云端那份直接放进本机（云端 = 真相）。
+ *      没有就空开局。本机 localStorage 只是开机请求落地前的镜像，
+ *      不作为任何判定的依据（判定依据只用两处的时间戳做一次比较）。
+ *   3. 保存：本机每次存档 → 1.2 秒内推上云端（实时）；
+ *      页面隐藏 / 关闭前用 keepalive 补传，不丢最后一口。
+ *   4. 唯一允许本机胜出的场景：本机有实货（不只是个空壳）且比云端新
+ *      —— 直接静默推上云端，不打扰（比如在另一台设备玩过一天后回家）。
  *
- * 安全模型 = 「同步码即口令」：
- *   · 前端只能通过两个 RPC 读写（math2_push / math2_pull），表本身对 anon 零权限；
- *   · 两个函数都必须**精确给出同步码**才命中一行 → 拿 anon_key 也拉不走全表；
- *   · 代价：同步码丢了就找不回来（没有找回渠道，这是知识库式口令）。
+ * 仍然保留的两条底线（这不是"有的没的"，是防止事故复发）：
+ *   · 首次拉取完成前，绝不上传（空壳覆盖云端的口子从根上焊死）；
+ *   · 空壳存档永不自动上传（isLocalEmpty，刚被清过缓存的设备推不了空档）。
  *
- * 语义：**整份覆盖**，不做字段级合并 —— 合并最容易出错，先简单可靠。
- *   上传 = 用本机覆盖云端；下载 = 用云端覆盖本机（会丢本机进度，UI 上有二次确认）。
- *
- * 自动同步（单人自用，默认开启）：
- *   · 内置固定同步码 DEFAULT_CODE —— 换设备 / 清缓存 / 换域名后，打开即自动拉回进度；
- *   · 打开时比对「本机最后保存时间」与「云端 updated_at」，新的一方整份胜出；
- *   · 本机有改动 → 防抖 6 秒自动上传；页面隐藏 / 关闭前补传一次；
- *   · **本机为空时一律以云端为准**（这就是"进度失而复得"的路径）；
- *     反过来，本机为空时**绝不自动上传**，避免重置存档把云端备份冲掉（要冲请手动上传）。
+ * 安全模型：「同步码即口令」。前端只能走 math2_push / math2_pull 两个 RPC，
+ *   表对 anon 零权限，函数要求精确给码才命中一行。
  * ============================================================ */
 window.HNSF829 = window.HNSF829 || {};
 (function (NS) {
@@ -26,23 +25,23 @@ window.HNSF829 = window.HNSF829 || {};
   // 与 store.js / diary.js 里的 key 保持一致（那两处是私有的，这里只能重写一遍）
   var SAVE_KEY = 'hnsf302_save_v1';
   var DIARY_KEY = 'hnsf302_diary_v1';
-  var SYNC_KEY = 'hnsf302_sync_v1';          // { code, ts } —— 只存同步码与最后同步时间
-  var TS_KEY = 'hnsf302_autots_v1';          // 本机最近一次保存时间（毫秒），用于和云端比新旧
+  var SYNC_KEY = 'hnsf302_sync_v1';          // { code, ts }
+  var TS_KEY = 'hnsf302_autots_v1';          // 旧档兼容：今天以前的设备时钟存这里，只读不写
 
-  // 单人自用：内置固定同步码。首次运行会写进本机；用户可在设置里改成自己的码。
+  // 单人自用：内置固定同步码 —— 所有设备共用同一条进度
   var DEFAULT_CODE = 'HNSF-MATH2-SAVE-0726';
 
-  // Supabase 项目（anon_key 公开在前端是设计如此：它的权限被 RLS 与函数授限卡死）
+  // Supabase 项目（anon_key 公开在前端是设计如此：权限被 RLS 与函数授限卡死）
   var URL_BASE = 'https://yucploakclaznlmfpdkk.supabase.co';
   var ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1Y3Bsb2FrY2xhem5sbWZwZGtrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQxNjAyNDQsImV4cCI6MjA5OTczNjI0NH0.-VpUDJgIR0KlEReUM5LzSShIwog2YiJgH28QJAj6GHI';
 
   var MIN_CODE = 12;                         // 与 SQL 里的长度校验一致
   var ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';   // 去掉 I/O/0/1 等易混字符
 
-  var busy = false;                          // 防连点（上传/下载同时只跑一个）
-  var suppress = false;                      // 正在应用云端数据：期间本机保存事件不上传
-  var autoReady = false;                     // 首次拉取对照完成前，禁止自动上传（防空存档覆盖云端）
-  var pushTimer = null;                      // 自动上传的防抖计时器
+  var busy = false;                          // 同一时刻只允许一个请求在飞
+  var suppress = false;                      // 正在应用云端/外部数据：期间本机保存不上传
+  var autoReady = false;                     // 开机第一次对照完成前，禁止一切上传
+  var pushTimer = null;                      // 实时上传的合流计时器（1.2s 内只发一次）
 
   /* ---------------- 同步码存取 ---------------- */
   function meta() {
@@ -69,7 +68,7 @@ window.HNSF829 = window.HNSF829 || {};
       for (var i = 0; i < 4; i++) seg += ALPHABET.charAt(Math.floor(Math.random() * ALPHABET.length));
       out.push(seg);
     }
-    return out.join('-');                    // 形如 XXXX-XXXX-XXXX-XXXX（共 19 位）
+    return out.join('-');
   }
 
   /* ---------------- 与 Supabase 通信 ---------------- */
@@ -104,7 +103,7 @@ window.HNSF829 = window.HNSF829 || {};
   }
 
   /* ---------------- 存档打包 / 落盘 ---------------- */
-  /** 打包本机存档（含疑问日记，日记是学习资产，一起同步） */
+  /** 打包本机（含疑问日记，一起同步） */
   function collect() {
     var save = null, diary = null;
     try { save = JSON.parse(localStorage.getItem(SAVE_KEY) || 'null'); } catch (e) {}
@@ -112,7 +111,7 @@ window.HNSF829 = window.HNSF829 || {};
     return { app: 'hnsf302', v: 1, at: Date.now(), save: save, diary: diary };
   }
 
-  /** 用云端 payload 覆盖本机（含存档与日记）。期间的本机保存事件不上传，防止立刻回写。 */
+  /** 用云端 payload 覆盖本机。期间的本机保存事件不上传，防止立刻回写。 */
   function applyPayload(p) {
     suppress = true;
     try {
@@ -127,7 +126,7 @@ window.HNSF829 = window.HNSF829 || {};
     } finally { suppress = false; }
   }
 
-  /** 本机是否"没有任何进度"（新设备/清缓存/刚重置都算空）*/
+  /** 本机是否「没有任何实货」（新设备 / 清缓存 / 刚重置都算空） */
   function isLocalEmpty() {
     var s = null, d = null;
     try { s = JSON.parse(localStorage.getItem(SAVE_KEY) || 'null'); } catch (e) {}
@@ -142,21 +141,23 @@ window.HNSF829 = window.HNSF829 || {};
     return !hasSave && !hasDiary;
   }
 
+  /** 本机时间：存档对象里的 ts（save() 随存档一起写）为准；旧档回落到独立时间键 */
   function localTs() {
-    var v = 0;
-    try { v = parseInt(localStorage.getItem(TS_KEY) || '0', 10) || 0; } catch (e) {}
-    return v;
+    var s = null;
+    try { s = JSON.parse(localStorage.getItem(SAVE_KEY) || 'null'); } catch (e) {}
+    if (s && s.ts) return s.ts;
+    try { return parseInt(localStorage.getItem(TS_KEY) || '0', 10) || 0; } catch (e) { return 0; }
   }
 
-  /** 忙时排队：手动上传/下载不丢，等自动上传跑完再执行 */
+  /** 忙时排队：手动上传/下载不丢，等在飞的请求结束后再跑 */
   function runWhenFree(fn) {
     if (!busy) { fn(); return; }
     setTimeout(function () { runWhenFree(fn); }, 250);
   }
 
   /**
-   * 手动上传：本机 → 云端
-   * done(ok, info)；info 成功时为 { at: 毫秒时间戳 }
+   * 手动上传：本机 → 云端（面板按钮）
+   * done(ok, info)；info 成功时为 { at }
    */
   function push(done) {
     var c = code();
@@ -175,8 +176,8 @@ window.HNSF829 = window.HNSF829 || {};
   }
 
   /**
-   * 手动下载：云端 → 本机（**整份覆盖**）
-   * done(ok, info)；info 成功时为 { empty:true }（该码云端没有数据）或 { at, save, diary }
+   * 手动下载：云端 → 本机（面板按钮，UI 自带「点两下」确认）
+   * done(ok, info)；info = { empty:true } 表示云端没有可用的存档
    */
   function pull(done) {
     var c = code();
@@ -185,11 +186,12 @@ window.HNSF829 = window.HNSF829 || {};
       busy = true;
       rpc('math2_pull', { p_code: c }).then(function (rows) {
         busy = false;
-        if (!rows || !rows.length) { done(true, { empty: true }); return; }
-        var row = rows[0];
-        applyPayload(row.payload);
+        var row = (rows && rows.length) ? rows[0] : null;
+        var payload = row && row.payload && row.payload.save ? row.payload : null;
+        if (!payload) { done(true, { empty: true }); return; }   // 云端没有实货 → 整份覆盖无从谈起
+        applyPayload(payload);
         touchSync();
-        done(true, { at: Date.parse(row.updated_at) || Date.now(), save: row.payload && row.payload.save });
+        done(true, { at: Date.parse(row.updated_at) || Date.now(), save: payload.save });
       }, function (e) {
         busy = false;
         done(false, { message: e.message || '下载失败' });
@@ -197,20 +199,19 @@ window.HNSF829 = window.HNSF829 || {};
     });
   }
 
-  /* ---------------- 自动同步 ---------------- */
+  /* ---------------- 实时自动同步 ---------------- */
 
-  /** store.js 每次 save() 都会调它：记下本机改动时间，并安排一次防抖上传 */
+  /** store.js 每次 save() 都会调它 → 1.2 秒内推上云端（合流，不每题一发） */
   function onLocalSave() {
-    try { localStorage.setItem(TS_KEY, String(Date.now())); } catch (e) {}
     if (!suppress) schedulePush();
   }
 
   function schedulePush() {
     if (!autoReady || pushTimer) return;
-    pushTimer = setTimeout(function () { pushTimer = null; autoPush(false); }, 6000);
+    pushTimer = setTimeout(function () { pushTimer = null; autoPush(false); }, 1200);
   }
 
-  /** 静默上传：失败不打扰用户（手动入口仍在）。空存档不上传，保护云端备份。 */
+  /** 静默上传：失败不打扰（面板有手动入口重试）。空壳不上传。 */
   function autoPush(flush) {
     var c = code();
     if (!autoReady || !codeOk(c) || busy) return;
@@ -222,32 +223,25 @@ window.HNSF829 = window.HNSF829 || {};
     }, function () { busy = false; });
   }
 
-  /** 打开时的一次对照：本机为空 or 云端更新 → 拉云端；否则把本机推上去 */
+  /** 开机对照：有实货的哪边新哪边赢，只比对这一次。 */
   function autoInit() {
     var c = code();
     if (!codeOk(c)) { autoReady = true; return; }
     rpc('math2_pull', { p_code: c }).then(function (rows) {
       var row = (rows && rows.length) ? rows[0] : null;
+      var payload = row && row.payload && row.payload.save ? row.payload : null;
       var cloudAt = row ? (Date.parse(row.updated_at) || 0) : 0;
       var empty = isLocalEmpty();
       var lt = localTs();
-      // 「首次运行保护」：刚升级到自动同步的设备还没有本机时间戳（lt=0），
-      // 此时只要本机有进度，就以本机为准 —— 否则会被云端旧副本盖掉真实进度。
-      var useCloud = !!(row && (empty || (lt > 0 && cloudAt > lt)));
-      autoReady = true;
-      if (useCloud) {
-        applyPayload(row.payload);
+      if (payload && (empty || !(lt > 0) || cloudAt > lt)) {
+        applyPayload(payload);                              // 云端有实货且不比本机旧 → 云端赢
         touchSync();
-        try {
-          if (NS.Engine && NS.Engine.toast) {
-            NS.Engine.toast(empty ? '☁️ 已从云端恢复进度' : '☁️ 云端进度较新，已同步到本机');
-          }
-        } catch (e) {}
       } else if (!empty) {
-        autoPush(true);                      // 本机较新 → 静默上传
+        autoPush(true);                                     // 本机有实货且云端没有/更旧 → 本机赢
       }
+      autoReady = true;
     }, function () {
-      autoReady = true;                      // 拉取失败（离线）也放行，避免卡住后续自动上传
+      autoReady = true;                                     // 离线也放行，别把上传卡死
     });
   }
 
@@ -255,7 +249,7 @@ window.HNSF829 = window.HNSF829 || {};
     try {
       if (!code()) setCode(DEFAULT_CODE);    // 首次运行：写入内置同步码 → 免配置
       autoInit();
-    } catch (e) {}
+    } catch (e) { autoReady = true; }
   }
 
   NS.Cloud = {
@@ -279,6 +273,9 @@ window.HNSF829 = window.HNSF829 || {};
   } else {
     setTimeout(boot, 60);
   }
-  // 页面隐藏 / 关闭前补传一次，减少"刚打完就关掉"造成的丢档
+  // 页面隐藏 / 关闭前立即补传，减少「刚打完就关掉」造成的丢档
   window.addEventListener('pagehide', function () { if (autoReady) autoPush(true); });
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'hidden' && autoReady) autoPush(true);
+  });
 })(window.HNSF829);

@@ -240,7 +240,9 @@ window.HNSF829 = window.HNSF829 || {};
   function init(refs) { els = refs; }
 
   /**
-   * @param {Object} opts { node, questions, mode: 'node'|'wrong', onExit }
+   * @param {Object} opts { node, questions, mode: 'node'|'wrong'|'zhenti', onExit }
+   *   mode 'zhenti' = 真题关：统计走 Store.ztRecord / ztFinish（独立于考点），
+   *   node 里的 ztParent 指向母考点（角色立绘、羁绊条沿用母考点）。
    */
   function open(opts) {
     var node = opts.node;
@@ -282,7 +284,8 @@ window.HNSF829 = window.HNSF829 || {};
       session.char = setMonster('wrong', '错题本 · 重练');
     } else {
       els.monsterEmoji.textContent = node.icon || '🥋';
-      session.char = setMonster(node.id, node.name);
+      // 真题关沿用母考点的考官：同一考点「练」和「验」是同一个人，观感连贯
+      session.char = setMonster(node.ztParent || node.id, node.name);
     }
     resetMonster();
     bindMasterEntry();
@@ -297,7 +300,7 @@ window.HNSF829 = window.HNSF829 || {};
       els.monster._enterT = setTimeout(function () { els.monster.classList.remove('enter'); }, 1500);
     }
     syncTrialInstant();
-    renderBondStrip(node.id);
+    renderBondStrip(node.ztParent || node.id);
     renderQuestion();
   }
 
@@ -565,10 +568,11 @@ window.HNSF829 = window.HNSF829 || {};
     els.body.innerHTML =
       '<div class="q-card">' +
         '<div class="q-tags">' +
+          (q.year ? '<span class="tag tag-year">' + q.year + ' 真题</span>' : '') +
           '<span class="tag tag-type">' + (TYPE_LABEL[q.type] || q.type) + '</span>' +
           '<span class="tag tag-level lv' + q.level + '">' + LEVEL_LABEL[q.level] + '</span>' +
           (q.diff ? '<span class="tag tag-diff d-' + q.diff + '">' + (DIFF_LABEL[q.diff] || q.diff) + '</span>' : '') +
-          '<span class="tag tag-score">真题权重 ' + (q.score || 3) + '</span>' +
+          '<span class="tag tag-score">' + (q.year ? '满分 ' + (q.score || 3) + ' 分' : '真题权重 ' + (q.score || 3)) + '</span>' +
           '<span class="tag tag-xp">+' + xpFor(q) + ' XP</span>' +
         '</div>' +
         ((q.type === 'choice' || q.type === 'blank')
@@ -753,7 +757,10 @@ window.HNSF829 = window.HNSF829 || {};
     s.log.push({ qid: q.id, ok: ok });
 
     // 先落库统计（含错题本、全局连击与成就判定），再结算经验，保证 HUD 数字与存档一致
-    var rec = store().recordAnswer(s.node.id, q.id, ok) || {};
+    // chosen 一起落库：回炉间的「诊断屏」要显示「你当时选了什么」
+    var rec = (s.mode === 'zhenti'
+      ? store().ztRecord(s.node.ztParent || s.node.id, q.id, ok, chosen)
+      : store().recordAnswer(s.node.id, q.id, ok, chosen)) || {};
     var achGained = rec.achievements || [];
     var streak = rec.streak || 0;
 
@@ -874,7 +881,9 @@ window.HNSF829 = window.HNSF829 || {};
     if (s.settled) return;
     s.settled = true;
 
-    var res = store().finishNode(s.node.id, { total: s.questions.length, correct: s.correct, maxCombo: s.maxRunCombo || 0 });
+    var res = (s.mode === 'zhenti'
+      ? store().ztFinish(s.node.ztParent || s.node.id, { total: s.questions.length, correct: s.correct, maxCombo: s.maxRunCombo || 0 })
+      : store().finishNode(s.node.id, { total: s.questions.length, correct: s.correct, maxCombo: s.maxRunCombo || 0 }));
 
     // 结算演出：通关凯歌 + 金色气浪；失败则震屏
     if (res.pass) {
@@ -896,7 +905,7 @@ window.HNSF829 = window.HNSF829 || {};
     // 结算时刷新遭遇条：刚通过的那位当场点亮。
     // 放在这里（而不是答对那一刻）是因为「结伴」的判定是**整个考点通关**，
     // 答对单题还只是过程分，提前点亮就是骗人。
-    renderBondStrip(s.node.id);
+    renderBondStrip(s.node.ztParent || s.node.id);
 
     var elapsed = Math.round((Date.now() - s.startTs) / 1000);
     var rate = Math.round(res.rate * 100);
@@ -938,7 +947,9 @@ window.HNSF829 = window.HNSF829 || {};
         (res.firstClear ? '<div class="settle-row hl">🎁 首次通关额外奖励已计入</div>' : '') +
         (res.pass ? '<div class="settle-row hl">' + (s.mode === 'wrong'
           ? '🧹 这批错题已消化　·　回错题本看看还剩哪些'
-          : '🤝 ' + esc((s.char && s.char.name) || '他') + ' 认可了你　·　本关心法已收录（简报里可随时回看）') +
+          : s.mode === 'zhenti'
+            ? '📝 真题关通过　·　正确率 ' + rate + '%，可以再刷刷新纪录'
+            : '🤝 ' + esc((s.char && s.char.name) || '他') + ' 认可了你　·　本关心法已收录（简报里可随时回看）') +
           '</div>' : '') +
         (!res.pass ? '<div class="settle-note">正确率需达到 ' + Math.round(store().PASS_RATE * 100) + '% 才能通关，再来一次！</div>' : '') +
         (res.pass ? '<div class="loot-box" id="lootBox">' +

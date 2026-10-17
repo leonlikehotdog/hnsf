@@ -36,6 +36,83 @@ window.HNSF829 = window.HNSF829 || {};
     return m ? M.dir + m.file : '';
   }
 
+  /* ================= 真题关（母考点旁的「卫星徽标」） =================
+   * 设计约定（与需求一一对应）：
+   *   · 形态：每个考点球右上角挂一颗小「真」球，短线相连。不动现有三层列布局。
+   *   · 解锁：母考点通关（Store.isCleared(parent)）才点亮 —— 反复强调的「循序渐进」。
+   *   · 统计：独立。通关记录进 state.zt，不进 state.cleared，龙珠/掌握度不受影响。
+   */
+  var ZT = window.HNSF829_ZT || { nodes: [], qs: [], byNode: {} };
+  var ztByParent = {};                        // parentId -> 真题节点
+  var ztQById = {};                           // qid -> 题目
+  ZT.nodes.forEach(function (z) { ztByParent[z.parent] = z; });
+  ZT.qs.forEach(function (q) { ztQById[q.id] = q; });
+
+  function ztQuestions(zid) {
+    return (ZT.byNode[zid] || []).map(function (id) { return ztQById[id]; }).filter(Boolean);
+  }
+
+  function ztBadgeHtml(n, p, size, parentCleared, wip) {
+    var z = ztByParent[n.id];
+    if (!z) return { html: '', line: '' };
+    // 只有母考点通关才能做真题；母考点还没解锁/未通关 → 灰锁
+    var cls = ['zt-badge'];
+    var cleared = Store.ztCleared(n.id);
+    cls.push(cleared ? 'cleared' : (parentCleared && !wip ? 'ready' : 'locked'));
+    if (wip) cls.push('wip');
+
+    // ⚠️ 三个硬约束，改这两个数之前先量：
+    //   ① 母球脉冲外圈：外圈半径 = (size/2 + 9) × 1.08（@keyframes pulse 峰值）
+    //   ② 同排右邻：子列宽 slotW ≥ 140（MAP.minSlot），别把球压到人家头上
+    //   ③ 上一行的脚注底边：锚点往上 rowH(132) 再减去半栈高 (size+50.8)/2
+    //   现在这套偏移：离脉冲外圈 ≥ 7px、离右邻球 ≥ 30px、离上一行脚注 ≥ 7px（含 jitter ±6）。
+    //   注意锚点是「整栈中心」而不是球心 —— 球心固定在锚点上方 25.4px。
+    var ox = size / 2 + 32, oy = -(size / 2 + 16);
+    var zx = p.x + ox, zy = p.y + oy;
+    var tip;
+    if (wip) tip = '真题关 · ' + n.name + '：题库建设中';
+    else if (cleared) {
+      var m = Store.ztMastery(n.id);
+      tip = '真题关 · ' + n.name + '：已通关' + (m.rate != null ? '（累计正确率 ' + Math.round(m.rate * 100) + '%）' : '') + '，可再刷';
+    } else if (parentCleared) tip = '真题关 · ' + n.name + '：共 ' + z.count + ' 题（' + z.years[0] + '–' + z.years[z.years.length - 1] + ' 年），点击开打';
+    else tip = '真题关 · ' + n.name + '：需先通关「' + n.name + '」';
+
+    var html = '<div class="' + cls.join(' ') + '" data-zt="' + n.id + '" ' +
+      'style="left:' + zx + 'px;top:' + zy + 'px" title="' + escAttr(tip) + '">' +
+      '<span class="zt-glyph">真</span>' +
+      '<span class="zt-n">' + z.count + '</span>' +
+      '</div>';
+    // 连线按方向自动收口：起点在母球外圈之外，终点停在真题球边缘 —— 不写死坐标，
+    // 节点尺寸（44–63px）改了也不会插进球里或短到看不见。
+    var dist = Math.sqrt(ox * ox + oy * oy) || 1;
+    var ux = ox / dist, uy = oy / dist;
+    var r0 = size / 2 + 10;        // 母球半径 + 外圈厚度 + 1
+    var r1 = 17;                   // 真题球半径(15) + 2 间隙
+    var line = '<path class="zt-edge ' + (cleared ? 'zt-done' : parentCleared ? 'zt-ready' : 'zt-locked') +
+      '" d="M ' + (p.x + ux * r0) + ' ' + (p.y + uy * r0) +
+      ' L ' + (zx - ux * r1) + ' ' + (zy - uy * r1) + '"/>';
+    return { html: html, line: line };
+  }
+
+  function onZtClick(parentId) {
+    var n = Store.nodeById(parentId);
+    var z = ztByParent[parentId];
+    if (!n || !z) return;
+    if (n.wip) { Engine.toast('该考点题库建设中，先刷已开放的'); return; }
+    if (!Store.isCleared(parentId)) { Engine.toast('循序渐进：先通关「' + n.name + '」，才能做它的真题'); return; }
+    var qs = ztQuestions(z.id);
+    if (!qs.length) { Engine.toast('该考点暂无真题'); return; }
+    Engine.open({
+      // 复用母考点的角色与章节：地图上「练」和「验」是同一个人
+      node: {
+        id: z.id, ztParent: parentId, name: z.name, icon: n.icon,
+        chap: n.chap, module: n.module, tier: n.tier, weight: n.weight
+      },
+      questions: qs, mode: 'zhenti',
+      onExit: function () { renderMap(); renderHud(); }
+    });
+  }
+
   /* ---------------- 初始化 ---------------- */
   function init() {
     Engine.init({
@@ -69,6 +146,10 @@ window.HNSF829 = window.HNSF829 || {};
     if (NS.BG) NS.BG.setScene('map');          // 地图战场背景
 
     if (NS.Story) NS.Story.init();             // 章节剧情卡（入关 / 出关）
+    if (NS.Huilu) NS.Huilu.init({              // 回炉间（错题复盘：诊断 → 变形 → 归位）
+      mask: $('#hlMask'), body: $('#hlBody'), foot: $('#hlFoot'),
+      sub: $('#hlSub'), count: $('#hlCount'), bar: $('#hlBar'), close: $('#hlClose')
+    });
     // 考验条上的「通关线」刻度：位置直接读 PASS_RATE 算出来，别在 CSS 里写死 60%
     var mark = $('#trialMark');
     if (mark) {
@@ -87,6 +168,10 @@ window.HNSF829 = window.HNSF829 || {};
 
   function bindGlobal() {
     $('#battleClose').addEventListener('click', function () { Engine.close(); });
+    $('#btnHuilu').addEventListener('click', function () {
+      togglePanel(false);           // 别让侧栏面板压在回炉间背后
+      NS.Huilu.open({ onExit: function () { renderHud(); renderMap(); renderPanel(); } });
+    });
     $('#btnPanel').addEventListener('click', function () { togglePanel(true); });
     $('#panelClose').addEventListener('click', function () { togglePanel(false); });
     $('#panelMask').addEventListener('click', function () { togglePanel(false); });
@@ -302,7 +387,8 @@ window.HNSF829 = window.HNSF829 || {};
     });
     svg.innerHTML = lines.join('');
 
-    // 3) 考点节点
+    // 3) 考点节点 + 真题卫星徽标
+    var ztLines = [];
     var nodesHtml = NODES.map(function (n) {
       var p = positions[n.id];
       var u = Store.unlocked(n);
@@ -341,6 +427,9 @@ window.HNSF829 = window.HNSF829 || {};
           ? '<img class="node-avatar" src="' + a + '" alt="" loading="lazy" decoding="async" data-fb="' + escAttr(n.icon || '●') + '">'
           : (n.icon || '●');
       })());
+      // 真题卫星：只有母考点通关才点亮（循序渐进）
+      var zt = ztBadgeHtml(n, p, size, cleared, wip);
+      if (zt.line) ztLines.push(zt.line);
       return '<div class="' + cls.join(' ') + '" data-id="' + n.id + '" ' +
         'style="left:' + p.x + 'px;top:' + p.y + 'px;--size:' + size + 'px;--color:' + moduleColor(n.module) + '">' +
         '<div class="node-ring"></div>' +
@@ -352,10 +441,13 @@ window.HNSF829 = window.HNSF829 || {};
           '<span class="node-meta">' + weightPct(n.weight) + '%</span>' +
           '<span class="node-mast ' + mastCls + '" title="' + escAttr(mastTip) + '">' + mastTxt + '</span>' +
         '</div>' +
-        '</div>';
+        '</div>' +
+        zt.html;
     }).join('');
     // 同层按权重排序后再插入，保证 DOM 顺序与视觉一致
     $('#nodes').innerHTML = nodesHtml;
+    // 真题卫星的连线补进 SVG（在考点连线之后绘制，压在下层同样不影响）
+    if (ztLines.length) svg.insertAdjacentHTML('beforeend', ztLines.join(''));
 
     $$('.node').forEach(function (el) {
       el.addEventListener('click', function () { onNodeClick(el.dataset.id); });
@@ -367,6 +459,11 @@ window.HNSF829 = window.HNSF829 || {};
       if (av) av.addEventListener('error', function () {
         av.replaceWith(document.createTextNode(av.getAttribute('data-fb') || '●'));
       });
+    });
+
+    // 真题卫星徽标：点一下直接开打（未通关母考点时给提示，不跳转）
+    $$('.zt-badge').forEach(function (el) {
+      el.addEventListener('click', function (e) { e.stopPropagation(); onZtClick(el.dataset.zt); });
     });
 
     pzUpdate();                                 // 重排后重新套用/校正缩放视角
@@ -882,6 +979,15 @@ window.HNSF829 = window.HNSF829 || {};
     $('#hudXp').textContent = info.cur + ' / ' + info.need + ' XP';
     $('#hudXpFill').style.width = Math.min(100, info.cur / info.need * 100) + '%';
     $('#hudClear').textContent = snap.clearedCount + ' / ' + total;
+    $('#hudScore').textContent = Store.scoreForecast().expected.toFixed(1);
+    // 回炉间入口徽标：显示「今天可验几道」——永远知道欠账还剩多少
+    var hls = Store.hlSummary(), hb = $('#hudHuilu');
+    hb.textContent = hls.ready;
+    hb.classList.toggle('zero', hls.ready === 0);
+    $('#btnHuilu').title = '回炉间：今天可验 ' + hls.ready + ' 道' +
+      (hls.pending ? ' · ' + hls.pending + ' 道等明天' : '') +
+      (hls.stuck ? ' · ' + hls.stuck + ' 道待师傅讲' : '') +
+      '　｜　错题要用同类变式验两段（第二段隔天）才算消化';
     $('#hudStreak').textContent = snap.streak + (snap.streak >= 3 ? ' 🔥' : '');
     var acc = snap.totalAnswered ? Math.round(snap.totalCorrect / snap.totalAnswered * 100) : 0;
     $('#hudAcc').textContent = acc + '%';
@@ -960,30 +1066,46 @@ window.HNSF829 = window.HNSF829 || {};
 
   function renderWrongBook() {
     var list = Store.wrongList();
+    var sum = Store.hlSummary();
     if (!list.length) {
       $('#view-wrong').innerHTML = '<div class="empty">🎉 错题本空空如也，继续保持！</div>';
       return;
     }
-    var html = '<div class="wrong-bar"><span>共 ' + list.length + ' 道待消化错题</span>' +
-      '<button class="btn btn-mini" id="btnWrongAll">⚔️ 全部重练</button>' +
+    var html = '<div class="wrong-bar"><span>共 ' + list.length + ' 道待消化' +
+      (sum.ready ? '（今天可回炉 ' + sum.ready + '）' : (sum.pending ? '（' + sum.pending + ' 道等明天）' : '')) +
+      '</span>' +
+      '<button class="btn btn-mini btn-primary" id="btnHlOpen">🔥 回炉间</button>' +
+      '<button class="btn btn-mini" id="btnWrongAll" title="原题重练：只当练习，不解账">⚔️ 原题重练</button>' +
       '<button class="btn btn-mini" id="btnWrongClean">🧹 全部消化</button></div>';
     html += list.map(function (it) {
       var q = BANK.filter(function (x) { return x.id === it.qid; })[0];
       if (!q) return '';
       var n = Store.nodeById(it.node);
+      var seg = '<span class="wi-seg">第 ' + ((it.stage || 0) + 1) + ' / ' + (it.need || 2) + ' 段</span>';
+      if (it.stuck) seg = '<span class="wi-seg stuck">待师傅讲</span>';
+      else if (!it.ready) seg = '<span class="wi-seg wait">等明天</span>';
       return '<div class="wrong-item">' +
         '<div class="wi-head"><span class="wi-node">' + (n ? n.icon + ' ' + n.name : it.node) + '</span>' +
-        '<span class="wi-times">错 ' + it.times + ' 次</span></div>' +
+        seg + '<span class="wi-times">错 ' + it.times + ' 次</span></div>' +
         '<div class="wi-stem">' + Engine.fmt(q.stem.slice(0, 160)) + (q.stem.length > 160 ? '…' : '') + '</div>' +
         '<div class="wi-src">🔗 ' + q.source + '</div>' +
         '<div class="wi-actions">' +
-          '<button class="btn btn-mini btn-primary" data-retry="' + q.id + '">重练</button>' +
+          '<button class="btn btn-mini btn-primary" data-hl="' + q.id + '">🔥 回炉</button>' +
+          '<button class="btn btn-mini" data-retry="' + q.id + '">原题重练</button>' +
           '<button class="btn btn-mini" data-resolve="' + q.id + '">已消化</button>' +
         '</div>' +
       '</div>';
     }).join('');
     $('#view-wrong').innerHTML = html;
 
+    function openHl(qids) {
+      togglePanel(false);
+      NS.Huilu.open({
+        qids: qids,
+        onExit: function () { renderHud(); renderMap(); renderPanel(); }
+      });
+    }
+    $('#btnHlOpen').addEventListener('click', function () { openHl(null); });
     $('#btnWrongAll').addEventListener('click', function () {
       var qs = list.map(function (it) { return BANK.filter(function (x) { return x.id === it.qid; })[0]; })
         .filter(Boolean);
@@ -999,6 +1121,9 @@ window.HNSF829 = window.HNSF829 || {};
         var q = BANK.filter(function (x) { return x.id === b.dataset.retry; })[0];
         if (q) retryQuestions([q]);
       });
+    });
+    $$('#view-wrong [data-hl]').forEach(function (b) {
+      b.addEventListener('click', function () { openHl([b.dataset.hl]); });
     });
     $$('#view-wrong [data-resolve]').forEach(function (b) {
       b.addEventListener('click', function () {
@@ -1086,10 +1211,95 @@ window.HNSF829 = window.HNSF829 || {};
     });
   }
 
+  /* ---------------- 考场预计（复盘系统的门面） ----------------
+   * 设计立场：不用奖励催你复盘，而是把你「考场上会丢的分」摆出来。
+   * 虚分不会因为你不管它就消失 —— 它只能靠「验」变成实分。
+   */
+  function forecastHtml() {
+    var f = Store.scoreForecast();
+    var realPct = f.expected / f.full * 100;
+    var fakePct = f.fake / f.full * 100;
+    var hasFake = f.fake >= 0.05;
+    var fakeRatio = f.paper > 0 ? Math.round(f.fake / f.paper * 100) : 0;
+
+    var head = '<div class="fc-head">' +
+      '<span class="fc-title">🎯 考场预计</span>' +
+      '<span class="fc-cap">按本系统已覆盖内容估算 · 150 分制 · 没碰过的按 0 计</span></div>';
+
+    var main = '<div class="fc-main">' +
+      '<b class="fc-score">' + f.expected.toFixed(1) + '</b>' +
+      '<span class="fc-of">/ 150</span>' +
+      (hasFake ? '<span class="fc-fake">虚分 ' + f.fake.toFixed(1) + ' · 占纸面 ' + fakeRatio + '%</span>'
+               : (f.touched ? '<span class="fc-fake zero">没有虚分 ✓</span>' : '')) +
+      '</div>';
+
+    var bar = '<div class="fc-bar">' +
+      '<i class="fc-real" style="width:' + realPct.toFixed(2) + '%"></i>' +
+      '<i class="fc-fake-i" style="width:' + fakePct.toFixed(2) + '%"></i>' +
+      '</div>';
+
+    var legend = '<div class="fc-legend">' +
+      '<span><i class="d real"></i>已坐实 <b>' + f.expected.toFixed(1) + '</b></span>' +
+      (hasFake ? '<span><i class="d fake"></i>虚分 <b>' + f.fake.toFixed(1) +
+        '</b>（练过但没验过 · 占纸面 ' + fakeRatio + '%）</span>' : '') +
+      '<span><i class="d blank"></i>还没碰 <b>' + f.blank.toFixed(1) + '</b></span>' +
+      '</div>';
+
+    var rows = f.fakeRows.slice(0, 5).map(function (r) {
+      var gap = r.paperPts - r.realPts;
+      // 通关但真题未验 → 点一下直接去「验」；其余回原考点刷
+      var act = (r.state === 'claimed' && !Store.ztCleared(r.node.id)) ? 'zt' : 'node';
+      return '<button class="fc-row" data-fc-node="' + r.node.id + '" data-fc-act="' + act + '">' +
+        '<span class="fc-rn">' + r.node.icon + ' ' + shortName(r.node) + '</span>' +
+        '<span class="fc-rs ' + r.state + '">' + r.label + '</span>' +
+        '<span class="fc-rr">' + Math.round((r.rate || 0) * 100) + '%</span>' +
+        '<span class="fc-rg">−' + gap.toFixed(1) + '</span>' +
+        '</button>';
+    }).join('');
+
+    var listHtml = rows
+      ? '<div class="fc-list"><div class="fc-list-title">这些分现在是虚的 · 点一下去验</div>' + rows + '</div>'
+      : '';
+
+    var note;
+    if (!f.touched) {
+      note = '还没开始练 —— 先把地图上开放的考点刷起来，这里才会开始有数字。';
+    } else {
+      note = '复盘的唯一产出是「可信度」，不是奖励。';
+      if (f.claimed) {
+        note += '你现在有 <b>' + f.claimed + '</b> 个考点练通了却<b>没在真题里验过</b>' +
+          (f.verified ? '，只有 <b>' + f.verified + '</b> 个是坐实的' : '') +
+          ' —— 那正是虚分的来源。把它们验一遍，这部分分才真的算你的。';
+      } else if (hasFake) {
+        note += '把虚分的考点补一遍，虚分就坐实了。';
+      } else {
+        note += '已覆盖的考点都验过了，继续保持；空白的那部分才是接下来要拿的分。';
+      }
+    }
+
+    return '<div class="stats-block fc-box">' + head + main + bar + legend + listHtml +
+      '<div class="fc-note">' + note + '</div></div>';
+  }
+
+  function bindForecast() {
+    $$('#view-stats .fc-row').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var id = b.dataset.fcNode;
+        if (!id) return;
+        togglePanel(false);
+        if (b.dataset.fcAct === 'zt') onZtClick(id); else launchNode(id);
+      });
+    });
+  }
+
   function renderStats() {
     var snap = Store.snapshot();
     var totalQ = BANK.length;
     var lo = Store.lootStats();
+    var zs = Store.ztSummary();
+    var hls = Store.hlSummary();
+    var ztot = (ZT.nodes || []).length;
+    var zrate = zs.answered ? Math.round(zs.correct / zs.answered * 100) : null;
     var rows = [
       ['总题量', totalQ + ' 题'],
       ['已作答', snap.totalAnswered + ' 题'],
@@ -1101,11 +1311,20 @@ window.HNSF829 = window.HNSF829 || {};
       ['掌握扎实的考点', Store.masterySummary().solid + ' / ' + NODES.length],
       ['通关考点', snap.clearedCount + ' / ' + NODES.length],
       ['龙珠进度', '🟠 ' + orbCount(snap.clearedCount) + ' / 7 颗'],
+      // 真题关走独立统计：既不算考点，也不进龙珠
+      ['真题关通关', zs.cleared + ' / ' + ztot + ' 关'],
+      ['真题作答', zs.answered + ' 题' + (zrate != null ? '　正确率 ' + zrate + '%' : '')],
       ['通关宝箱', lo.opened ? '已开 ' + lo.opened + ' 箱' + (lo.best ? '　最好 ' + lo.best.icon + lo.best.name : '') : '未开启'],
       ['满分考点', snap.perfectCount + ' 个'],
-      ['待消化错题', Store.wrongCount() + ' 题']
+      ['待消化错题', Store.wrongCount() + ' 题'],
+      // 回炉账本：错题不再「答对一次就销账」，要验两段（第二段隔天）
+      ['回炉 · 今天可验', hls.ready + ' 道'],
+      ['回炉 · 等明天', hls.pending + ' 道'],
+      ['回炉 · 已出炉', hls.out + ' 道' + (hls.stuck ? '　（待师傅讲 ' + hls.stuck + '）' : '')],
     ];
-    $('#view-stats').innerHTML = '<div class="stat-grid">' + rows.map(function (r) {
+    $('#view-stats').innerHTML =
+      forecastHtml() +
+      '<div class="stat-grid">' + rows.map(function (r) {
       return '<div class="stat-cell"><span>' + r[0] + '</span><b>' + r[1] + '</b></div>';
     }).join('') + '</div>' +
       masteryHeatHtml() +
@@ -1122,15 +1341,21 @@ window.HNSF829 = window.HNSF829 || {};
       '<li>通过一个考点 = <b>他认可了你，加入「🤝 羁绊录」</b>，同时把他的<b>心法</b>（本关小结）收录进该考点的简报里，随时回看。</li>' +
       '<li>上方的<b>考点掌握度热力图</b>按「累计正确率」给 ' + NODES.length + ' 个考点上色（红=薄弱 / 黄=一般 / 绿=扎实），<b>点格子直接进该考点</b>。</li>' +
       '<li>地图上每个考点下方也标了掌握度；通关后会对比本考点历史最佳与单局纪录，破纪录有提示。</li>' +
+      '<li>每个考点右上角挂着一颗<b>真题卫星「真」</b>：<b>该考点通关后才会点亮</b>（灰锁 = 先把它刷通），点开就是 2011–2026 的历年真题。真题关<b>进度独立统计</b>，不计入考点通关数与七龙珠 —— 「练」和「验」分开看。</li>' +
       '<li>正确率达到 ' + Math.round(Store.PASS_RATE * 100) + '% 即通关，解锁后继考点；满分通关额外奖励。</li>' +
       '<li><b>七颗龙珠把 ' + ORB_TOTAL + ' 个考点均分成 7 档</b>，每通关 ' + orbThreshold(1) + ' 个点左右点亮一颗，全通集齐七颗召唤神龙。</li>' +
       '<li>每题都标了<b>难度分级</b>（基础 / 真题 / 拔高），答错后解析里会<b>逐条批驳干扰项</b>，末尾还附<b>同类变式</b>供二刷换题。</li>' +
       '<li>所有题目均标注<b>考点溯源</b>（教材章节 / 真题出处），错题本可一键重练。</li>' +
+      '<li>做错的题会进 <b>🔥 回炉间</b>（右上角）：先用<b>同类变式</b>做一遍（不是原题），再看解析诚实自评；' +
+        '<b>两段验证</b>才算消化，<b>第二段必须隔天</b> —— 同一个错题连错 2 次会自动撤下队列，交给师傅讲，不硬扛。</li>' +
+      '<li><b>练 ≠ 验</b>：考点通关只是「练会了」。上方的「考场预计」按四档信任度估算 150 分制得分 —— ' +
+        '没在真题里验过、或错题没出炉的部分会算成<b>虚分</b>，虚分不会自己消失，只能靠复盘坐实。</li>' +
       '</ul></div>';
 
     bindAudioBox();
     bindCloudBox();
     bindHeatmap();
+    bindForecast();
   }
 
   /* ---------------- 属性转义（题库与配置都按不可信文本处理） ---------------- */
@@ -1251,9 +1476,9 @@ window.HNSF829 = window.HNSF829 || {};
       '</div>' +
       '<div class="cloud-status" data-cl="status">本机同步码：' + (C.codeOk(c) ? '已设置' : '未设置') +
         '　·　自动同步：已开启　·　最后同步：' + fmtTime(C.lastSync()) + '</div>' +
-      '<div class="audio-tip"><b>已开启自动同步</b>：打开页面会自动从云端恢复进度，练习后自动上传 —— 换设备、清缓存、换域名都不用管。<br>' +
-        '下面的按钮只在偶尔需要时手动用：A 机「⬆️ 上传本机」，B 机填同一个同步码点「⬇️ 下载云端」。<br>' +
-        '⚠️ <b>下载 = 用云端整份覆盖本机</b>（含错题本、疑问日记），会丢掉本机没上传的进度，所以要点两下确认。<br>' +
+      '<div class="audio-tip"><b>实时同步已开启</b>：进度只有云端一份（Supabase），本机只是镜像 —— 打开页面自动读取云端，答题存档后 1~2 秒内自动推上去，换设备、清缓存、换域名都不用管。<br>' +
+        '下面的按钮只偶尔手动用：A 机「⬆️ 上传本机」，B 机填同一个同步码点「⬇️ 下载云端」。<br>' +
+        '⚠️ <b>「⬇️ 下载云端」会把云端那份直接覆盖本机</b>（含错题本、疑问日记），所以要点两下确认。<br>' +
         '⚠️ <b>同步码就是你的密码</b>：它是唯一凭证，丢了或忘了谁都找不回来。默认已内置一个固定码，若改掉它请自己记好。</div>' +
       '</div>';
   }

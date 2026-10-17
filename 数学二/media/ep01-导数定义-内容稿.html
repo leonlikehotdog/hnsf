@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EP01 内容稿 · 导数的定义：出题人只玩 4 个套路</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'\\(',right:'\\)',display:false},{left:'\\[',right:'\\]',display:true}]});"></script>
+<style>
+  :root{
+    --bg:#0b1020; --card:#111a30; --line:#24304f;
+    --ink:#dbe4f5; --dim:#8fa0c4;
+    --cyan:#5eead4; --gold:#fbbf24; --red:#f87171; --violet:#a78bfa;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+    line-height:1.75;font-size:16.5px}
+  .wrap{max-width:780px;margin:0 auto;padding:48px 22px 80px}
+  header .kicker{color:var(--cyan);letter-spacing:.35em;font-size:13px;font-weight:700}
+  h1{font-size:30px;line-height:1.35;margin:10px 0 6px}
+  header .sub{color:var(--dim);font-size:14.5px;margin-bottom:26px}
+  .meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:34px}
+  .pill{font-size:12.5px;padding:3px 12px;border:1px solid var(--line);border-radius:999px;color:var(--dim)}
+  .pill.hot{border-color:var(--gold);color:var(--gold)}
+  nav{position:sticky;top:0;background:rgba(11,16,32,.92);backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);z-index:9;padding:10px 0;margin-bottom:8px}
+  nav a{color:var(--dim);text-decoration:none;font-size:14px;margin-right:20px}
+  nav a b{color:var(--cyan)}
+  h2{font-size:21px;margin:46px 0 14px;display:flex;align-items:center;gap:10px}
+  h2 .no{font-size:13px;color:var(--bg);background:var(--cyan);border-radius:6px;padding:1px 8px;font-weight:800}
+  h3{font-size:16.5px;color:var(--cyan);margin:22px 0 8px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin:14px 0}
+  .hook{border-left:3px solid var(--gold);padding-left:18px;font-size:18px;color:#ffe9b3;
+    background:linear-gradient(90deg,rgba(251,191,36,.07),transparent);border-radius:0 14px 14px 0}
+  .tao{border:1px solid var(--line);border-radius:14px;margin:22px 0;overflow:hidden;background:var(--card)}
+  .tao .head{padding:14px 20px;border-bottom:1px solid var(--line);display:flex;align-items:baseline;gap:12px}
+  .tao .head .idx{font-weight:800;color:var(--violet);font-size:14px;white-space:nowrap}
+  .tao .head .name{font-weight:700;font-size:17.5px}
+  .tao .head .sec{margin-left:auto;color:var(--dim);font-size:12px;white-space:nowrap}
+  .tao .body{padding:16px 20px}
+  .tao ul{margin:8px 0;padding-left:20px}
+  .tao li{margin:7px 0}
+  .why{color:var(--dim);font-size:14.5px}
+  .trap{background:rgba(248,113,113,.09);border:1px solid rgba(248,113,113,.35);border-radius:10px;
+    padding:9px 14px;margin-top:12px;font-size:14.5px}
+  .trap b{color:var(--red)}
+  .say{background:rgba(94,234,212,.08);border:1px solid rgba(94,234,212,.3);border-radius:10px;
+    padding:9px 14px;margin:10px 0 2px;font-size:15px}
+  .say b{color:var(--cyan)}
+  .ex{border:1px dashed var(--violet);border-radius:12px;padding:16px 18px;margin:14px 0;background:rgba(167,139,250,.05)}
+  .ex .tag{color:var(--violet);font-weight:700;font-size:13.5px}
+  details{border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:12px 0;background:#0d1426}
+  summary{cursor:pointer;color:var(--gold);font-size:14.5px;font-weight:700}
+  details .sol{margin-top:10px;font-size:15px}
+  .src{color:var(--dim);font-size:12.5px;margin-top:8px}
+  .src b{color:#7dd3fc;font-weight:600}
+  table{width:100%;border-collapse:collapse;font-size:14px;margin:12px 0}
+  th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+  th{color:var(--cyan);background:#0d1426;font-weight:600}
+  .foot{margin-top:44px;color:var(--dim);font-size:13.5px;border-top:1px solid var(--line);padding-top:18px}
+  .katex{font-size:1.02em}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="kicker">考研数学二 · 主题科普系列</div>
+  <h1>导数的定义：出题人十二年只玩 4 个套路</h1>
+  <div class="sub">EP01 内容稿 v1 —— 内容先定稿，你圈改通过后我再做分镜 / 动效 / 渲染。</div>
+  <div class="meta">
+    <span class="pill hot">目标平台：小红书 竖屏视频</span>
+    <span class="pill">时长：≈ 55 秒</span>
+    <span class="pill">素材：2011→2025 九道真题 + 题库 12 题的易错诊断</span>
+    <span class="pill">红线：不改写原文不发布，本文全部为改写 / 自编</span>
+  </div>
+</header>
+
+<nav>
+  <a href="#hook"><b>钩子</b></a>
+  <a href="#tao1">套路① 凑定义</a>
+  <a href="#tao2">套路② 挖 f(0)</a>
+  <a href="#tao3">套路③ 连续不可导</a>
+  <a href="#tao4">套路④ 分段点</a>
+  <a href="#ex">例题</a>
+  <a href="#drill">实战</a>
+  <a href="#cut">剪辑蓝图</a>
+</nav>
+
+<div class="card hook" id="hook">
+  <b>开场钩子（≈4s）：</b>「考研数学二，导数定义这个考点 15 年考了 9 次，其中两次还是 10 分起步的大题。
+  但你刷遍全书会发现——题面千奇百怪，出题人翻来覆去只用 <b>4 个套路</b>。今天 60 秒，一次打包。」
+</div>
+
+<!-- ================= 套路 1 ================= -->
+<div class="tao" id="tao1">
+  <div class="head">
+    <span class="idx">套路①</span><span class="name">凑定义：增量变装出镜</span>
+    <span class="sec">≈14s</span>
+  </div>
+  <div class="body">
+    <p class="why">出现频率最高的一个。题面给一个长得不像导数的极限，比如</p>
+    \[ \lim_{h\to 0}\frac{f(x_0+2h)-f(x_0-h)}{3h}, \]
+    <p class="why">实际是让你把它拆回定义式。</p>
+    <div class="say"><b>三步口诀：</b>① 认分子 —— 每个增量记清楚（\(2h\)、\(-h\)）；② 配分母 —— 让分母变成和括号里一模一样的增量；③ 提系数 —— 配出来的常数提到极限号外，剩下的全是 \(f'(x_0)\)。</div>
+    <ul>
+      <li>本例拆开：\(f(x_0+2h)-f(x_0-h) = \big[f(x_0+2h)-f(x_0)\big] + \big[f(x_0)-f(x_0-h)\big] = 2h\,f'(x_0) + h\,f'(x_0) + o(h)\)。</li>
+      <li>于是原极限 \(=\dfrac{3h\,f'(x_0)+o(h)}{3h} = f'(x_0)\)。</li>
+    </ul>
+    <div class="trap"><b>出题人的陷阱：</b>符号反着给（\(f(x_0-h)\) 配的不是 \(+h\) 而是要你先变号）、或者在分母里偷偷藏一个 2 / ½ —— 系数提错方向，整题归零。</div>
+    <div class="src">套路抽象自：<b>2011 年第 2 题</b>（\(x^2 f(x)-2f(x^3)\) 型凑形式）与教材基础题族。此为改写表述 + 自编数字，非原题。</div>
+  </div>
+</div>
+
+<!-- ================= 套路 2 ================= -->
+<div class="tao" id="tao2">
+  <div class="head">
+    <span class="idx">套路②</span><span class="name">极限式里挖出 f(0) 和 f′(0)</span>
+    <span class="sec">≈18s</span>
+  </div>
+  <div class="body">
+    <p class="why">大题级套路。只告诉你「\(f\) 在 \(x=0\) 连续」和一个含 \(f(x)\) 的极限值，让你反推——这是 2025 年 12 分解答题的骨架，也是选择题的常客。</p>
+    <div class="say"><b>两步反推：</b>① 极限存在 \(+\) 分母趋于 0 \( \Rightarrow\) 分子必须趋于 0 \( \Rightarrow\) 借「连续」把 <b>\(f(0)\)</b> 定死；② 分子定了，剩下的极限式擦掉系统项后与 \(\dfrac{f(x)-f(0)}{x}\) 只差常数 —— 极限值就是 <b>\(f'(0)\)</b>。</div>
+    <p class="why">一句话：<b>连续给你 f(0)，极限值给你 f′(0)</b>。两个未知数，两个方程，破案。</p>
+    <div class="trap"><b>出题人的陷阱：</b>在极限里混进 \(e^{2x}\sin x\)、\(\ln(1-x^2)\) 这类「遮挡项」——它只负责凑无穷小阶数，跟 \(f\) 无关；先泰勒展开把它甩掉，再看剩下的核心式。很多人卡住，就是把遮挡项当成了主角。</div>
+    <div class="src">套路抽象自：<b>2025 年第 18 题</b>（12 分解答）、<b>2022 年第 17 题</b>（10 分解答）、题库「\(f\) 连续且 \(\lim f(x)/x=A\)」族。改写表述。</div>
+  </div>
+</div>
+
+<!-- ================= 套路 3 ================= -->
+<div class="tao" id="tao3">
+  <div class="head">
+    <span class="idx">套路③</span><span class="name">绝对值家族：谁能导，一看指数</span>
+    <span class="sec">≈12s</span>
+  </div>
+  <div class="body">
+    <p class="why">「下列哪个函数在 \(x=0\) 处不可导？」四个长得很像的选项——2018 年原题整道就是这套路。核心是一张 <b>可导性阶梯</b>（对 \(x=0\) 处）：以 \(\big|x\big|\) 与震荡因子 \(\sin\frac1x,\ \cos\frac1{\sqrt{|x|}}\) 复合的函数为例：</p>
+    <div class="say">
+      <b>阶梯记忆：</b>连续看低门槛，可导高一级，导函数连续再高一级。<br>
+      · \(x^{\alpha}\)：连续要 \(\alpha>0\)，可导要 \(\alpha>1\)；<br>
+      · 带震荡因子 \(x^{\alpha}\cos\frac1{x^{\beta}}\)：可导要 \(\alpha>1\)，而 \(f'\) 在 0 处连续还要 \(\alpha-\beta>1\)。
+    </div>
+    <p class="why">「可导但 \(f'\) 不连续」正是选择最爱挖的夹层——函数自己光滑，导数却在那里抽风。</p>
+      <div class="trap"><b>出题人的陷阱：</b>把 \(\cos|x|\) 和 \(\cos\sqrt{|x|}\) 放一起：前者偶复合后在 0 处反而可导（导数 0），后者差商出现 \(-\tfrac1{2\sqrt{|x|}}\) 发散。<b>别用「长得像」下结论，差商算一遍，15 秒的事。</b></div>
+      <div class="src">套路抽象自：<b>2018 年第 2 题</b>、<b>2015 年第 3 题</b>（幂次阶梯设问）、题库 \(|x|\) 反例族。改写表述。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= 套路 4 ================= -->
+<div class="tao" id="tao4">
+  <div class="head">
+    <span class="idx">套路④</span><span class="name">分段点 / 参数方程里藏的 |t|：必须用定义</span>
+    <span class="sec">≈10s</span>
+  </div>
+  <div class="body">
+    <p class="why">凡是分界点（分段函数的折点、参数方程里的 \(|t|\)、绝对值套娃），求导公式一律作废，只能左右分开算差商的极限。</p>
+    <div class="say"><b>铁律：</b>分界点两件事必查——① 左导数 = 右导数？（可导）② 差商极限存在还不足以收工，若题目问 \(f'\) 的连续性，回到套路③的阶梯再查一层。</div>
+    <ul>
+      <li><b>参数方程藏 |t| 的情况</b>（抽象自 2023 年第 5 题）：\(x=2t+|t|\)——先按 \(t\) 的符号「翻面」成两支普通函数，再分别求导，最后在分界点 \(x=0\) 用定义收口。翻面是苦力活，但翻完就晴天。</li>
+      <li><b>微分顺手打包</b>：\(dy = f'(x)\,dx\)；增量、微分的关系一句话背死：\(\Delta y = dy + o(\Delta x)\)，且 \(f'(x_0)\neq 0\) 时 \(\Delta y \sim dy\)。填空题 3 分常客，公式就一行。</li>
+    </ul>
+    <div class="trap"><b>出题人的陷阱：</b>问你「\(f'(x)\) 在分界点连续吗 / \(f''(0)\) 存在吗」——很多人算出 \(f'(0)\) 就交卷，殊不知他问的是 <b>再上一层</b>。读题先圈「问到哪一层」。</div>
+    <div class="src">套路抽象自：<b>2023 年第 5 题</b>、题库微分族（\(\Delta y=dy+o(\Delta x)\)）。改写表述。</div>
+  </div>
+</div>
+
+<!-- ================= 例题 ================= -->
+<h2 id="ex"><span class="no">例题</span>两道自编例题（视频里各 ≈8s 手写板）</h2>
+
+<div class="ex">
+  <div class="tag">例题 1 · 归属套路② —— 大题第一问的标准形态</div>
+  <p>设 \(f(x)\) 在 \(x=0\) 处连续，且 \(\displaystyle\lim_{x\to 0}\frac{f(x)+2}{x}=3\)。求 \(f(0)\) 与 \(f'(0)\)。</p>
+  <details><summary>显示解答（点击展开）</summary>
+    <div class="sol">
+      ① 极限存在而分母 \(\to 0\)，故分子 \(\to 0\)：\(f(0)+2=0\)，即 \(f(0)=-2\)（连续在此用上）。<br>
+      ② 于是 \(\displaystyle f'(0)=\lim_{x\to 0}\frac{f(x)-f(0)}{x}=\lim_{x\to 0}\frac{f(x)+2}{x}=3\)。<br>
+      <b>答：\(f(0)=-2,\ f'(0)=3\)。</b> —— 全部得分点就这两行。
+    </div>
+  </details>
+</div>
+
+<div class="ex">
+  <div class="tag">例题 2 · 归属套路① —— 系数与符号双陷阱</div>
+  <p>设 \(f(x)=x^2\)，求 \(\displaystyle\lim_{h\to 0}\frac{f(3-h)-f(3)}{h}\)。</p>
+  <details><summary>显示解答（点击展开）</summary>
+    <div class="sol">
+      分子增量是 \(-h\)、分母却是 \(+h\)，先掰正号：<br>
+      \(\displaystyle\frac{f(3-h)-f(3)}{h} = -\,\frac{f(3-h)-f(3)}{-h} = -(f'(3)+o(1)) \to -f'(3) = -2\times 3^1 = -6\)。<br>
+      <b>答：\(-6\)。</b> —— 漏掉负号得 \(+6\)，这就是出题人埋的（也是本套路视频里要打红圈的）错误。
+    </div>
+  </details>
+</div>
+
+<!-- ================= 实战 ================= -->
+<h2 id="drill"><span class="no">实战</span>两道留白题（图文版附卷 / 评论区置顶）</h2>
+<p class="why">视频结尾口头给题干，答案放在图文笔记里——引导到主页图文，是同内容双发的标准玩法。</p>
+
+<div class="ex">
+  <div class="tag">实战 1 · 套路③阶梯 + 套路④定义收口</div>
+  <p>设 \(f(x)=x^2\sin\dfrac1x\ (x\neq 0),\ f(0)=0\)。问：\(f\) 在 \(x=0\) 处可导吗？\(f'\) 在 \(x=0\) 处连续吗？</p>
+  <details><summary>显示答案</summary>
+    <div class="sol">
+      \(f'(0)=\displaystyle\lim_{x\to0}\frac{x^2\sin(1/x)}{x}=\lim_{x\to0}x\sin\frac1x=0\)，可导 ✓。<br>
+      \(x\neq0\) 时 \(f'(x)=2x\sin\frac1x-\cos\frac1x\)，其中 \(-\cos\frac1x\) 在 \(x\to0\) 无极限 → \(f'\) 在 0 处<b>不连续</b>。<br>
+      结论：<b>可导，但导函数在 0 点断开</b>——「可导 \(\neq\) 导函数连续」的样板房。
+    </div>
+  </details>
+</div>
+
+<div class="ex">
+  <div class="tag">实战 2 · 套路①变形（含系数陷阱）</div>
+  <p>设 \(f\) 在 \(x=1\) 处可导且 \(f'(1)=2\)，求 \(\displaystyle\lim_{h\to0}\frac{f(1+2h)-f(1-3h)}{5h}\)。</p>
+  <details><summary>显示答案</summary>
+    <div class="sol">
+      分子 \(=\big[f(1+2h)-f(1)\big]+\big[f(1)-f(1-3h)\big]=2h\,f'(1)+3h\,f'(1)+o(h)=5h\cdot 2+o(h)\)，<br>
+      原极限 \(=f'(1)=2\)。<br>
+      <b>答：\(2\)。</b> —— 粗心版本：把 \(2h\cdot f'+3h\cdot f'\) 错配成 \((2+3)\cdot\frac{f'}{5}\) 的人不少，五个选项里一定有一个专门收留他。
+    </div>
+  </details>
+</div>
+
+<!-- ================= 剪辑蓝图 ================= -->
+<h2 id="cut"><span class="no">蓝图</span>55 秒剪辑蓝图（你点头后我按这个出分镜）</h2>
+<table>
+  <tr><th style="width:64px">时间</th><th style="width:110px">节拍</th><th>画面与运镜</th></tr>
+  <tr><td>0:00–0:04</td><td>钩子</td><td>黑屏打出「15 年 · 9 次 · 两次 10 分+」，镜头快速推进到「4 个套路」四个大字。</td></tr>
+  <tr><td>0:04–0:09</td><td>定场</td><td>定义式 \(f'(x_0)=\lim\dfrac{f(x)-f(x_0)}{x-x_0}\) 居中点亮，旁边盖图章「全卷唯一裁判」。</td></tr>
+  <tr><td>0:09–0:23</td><td>套路①</td><td>极限式三步变色：分子增量红 → 分母配对绿 → 系数金；随后例题 2 手写板，错解 \(+6\) 被红笔划掉改 \(-6\)。咔哒音效随三步口诀。</td></tr>
+  <tr><td>0:23–0:41</td><td>套路②</td><td>「连续给你 f(0)，极限值给你 f′(0)」两行字从极限式里被<b>挖</b>出来飞到两侧；12 分解答题卷面闪过；遮挡项 \(e^{2x}\sin x\) 被橡皮擦掉只留核心。</td></tr>
+  <tr><td>0:41–0:53</td><td>套路③+④</td><td>阶梯阶梯三级台阶逐级亮起（连续→可导→\(f'\) 连续）；实战 1 结论「可导但导函数断了」做成折断动画。</td></tr>
+  <tr><td>0:53–0:57</td><td>收口</td><td>一句话总结 + 「实战两道在图文里，答案置顶评论」引导。</td></tr>
+</table>
+
+<div class="foot">
+  素材来源：本仓库题库与真题数据挖掘（2011–2025，九题四套路两面）；例题与「实战」全部自编，真题只作套路出处引用，不含原文。
+  ——<b>这版先过内容：套路有没有漏 / 例题难度合不合适 / 时长要不要再压到 45s，你圈完我再动分镜。</b>
+</div>
+
+</div>
+</body>
+</html>

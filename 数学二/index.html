@@ -33,6 +33,7 @@
         </div>
     </div>
     <div class="hud-stats">
+        <div class="stat score" title="按你已覆盖的内容估算的 150 分制得分；练通但没在真题里验过的部分会算成「虚分」，不复盘就不会变实"><span>考场预计</span><b id="hudScore">0.0</b></div>
         <div class="stat"><span>通关考点</span><b id="hudClear">0 / 0</b></div>
         <div class="stat streak"><span>当前连击</span><b id="hudStreak">0</b></div>
         <div class="stat"><span>正确率</span><b id="hudAcc">0%</b></div>
@@ -44,6 +45,7 @@
         <button class="btn btn-ghost btn-icon" id="btnMusic" title="背景音乐开关">🔊</button>
         <button class="btn btn-ghost btn-icon" id="btnSfx" title="音效开关">🎵</button>
         <button class="btn btn-ghost btn-icon" id="btnTheme" title="切换 热血模式 / 简洁模式">🥋</button>
+        <button class="btn btn-ghost" id="btnHuilu" title="回炉间：错题用同类变式验一遍才算消化（第二段要隔天）">🔥<span class="lbl-long"> 回炉间</span><span class="lbl-short"> 回炉</span><b class="hud-badge" id="hudHuilu">0</b></button>
         <button class="btn btn-ghost" id="btnPanel" title="成就 / 错题本">🏅<span class="lbl-long"> 成就 / 错题本</span><span class="lbl-short"> 成就</span></button>
         <button class="btn btn-ghost danger" id="btnReset" title="清空存档">重置</button>
     </div>
@@ -222,11 +224,29 @@
 
 <div id="toastWrap"></div>
 
+<!-- ============ 回炉间（错题复盘：诊断 → 变形 → 归位） ============ -->
+<div class="hl-mask" id="hlMask" aria-hidden="true">
+    <div class="hl-panel" role="dialog" aria-modal="true" aria-label="回炉间">
+        <header class="hl-head">
+            <div class="hl-brand">🔥 <b>回炉间</b><span class="hl-sub" id="hlSub"></span></div>
+            <div class="hl-prog">
+                <div class="hl-bar"><i id="hlBar"></i></div>
+                <span class="hl-count" id="hlCount">0 / 0</span>
+            </div>
+            <button class="battle-close" id="hlClose" aria-label="退出回炉间">✕</button>
+        </header>
+        <main class="hl-body" id="hlBody"></main>
+        <footer class="hl-foot" id="hlFoot"></footer>
+    </div>
+</div>
+
 <!-- ============ 数据与逻辑（顺序不可调换） ============ -->
 <!-- KaTeX：必须放在引擎之前，引擎渲染题目时要同步调用它 -->
 <script src="js/katex.min.js"></script>
 <script src="js/auto-render.min.js"></script>
 <script src="js/data-nodes.js"></script>
+<!-- 历年真题库（2011–2026）：挂在每个考点旁的「真题卫星」用 -->
+<script src="js/data-zhenti.js"></script>
 <script src="js/achievements.js"></script>
 <script src="js/data-q-gs.js"></script>
 <script src="js/data-q-gs-c1a.js"></script>
@@ -260,6 +280,7 @@
 <script src="js/ai.js"></script>
 <script src="js/fx.js"></script>
 <script src="js/engine.js"></script>
+<script src="js/huilu.js"></script>
 <script src="js/story.js"></script>
 <script src="js/diary.js"></script>
 <script src="js/cloud.js"></script>
