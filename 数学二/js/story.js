@@ -187,6 +187,8 @@ window.HNSF829 = window.HNSF829 || {};
     afterAll = cb || null;
     els.mask.classList.add('show');
     els.mask.setAttribute('aria-hidden', 'false');
+    // 剧情 / 对话层：换成更安静的对话曲，结束后回到当前场景曲
+    if (NS.Audio) NS.Audio.setScene('dialogue');
     renderPage();
     setTimeout(function () {
       try { els.btn.focus(); } catch (e) { /* 忽略 */ }
@@ -205,6 +207,7 @@ window.HNSF829 = window.HNSF829 || {};
   function close() {
     els.mask.classList.remove('show');
     els.mask.setAttribute('aria-hidden', 'true');
+    if (NS.Audio) NS.Audio.setScene('map');
     clearInterval(timer);
     timer = null;
     var cb = afterAll;
@@ -227,27 +230,9 @@ window.HNSF829 = window.HNSF829 || {};
     var M = NS.Monsters;
     if (!M || !TRIAL(nodeId)) { if (cb) cb(); return false; }
 
-    var d = data(node.chap) || {};
-    var first = !NS.Store.storySeen('intro', node.chap);
-    var list = [];
-
-    // 页 1「这一章」：章节关主开口。首次进章说完整战书，之后只说一行氛围语
-    var lead = chapterLead(node.chap);
-    if (lead && (d.intro || d.line)) {
-      list.push({
-        badge: '📖 这一章',
-        cls: 'is-chapter',
-        title: (d.arc || '') + (d.place ? ' · ' + d.place : ''),
-        chapId: node.chap,
-        figure: M.forNode(lead).id,
-        text: (first ? d.intro : d.line) || d.line || '',
-        sfx: 'open'
-      });
-    }
-
-    // 页 2「本关」：本关出题人亮相，说这一关要练什么
+    // 只保留「本关」开场：章节开场卡已按需求移除
     var me = M.forNode(nodeId);
-    list.push({
+    var list = [{
       badge: (me.side === 'foe' ? '⚔️ 本关' : '🤝 本关') + '　·　' + node.name,
       cls: me.side === 'foe' ? 'is-intro is-foe' : 'is-intro',
       title: me.name,
@@ -256,9 +241,8 @@ window.HNSF829 = window.HNSF829 || {};
       text: TRIAL(nodeId),
       endLabel: '接 受 ▸',
       sfx: 'open'
-    });
+    }];
 
-    if (first) NS.Store.markStory('intro', node.chap);   // 战书已交代过，下次只说一行
     return showPages(list, cb);
   }
 

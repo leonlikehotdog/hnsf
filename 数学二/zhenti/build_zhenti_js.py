@@ -18,6 +18,20 @@ kp = json.load(open(HERE / "zhenti_kp.json", encoding="utf-8"))
 nodes = json.load(open(HERE / "nodes_extract.json", encoding="utf-8"))["nodes"]
 name_of = {n["id"]: n for n in nodes}
 
+# ---- 人工精修补丁（五段解析 + 逐选项诊断 + 踩分技巧 + 同类变式）----
+# 键 = 题目 id（如 zt-2022-1）；只覆盖列出的字段，未列出的沿用原解析。
+# 用 .py 而不是 .json：解析里 LaTeX 反斜杠不用双写，改起来不易出错。
+# 补丁与生成脚本分开维护，重跑生成不会丢失。
+# 按年份拆成 analysis_patch.py、analysis_patch_2023.py……，这里全部合并。
+sys.path.insert(0, str(HERE))
+patch = {}
+for _f in sorted(HERE.glob("analysis_patch*.py")):
+    try:
+        _m = __import__(_f.stem)
+        patch.update(getattr(_m, "PATCH", {}))
+    except Exception as _e:
+        print("！补丁加载失败：%s（%s）" % (_f.name, _e))
+
 # ---- 读取人工归类 ----
 primary, extra = {}, []
 for ln in open(HERE / "assign.txt", encoding="utf-8"):
@@ -155,6 +169,30 @@ for q in parsed["questions"]:
         "analysis": latex(analysis),
         "source": "%d 年真题 · 第 %d 题（302 数学二）" % (q["year"], q["num"]),
     }
+
+    # ---- 应用人工精修补丁 ----
+    p = patch.get(qid) or {}
+    if p.get("stem"):
+        rec["stem"] = latex(clean_md(p["stem"]))
+    if p.get("options"):
+        rec["options"] = [latex(clean_md(x)) for x in p["options"]]
+    if p.get("answer") is not None:
+        rec["answer"] = p["answer"]
+    if p.get("analysis"):
+        rec["analysis"] = latex(clean_md(p["analysis"]))
+    if p.get("optionNotes"):
+        rec["optionNotes"] = [latex(clean_md(x)) for x in p["optionNotes"]]
+        if len(rec["optionNotes"]) != len(rec["options"]):
+            warns.append("%s 选项诊断条数 %d ≠ 选项数 %d" % (
+                qid, len(rec["optionNotes"]), len(rec["options"])))
+    if p.get("tips"):
+        rec["tips"] = latex(clean_md(p["tips"]))
+    if p.get("variants"):
+        rec["variants"] = [{
+            "stem": latex(clean_md(v.get("stem", ""))),
+            "hint": latex(clean_md(v.get("hint", ""))),
+        } for v in p["variants"] if v.get("stem")]
+
     qs.append(rec)
     for nid in zts:
         by_node.setdefault("zt-" + nid, []).append(qid)

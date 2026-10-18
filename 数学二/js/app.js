@@ -6,14 +6,11 @@ window.HNSF829 = window.HNSF829 || {};
   'use strict';
 
   var NODES = NS.NODES.nodes;
-  var TIERS = NS.NODES.tiers;
   var MODULES = NS.NODES.meta.modules;
   var Store = NS.Store;
   var Engine = NS.Engine;
   var BANK = NS.Q || window.HNSF829_Q || [];
 
-  var positions = {};
-  var chapterBands = [];                      // 章分组带（layout 算出来的矩形，renderMap 画标签）
   var resizeTimer = null;
   var lastOrbs = -1;                          // 上一颗龙珠进度，用于判定"新点亮"
   var themeOn = true;
@@ -50,48 +47,6 @@ window.HNSF829 = window.HNSF829 || {};
 
   function ztQuestions(zid) {
     return (ZT.byNode[zid] || []).map(function (id) { return ztQById[id]; }).filter(Boolean);
-  }
-
-  function ztBadgeHtml(n, p, size, parentCleared, wip) {
-    var z = ztByParent[n.id];
-    if (!z) return { html: '', line: '' };
-    // 只有母考点通关才能做真题；母考点还没解锁/未通关 → 灰锁
-    var cls = ['zt-badge'];
-    var cleared = Store.ztCleared(n.id);
-    cls.push(cleared ? 'cleared' : (parentCleared && !wip ? 'ready' : 'locked'));
-    if (wip) cls.push('wip');
-
-    // ⚠️ 三个硬约束，改这两个数之前先量：
-    //   ① 母球脉冲外圈：外圈半径 = (size/2 + 9) × 1.08（@keyframes pulse 峰值）
-    //   ② 同排右邻：子列宽 slotW ≥ 140（MAP.minSlot），别把球压到人家头上
-    //   ③ 上一行的脚注底边：锚点往上 rowH(132) 再减去半栈高 (size+50.8)/2
-    //   现在这套偏移：离脉冲外圈 ≥ 7px、离右邻球 ≥ 30px、离上一行脚注 ≥ 7px（含 jitter ±6）。
-    //   注意锚点是「整栈中心」而不是球心 —— 球心固定在锚点上方 25.4px。
-    var ox = size / 2 + 32, oy = -(size / 2 + 16);
-    var zx = p.x + ox, zy = p.y + oy;
-    var tip;
-    if (wip) tip = '真题关 · ' + n.name + '：题库建设中';
-    else if (cleared) {
-      var m = Store.ztMastery(n.id);
-      tip = '真题关 · ' + n.name + '：已通关' + (m.rate != null ? '（累计正确率 ' + Math.round(m.rate * 100) + '%）' : '') + '，可再刷';
-    } else if (parentCleared) tip = '真题关 · ' + n.name + '：共 ' + z.count + ' 题（' + z.years[0] + '–' + z.years[z.years.length - 1] + ' 年），点击开打';
-    else tip = '真题关 · ' + n.name + '：需先通关「' + n.name + '」';
-
-    var html = '<div class="' + cls.join(' ') + '" data-zt="' + n.id + '" ' +
-      'style="left:' + zx + 'px;top:' + zy + 'px" title="' + escAttr(tip) + '">' +
-      '<span class="zt-glyph">真</span>' +
-      '<span class="zt-n">' + z.count + '</span>' +
-      '</div>';
-    // 连线按方向自动收口：起点在母球外圈之外，终点停在真题球边缘 —— 不写死坐标，
-    // 节点尺寸（44–63px）改了也不会插进球里或短到看不见。
-    var dist = Math.sqrt(ox * ox + oy * oy) || 1;
-    var ux = ox / dist, uy = oy / dist;
-    var r0 = size / 2 + 10;        // 母球半径 + 外圈厚度 + 1
-    var r1 = 17;                   // 真题球半径(15) + 2 间隙
-    var line = '<path class="zt-edge ' + (cleared ? 'zt-done' : parentCleared ? 'zt-ready' : 'zt-locked') +
-      '" d="M ' + (p.x + ux * r0) + ' ' + (p.y + uy * r0) +
-      ' L ' + (zx - ux * r1) + ' ' + (zy - uy * r1) + '"/>';
-    return { html: html, line: line };
   }
 
   function onZtClick(parentId) {
@@ -142,10 +97,13 @@ window.HNSF829 = window.HNSF829 || {};
     lpOn = NS.BG && NS.BG.lowPowerOn ? NS.BG.lowPowerOn() : false;
     applyLowPower(lpOn);                       // 同步 html.lowpower 类（fx.js 已按同一 key 初始化）
     syncAudioBtns();
-    if (NS.Audio) NS.Audio.setScene('map');    // 地图曲（首次交互后才真正出声）
-    if (NS.BG) NS.BG.setScene('map');          // 地图战场背景
+    // 场景音乐由 World.init 按当前场景统一切换，避免先起 scene:s1 再切走造成两声重叠
 
     if (NS.Story) NS.Story.init();             // 章节剧情卡（入关 / 出关）
+    if (NS.Gourd) NS.Gourd.init();             // 葫芦法宝（每日复盘）
+    if (NS.Gear) NS.Gear.init();               // 坐骑 / 皮肤（C 键）
+    if (NS.Arena) NS.Arena.init();             // 天下第一武道会（擂台赛）
+    if (NS.BAG) NS.BAG.init();                 // 背包 / 秘籍（B 键）
     if (NS.Huilu) NS.Huilu.init({              // 回炉间（错题复盘：诊断 → 变形 → 归位）
       mask: $('#hlMask'), body: $('#hlBody'), foot: $('#hlFoot'),
       sub: $('#hlSub'), count: $('#hlCount'), bar: $('#hlBar'), close: $('#hlClose')
@@ -168,10 +126,6 @@ window.HNSF829 = window.HNSF829 || {};
 
   function bindGlobal() {
     $('#battleClose').addEventListener('click', function () { Engine.close(); });
-    $('#btnHuilu').addEventListener('click', function () {
-      togglePanel(false);           // 别让侧栏面板压在回炉间背后
-      NS.Huilu.open({ onExit: function () { renderHud(); renderMap(); renderPanel(); } });
-    });
     $('#btnPanel').addEventListener('click', function () { togglePanel(true); });
     $('#panelClose').addEventListener('click', function () { togglePanel(false); });
     $('#panelMask').addEventListener('click', function () { togglePanel(false); });
@@ -217,23 +171,12 @@ window.HNSF829 = window.HNSF829 || {};
     window.addEventListener('resize', function () {
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(function () {
-        mapW = measureW();          // 只有窗口尺寸真的变了才重新量地图宽度
-        renderMap();
+        if (NS.World) NS.World.resize();
       }, 180);
     });
   }
 
-  /* ---------------- 地图布局（类神经网络：三层列 + 章分组内多列铺排） ----------------
-   * 节点数从 21 涨到 69 后，原来「一列直排」会变成 4000px 高的长柱，所以改成：
-   *   1) 列内先按教材章切段，每段内部再按需铺成 1~3 列 —— 段的高度大幅压缩；
-   *   2) 段与段之间留出空隙放章节标签，位置刻意避让节点的球与光晕，绝不压字；
-   *   3) 位置加一点由节点 id 决定的确定抖动 —— 避免规则网格的死板感。
-   *
-   * ⚠️ 两个「不能再小」的硬约束（小一点就会压字，改前先量）：
-   *   rowH    必须 > 节点纵向栈高（球 + 名字一行 + 占比/掌握度一行 ≈ 108px），否则
-   *           同一子列相邻节点会互相盖住 —— 这是上一版踩过的坑。
-   *   chapHead 决定了章节标签与第一行球的距离，必须留够球半径 + 外圈光晕 + 抖动。
-   */
+  /* ---------------- 章节索引（地图与面板共用） ---------------- */
   var chapIndex = {};
   (NS.NODES.meta.chapters || []).forEach(function (c, i) { chapIndex[c.id] = i; });
   function chapterOf(id) {
@@ -241,373 +184,33 @@ window.HNSF829 = window.HNSF829 || {};
     for (var i = 0; i < list.length; i++) if (list[i].id === id) return list[i];
     return null;
   }
-  /** 稳定字符串哈希：同一节点每次布局抖动方向一致，窗口缩放时不会乱跳 */
-  function hash(str) {
-    var h = 2166136261;
-    for (var i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); }
-    return h >>> 0;
-  }
-  function jitter(key, k) { return ((hash(key + '#' + k) % 2000) / 1000 - 1); }   // -1 ~ 1
+  /* 地图布局已迁移到 js/world.js（2D 像素大世界）。 */
 
-  var MAP = {
-    padX: 104,            // 左右留白（要能容纳最外侧节点的球与标签）
-    padTop: 190,          // 顶部留白（让第一段的章节标签与分隔线不撞上"基础简易层"标题与说明）
-    padBottom: 76,
-    rowH: 132,            // 行高：必须大于节点纵向栈高（球 + 名字一行 + 占比/掌握度一行 ≈ 108px）
-    chapGap: 64,          // 段间距：章节标签与分隔线就住在这里
-    maxCols: 3,           // 一个章段内部最多铺几列（每段节点数少时按实际数铺）
-    // 子列宽度必须 ≥ 节点宽度 + 间隙，否则同排节点的名字/脚注会互相压字。
-    // 节点宽度写死在 style.css 的 `.node { width: 112px }`，这里的阈值要跟它一起改。
-    // 阈值定得偏大是故意的：宁可少铺一列（地图高一点），也不要挤成 10px 间距的密网格。
-    // 实测窗口宽 1310 时 colW≈367，只够 2 列（间距约 72px，观感舒服）；
-    // 宽屏 1800 以上才会自动变成 3 列。
-    minSlot: 140,
-    // ⚠️ 节点是「整栈居中」的：.node 用 translate(-50%,-50%) 定位，
-    //    球在栈的最上面，所以球顶大约比锚点高 (球直径 + 名字行 + 脚注行)/2 ≈ 55px。
-    //    下面三个值都是按这个 55px 反推的，改动前请先量 `.node` 的实际高度。
-    bandHead: 104,        // 每列第一段：分隔线在 padTop - 104
-    bandGap: 68,          // 后续段：分隔线在上一段最后一行球心往下 68px（实测被压的临界值是 60）
-    bandFoot: 50          // 段底：最后一行球心往下 50px
-  };
-
-  /** 地图可用宽度。必须用「不受 mapInner 自身宽度影响」的参照来量：
-   *  早先直接读 mapInner.clientWidth，而 mapInner 的宽度又是上一次 renderMap 写进去的，
-   *  于是每渲染一次就减 14px，连续 resize 十几次就缩到下限 1180，同排节点开始互相压字。
-   *  现在改成量 .map-scroll（宽度由页面决定），并且只在窗口 resize 时重新量。 */
-  var mapW = 0;
-  function measureW() {
-    var sc = $('.map-scroll');
-    var w = (sc && sc.clientWidth) || document.documentElement.clientWidth || 1200;
-    return Math.max(w - 14, 1180);          // -14 是给页面纵向滚动条留的余量
-  }
-
-  function layout() {
-    var W = mapW || (mapW = measureW());
-    var padX = MAP.padX, padTop = MAP.padTop, padBottom = MAP.padBottom;
-    var rowH = MAP.rowH, chapGap = MAP.chapGap;
-    var colW = (W - padX * 2) / TIERS.length;
-    // 列数随可用宽度收缩：窗口窄时若还硬铺 3 列，子列宽度会小于节点宽度而压字
-    var colsCap = Math.max(1, Math.min(MAP.maxCols, Math.floor(colW / MAP.minSlot)));
-    var slotW = colW / colsCap;                      // 段内每个子列的宽度（按实际列数分，不是按上限）
-
-    var groups = TIERS.map(function (t) {
-      // 同层内先按章排序（保证同章相邻），同章内再按真题分值占比从高到低
-      return NODES.filter(function (n) { return n.tier === t.id; })
-        .sort(function (a, b) {
-          var ca = chapIndex[a.chap] == null ? 99 : chapIndex[a.chap];
-          var cb = chapIndex[b.chap] == null ? 99 : chapIndex[b.chap];
-          if (ca !== cb) return ca - cb;
-          return b.weight - a.weight;
-        });
-    });
-
-    positions = {};
-    chapterBands = [];
-    var maxBottom = 0;
-    groups.forEach(function (list, ti) {
-      var cx = padX + colW * ti + colW / 2;
-      // 先按章切段
-      var segs = [];
-      list.forEach(function (n) {
-        var g = segs[segs.length - 1];
-        if (!g || g.chap !== n.chap) { g = { chap: n.chap, items: [] }; segs.push(g); }
-        g.items.push(n);
-      });
-      var y = padTop;
-      var prevLastRowY = null;
-      segs.forEach(function (g) {
-        if (prevLastRowY !== null) y = prevLastRowY + rowH + chapGap;
-        var cols = Math.min(colsCap, g.items.length);          // 每段按节点数与可用宽度决定铺几列
-        var rows = Math.ceil(g.items.length / cols);
-        g.items.forEach(function (n, i) {
-          var c = i % cols, r = Math.floor(i / cols);
-          positions[n.id] = {
-            x: cx + (cols > 1 ? (c - (cols - 1) / 2) * slotW : 0) + jitter(n.id, 0) * 5,
-            y: y + r * rowH + jitter(n.id, 1) * 6
-          };
-        });
-        var lastRowY = y + (rows - 1) * rowH;
-        chapterBands.push({
-          ti: ti, chap: g.chap,
-          // 分隔线：第一段看 padTop，后续段紧跟在上一段节点的脚注文字下面
-          top: prevLastRowY === null ? padTop - MAP.bandHead : prevLastRowY + MAP.bandGap,
-          bottom: lastRowY + MAP.bandFoot
-        });
-        if (lastRowY + MAP.bandFoot > maxBottom) maxBottom = lastRowY + MAP.bandFoot;
-        prevLastRowY = lastRowY;
-      });
-    });
-    var H = Math.max(maxBottom + padBottom, 880);
-    return { W: W, H: H, padX: padX, colW: colW };
-  }
-
+  /* ---------------- 地图：2D 像素大世界 ----------------
+   * 地形、角色、行走全部由 js/world.js 接管；这里只负责把「挑战 / 悬停 / 提示」
+   * 三个钩子接回原来的关卡流程，保证题库、剧情、征信、结算一行都不用改。
+   */
+  var worldReady = false;
   function renderMap() {
-    var wrap = $('#mapInner');
-    var dim = layout();
-    wrap.style.width = dim.W + 'px';
-    wrap.style.height = dim.H + 'px';
-    // 把布局尺寸同步给移动端缩放控制器（它按这些值做 clamp 与初始视角）
-    pz.W = dim.W; pz.H = dim.H; pz.colW = dim.colW; pz.padX = dim.padX;
-
-    // 1) 层级背景与标题 + 章节分组带
-    var tierHtml = TIERS.map(function (t, ti) {
-      var left = dim.padX + dim.colW * ti;
-      return '<div class="tier-col" style="left:' + left + 'px;width:' + dim.colW + 'px;--tc:' + t.color + '">' +
-        '<div class="tier-title">' + t.name + '</div>' +
-        '<div class="tier-desc">' + t.desc + '</div>' +
-      '</div>';
-    }).join('');
-    // 章分组带：虚线分隔 + 左上角标签，把 69 个球按教材章切成一目了然的段
-    var bandHtml = chapterBands.map(function (b) {
-      var c = chapterOf(b.chap) || { no: '', name: b.chap, module: 'gs' };
-      return '<div class="chap-band" style="left:' + (dim.padX + dim.colW * b.ti) + 'px;top:' + b.top +
-        'px;width:' + dim.colW + 'px;height:' + Math.max(40, b.bottom - b.top) + 'px;--tc:' + moduleColor(c.module) + '">' +
-        '<span class="chap-tag">第 ' + c.no + ' 章 · ' + c.name + '</span></div>';
-    }).join('');
-    var bg = $('#mapBg');
-    if (bg) bg.innerHTML = tierHtml + bandHtml;
-
-    // 2) 连线
-    var svg = $('#edges');
-    svg.setAttribute('width', dim.W);
-    svg.setAttribute('height', dim.H);
-    svg.setAttribute('viewBox', '0 0 ' + dim.W + ' ' + dim.H);
-    var lines = [];
-    NODES.forEach(function (n) {
-      (n.req || []).forEach(function (rid) {
-        var a = positions[rid], b = positions[n.id];
-        if (!a || !b) return;
-        var done = Store.isCleared(rid);
-        var active = done && !Store.isCleared(n.id) && Store.unlocked(n).ok;
-        var mid = (a.x + b.x) / 2;
-        var d = 'M ' + a.x + ' ' + a.y + ' C ' + mid + ' ' + a.y + ', ' + mid + ' ' + b.y + ', ' + b.x + ' ' + b.y;
-        lines.push('<path class="edge ' + (active ? 'edge-active' : done ? 'edge-done' : 'edge-locked') +
-          '" d="' + d + '" stroke="' + moduleColor(n.module) + '"/>');
+    if (!NS.World) return;
+    if (!worldReady) {
+      worldReady = true;
+      NS.World.init({
+        nodes: NODES,
+        chapters: NS.NODES.meta.chapters || [],
+        store: Store,
+        hooks: {
+          onChallenge: onNodeClick,
+          onZhenti: onZtClick,
+          onHover: function (id, e) { showTip(id, e); },
+          onMove: function (e) { moveTip(e); },
+          onLeave: hideTip,
+          onToast: function (msg) { Engine.toast(msg); }
+        }
       });
-    });
-    svg.innerHTML = lines.join('');
-
-    // 3) 考点节点 + 真题卫星徽标
-    var ztLines = [];
-    var nodesHtml = NODES.map(function (n) {
-      var p = positions[n.id];
-      var u = Store.unlocked(n);
-      var cleared = Store.isCleared(n.id);
-      // wip = 题库建设中：结构先占位，灰色 🚧 不可点。地图一眼能看出哪些已开放。
-      var wip = !!n.wip;
-      // 节点比 21 个的时代小一圈：69 个球 + 双子列交错，尺寸不收会互相挤
-      var size = 44 + n.weight * 2.4;
-      var cls = ['node'];
-      if (wip) cls.push('locked', 'wip');
-      else cls.push(u.ok ? 'unlocked' : 'locked');
-      if (cleared) cls.push('cleared');
-      if (n.tier === 3) cls.push('boss');
-      var rec = Store.raw().cleared[n.id];
-      var rate = rec ? Math.round(rec.best * 100) : 0;
-      // 掌握度：累计正确率（不是单次最佳），决定外圈颜色与下方小标签
-      var m = Store.mastery(n.id);
-      cls.push('m' + m.level);
-      var mastTxt, mastCls;
-      if (wip) {
-        mastTxt = '建设中';
-        mastCls = 'wip';
-      } else {
-        mastTxt = m.answered ? '掌握 ' + Math.round(m.rate * 100) + '%' : '未练';
-        mastCls = 'm' + m.level;
-      }
-      var mastTip = wip
-        ? n.name + '：题库建设中，先把已开放的考点刷透'
-        : (m.answered
-          ? n.name + '：累计答对 ' + m.correct + ' / ' + m.answered + ' 题'
-          : n.name + '：还没练过这个考点');
-      // 图标三层：建设中 🚧 / 未解锁 🔒 / 已解锁 → 龙珠角色头像（缺图回退原 emoji）
-      var icon = wip ? '🚧' : (!u.ok ? '🔒' : (function () {
-        var a = avatarUrl(n.id);
-        return a
-          ? '<img class="node-avatar" src="' + a + '" alt="" loading="lazy" decoding="async" data-fb="' + escAttr(n.icon || '●') + '">'
-          : (n.icon || '●');
-      })());
-      // 真题卫星：只有母考点通关才点亮（循序渐进）
-      var zt = ztBadgeHtml(n, p, size, cleared, wip);
-      if (zt.line) ztLines.push(zt.line);
-      return '<div class="' + cls.join(' ') + '" data-id="' + n.id + '" ' +
-        'style="left:' + p.x + 'px;top:' + p.y + 'px;--size:' + size + 'px;--color:' + moduleColor(n.module) + '">' +
-        '<div class="node-ring"></div>' +
-        '<div class="node-core"><span class="node-icon">' + icon + '</span>' +
-        (cleared && !wip ? '<span class="node-crown">' + (rate === 100 ? '💎' : '✓') + '</span>' : '') +
-        '</div>' +
-        '<div class="node-label" title="' + escAttr(n.name) + '">' + shortName(n) + '</div>' +
-        '<div class="node-foot">' +
-          '<span class="node-meta">' + weightPct(n.weight) + '%</span>' +
-          '<span class="node-mast ' + mastCls + '" title="' + escAttr(mastTip) + '">' + mastTxt + '</span>' +
-        '</div>' +
-        '</div>' +
-        zt.html;
-    }).join('');
-    // 同层按权重排序后再插入，保证 DOM 顺序与视觉一致
-    $('#nodes').innerHTML = nodesHtml;
-    // 真题卫星的连线补进 SVG（在考点连线之后绘制，压在下层同样不影响）
-    if (ztLines.length) svg.insertAdjacentHTML('beforeend', ztLines.join(''));
-
-    $$('.node').forEach(function (el) {
-      el.addEventListener('click', function () { onNodeClick(el.dataset.id); });
-      el.addEventListener('mouseenter', function (e) { if (!pz.on) showTip(el.dataset.id, e); });
-      el.addEventListener('mousemove', function (e) { if (!pz.on) moveTip(e); });
-      el.addEventListener('mouseleave', hideTip);
-      // 头像 404（素材缺失）→ 退回原 emoji 图标，地图永远不出现破图
-      var av = el.querySelector('.node-avatar');
-      if (av) av.addEventListener('error', function () {
-        av.replaceWith(document.createTextNode(av.getAttribute('data-fb') || '●'));
-      });
-    });
-
-    // 真题卫星徽标：点一下直接开打（未通关母考点时给提示，不跳转）
-    $$('.zt-badge').forEach(function (el) {
-      el.addEventListener('click', function (e) { e.stopPropagation(); onZtClick(el.dataset.zt); });
-    });
-
-    pzUpdate();                                 // 重排后重新套用/校正缩放视角
-  }
-
-  /* ================= 移动端地图：双指缩放 + 单指拖动 =================
-   * 宽 1180px 的神经网络地图在手机上铺不开，所以窄屏时把 .map-scroll 变成
-   * 一个固定视口，地图本体用 transform 平移缩放，手势全部自己接管。
-   * 桌面端（>860px）走原来的原生滚动，pz.on 恒为 false，此模块整体不介入。
-   * 注意：判断条件（innerWidth <= 860）必须与 style.css 的媒体查询一致，
-   * 否则会出现「JS 以为在缩放、CSS 却还在原生滚动」的错位。 */
-  var pz = { on: false, s: 1, tx: 0, ty: 0, W: 1180, H: 880, colW: 324, padX: 104 };
-  var PZ_MIN = 0.3, PZ_MAX = 2.2;
-  var PZ_EDGE = 48;                             // 允许拖出屏幕外的余量，避免地图被甩飞
-
-  function pzEnabled() { return window.innerWidth <= 860; }
-  function pzViewport() {
-    var sc = $('#mapScroll');
-    return { w: (sc && sc.clientWidth) || 360, h: (sc && sc.clientHeight) || 640 };
-  }
-  function pzApply() {
-    var inner = $('#mapInner');
-    if (!inner) return;
-    inner.style.transform = pz.on
-      ? 'translate3d(' + pz.tx + 'px,' + pz.ty + 'px,0) scale(' + pz.s + ')'
-      : '';
-  }
-  function pzClamp() {
-    var vp = pzViewport();
-    var cw = pz.W * pz.s, ch = pz.H * pz.s;
-    pz.tx = cw <= vp.w ? (vp.w - cw) / 2
-      : Math.min(PZ_EDGE, Math.max(vp.w - cw - PZ_EDGE, pz.tx));
-    pz.ty = ch <= vp.h ? (vp.h - ch) / 2
-      : Math.min(PZ_EDGE, Math.max(vp.h - ch - PZ_EDGE, pz.ty));
-  }
-  /** 初始视角：让「第一层」那一列基本铺满屏幕宽——节点保持原始大小、文字可读，
-   *  比「整张地图缩到全览」实用得多（全览时名字只有 4px，看不清） */
-  function pzReset() {
-    var vp = pzViewport();
-    pz.s = Math.max(0.4, Math.min(1, vp.w / Math.max(220, pz.colW)));
-    pz.tx = vp.w / 2 - (pz.padX + pz.colW * 0.5) * pz.s;
-    pz.ty = 6;
-    pzClamp(); pzApply();
-  }
-  /** 以屏幕坐标为锚点缩放（cx/cy 缺省取视口中心），供按钮与滚轮调用 */
-  function pzZoomAt(factor, cx, cy) {
-    var vp = pzViewport();
-    if (cx == null) { cx = vp.w / 2; cy = vp.h / 2; }
-    var ns = Math.max(PZ_MIN, Math.min(PZ_MAX, pz.s * factor));
-    var k = ns / pz.s;
-    pz.tx = cx - (cx - pz.tx) * k;              // 以屏幕点为锚，缩放时该点内容不动
-    pz.ty = cy - (cy - pz.ty) * k;
-    pz.s = ns;
-    pzClamp(); pzApply();
-  }
-
-  function pzBind() {
-    var sc = $('#mapScroll');
-    if (!sc || sc.dataset.pzBound) return;
-    sc.dataset.pzBound = '1';
-    var pts = {}, mode = '', start = null, suppress = false;
-
-    sc.addEventListener('pointerdown', function (e) {
-      if (!pz.on) return;
-      pts[e.pointerId] = { x: e.clientX, y: e.clientY };
-      var ids = Object.keys(pts);
-      if (ids.length === 1) {
-        mode = 'pan'; suppress = false;
-        start = { x: e.clientX, y: e.clientY, tx: pz.tx, ty: pz.ty };
-      } else if (ids.length === 2) {
-        var a = pts[ids[0]], b = pts[ids[1]];
-        mode = 'pinch';
-        start = {
-          d: Math.hypot(a.x - b.x, a.y - b.y), s: pz.s, tx: pz.tx, ty: pz.ty,
-          cx: (a.x + b.x) / 2, cy: (a.y + b.y) / 2
-        };
-      }
-    });
-
-    sc.addEventListener('pointermove', function (e) {
-      if (!pz.on || !pts[e.pointerId]) return;
-      pts[e.pointerId] = { x: e.clientX, y: e.clientY };
-      var ids = Object.keys(pts);
-      if (mode === 'pan' && ids.length === 1) {
-        var dx = e.clientX - start.x, dy = e.clientY - start.y;
-        if (Math.abs(dx) + Math.abs(dy) > 6) suppress = true;   // 判定为拖动，之后吞掉 click
-        pz.tx = start.tx + dx; pz.ty = start.ty + dy;
-        pzClamp(); pzApply();
-      } else if (mode === 'pinch' && ids.length >= 2) {
-        var a = pts[ids[0]], b = pts[ids[1]];
-        var d = Math.hypot(a.x - b.x, a.y - b.y);
-        var rect = sc.getBoundingClientRect();
-        var ns = Math.max(PZ_MIN, Math.min(PZ_MAX, start.s * (start.d ? d / start.d : 1)));
-        var k = ns / start.s;
-        var cx = start.cx - rect.left, cy = start.cy - rect.top;
-        pz.tx = cx - (cx - start.tx) * k;
-        pz.ty = cy - (cy - start.ty) * k;
-        pz.s = ns;
-        suppress = true;
-        pzClamp(); pzApply();
-      }
-    });
-
-    function end(e) {
-      delete pts[e.pointerId];
-      var ids = Object.keys(pts);
-      if (!ids.length) { mode = ''; start = null; return; }
-      if (ids.length === 1) {                    // 双指松开一根 → 无缝转成拖动
-        mode = 'pan';
-        start = { x: pts[ids[0]].x, y: pts[ids[0]].y, tx: pz.tx, ty: pz.ty };
-      }
+    } else {
+      NS.World.refresh();
     }
-    sc.addEventListener('pointerup', end);
-    sc.addEventListener('pointercancel', end);
-
-    // 拖完/缩完浏览器会补一个 click，会把节点误点开 → 捕获阶段吞掉
-    sc.addEventListener('click', function (e) {
-      if (suppress) { e.stopPropagation(); e.preventDefault(); suppress = false; }
-    }, true);
-
-    // 桌面窄窗 / 触控板：滚轮缩放
-    sc.addEventListener('wheel', function (e) {
-      if (!pz.on) return;
-      e.preventDefault();
-      var rect = sc.getBoundingClientRect();
-      pzZoomAt(e.deltaY < 0 ? 1.12 : 1 / 1.12, e.clientX - rect.left, e.clientY - rect.top);
-    }, { passive: false });
-
-    var box = $('#mapZoom');
-    if (box) box.addEventListener('click', function (e) {
-      var b = e.target.closest('button');
-      if (!b) return;
-      if (b.dataset.zoom === 'in') pzZoomAt(1.28);
-      else if (b.dataset.zoom === 'out') pzZoomAt(1 / 1.28);
-      else pzReset();
-    });
-  }
-
-  /** 按当前窗口宽度切换「原生滚动 / 手势缩放」两种模式 */
-  function pzUpdate() {
-    var on = pzEnabled();
-    if (on && !pz.on) { pz.on = true; pzBind(); pzReset(); }
-    else if (on) { pzClamp(); pzApply(); }
-    else if (pz.on) { pz.on = false; pzApply(); }
   }
 
   function shortName(n) {
@@ -633,6 +236,7 @@ window.HNSF829 = window.HNSF829 || {};
     var tip = $('#tip');
     var rec = Store.raw().cleared[id];
     var ch = chapterOf(n.chap);
+    var mk = NS.Monsters ? NS.Monsters.forNode(id) : null;
     var tipAv = n.wip ? '' : avatarUrl(id);
     var tipIcon = n.wip ? '🚧'
       : (tipAv ? '<img class="tip-avatar" src="' + tipAv + '" alt="">'
@@ -641,6 +245,7 @@ window.HNSF829 = window.HNSF829 || {};
       '<div class="tip-title" style="color:' + moduleColor(n.module) + '">' + tipIcon + ' ' + n.name + '</div>' +
       (ch ? '<div class="tip-row tip-chap">' + (n.module === 'gs' ? '高等数学' : '线性代数') +
         ' 第 ' + ch.no + ' 章 · ' + ch.name + '</div>' : '') +
+      (mk ? '<div class="tip-row">守关人 <b>' + mk.name + '</b></div>' : '') +
       '<div class="tip-row">分值占比 <b>' + weightPct(n.weight) + '%</b>　·　难度 ' + Engine.LEVEL_LABEL[n.tier] + '</div>' +
       '<div class="tip-row">题目数 <b>' + totalQuestionsOf(id) + '</b> 题' +
         (rec ? '　最高正确率 <b>' + Math.round(rec.best * 100) + '%</b>' : '') + '</div>' +
@@ -679,10 +284,10 @@ window.HNSF829 = window.HNSF829 || {};
    *    都是"自己打完才看得懂"的东西。两边零重复，小结的价值反而更硬。
    */
   function summaryBlockHtml(n) {
-    var title = '<div class="nd-block-title">📖 心法 · 复盘</div>';
+    var title = '<div class="nd-block-title">🗡️ 战利品 · 本关兵器（心法）</div>';
     if (!Store.isCleared(n.id)) {
       return '<div class="nd-block sum-block locked">' + title +
-        '<div class="sum-lock">🔒 通过这道试炼后解锁 —— 他会告诉你<b>这类题怎么下手</b>（题型与解法套路）和<b>哪里最容易翻车</b>（高频易错点）。' +
+        '<div class="sum-lock">🔒 打赢他就能夺走这件兵器 —— 里面是<b>这类题怎么下手</b>（题型与解法套路）和<b>哪里最容易翻车</b>（高频易错点）。' +
         '要诀与公式在上面已经给过，这里只讲打完才懂的部分。</div>' +
         '</div>';
     }
@@ -774,8 +379,18 @@ window.HNSF829 = window.HNSF829 || {};
         '<div class="nd-source">通关线：正确率 ≥ ' + Math.round(Store.PASS_RATE * 100) + '%' +
         (rec ? '　历史最高：' + Math.round(rec.best * 100) + '%（通过 ' + rec.times + ' 次）' : '　尚未通过') + '</div></div>' +
       summaryBlockHtml(n) +
+      (ztByParent[id] && !n.wip && Store.isCleared(id)
+        ? '<button class="btn btn-ghost btn-block" id="btnZtNode">📜 历年真题 · ' +
+          ztByParent[id].count + ' 题（' + ztByParent[id].years[0] + '–' +
+          ztByParent[id].years[ztByParent[id].years.length - 1] + '）</button>'
+        : '') +
       '<button class="btn btn-primary btn-block" id="btnStartNode">⚔️ 接受试炼</button>';
     $('#nodeDetail').classList.add('show');
+    var ztb = $('#btnZtNode');
+    if (ztb) ztb.addEventListener('click', function () {
+      $('#nodeDetail').classList.remove('show');
+      onZtClick(id);
+    });
     // 小结里可能带 LaTeX，弹窗内容就位后渲染一次公式
     if (NS.Engine && NS.Engine.renderMath) {
       try { NS.Engine.renderMath($('#nodeDetailCard')); } catch (e) { /* 渲染失败就保留原文 */ }
@@ -980,14 +595,6 @@ window.HNSF829 = window.HNSF829 || {};
     $('#hudXpFill').style.width = Math.min(100, info.cur / info.need * 100) + '%';
     $('#hudClear').textContent = snap.clearedCount + ' / ' + total;
     $('#hudScore').textContent = Store.scoreForecast().expected.toFixed(1);
-    // 回炉间入口徽标：显示「今天可验几道」——永远知道欠账还剩多少
-    var hls = Store.hlSummary(), hb = $('#hudHuilu');
-    hb.textContent = hls.ready;
-    hb.classList.toggle('zero', hls.ready === 0);
-    $('#btnHuilu').title = '回炉间：今天可验 ' + hls.ready + ' 道' +
-      (hls.pending ? ' · ' + hls.pending + ' 道等明天' : '') +
-      (hls.stuck ? ' · ' + hls.stuck + ' 道待师傅讲' : '') +
-      '　｜　错题要用同类变式验两段（第二段隔天）才算消化';
     $('#hudStreak').textContent = snap.streak + (snap.streak >= 3 ? ' 🔥' : '');
     var acc = snap.totalAnswered ? Math.round(snap.totalCorrect / snap.totalAnswered * 100) : 0;
     $('#hudAcc').textContent = acc + '%';
@@ -1017,9 +624,63 @@ window.HNSF829 = window.HNSF829 || {};
     renderAchievements();
     renderWrongBook();
     renderBondBook();
+    renderWeaponBook();
     renderStats();
     bindBondBook();
+    bindWeaponBook();
     if (NS.Diary) { NS.Diary.bind(); NS.Diary.render(); }
+  }
+
+  /* ---------------- 兵器库：通关即夺走该考点的「心法」 ---------------- */
+  function weaponOf(n) {
+    return (NS.SUMMARY || {})[n.id] || null;
+  }
+
+  function renderWeaponBook() {
+    var box = $('#view-weapon');
+    if (!box) return;
+    var got = NODES.filter(function (n) { return Store.isCleared(n.id) && weaponOf(n); });
+    var head = '<div class="wp-head"><b>已收入 ' + got.length + '</b> / ' + NODES.length +
+      ' 件<span>每打赢一个考点，就夺走他压箱底的题型套路与易错点</span></div>';
+    if (!got.length) {
+      box.innerHTML = head +
+        '<div class="wp-empty">🗡️ 兵器库还是空的。<br>去世界里找个还在等你的人，打赢他。</div>';
+      return;
+    }
+    var order = { 3: 0, 2: 1, 1: 2 };
+    got.sort(function (a, b) {
+      var oa = order[a.tier] == null ? 9 : order[a.tier];
+      var ob = order[b.tier] == null ? 9 : order[b.tier];
+      if (oa !== ob) return oa - ob;
+      return b.weight - a.weight;
+    });
+    box.innerHTML = head + '<div class="wp-list">' + got.map(function (n) {
+      var W = weaponOf(n);
+      var ch = chapterOf(n.chap);
+      var grade = n.tier === 3 ? ['🔱', '神兵'] : n.tier === 2 ? ['⚔️', '长剑'] : ['🗡️', '短兵'];
+      var np = W.patterns ? W.patterns.length : 0;
+      var npi = W.pitfalls ? W.pitfalls.length : 0;
+      return '<button class="wp-card t' + n.tier + '" data-wp="' + n.id + '">' +
+        '<span class="wp-ico">' + grade[0] + '</span>' +
+        '<span class="wp-body">' +
+          '<span class="wp-name">' + sumEsc(n.name) + '<i>' + grade[1] + '</i></span>' +
+          '<span class="wp-chap">' + (ch ? '第 ' + ch.no + ' 章 · ' + sumEsc(ch.name) : '') + '</span>' +
+          '<span class="wp-intro">' + sumEsc(W.intro || '') + '</span>' +
+          '<span class="wp-foot">套路 ' + np + ' 条　·　易错 ' + npi + ' 条</span>' +
+        '</span>' +
+      '</button>';
+    }).join('') + '</div>';
+  }
+
+  function bindWeaponBook() {
+    $$('#view-weapon .wp-card').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var id = b.dataset.wp;
+        if (!id) return;
+        togglePanel(false);
+        launchNode(id);
+      });
+    });
   }
 
   function renderAchievements() {
@@ -1080,7 +741,9 @@ window.HNSF829 = window.HNSF829 || {};
     html += list.map(function (it) {
       var q = BANK.filter(function (x) { return x.id === it.qid; })[0];
       if (!q) return '';
-      var n = Store.nodeById(it.node);
+      var n = it.node === 'arena'
+        ? { icon: '⚔️', name: '天下第一武道会' }
+        : Store.nodeById(it.node);
       var seg = '<span class="wi-seg">第 ' + ((it.stage || 0) + 1) + ' / ' + (it.need || 2) + ' 段</span>';
       if (it.stuck) seg = '<span class="wi-seg stuck">待师傅讲</span>';
       else if (!it.ready) seg = '<span class="wi-seg wait">等明天</span>';
@@ -1341,13 +1004,14 @@ window.HNSF829 = window.HNSF829 || {};
       '<li>通过一个考点 = <b>他认可了你，加入「🤝 羁绊录」</b>，同时把他的<b>心法</b>（本关小结）收录进该考点的简报里，随时回看。</li>' +
       '<li>上方的<b>考点掌握度热力图</b>按「累计正确率」给 ' + NODES.length + ' 个考点上色（红=薄弱 / 黄=一般 / 绿=扎实），<b>点格子直接进该考点</b>。</li>' +
       '<li>地图上每个考点下方也标了掌握度；通关后会对比本考点历史最佳与单局纪录，破纪录有提示。</li>' +
-      '<li>每个考点右上角挂着一颗<b>真题卫星「真」</b>：<b>该考点通关后才会点亮</b>（灰锁 = 先把它刷通），点开就是 2011–2026 的历年真题。真题关<b>进度独立统计</b>，不计入考点通关数与七龙珠 —— 「练」和「验」分开看。</li>' +
+      '<li>每个考点角色旁边挂着一只<b>真题卷轴「真」</b>：<b>该考点通关后才会点亮</b>（灰锁 = 先把它刷通），点开就是 2011–2026 的历年真题。真题关<b>进度独立统计</b>，不计入考点通关数与七龙珠 —— 「练」和「验」分开看。</li>' +
       '<li>正确率达到 ' + Math.round(Store.PASS_RATE * 100) + '% 即通关，解锁后继考点；满分通关额外奖励。</li>' +
       '<li><b>七颗龙珠把 ' + ORB_TOTAL + ' 个考点均分成 7 档</b>，每通关 ' + orbThreshold(1) + ' 个点左右点亮一颗，全通集齐七颗召唤神龙。</li>' +
       '<li>每题都标了<b>难度分级</b>（基础 / 真题 / 拔高），答错后解析里会<b>逐条批驳干扰项</b>，末尾还附<b>同类变式</b>供二刷换题。</li>' +
       '<li>所有题目均标注<b>考点溯源</b>（教材章节 / 真题出处），错题本可一键重练。</li>' +
-      '<li>做错的题会进 <b>🔥 回炉间</b>（右上角）：先用<b>同类变式</b>做一遍（不是原题），再看解析诚实自评；' +
-        '<b>两段验证</b>才算消化，<b>第二段必须隔天</b> —— 同一个错题连错 2 次会自动撤下队列，交给师傅讲，不硬扛。</li>' +
+      '<li>做错的题会进 <b>🔥 回炉间</b>：错题本里可以单题回炉，地图上跟随你的<b>葫芦法宝（按 R）</b>每天成熟一炉。' +
+        '单题回炉先用<b>同类变式</b>做一遍（不是原题），再看解析诚实自评；<b>两段验证</b>才算消化，<b>第二段必须隔天</b>。' +
+        '葫芦复盘则是<b>错题优先 + 最弱考点补题</b>，全对 3 片、否则 2 片皮肤碎片 —— 同一个错题连错 2 次会自动撤下队列，交给师傅讲。</li>' +
       '<li><b>练 ≠ 验</b>：考点通关只是「练会了」。上方的「考场预计」按四档信任度估算 150 分制得分 —— ' +
         '没在真题里验过、或错题没出炉的部分会算成<b>虚分</b>，虚分不会自己消失，只能靠复盘坐实。</li>' +
       '</ul></div>';
@@ -1383,9 +1047,6 @@ window.HNSF829 = window.HNSF829 || {};
         '<button class="btn ' + (s ? 'on' : '') + '" data-au="sfx">' + (s ? '开启' : '关闭') + '</button>' +
       '</div>' +
       '<div class="audio-row"><span>音量</span><input type="range" min="0" max="100" value="' + v + '" data-au="vol"></div>' +
-      '<div class="audio-row"><span>动态背景</span>' +
-        '<button class="btn ' + (bgImgOn ? 'on' : '') + '" data-au="bgimg">' + (bgImgOn ? '背景视频' : '程序化战场') + '</button>' +
-      '</div>' +
       '<div class="audio-row"><span>低功耗模式</span>' +
         '<button class="btn ' + (lpOn ? 'on' : '') + '" data-au="lowpower">' + (lpOn ? '开启' : '关闭') + '</button>' +
       '</div>' +
@@ -1395,11 +1056,11 @@ window.HNSF829 = window.HNSF829 || {};
           return '<button class="btn ' + (tc.level === lv ? 'on' : '') + '" data-au="timer-lv" data-lv="' + lv + '">' + TLV[lv] + '</button>';
         }).join('') +
       '</div>' +
-      '<div class="audio-tip">🎵 BGM 与音效全部由 Web Audio <b>实时合成</b>（原创热血摇滚：鼓组 + 贝斯 + 失真和弦 + 主旋律），不加载任何外部音频文件。<br>' +
-        '🎸 <b>做题时 BGM 默认播放</b>：进关卡会切到一首<b>独立的 E 小调 122 BPM 战斗曲</b>（与地图曲同属热血摇滚，但调式、和声进行、鼓组与旋律全部另写，不会听混）。读题嫌吵就切成「静音」，只保留打击音效。<br>' +
+      '<div class="audio-tip">🎵 背景音乐来自 <code class="inline-code">数学二/music/</code> 的洛克王国原声：场景曲 / 战斗曲 / BOSS 曲 / 对话曲四层，切歌采用「先淡出旧曲、再淡入新曲」，任何时刻只有一首在响。<br>' +
+        '🎸 <b>做题时 BGM 默认播放</b>：进关卡会切到独立的战斗曲，回地图会接着上次的探索曲位置继续放。读题嫌吵就切成「静音」，只保留打击音效。<br>' +
         '浏览器规定必须与页面交互一次才能出声，若没声音请先点一下页面。</div>' +
-      '<div class="audio-tip" style="margin-top:10px">🎬 <b>动态背景</b>：默认使用 <code class="inline-code">数学二/assets/bg.mp4</code> 作为底图，由 <code class="inline-code">js/fx.js</code> 逐帧绘制到画布上（自动 cover 裁切 + 压暗保证文字可读），气焰 / 闪电 / 碎石 / 冲击波等动态图层会继续叠加。想换视频用同名文件覆盖即可；视频缺失或无法播放时自动降级回 <code class="inline-code">bg-map.jpg</code> / <code class="inline-code">bg-battle.jpg</code>，再降级到纯程序化背景。关掉开关则直接回到纯程序化背景。</div>' +
-      '<div class="audio-tip" style="margin-top:10px">🔋 <b>低功耗模式</b>（<b>手机默认开启</b>）：关掉整个 Canvas 主循环，只画一帧静态底图，同时暂停背景视频、去掉发光模糊（shadowBlur）、关掉全部 CSS 动画 —— 手机发热与掉电会明显下降。想保留满帧动态背景就切成「关闭」（移动端仍限 30fps）。</div>' +
+      '<div class="audio-tip" style="margin-top:10px">⚡ <b>性能</b>：旧版悟空视频背景与全屏 Canvas 粒子已停用；主画面只由像素世界的一张离屏地形 Canvas 绘制。打开弹窗、答题界面或切到后台时，世界渲染会自动暂停。</div>' +
+      '<div class="audio-tip" style="margin-top:10px">🔋 <b>低功耗模式</b>：关掉全部 CSS 常驻动画与高耗动效；桌面默认关闭，手机默认开启。它不是「降画质」，而是把不必要的持续动画停掉。</div>' +
       '<div class="audio-tip" style="margin-top:10px">⏱ <b>限时作答</b>（<b>只对选择题 / 填空题计时</b>）：计算与证明题<b>不计时</b>——数学需要思考时间，秒表只会逼出焦虑。超时按<b>答错</b>结算（断连击、进错题本、不给经验），并直接摊开答案。强度：宽松 ×1.5 / 标准 ×1 / 严格 ×0.7。切到后台会自动暂停计时。</div>' +
       '</div>';
   }
@@ -1597,7 +1258,6 @@ window.HNSF829 = window.HNSF829 || {};
     var mBtn = box.querySelector('[data-au="music"]');
     var sBtn = box.querySelector('[data-au="sfx"]');
     var tBtn = box.querySelector('[data-au="theme"]');
-    var bBtn = box.querySelector('[data-au="bgimg"]');
     var lpBtn = box.querySelector('[data-au="lowpower"]');
     var mibBtn = box.querySelector('[data-au="mib"]');
     var vol = box.querySelector('[data-au="vol"]');
@@ -1633,22 +1293,13 @@ window.HNSF829 = window.HNSF829 || {};
     vol.addEventListener('input', function () {
       NS.Audio.setVolume(vol.value / 100);     // 拖动时只调节音量，不重渲染面板避免滑块跳动
     });
-    bBtn.addEventListener('click', function () {
-      applyBgPref(!bgImgOn);
-      bBtn.classList.toggle('on', bgImgOn);
-      bBtn.textContent = bgImgOn ? '背景视频' : '程序化战场';
-      Engine.toast(bgImgOn
-        ? (lpOn ? '🎬 已切到背景视频，但低功耗模式下仍是静态画面（关掉低功耗才会动）'
-                : '🎬 已启用背景视频（加载失败会自动降级到静态底图）')
-        : '🌌 已切回程序化战场背景');
-    });
     lpBtn.addEventListener('click', function () {
       applyLowPower(!lpOn);
       lpBtn.classList.toggle('on', lpOn);
       lpBtn.textContent = lpOn ? '开启' : '关闭';
       Engine.toast(lpOn
-        ? '🔋 低功耗模式已开启：背景转为静态画面，动画全部暂停（手机更省电、不烫）'
-        : '🌌 低功耗模式已关闭：动态背景恢复' + (bgImgOn ? '' : '（当前为程序化战场）'));
+        ? '🔋 低功耗模式已开启：常驻动画暂停（手机更省电、不烫）'
+        : '🌌 低功耗模式已关闭：界面动效恢复');
     });
     if (tmBtn) tmBtn.addEventListener('click', function () {
       var c = Engine.setTimerCfg({ on: !Engine.timerCfg().on });

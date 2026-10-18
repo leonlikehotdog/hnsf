@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EP02 内容稿 · 连续性与间断点：一条判定流程</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'\\(',right:'\\)',display:false},{left:'\\[',right:'\\]',display:true}]});"></script>
+<style>
+  :root{
+    --bg:#0b1020; --card:#111a30; --line:#24304f;
+    --ink:#dbe4f5; --dim:#8fa0c4;
+    --cyan:#5eead4; --gold:#fbbf24; --red:#f87171; --violet:#a78bfa;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+    line-height:1.75;font-size:16.5px}
+  .wrap{max-width:780px;margin:0 auto;padding:48px 22px 80px}
+  header .kicker{color:var(--cyan);letter-spacing:.35em;font-size:13px;font-weight:700}
+  h1{font-size:30px;line-height:1.35;margin:10px 0 6px}
+  header .sub{color:var(--dim);font-size:14.5px;margin-bottom:26px}
+  .meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:34px}
+  .pill{font-size:12.5px;padding:3px 12px;border:1px solid var(--line);border-radius:999px;color:var(--dim)}
+  .pill.hot{border-color:var(--gold);color:var(--gold)}
+  nav{position:sticky;top:0;background:rgba(11,16,32,.92);backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);z-index:9;padding:10px 0;margin-bottom:8px}
+  nav a{color:var(--dim);text-decoration:none;font-size:14px;margin-right:20px}
+  nav a b{color:var(--cyan)}
+  h2{font-size:21px;margin:46px 0 14px;display:flex;align-items:center;gap:10px}
+  h2 .no{font-size:13px;color:var(--bg);background:var(--cyan);border-radius:6px;padding:1px 8px;font-weight:800}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin:14px 0}
+  .hook{border-left:3px solid var(--gold);padding-left:18px;font-size:18px;color:#ffe9b3;
+    background:linear-gradient(90deg,rgba(251,191,36,.07),transparent);border-radius:0 14px 14px 0}
+  .tao{border:1px solid var(--line);border-radius:14px;margin:22px 0;overflow:hidden;background:var(--card)}
+  .tao .head{padding:14px 20px;border-bottom:1px solid var(--line);display:flex;align-items:baseline;gap:12px}
+  .tao .head .idx{font-weight:800;color:var(--violet);font-size:14px;white-space:nowrap}
+  .tao .head .name{font-weight:700;font-size:17.5px}
+  .tao .head .sec{margin-left:auto;color:var(--dim);font-size:12px;white-space:nowrap}
+  .tao .body{padding:16px 20px}
+  .tao ul{margin:8px 0;padding-left:20px}
+  .tao li{margin:7px 0}
+  .why{color:var(--dim);font-size:14.5px}
+  .trap{background:rgba(248,113,113,.09);border:1px solid rgba(248,113,113,.35);border-radius:10px;
+    padding:9px 14px;margin-top:12px;font-size:14.5px}
+  .trap b{color:var(--red)}
+  .say{background:rgba(94,234,212,.08);border:1px solid rgba(94,234,212,.3);border-radius:10px;
+    padding:9px 14px;margin:10px 0 2px;font-size:15px}
+  .say b{color:var(--cyan)}
+  .ex{border:1px dashed var(--violet);border-radius:12px;padding:16px 18px;margin:14px 0;background:rgba(167,139,250,.05)}
+  .ex .tag{color:var(--violet);font-weight:700;font-size:13.5px}
+  details{border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:12px 0;background:#0d1426}
+  summary{cursor:pointer;color:var(--gold);font-size:14.5px;font-weight:700}
+  details .sol{margin-top:10px;font-size:15px}
+  .src{color:var(--dim);font-size:12.5px;margin-top:8px}
+  .src b{color:#7dd3fc;font-weight:600}
+  table{width:100%;border-collapse:collapse;font-size:14px;margin:12px 0}
+  th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+  th{color:var(--cyan);background:#0d1426;font-weight:600}
+  .foot{margin-top:44px;color:var(--dim);font-size:13.5px;border-top:1px solid var(--line);padding-top:18px}
+  .katex{font-size:1.02em}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="kicker">考研数学二 · 主题科普系列</div>
+  <h1>间断点分类：一条判定流程，三个反直觉案例</h1>
+  <div class="sub">EP02 内容稿 v1 —— 接 EP01「导数的定义」，内容先定稿再分镜。</div>
+  <div class="meta">
+    <span class="pill hot">目标平台：小红书 竖屏视频</span>
+    <span class="pill">时长：≈ 52 秒</span>
+    <span class="pill">素材：2013→2024 六道真题 + 题库 12 题易错诊断</span>
+    <span class="pill">红线：不改写原文不发布，本文全部为改写 / 自编</span>
+  </div>
+</header>
+
+<nav>
+  <a href="#hook"><b>钩子</b></a>
+  <a href="#tao1">套路① 判定流程</a>
+  <a href="#tao2">套路② 可去vs跳跃</a>
+  <a href="#tao3">套路③ 振荡与无穷</a>
+  <a href="#tao4">套路④ 反求参数</a>
+  <a href="#ex">例题</a>
+  <a href="#drill">实战</a>
+  <a href="#cut">剪辑蓝图</a>
+</nav>
+
+<div class="card hook" id="hook">
+  <b>开场钩子（≈4s）：</b>「间断点分类，12 年考了 6 次，全是 5 分选择题。但大多数人靠直觉做题——
+  『分母为零 = 无穷间断』错得最惨。今天给你一条 <b>30 秒判定流程</b>，再加三个专门收直觉税的案例。」
+</div>
+
+<!-- ================= 套路 1 ================= -->
+<div class="tao" id="tao1">
+  <div class="head">
+    <span class="idx">套路①</span><span class="name">30 秒判定流程：先找嫌疑点，再算左右极限</span>
+    <span class="sec">≈12s</span>
+  </div>
+  <div class="body">
+    <p class="why">所有间断点题都是同一个三步流程，先背下来：</p>
+    <div class="say"><b>三步：</b>① <b>找嫌疑点</b> —— 无定义点、分段点、分母为零的点，全部圈出来；② <b>算左右极限</b> —— 每个嫌疑点两侧各算一个（分段函数/绝对值/ e^{1/x} 型必须分左右）；③ <b>对号入座</b> —— 按右边的分类表盖章。</div>
+    \[ \text{两侧极限都不存在（非无穷）} \Rightarrow \text{振荡（第二类）};\quad \text{至少一侧为 } \infty \Rightarrow \text{无穷（第二类）} \]
+    \[ \text{两侧都存在且相等} \Rightarrow \text{可去（第一类）};\quad \text{两侧都存在但不等} \Rightarrow \text{跳跃（第一类）} \]
+    <p class="why">注意：<b>第一类 = 两侧极限都存在</b>（可去、跳跃都算）；<b>第二类 = 至少一侧不存在</b>（无穷、振荡都算）。判断「第一类间断点个数」的题，本质就是数「两侧极限都存在的点有几个」。</p>
+    <div class="trap"><b>出题人的陷阱：</b>2024 年那道题问「第一类间断点的个数」——嫌疑点有三个，但只有一个两侧极限都存在。<b>数嫌疑点会多数，数对号入座的才得分。</b></div>
+    <div class="src">套路抽象自：<b>2024 年第 1 题</b>（第一类间断点个数）、<b>2020 年第 2 题</b>（多间断点分类）、题库判定流程族。改写表述。</div>
+  </div>
+</div>
+
+<!-- ================= 套路 2 ================= -->
+<div class="tao" id="tao2">
+  <div class="head">
+    <span class="idx">套路②</span><span class="name">可去 vs 跳跃：分母为零 ≠ 极限无穷</span>
+    <span class="sec">≈12s</span>
+  </div>
+  <div class="body">
+    <p class="why">最高频的直觉错误：看到分母为零就喊「无穷间断」。正确动作是<b>先约分/等价无穷小，再看极限存不存在</b>。</p>
+    <div class="say"><b>一句话：</b>可去 = 极限存在但函数没接上（没定义 / 函数值不等）；跳跃 = 两侧极限都存在但<b>不相等</b>。</div>
+    <ul>
+      <li>\(\dfrac{x^2-1}{x-1}\) 在 \(x=1\)：约去 \(x-1\) 后极限是 2 —— <b>可去</b>，不是无穷。90% 的错选都是「分母为零 = 无穷」。</li>
+      <li>分段函数 \(f(x)=x\ (x<0),\ f(x)=x+1\ (x\ge 0)\)：两侧极限 0 和 1 都存在但不等 —— <b>跳跃</b>，不是可去。</li>
+    </ul>
+    <div class="trap"><b>出题人的陷阱：</b>把「无定义」直接等同于「极限不存在」——可去间断点的定义就是<b>极限存在</b>。左右极限都算出来再下结论，10 秒的事。</div>
+    <div class="src">套路抽象自：题库 ct-1 / ct-2 诊断数据、「\(\frac{x^2-1}{x-1}\)」经典族。改写表述 + 自编数字。</div>
+  </div>
+</div>
+
+<!-- ================= 套路 3 ================= -->
+<div class="tao" id="tao3">
+  <div class="head">
+    <span class="idx">套路③</span><span class="name">振荡与无穷：有界振荡 ≠ 无界</span>
+    <span class="sec">≈12s</span>
+  </div>
+  <div class="body">
+    <p class="why">第二类里还分两种，考法完全不同：</p>
+    <div class="say"><b>振荡（极限不存在但函数有界）：</b>看到 \(\sin\frac1x\)、\(\cos\frac1x\) 套在 \(x\to0\) 上，极限不存在——因为可以在 \([-1,1]\) 里无穷次摆动。<b>证明手法：取两串数列</b>，\(x_k=\frac{1}{2k\pi}\to0\) 时函数值 \(\to0\)，\(y_k=\frac{1}{2k\pi+\frac{\pi}{2}}\to0\) 时函数值 \(\to1\)——两列极限不同，原极限不存在。</div>
+    <div class="say"><b>无穷（单侧趋于 ∞）：</b>\(\frac{1}{\ln x}\) 在 \(x=1\)：\(\ln x\to0\)，右极限 \(+\infty\) —— <b>无穷间断</b>。</div>
+    <p class="why">关键区分：\(\sin\frac1x\) <b>始终在 \([-1,1]\) 内</b>，不叫无界，叫振荡；\(\frac{1}{\ln x}\) 才真趋于 ∞。</p>
+    <div class="trap"><b>出题人的陷阱：</b>把「有界振荡」说成「无界」——两个都归第二类，但写理由时老师只看你说不说到点子上。<b>振荡的理由必须用两串数列，无穷的理由用极限式。</b></div>
+    <div class="src">套路抽象自：题库 ct-3 / ct-4 诊断数据（含两串数列的标准写法）。改写表述。</div>
+  </div>
+</div>
+
+<!-- ================= 套路 4 ================= -->
+<div class="tao" id="tao4">
+  <div class="head">
+    <span class="idx">套路④</span><span class="name">反求参数：连续 ⇔ 左右极限 = 函数值</span>
+    <span class="sec">≈12s</span>
+  </div>
+  <div class="body">
+    <p class="why">「\(f\) 在 \(x=0\) 连续，求 \(a,b\)」是选择题和解答题的常客。翻译只有一句话：</p>
+    <div class="say"><b>连续的定义式：</b>\(\lim\limits_{x\to0^-}f(x)=\lim\limits_{x\to0^+}f(x)=f(0)\) —— 两个方程，够解两个参数。</div>
+    <ul>
+      <li>每侧极限各用等价无穷小速算：\(1-\cos x \sim \frac{x^2}{2}\)，\(1-\cos\sqrt{x}\sim\frac{x}{2}\)，\(e^{ax}-1\sim ax\)。</li>
+      <li>分段点两侧表达式不同时，<b>左右各算各的</b>，别混。</li>
+    </ul>
+    <div class="trap"><b>出题人的陷阱：</b>把 \(a\) 和 \(b\) 的位置对调——左极限管一个参数、右极限管另一个，<b>哪侧的式子里有哪个参数</b>就往哪侧写方程。</div>
+    <div class="src">套路抽象自：<b>2017 年第 1 题</b>（\(ab=\frac12\) 速算）、<b>2018 年第 3 题</b>（两个参数）、题库 ct-5 / ct-6。改写表述 + 自编数字。</div>
+  </div>
+</div>
+
+<!-- ================= 例题 ================= -->
+<h2 id="ex"><span class="no">例题</span>两道自编例题（视频里各 ≈8s 手写板）</h2>
+
+<div class="ex">
+  <div class="tag">例题 1 · 归属套路④ —— 双侧反求参数</div>
+  <p>设 \(f(x)=\begin{cases}\dfrac{1-\cos 2x}{a x^{2}}, & x>0\\[4pt] \dfrac{e^{3x}-1}{x}, & x<0\\[4pt] b, & x=0\end{cases}\) 在 \(x=0\) 处连续，求 \(a,b\)。</p>
+  <details><summary>显示解答（点击展开）</summary>
+    <div class="sol">
+      右极限：\(1-\cos 2x \sim \dfrac{(2x)^2}{2}=2x^2\)，故 \(\displaystyle\lim_{x\to0^+}f(x)=\dfrac{2}{a}\)。<br>
+      左极限：\(e^{3x}-1\sim 3x\)，故 \(\displaystyle\lim_{x\to0^-}f(x)=3\)。<br>
+      连续要求 \(\dfrac{2}{a}=3=b\)，即 <b>\(a=\frac23,\ b=3\)</b>。
+    </div>
+  </details>
+</div>
+
+<div class="ex">
+  <div class="tag">例题 2 · 归属套路③ —— 一对对比案例</div>
+  <p>判断 \(f(x)=x\sin\dfrac1x\ (x\neq0,\ f(0)=0)\) 与 \(g(x)=\sin\dfrac1x\) 在 \(x=0\) 处的间断点类型。</p>
+  <details><summary>显示解答（点击展开）</summary>
+    <div class="sol">
+      \(f\)：\(\displaystyle\left|x\sin\tfrac1x\right|\le|x|\to0\)，极限存在 —— <b>可去间断点</b>（第一类）。<br>
+      \(g\)：取 \(x_k=\frac{1}{2k\pi}\to0\) 得 \(g(x_k)=0\)，取 \(y_k=\frac{1}{2k\pi+\frac{\pi}{2}}\to0\) 得 \(g(y_k)=1\) —— 极限不存在 —— <b>振荡间断点</b>（第二类）。<br>
+      同样的 \(\sin\frac1x\)，<b>乘一个 \(x\) 就起死回生</b>。
+    </div>
+  </details>
+</div>
+
+<!-- ================= 实战 ================= -->
+<h2 id="drill"><span class="no">实战</span>两道留白题（图文版附卷 / 评论区置顶）</h2>
+
+<div class="ex">
+  <div class="tag">实战 1 · 套路① —— 多嫌疑点分类</div>
+  <p>函数 \(f(x)=\dfrac{\ln(1+x)}{x^{2}-1}\) 的间断点 \(x=1\) 与 \(x=-1\) 分别属于哪类？</p>
+  <details><summary>显示答案</summary>
+    <div class="sol">
+      \(x=1\)：分子 \(\ln2\neq0\)，分母 \(\to0\) → 极限 \(\infty\) —— <b>无穷间断点（第二类）</b>。<br>
+      \(x=-1\)：\(\ln(1+x)\to-\infty\)，分母 \(\to0\) → 极限 \(\infty\) —— <b>无穷间断点（第二类）</b>。<br>
+      两个都是第二类，没有第一类。
+    </div>
+  </details>
+</div>
+
+<div class="ex">
+  <div class="tag">实战 2 · 套路④ —— 单参数速算</div>
+  <p>设 \(f(x)=\begin{cases}\dfrac{1-\cos\sqrt{x}}{3x}, & x>0\\[4pt] b, & x=0\end{cases}\) 在 \(x=0\) 处连续，求 \(b\)。</p>
+  <details><summary>显示答案</summary>
+    <div class="sol">
+      \(1-\cos\sqrt{x}\sim \dfrac{x}{2}\)，故 \(\displaystyle\lim_{x\to0^+}f(x)=\frac{1/2}{3}=\frac16\)。<br>
+      连续要求 \(b=\frac16\)。<b>答：\(b=\frac16\)。</b>
+    </div>
+  </details>
+</div>
+
+<!-- ================= 剪辑蓝图 ================= -->
+<h2 id="cut"><span class="no">蓝图</span>52 秒剪辑蓝图</h2>
+<table>
+  <tr><th style="width:64px">时间</th><th style="width:110px">节拍</th><th>画面与运镜</th></tr>
+  <tr><td>0:00–0:04</td><td>钩子</td><td>「分母为零 = ∞？」红字打叉，旁边盖「直觉税」章；30 秒流程 + 三个案例字数弹出。</td></tr>
+  <tr><td>0:04–0:16</td><td>套路①</td><td>流程图三步箭头流转：圈嫌疑点（红圈标记）→ 左右极限分两侧计算（屏幕中轴裂成两半）→ 对号入座（四格分类表盖章动画）。</td></tr>
+  <tr><td>0:16–0:28</td><td>套路②</td><td>\(\frac{x^2-1}{x-1}\) 分母红字「=∞？」被划掉，约分后极限 2 金色落地；分段函数左右极限 0/1 撞在一起弹开（跳跃）。</td></tr>
+  <tr><td>0:28–0:40</td><td>套路③</td><td>\(\sin\frac1x\) 波形在屏幕上无限压缩振荡，两串数列 x_k/y_k 两个落点弹跳对比；\(\frac{1}{\ln x}\) 曲线冲向屏幕顶部（无穷）。</td></tr>
+  <tr><td>0:40–0:52</td><td>套路④ + 收口</td><td>连续定义式居中，左右极限两个箭头汇向 f(0)；例题 1 快闪；尾版「实战在图文 · 关注更 EP03」。</td></tr>
+</table>
+
+<div class="foot">
+  素材来源：本仓库题库与真题数据挖掘（2013–2024，六题四套路）；例题与「实战」全部自编，真题只作套路出处引用，不含原文。
+  ——<b>EP02 内容稿，等 EP01 样片审完一起圈改。</b>
+</div>
+
+</div>
+</body>
+</html>

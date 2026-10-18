@@ -7,18 +7,14 @@
     <meta name="description" content="围绕考研 302 数学二（085411 大数据技术与工程）的闯关式刷题系统：考点分层节点地图、章节剧情、羁绊收集、成就系统、错题复盘与考点溯源，支持 LaTeX 公式渲染。">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <link rel="stylesheet" href="css/katex.min.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/dragonball.css">
+    <link rel="stylesheet" href="css/style.css?v=20261018f">
+    <link rel="stylesheet" href="css/dragonball.css?v=20261018j">
+    <link rel="stylesheet" href="css/world.css?v=20261018n">
 </head>
 <body class="dz">
 
-<!-- ============ 程序化动态背景（原创 Canvas 绘制） ============ -->
-<canvas id="bgCanvas"></canvas>
-<!-- 背景视频：只作为画布底图源，由 js/fx.js 逐帧绘制（不直接显示）。
-     素材首帧与末帧是同一画面（原片正放+倒放拼成的往复循环），所以直接加 loop 原生无缝循环。
-     ⚠️ 换成自己的视频时，务必先做成「首尾同帧」的往复循环，否则循环点会硬跳。
-     视频缺失或无法播放时会自动降级回静态底图 / 程序化背景。 -->
-<video id="bgVideo" class="bg-video" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>
+<!-- 旧版悟空动态背景（视频 + 全屏 Canvas）已停用：
+     主画面由 2D 像素世界的 Canvas 绘制，不再额外解码视频或跑第二套全屏粒子。 -->
 <div id="fxFlash"></div>
 
 <!-- ============ 顶部 HUD ============ -->
@@ -45,7 +41,7 @@
         <button class="btn btn-ghost btn-icon" id="btnMusic" title="背景音乐开关">🔊</button>
         <button class="btn btn-ghost btn-icon" id="btnSfx" title="音效开关">🎵</button>
         <button class="btn btn-ghost btn-icon" id="btnTheme" title="切换 热血模式 / 简洁模式">🥋</button>
-        <button class="btn btn-ghost" id="btnHuilu" title="回炉间：错题用同类变式验一遍才算消化（第二段要隔天）">🔥<span class="lbl-long"> 回炉间</span><span class="lbl-short"> 回炉</span><b class="hud-badge" id="hudHuilu">0</b></button>
+        <button class="btn btn-ghost" id="btnBag" title="背包：B 键随时打开，查看已获得的秘籍">🎒<span class="lbl-long"> 背包</span><span class="lbl-short"> 包</span><b class="hud-badge" id="hudBag">0</b></button>
         <button class="btn btn-ghost" id="btnPanel" title="成就 / 错题本">🏅<span class="lbl-long"> 成就 / 错题本</span><span class="lbl-short"> 成就</span></button>
         <button class="btn btn-ghost danger" id="btnReset" title="清空存档">重置</button>
     </div>
@@ -73,24 +69,64 @@
         <span class="lg-item"><i class="dot m3"></i>扎实 ≥85%</span>
     </div>
     <div class="legend-group hint">
-        <span>💡 圆越大 = 该知识点在历年真题中分值占比越高　|　悬停查看详情，点击进入关卡</span>
+        <span>💡 WASD / 方向键走路 · 点击地面自动寻路 · 走到人物旁按 <b>空格</b> 挑战 · 通关掉落「兵器」 · <b>M</b> 切换场景</span>
     </div>
 </section>
 
-<!-- ============ 神经网络节点地图 ============ -->
-<main class="map-scroll" id="mapScroll">
-    <div class="map-inner" id="mapInner">
-        <div class="map-bg" id="mapBg"></div>
-        <svg class="edges" id="edges" xmlns="http://www.w3.org/2000/svg"></svg>
-        <div class="nodes" id="nodes"></div>
+<!-- ============ 2D 像素大世界 ============ -->
+<main class="world" id="world">
+    <canvas id="worldCanvas"></canvas>
+    <div class="world-hud">
+        <div class="world-left">
+            <div class="world-area" id="worldArea"><b>第 1 章 · 函数、极限与连续</b><span>新手草原</span></div>
+            <div class="world-chips">
+                <span id="worldWeather">☀️ 晴</span>
+                <span id="worldMount">🏃 步行</span>
+                <button type="button" class="world-scene" id="worldSceneBtn" title="世界地图（M）">
+                    🗺️ <b id="worldSceneName">晨风集市</b><em id="worldSceneTrack">♪ 集市烧烤摊</em>
+                </button>
+            </div>
+        </div>
+        <div class="world-mini-wrap">
+            <canvas id="worldMini" width="380" height="244"></canvas>
+            <i class="mini-tip">点击小地图传送</i>
+        </div>
     </div>
-    <!-- 移动端地图缩放控件（≤860px 才显示，由 js/app.js 接管） -->
-    <div class="map-zoom" id="mapZoom">
-        <button type="button" data-zoom="in" aria-label="放大">＋</button>
-        <button type="button" data-zoom="out" aria-label="缩小">－</button>
-        <button type="button" data-zoom="reset" aria-label="恢复初始视角">⤢</button>
+    <div class="world-hint">WASD 走路 · 点击寻路 · 滚轮缩放 · 拖动地图 · 空格挑战 · <b>M</b> 世界地图 · <b></b>C</b> 坐骑/皮肤 · <b>R</b> 葫芦复盘 · <b>B</b> 背包</div>
+    <div class="world-zoom" id="worldZoom">
+        <button type="button" data-z="in" title="放大">＋</button>
+        <span id="worldZoomVal">100%</span>
+        <button type="button" data-z="out" title="缩小">－</button>
+        <button type="button" data-z="reset" title="回到玩家">⤢</button>
     </div>
+    <div class="quest-box" id="questBox">
+        <div class="quest-head">🗺️ 任务 <i>点击自动前往</i></div>
+        <div class="quest-list" id="questList"></div>
+    </div>
+    <div class="world-prompt" id="worldPrompt" hidden></div>
+    <div class="world-loading" id="worldLoading">正在生成世界…</div>
+    <div class="scene-fade" id="sceneFade"></div>
 </main>
+
+<!-- ============ 世界地图（场景传送） ============ -->
+<div class="scene-mask" id="sceneMask">
+    <div class="worldmap-panel" role="dialog" aria-modal="true" aria-label="世界地图">
+        <img class="worldmap-art" id="worldMapArt" src="assets/worldmap.jpg?v=20261018h" alt="世界地图"
+             onerror="this.onerror=null;this.src='map.png'">
+        <div class="worldmap-vignette"></div>
+        <header class="worldmap-head">
+            <div class="wm-title">🗺️ <b>世界地图</b><span>点击区域传送 · 背景音乐会随场景交叉淡入</span></div>
+            <div class="wm-current" id="worldMapCurrent">当前：晨风集市</div>
+            <button class="wm-close" id="sceneClose" aria-label="关闭">✕</button>
+        </header>
+        <div class="worldmap-spots" id="worldMapSpots"></div>
+        <div class="worldmap-tip" id="worldMapTip">
+            <b>选一个区域</b>
+            <em>把鼠标移到地图上的标记，查看章节与曲目</em>
+        </div>
+        <footer class="worldmap-foot">按住 <kbd>M</kbd> 开关地图 · 每个区域包含 2 个章节 · 未解锁区域会显示 🔒</footer>
+    </div>
+</div>
 
 <div class="tip" id="tip"></div>
 
@@ -189,6 +225,7 @@
             <button class="panel-tab active" data-view="ach">🏅 成就</button>
             <button class="panel-tab" data-view="wrong">📕<span class="lbl-long"> 错题本</span><span class="lbl-short"> 错题</span></button>
             <button class="panel-tab" data-view="bond">🤝<span class="lbl-long"> 羁绊录</span><span class="lbl-short"> 羁绊</span></button>
+            <button class="panel-tab" data-view="weapon">🗡️<span class="lbl-long"> 兵器库</span><span class="lbl-short"> 兵器</span></button>
             <button class="panel-tab" data-view="diary">📔<span class="lbl-long"> 疑问日记</span><span class="lbl-short"> 日记</span></button>
             <button class="panel-tab" data-view="stats">📊<span class="lbl-long"> 统计与玩法</span><span class="lbl-short"> 统计</span></button>
         </div>
@@ -198,6 +235,7 @@
         <div class="panel-view active" id="view-ach"></div>
         <div class="panel-view" id="view-wrong"></div>
         <div class="panel-view" id="view-bond"></div>
+        <div class="panel-view" id="view-weapon"></div>
         <div class="panel-view" id="view-diary"></div>
         <div class="panel-view" id="view-stats"></div>
     </div>
@@ -224,6 +262,113 @@
 
 <div id="toastWrap"></div>
 
+<!-- ============ 背包：通关获得的秘籍 ============ -->
+<div class="bag-mask" id="bagMask" aria-hidden="true">
+    <div class="bag-panel" role="dialog" aria-modal="true" aria-label="背包">
+        <header class="bag-head">
+            <div class="bag-title">🎒 背包 · 秘籍</div>
+            <div class="bag-tabs">
+                <button class="bag-tab active" data-bag="all">全部</button>
+                <button class="bag-tab" data-bag="gs">高等数学</button>
+                <button class="bag-tab" data-bag="xd">线性代数</button>
+                <button class="bag-tab" data-bag="cheat">公式速查</button>
+            </div>
+            <button class="battle-close" id="bagClose" aria-label="关闭背包">✕</button>
+        </header>
+        <div class="bag-body">
+            <div class="bag-list" id="bagList"></div>
+            <div class="bag-detail" id="bagDetail"></div>
+        </div>
+    </div>
+</div>
+
+<!-- ============ 获得秘籍 ============ -->
+<div class="loot-mask" id="lootMask" aria-hidden="true">
+    <div class="loot-card">
+        <div class="loot-kicker">获得秘籍</div>
+        <div class="loot-book">📖</div>
+        <div class="loot-title" id="lootTitle"></div>
+        <div class="loot-sub" id="lootSub"></div>
+        <div class="loot-hint">已放入背包 · 按 <kbd>B</kbd> 随时翻阅</div>
+        <div class="loot-btns">
+            <button class="btn btn-ghost" id="lootOk">收下</button>
+            <button class="btn btn-primary" id="lootOpen">翻开看看</button>
+        </div>
+    </div>
+</div>
+
+<!-- ============ 坐骑 / 皮肤（C 键） ============ -->
+<div class="gear-mask" id="gearMask" aria-hidden="true">
+    <div class="gear-panel" role="dialog" aria-modal="true" aria-label="坐骑与皮肤">
+        <header class="gear-head">
+            <div class="gear-title">🛞 坐骑 / 皮肤</div>
+            <div class="gear-tabs">
+                <button class="gear-tab active" data-gear="mount">坐骑</button>
+                <button class="gear-tab" data-gear="skin">皮肤</button>
+            </div>
+            <span class="gear-frag" id="gearFrag">🧩 0 碎片</span>
+            <button class="battle-close" id="gearClose" aria-label="关闭">✕</button>
+        </header>
+        <div class="gear-body">
+            <div class="gear-grid" id="gearGrid"></div>
+            <div class="gear-main">
+                <div class="gear-stage" id="gearStage">
+                    <canvas id="gearPreview" width="480" height="230"></canvas>
+                    <div class="gear-preview-hero" id="gearPreviewHero">
+                        <span class="gph-kicker" id="gearHeroKicker">传说皮肤</span>
+                        <b id="gearHeroName">超级赛亚人</b>
+                        <em id="gearHeroTag">金发倒竖，气焰把空气都点燃。</em>
+                        <span class="gph-lore" id="gearHeroLore"></span>
+                    </div>
+                    <div class="gear-preview-tag" id="gearPreviewTag"></div>
+                    <span class="gear-preview-cue">点击预览台看换装 CG</span>
+                </div>
+                <div class="gear-detail" id="gearDetail"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ============ 换装 CG（皮肤 / 坐骑展示） ============ -->
+<div class="gear-cg" id="gearCg" aria-hidden="true">
+    <canvas id="gearCgCanvas"></canvas>
+    <div class="gc-vignette"></div>
+    <div class="gc-info">
+        <span class="gc-kicker" id="gcKicker">NEW SKIN</span>
+        <h2 id="gcName">超级赛亚人</h2>
+        <span class="gc-rarity" id="gcRarity">传说</span>
+        <p id="gcLore"></p>
+        <button class="btn btn-primary" id="gcClose">收 下</button>
+    </div>
+    <div class="gc-flash"></div>
+</div>
+
+<!-- ============ 天下第一武道会（擂台赛） ============ -->
+<div class="arena-mask" id="arenaMask" aria-hidden="true">
+    <div class="arena-panel" role="dialog" aria-modal="true" aria-label="天下第一武道会">
+        <header class="arena-head">
+            <div class="arena-brand">⚔️ <b>天下第一武道会</b></div>
+            <span class="arena-round" id="arenaRound">第 1 / 5 轮 · 预选赛</span>
+            <button class="battle-close" id="arenaClose" aria-label="关闭">✕</button>
+        </header>
+        <div class="arena-body">
+            <div class="arena-portrait">
+                <img id="arenaFace" alt="">
+                <span class="arena-stars" id="arenaStars"></span>
+            </div>
+            <div class="arena-info">
+                <h3 id="arenaName">克林</h3>
+                <p class="arena-quote" id="arenaQuote"></p>
+                <div class="arena-meta" id="arenaMeta"></div>
+            </div>
+        </div>
+        <footer class="arena-foot">
+            <button class="btn btn-primary" id="arenaStart">上擂台</button>
+            <button class="btn" id="arenaLater">稍后再来</button>
+        </footer>
+    </div>
+</div>
+
 <!-- ============ 回炉间（错题复盘：诊断 → 变形 → 归位） ============ -->
 <div class="hl-mask" id="hlMask" aria-hidden="true">
     <div class="hl-panel" role="dialog" aria-modal="true" aria-label="回炉间">
@@ -247,7 +392,7 @@
 <script src="js/data-nodes.js"></script>
 <!-- 历年真题库（2011–2026）：挂在每个考点旁的「真题卫星」用 -->
 <script src="js/data-zhenti.js"></script>
-<script src="js/achievements.js"></script>
+<script src="js/achievements.js?v=20261018h"></script>
 <script src="js/data-q-gs.js"></script>
 <script src="js/data-q-gs-c1a.js"></script>
 <script src="js/data-q-gs-c1b.js"></script>
@@ -274,17 +419,23 @@
 <script src="js/data-trial.js"></script>
 <script src="js/data-story.js"></script>
 <script src="js/data-links.js"></script>
-<script src="js/store.js"></script>
+<script src="js/store.js?v=20261018h"></script>
 <script src="monsters/monsters.js"></script>
-<script src="js/audio.js"></script>
+<script src="js/music.js?v=20261018j"></script>
+<script src="js/audio.js?v=20261018i"></script>
 <script src="js/ai.js"></script>
-<script src="js/fx.js"></script>
-<script src="js/engine.js"></script>
-<script src="js/huilu.js"></script>
-<script src="js/story.js"></script>
+<script src="js/fx.js?v=20261018j"></script>
+<script src="js/engine.js?v=20261018j"></script>
+<script src="js/world.js?v=20261018s"></script>
+<script src="js/bag.js?v=20261018d"></script>
+<script src="js/gourd.js?v=20261018d"></script>
+<script src="js/gear.js?v=20261018l"></script>
+<script src="js/arena.js?v=20261018h"></script>
+<script src="js/huilu.js?v=20261018h"></script>
+<script src="js/story.js?v=20261018g"></script>
 <script src="js/diary.js"></script>
 <script src="js/cloud.js"></script>
-<script src="js/master.js"></script>
-<script src="js/app.js"></script>
+<script src="js/master.js?v=20261018g"></script>
+<script src="js/app.js?v=20261018j"></script>
 </body>
 </html>

@@ -30,6 +30,9 @@ window.HNSF829 = window.HNSF829 || {};
     bestRunCombo: 0,    // 单局最高连击
     loot: { opened: 0, tiers: {} },  // 通关宝箱：累计开箱次数 + 各稀有度命中数（id -> 次数）
     story: { intro: {}, outro: {} }, // 章节剧情卡：看过哪几章的入关/出关（chapId -> 时间戳），保证每章只弹一次
+    gear: { fragments: 0, skins: { starter: 1 }, skin: 'starter', mount: '' }, // 皮肤碎片 / 已拥有皮肤 / 当前皮肤 / 当前坐骑
+    gourd: { last: 0, total: 0 },    // 葫芦法宝：上次炼化时间 + 累计炼化炉数
+    arena: { runs: 0, best: 0, champion: 0 }, // 天下第一武道会：参赛次数 / 最好轮数 / 夺冠次数
     lastNodeId: ''      // 最近一次打的关卡（结算页可一键再来）
   };
 
@@ -417,6 +420,132 @@ window.HNSF829 = window.HNSF829 || {};
     save();
   }
 
+  /* ============================================================
+   * 皮肤 / 坐骑 / 葫芦（新系统）
+   * ------------------------------------------------------------
+   * 皮肤碎片只能通过葫芦每日复盘获得；坐骑解锁条件 = 对应考点通关，
+   * 因此坐骑本身不额外存「是否拥有」，只看 cleared。
+   * ============================================================ */
+  function gear() {
+    state.gear = state.gear || {};
+    var g = state.gear;
+    if (typeof g.fragments !== 'number') g.fragments = 0;
+    g.skins = g.skins || {};
+    if (!g.skins.starter) g.skins.starter = 1;
+    if (!g.skin) g.skin = 'starter';
+    if (g.mount == null) g.mount = '';
+    return g;
+  }
+
+  function addFragments(n) {
+    var g = gear();
+    g.fragments += Math.max(0, Math.floor(n || 0));
+    save(); emit();
+    return g.fragments;
+  }
+
+  function spendFragments(n) {
+    var g = gear();
+    n = Math.max(0, Math.floor(n || 0));
+    if (g.fragments < n) return false;
+    g.fragments -= n;
+    save(); emit();
+    return true;
+  }
+
+  function ownSkin(id) {
+    var g = gear();
+    g.skins[id] = Date.now();
+    g.skin = id;
+    save(); emit();
+  }
+
+  function equipSkin(id) {
+    var g = gear();
+    if (!g.skins[id]) return false;
+    g.skin = id;
+    save(); emit();
+    return true;
+  }
+
+  function equipMount(id) {
+    var g = gear();
+    g.mount = id || '';
+    save(); emit();
+    return g.mount;
+  }
+
+  function gourd() {
+    state.gourd = state.gourd || { last: 0, total: 0 };
+    if (typeof state.gourd.last !== 'number') state.gourd.last = 0;
+    if (typeof state.gourd.total !== 'number') state.gourd.total = 0;
+    return state.gourd;
+  }
+
+  /** 是否已经跨过本地日期：每天只成熟一炉 */
+  function gourdMature() {
+    var g = gourd();
+    if (!g.last) return true;
+    var a = new Date(g.last), b = new Date();
+    return a.getFullYear() !== b.getFullYear() ||
+      a.getMonth() !== b.getMonth() ||
+      a.getDate() !== b.getDate();
+  }
+
+  /**
+   * 葫芦复盘结算：不动 cleared / XP / 错题销账，只记「今天炼过了」并发碎片。
+   * 全对 3 片，否则 2 片 —— 每天最多一炉，所以不存在刷碎片。
+   */
+  function gourdFinish(result) {
+    var total = result.total || 0;
+    var correct = result.correct || 0;
+    var rate = total ? correct / total : 0;
+    var perfect = total > 0 && correct === total;
+    var g = gourd();
+    var first = !g.total;
+    var gain = (perfect ? 3 : 2) + (first ? 1 : 0);   // 第一炉送 1 片开炉礼，刚好够换一件普通皮肤
+    g.last = Date.now();
+    g.total = (g.total || 0) + 1;
+    var gs = gear();
+    gs.fragments += gain;
+    save(); emit();
+    return {
+      pass: true, perfect: perfect, rate: rate, bonus: 0,
+      firstClear: false, prevBest: 0, newRecord: {},
+      newAchievements: [], bestRunRate: state.bestRunRate || 0,
+      bestRunCombo: state.bestRunCombo || 0,
+      fragments: gain, firstBonus: first, gourd: true
+    };
+  }
+
+  /* ---------------- 天下第一武道会 ----------------
+   * 擂台赛的进度不写进 cleared（它不是考点），单独记：
+   *   runs 参赛次数 / best 最好轮数 / champion 夺冠次数。
+   * 皮肤碎片由 arena.js 发放，这里只负责战绩与成就。
+   */
+  function arena() {
+    state.arena = state.arena || { runs: 0, best: 0, champion: 0 };
+    var a = state.arena;
+    if (typeof a.runs !== 'number') a.runs = 0;
+    if (typeof a.best !== 'number') a.best = 0;
+    if (typeof a.champion !== 'number') a.champion = 0;
+    return a;
+  }
+
+  function arenaRecord(r) {
+    var a = arena();
+    if ((r.wins || 0) > a.best) a.best = r.wins;
+    if (r.champion) a.champion += 1;
+    if (r.ended) a.runs += 1;
+    save();
+    var gained = checkAchievements();
+    emit();
+    return {
+      runs: a.runs, best: a.best, champion: a.champion,
+      newAchievements: gained
+    };
+  }
+
   /* ---------------- 错题本 ---------------- */
   function wrongList() {
     return Object.keys(state.wrong)
@@ -587,7 +716,9 @@ window.HNSF829 = window.HNSF829 || {};
       weakNodes: _ms.weak,
       bestRunRate: state.bestRunRate || 0,
       bestRunCombo: state.bestRunCombo || 0,
-      maxWrongTimes: _maxWrongTimes
+      maxWrongTimes: _maxWrongTimes,
+      arenaBest: arena().best,
+      arenaChampion: arena().champion
     };
   }
 
@@ -857,6 +988,17 @@ window.HNSF829 = window.HNSF829 || {};
     nextResetAt: nextResetAt,
     HL_RESOLVE_AT: HL_RESOLVE_AT,
     addXp: addXp,
+    gear: gear,
+    addFragments: addFragments,
+    spendFragments: spendFragments,
+    ownSkin: ownSkin,
+    equipSkin: equipSkin,
+    equipMount: equipMount,
+    gourd: gourd,
+    gourdMature: gourdMature,
+    gourdFinish: gourdFinish,
+    arena: arena,
+    arenaRecord: arenaRecord,
     openLoot: openLoot,
     lootStats: lootStats,
     storySeen: storySeen,

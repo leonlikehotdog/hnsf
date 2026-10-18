@@ -41,6 +41,7 @@ window.HNSF829 = window.HNSF829 || {};
   { id: 'solid5', rarity: 'rare', icon: '🟢', name: '五科扎实', desc: '5 个考点的掌握度达到「扎实」', check: c => c.solidNodes >= 5 },
   { id: 'solid10', rarity: 'rare', icon: '🟩', name: '十科扎实', desc: '10 个考点的掌握度达到「扎实」', check: c => c.solidNodes >= 10 },
   { id: 'run_perfect', rarity: 'rare', icon: '🏅', name: '单局满分', desc: '某一局答题正确率 100%', check: c => c.bestRunRate >= 1 },
+  { id: 'arena_first', rarity: 'rare', icon: '🥊', name: '登台', desc: '在天下第一武道会赢下第一场', check: c => c.arenaBest >= 1 },
 
   /* ---------------- 史诗 ---------------- */
   { id: 'combo15', rarity: 'epic', icon: '💥', name: '连击·神话', desc: '连续答对 15 题', check: c => c.maxCombo >= 15 },
@@ -61,6 +62,7 @@ window.HNSF829 = window.HNSF829 || {};
   { id: 'allnodes', rarity: 'legend', icon: '🐉', name: '召唤神龙', desc: '集齐七颗龙珠：通关全部 ' + TOTAL + ' 个考点', check: c => c.tierCleared[1] && c.tierCleared[2] && c.tierCleared[3] },
   { id: 'all_perfect', rarity: 'legend', icon: '👑', name: '全满星', desc: '全部 ' + TOTAL + ' 个考点都以 100% 正确率通关', check: c => c.perfectCount >= TOTAL },
   { id: 'solid_all', rarity: 'legend', icon: '🏆', name: '全科扎实', desc: '全部 ' + TOTAL + ' 个考点的掌握度都达到「扎实」', check: c => c.solidNodes >= TOTAL },
+  { id: 'arena_champ', rarity: 'legend', icon: '🐲', name: '天下第一', desc: '通关天下第一武道会五轮，拿下冠军', check: c => c.arenaChampion >= 1 },
 
   /* ---------------- 隐藏：拿到之前看不到条件 ---------------- */
   { id: 'night_owl', rarity: 'rare', hidden: true, icon: '🦉', name: '夜猫子', desc: '在凌晨 0 点到 5 点之间答对一道题', check: c => { var h = new Date().getHours(); return h >= 0 && h < 5; } },

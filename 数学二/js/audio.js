@@ -89,8 +89,13 @@ window.HNSF829 = window.HNSF829 || {};
 
   /** 浏览器要求用户手势后才能出声 */
   function resume() {
+    if (NS.Music) NS.Music.resume();
     ensure();
     if (!ctx) return;
+    if (NS.Music) {
+      if (ctx.state === 'suspended') ctx.resume().catch(function () {});
+      return;                                 // 文件音乐接管后不再启动合成 BGM
+    }
     var go = function () {
       if (musicOn && songKey && !started && wantMusic(songKey)) startSong(songKey);
     };
@@ -421,8 +426,15 @@ window.HNSF829 = window.HNSF829 || {};
     if (timer) { clearInterval(timer); timer = null; }
   }
 
-  /** 切换 BGM 场景：'map' | 'battle' | null（全静音） */
+  /** 切换 BGM 场景：'map' | 'battle' | 'boss' | 'dialogue' | 'scene:sN' | null */
   function setScene(key) {
+    if (NS.Music) {
+      // 文件音乐接管 BGM：场景曲 / 战斗曲 / BOSS 曲 / 对话曲都在 music.js 里交叉淡化
+      if (!key) { NS.Music.playKey('map'); songKey = null; return; }
+      NS.Music.playKey(key);
+      songKey = key;
+      return;
+    }
     if (!ensure()) { songKey = key; return; }     // 环境不支持 Web Audio 时只记录场景，不播
     if (key === songKey && started) return;
     if (!key) { stopSong(MUSIC_FADE); songKey = null; return; }
@@ -583,6 +595,11 @@ window.HNSF829 = window.HNSF829 || {};
 
   function setMusic(on) {
     musicOn = !!on;
+    if (NS.Music) {
+      NS.Music.setEnabled(musicOn);
+      savePref();
+      return;
+    }
     if (!ensure()) return;
     if (musicOn) {
       // 当前场景本来就该有音乐时才续播（做题且开关为关时不该突然响起）
@@ -606,6 +623,11 @@ window.HNSF829 = window.HNSF829 || {};
   /** 做题（关卡内）是否播放 BGM。默认开：做题播放独立的 E 小调战斗曲，可在设置里静音 */
   function setMusicInBattle(on) {
     musicInBattle = !!on;
+    if (NS.Music) {
+      NS.Music.setBattleEnabled(musicInBattle);
+      savePref();
+      return;
+    }
     if (!ensure()) { savePref(); return; }
     if (songKey === 'battle') {
       if (musicInBattle && musicOn) startSong('battle');
@@ -636,16 +658,17 @@ window.HNSF829 = window.HNSF829 || {};
   function setVolume(v) {
     volume = Math.max(0, Math.min(1, v));
     if (master) master.gain.value = volume;
+    if (NS.Music) NS.Music.setVolume(volume);
     savePref();
   }
 
   function getVolume() { return volume; }
 
   /* 偏好持久化（与游戏存档分离，避免重置进度时丢设置）。
-     v2：做题 BGM 默认改为播放。v1 里 musicInBattle:false 只是旧版默认值
-     （当时做题从不放 BGM），不代表用户主动选择，故迁移时只带通用偏好，
-     musicInBattle 用 v2 新默认，用户之后仍可随时在设置里改 */
-  var PREF_KEY = 'hnsf829_audio_v2';
+     v3：BGM 换成洛克王国原声，旧版合成曲的「静音」不再沿用——
+         新音乐系统首次上线默认开启；音量 / 音效开关仍沿用旧偏好。
+     v2：做题 BGM 默认改为播放。 */
+  var PREF_KEY = 'hnsf829_audio_v3';
   function savePref() {
     try {
       localStorage.setItem(PREF_KEY, JSON.stringify({
@@ -657,10 +680,14 @@ window.HNSF829 = window.HNSF829 || {};
     try {
       var raw = localStorage.getItem(PREF_KEY);
       if (!raw) {
-        var old = JSON.parse(localStorage.getItem('hnsf829_audio_v1') || '{}');
+        var old = JSON.parse(localStorage.getItem('hnsf829_audio_v2') || '{}');
+        // 沿用旧版「背景音乐」开关：旧版关着，新版也保持关着；
+        // 只有从来没有设置过时才默认开启。
         if (typeof old.music === 'boolean') musicOn = old.music;
         if (typeof old.sfx === 'boolean') sfxOn = old.sfx;
         if (typeof old.volume === 'number') volume = old.volume;
+        if (typeof old.musicInBattle === 'boolean') musicInBattle = old.musicInBattle;
+        savePref();
         return;
       }
       var p = JSON.parse(raw);
@@ -671,6 +698,12 @@ window.HNSF829 = window.HNSF829 || {};
     } catch (e) {}
   }
   loadPref();
+  // 设置面板的偏好同步到文件音乐（此时还没有用户手势，不会真的出声）
+  if (NS.Music) {
+    NS.Music.setVolume(volume);
+    NS.Music.setBattleEnabled(musicInBattle);
+    if (!musicOn) NS.Music.setEnabled(false);
+  }
 
   /* 首次用户手势后唤醒音频。
    * 手机端（尤其 iOS Safari / 微信内置浏览器）比桌面严得多，旧实现只挂 pointerdown

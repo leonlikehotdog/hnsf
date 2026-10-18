@@ -32,7 +32,10 @@ window.HNSF829 = window.HNSF829 || {};
   }
   function fmt(t) { return NS.Engine.fmt(t == null ? '' : String(t)); }
   function typeset(el) { if (el) NS.Engine.renderMath(el); }
-  function nodeOf(id) { return Store.nodeById(id) || { name: id, icon: '📘', points: [] }; }
+  function nodeOf(id) {
+    if (id === 'arena') return { name: '天下第一武道会', icon: '⚔️', points: [] };
+    return Store.nodeById(id) || { name: id, icon: '📘', points: [] };
+  }
   function qid2q(qid) { return qById[qid]; }
 
   function init(refs) {
@@ -176,6 +179,7 @@ window.HNSF829 = window.HNSF829 || {};
     els.foot.innerHTML = '<button class="btn btn-primary" id="hlGo">开始回炉 →</button>' +
       '<span class="hl-keyhint"><kbd>空格</kbd> 继续　<kbd>Esc</kbd> 退出</span>';
     $('hlGo').addEventListener('click', toDrill);
+    typeset(els.body);          // 题干/选项/诊断文案里都有公式，必须渲染
   }
 
   /** ② 变形屏 */

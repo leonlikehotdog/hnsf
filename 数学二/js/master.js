@@ -569,6 +569,7 @@ window.HNSF829 = window.HNSF829 || {};
     if (!els.mask || !ctx) return;
     els.mask.classList.add('show');
     els.mask.setAttribute('aria-hidden', 'false');
+    if (NS.Audio) NS.Audio.setScene('dialogue');
     if (els.input) setTimeout(function () { els.input.focus(); }, 60);
     scrollBottom();
   }
@@ -583,6 +584,7 @@ window.HNSF829 = window.HNSF829 || {};
     openManual(false);
     els.mask.classList.remove('show');
     els.mask.setAttribute('aria-hidden', 'true');
+    if (NS.Audio) NS.Audio.setScene('map');
     openCfg(false);
   }
 

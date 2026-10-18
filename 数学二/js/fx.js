@@ -40,15 +40,31 @@ window.HNSF829 = window.HNSF829 || {};
    * ============================================================ */
   var BG = (function () {
     var cv, cx, W = 0, H = 0, dpr = 1, raf = null, running = false, t0 = 0;
+    var disabled = true;                        // 旧版悟空视频背景已退役：没有 #bgCanvas 就彻底不跑
     var mobileV = mobileViewNow();              // 缓存的移动端判定（resize 时更新，避免每帧读 innerWidth）
     var lastDraw = 0;                           // 上一帧真正绘制的时刻，用于帧率上限
     var clouds = [], stars = [], auras = [], embers = [], debris = [], cracks = [], flames = [];
     var bolts = [], shock = null, boltTimer = 4000;
 
-    // 场景配置：底图路径 + 能量强度 + 底色
+    // 场景配置：底图路径 + 能量强度 + 底色 + 粒子配色
+    // battle 改成与像素世界一致的森林/金色调，不再是紫色比武场
     var SCENES = {
-      map:    { img: 'assets/bg-map.jpg',    power: 1.0, sky: ['#04060f', '#0b1230', '#1a1042', '#3b0f6e'] },
-      battle: { img: 'assets/bg-battle.jpg', power: 1.7, sky: ['#070313', '#150a30', '#2e1065', '#4c1d95'] }
+      map: {
+        img: 'assets/bg-map.jpg', power: 1.0,
+        sky: ['#04060f', '#0b1230', '#1a1042', '#3b0f6e'],
+        dim: '28,8,50',
+        cloud: ['56,132,255', '168,85,247', '124,58,237'],
+        aura: ['168,85,247', '124,58,237'],
+        ember: ['196,181,253', '124,58,237']
+      },
+      battle: {
+        img: 'assets/bg-battle.jpg', power: 1.25,
+        sky: ['#06110c', '#0e2418', '#173d28', '#2d5a35'],
+        dim: '8,30,18',
+        cloud: ['34,197,94', '251,191,36', '20,120,80'],
+        aura: ['52,211,153', '251,191,36'],
+        ember: ['167,243,208', '251,191,36']
+      }
     };
     var sceneKey = 'map';
     var baseImgs = {};                 // key -> { ok:bool, img:Image }
@@ -77,7 +93,7 @@ window.HNSF829 = window.HNSF829 || {};
     }
 
     function probeVideo() {
-      if (!imgMode || vidTried || lowPower) return;   // 低功耗：不下载也不解码视频
+      if (disabled || !cv || !imgMode || vidTried || lowPower) return;   // 没有背景画布：不下载也不解码视频
       vidTried = true;
       vidEl = document.getElementById('bgVideo');
       if (!vidEl) return;
@@ -106,14 +122,14 @@ window.HNSF829 = window.HNSF829 || {};
     }
 
     /** 可用的视频帧：探测到并且拿到宽高才算就绪，否则返回 false 走降级 */
-    function videoReadyNow() { return !!(imgMode && !lowPower && vidOk && vReady(vidEl)); }
+    function videoReadyNow() { return !!(cv && !disabled && imgMode && !lowPower && vidOk && vReady(vidEl)); }
 
     /* 底图/视频通用压暗层：保证前景文字始终可读 */
     function dimOverlay(a0, a1, a2) {
       var ov = cx.createLinearGradient(0, 0, 0, H);
       ov.addColorStop(0, 'rgba(3,6,14,' + a0 + ')');
       ov.addColorStop(0.5, 'rgba(6,8,18,' + a1 + ')');
-      ov.addColorStop(1, 'rgba(28,8,50,' + a2 + ')');
+      ov.addColorStop(1, 'rgba(' + (cfg().dim || '28,8,50') + ',' + a2 + ')');
       cx.fillStyle = ov;
       cx.fillRect(0, 0, W, H);
     }
@@ -143,7 +159,7 @@ window.HNSF829 = window.HNSF829 || {};
 
     /* ---------- 可选底图：开关控制，探测失败静默降级 ---------- */
     function probe(key) {
-      if (!imgMode || baseImgs[key]) return;
+      if (disabled || !cv || !imgMode || baseImgs[key]) return;
       baseImgs[key] = { ok: false, img: null };
       var def = SCENES[key];
       if (!def || !def.img) return;
@@ -156,6 +172,7 @@ window.HNSF829 = window.HNSF829 || {};
     /** 开启/关闭自定义背景；只探测当前场景，进关卡时再按需探测战斗图 */
     function setImageMode(on) {
       imgMode = !!on;
+      if (disabled || !cv) return;               // 背景已退役：不探测视频 / 静态图
       baseImgs = {};
       vidTried = false; vidOk = false;
       if (!imgMode) stopVideo();
@@ -163,11 +180,12 @@ window.HNSF829 = window.HNSF829 || {};
       if (lowPower) drawOnce();                  // 低功耗下没有主循环，改完底图要补画一帧
     }
 
-    function imagesOn() { return imgMode; }
+    function imagesOn() { return !disabled && imgMode; }
 
     function setScene(key) {
       if (!SCENES[key]) return;
       sceneKey = key;
+      if (disabled || !cv) return;
       probe(key);
       // 场景能量强度不同，需按新的 intensity 重建粒子，否则视觉不一致
       if (W && H) { build(); if (lowPower) drawOnce(); }
@@ -178,7 +196,7 @@ window.HNSF829 = window.HNSF829 || {};
 
     /* ---------- 尺寸与粒子重建 ---------- */
     function resize() {
-      if (!cv) return;
+      if (disabled || !cv) return;
       mobileV = mobileViewNow();
       // 渲染分辨率封顶：移动端 GPU 逐像素成本高，1.5 倍 DPR 在 3x 屏上要多算 4 倍像素
       dpr = Math.min(window.devicePixelRatio || 1, lowPower ? 1 : (mobileV ? 1.25 : 1.5));
@@ -217,11 +235,12 @@ window.HNSF829 = window.HNSF829 || {};
       debris = []; for (i = 0; i < debN; i++) debris.push(newDebris(true));
       flames = []; for (i = 0; i < flameN; i++) flames.push(newFlame(i, flameN));
 
+      var cl = cfg().cloud || ['56,132,255', '168,85,247', '124,58,237'];
       clouds = [
-        { x: W * 0.18, y: H * 0.26, r: Math.max(W, H) * 0.45, c: '56,132,255', a: 0.20, vx: 0.012, vy: 0.006 },
-        { x: W * 0.82, y: H * 0.18, r: Math.max(W, H) * 0.38, c: '168,85,247', a: 0.16, vx: -0.01, vy: 0.008 },
-        { x: W * 0.55, y: H * 0.86, r: Math.max(W, H) * 0.52, c: '124,58,237', a: 0.18, vx: 0.008, vy: -0.006 },
-        { x: W * 0.08, y: H * 0.82, r: Math.max(W, H) * 0.3, c: '150,80,255', a: 0.13, vx: -0.006, vy: -0.008 }
+        { x: W * 0.18, y: H * 0.26, r: Math.max(W, H) * 0.45, c: cl[0], a: 0.20, vx: 0.012, vy: 0.006 },
+        { x: W * 0.82, y: H * 0.18, r: Math.max(W, H) * 0.38, c: cl[1], a: 0.16, vx: -0.01, vy: 0.008 },
+        { x: W * 0.55, y: H * 0.86, r: Math.max(W, H) * 0.52, c: cl[2], a: 0.18, vx: 0.008, vy: -0.006 },
+        { x: W * 0.08, y: H * 0.82, r: Math.max(W, H) * 0.3, c: cl[1], a: 0.13, vx: -0.006, vy: -0.008 }
       ];
 
       buildCracks();
@@ -250,6 +269,7 @@ window.HNSF829 = window.HNSF829 || {};
 
     /* ---------- 粒子工厂 ---------- */
     function newAura(init) {
+      var hues = cfg().aura || ['168,85,247', '124,58,237'];
       return {
         x: Math.random() * W,
         y: init ? Math.random() * H : H + Math.random() * 60,
@@ -257,12 +277,13 @@ window.HNSF829 = window.HNSF829 || {};
         vy: -(Math.random() * 0.55 + 0.28) * power(),
         vx: (Math.random() - 0.5) * 0.28,
         life: 0, max: 180 + Math.random() * 260,
-        hue: Math.random() < 0.62 ? '168,85,247' : '124,58,237',
+        hue: Math.random() < 0.62 ? hues[0] : hues[1],
         ph: Math.random() * Math.PI * 2
       };
     }
 
     function newEmber(init) {
+      var hues = cfg().ember || ['196,181,253', '124,58,237'];
       return {
         x: Math.random() * W,
         y: init ? Math.random() * H : H + Math.random() * 40,
@@ -270,7 +291,7 @@ window.HNSF829 = window.HNSF829 || {};
         vy: -(Math.random() * 1.7 + 0.9) * power(),
         vx: (Math.random() - 0.5) * 1.1,
         life: 0, max: 90 + Math.random() * 120,
-        hue: Math.random() < 0.5 ? '196,181,253' : '124,58,237'
+        hue: Math.random() < 0.5 ? hues[0] : hues[1]
       };
     }
 
@@ -515,13 +536,13 @@ window.HNSF829 = window.HNSF829 || {};
 
     /** 只画一帧（低功耗模式的静态底图） */
     function drawOnce() {
-      if (!cv) return;
+      if (disabled || !cv) return;
       draw(performance.now ? performance.now() : Date.now(), 16.67);
     }
 
     /** 蓄气爆发：地面冲击环（由升级 / 通关 / 神龙触发） */
     function charge() {
-      if (lowPower) return;                     // 低功耗下没有循环来推进它，直接跳过
+      if (disabled || lowPower) return;           // 没有背景画布 / 低功耗：没有循环来推进它
       shock = {
         x: W / 2, y: H * 0.82,
         r: 20, max: Math.max(W, H) * 0.72,
@@ -533,7 +554,8 @@ window.HNSF829 = window.HNSF829 || {};
     function start() {
       if (running) return;
       cv = document.getElementById('bgCanvas');
-      if (!cv) return;
+      if (!cv) { disabled = true; return; }      // 旧版背景已移除：不建循环、不探测视频
+      disabled = false;
       cx = cv.getContext('2d');
       resize();
       running = true; t0 = 0;
@@ -560,7 +582,7 @@ window.HNSF829 = window.HNSF829 || {};
       if (lowPower) document.documentElement.classList.add('lowpower');
       else document.documentElement.classList.remove('lowpower');
       try { localStorage.setItem(LP_KEY, on ? '1' : '0'); } catch (e) {}
-      if (!cv) return;
+      if (disabled || !cv) return;
       mobileV = mobileViewNow();
       if (on) {
         running = false;

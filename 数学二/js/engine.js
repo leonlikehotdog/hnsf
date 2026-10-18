@@ -270,7 +270,11 @@ window.HNSF829 = window.HNSF829 || {};
     els.mask.classList.add('show');
     document.body.classList.add('no-scroll');
     // 热血氛围：切战斗曲 + 战斗战场背景（气焰更猛）+ 恢复屏幕边缘连击气焰
-    if (NS.Audio) { NS.Audio.setScene('battle'); NS.Audio.sfx('open'); }
+    if (NS.Audio) {
+      var boss = (session.mode === 'node' && node.tier === 3);
+      NS.Audio.setScene(session.mode === 'arena' ? 'arenaBattle' : (boss ? 'boss' : 'battle'));
+      NS.Audio.sfx('open');
+    }
     if (NS.BG) NS.BG.setScene('battle');
     if (NS.FX) {
       NS.FX.resetCombo();
@@ -282,6 +286,9 @@ window.HNSF829 = window.HNSF829 || {};
     if (session.mode === 'wrong') {
       els.monsterEmoji.textContent = '🧟';
       session.char = setMonster('wrong', '错题本 · 重练');
+    } else if (session.mode === 'arena') {
+      els.monsterEmoji.textContent = '🥊';
+      session.char = setMonster(node.id, node.name, node.charId);
     } else {
       els.monsterEmoji.textContent = node.icon || '🥋';
       // 真题关沿用母考点的考官：同一考点「练」和「验」是同一个人，观感连贯
@@ -300,7 +307,8 @@ window.HNSF829 = window.HNSF829 || {};
       els.monster._enterT = setTimeout(function () { els.monster.classList.remove('enter'); }, 1500);
     }
     syncTrialInstant();
-    renderBondStrip(node.ztParent || node.id);
+    if (session.mode === 'arena') els.bondStrip.innerHTML = '';
+    else renderBondStrip(node.ztParent || node.id);
     renderQuestion();
   }
 
@@ -322,11 +330,11 @@ window.HNSF829 = window.HNSF829 || {};
   }
 
   /** 载入关卡对应的角色立绘；缺图自动回退 emoji（不会报错） */
-  function setMonster(nodeId, label) {
+  function setMonster(nodeId, label, forceId) {
     var M = NS.Monsters;
     if (!M) { if (els.monsterName) els.monsterName.textContent = label || ''; return null; }
-    // 一对一固定映射：试炼卡说谁、台上就是谁、结算与羁绊录也都是同一个（不随机）
-    var m = M.forNode(nodeId);
+    // 擂台赛没有「考点」，直接按角色 id 指定台上是谁
+    var m = (forceId && M.byId) ? M.byId(forceId) : M.forNode(nodeId);
     if (els.monsterName) els.monsterName.textContent = M.label(m, label);
     if (!m) return null;
 
@@ -760,7 +768,9 @@ window.HNSF829 = window.HNSF829 || {};
     // chosen 一起落库：回炉间的「诊断屏」要显示「你当时选了什么」
     var rec = (s.mode === 'zhenti'
       ? store().ztRecord(s.node.ztParent || s.node.id, q.id, ok, chosen)
-      : store().recordAnswer(s.node.id, q.id, ok, chosen)) || {};
+      : store().recordAnswer(
+          s.mode === 'arena' ? 'arena' : (s.mode === 'gourd' ? (q.node || s.node.id) : s.node.id),
+          q.id, ok, chosen)) || {};
     var achGained = rec.achievements || [];
     var streak = rec.streak || 0;
 
@@ -875,15 +885,92 @@ window.HNSF829 = window.HNSF829 || {};
     renderQuestion();
   }
 
+  /* ---------------- 擂台赛结算 ----------------
+   * 五轮淘汰、一题定胜负，所以结算页不走「考点/宝箱」那一套，
+   * 只报本轮结果、晋级轮数与皮肤碎片，并把下一轮入口直接放在按钮上。
+   */
+  function settleArena(s) {
+    var res = (NS.Arena && NS.Arena.finishMatch)
+      ? NS.Arena.finishMatch({ correct: s.correct, total: s.questions.length })
+      : { pass: s.correct === s.questions.length, rate: s.correct / s.questions.length, fragments: 0, newAchievements: [] };
+    var info = (NS.Arena && NS.Arena.resultInfo) ? NS.Arena.resultInfo()
+      : { opponent: { name: '对手', title: '擂台' }, round: 1, total: 5, final: false };
+
+    if (res.pass) {
+      if (NS.Audio) NS.Audio.sfx('clear');
+      if (NS.FX) NS.FX.powerUp(res.champion ? '255,228,150' : '255,205,90');
+    } else {
+      if (NS.Audio) NS.Audio.sfx('wrong');
+      if (NS.FX) NS.FX.shake(2);
+    }
+    if (NS.FX) NS.FX.resetCombo();
+
+    var title = res.champion ? '天下第一！' : res.pass ? '晋级成功' : '守擂失败';
+    var icon = res.champion ? '👑' : res.pass ? '🏆' : '💀';
+    var opp = info.opponent;
+
+    els.body.innerHTML =
+      '<div class="settle ' + (res.pass ? 'win' : 'lose') + ' arena-settle">' +
+        '<div class="settle-icon">' + icon + '</div>' +
+        '<div class="settle-title">' + title + '</div>' +
+        '<div class="settle-sub">第 ' + info.round + ' / ' + info.total + ' 轮 · ' + esc(opp.title) + ' · ' + esc(opp.name) + '</div>' +
+        '<div class="settle-grid">' +
+          '<div class="sg"><b>' + s.correct + '/' + s.questions.length + '</b><span>本题</span></div>' +
+          '<div class="sg"><b>' + (res.wins || 0) + '</b><span>本届已胜轮数</span></div>' +
+          '<div class="sg"><b>+' + (res.fragments || 0) + '</b><span>皮肤碎片</span></div>' +
+          '<div class="sg"><b>' + (s.questions[0] && s.questions[0].year ? s.questions[0].year : '—') + '</b><span>真题年份</span></div>' +
+        '</div>' +
+        '<div class="settle-row hl">' + (res.pass
+          ? (res.champion ? '🐲 五轮全胜，冠军留在擂台上！' : '⚔️ 对手认输，下一轮等你。')
+          : '❌ 答错即淘汰。调整一下，再上一次擂台。') + '</div>' +
+        (res.newAchievements && res.newAchievements.length
+          ? '<div class="ach-box"><div class="ub-title">🏅 获得成就</div>' +
+            res.newAchievements.map(function (a) {
+              var r = RARITY[a.rarity] || RARITY.common;
+              return '<div class="ub-item">' + a.icon + ' ' + a.name +
+                ' <span class="ach-rarity ' + r.cls + '">' + r.label + '</span></div>';
+            }).join('') + '</div>' : '') +
+      '</div>';
+
+    els.foot.innerHTML =
+      (res.pass && !info.final
+        ? '<button class="btn btn-primary" id="btnArenaNext">下一位对手 →</button>'
+        : res.pass && info.final
+          ? '<button class="btn btn-primary" id="btnArenaAgain">再战一届</button>'
+          : '<button class="btn btn-primary" id="btnArenaRetry">重新挑战</button>') +
+      '<button class="btn" id="btnBack">返回擂台</button>';
+
+    els.foot.querySelector('#btnBack').addEventListener('click', close);
+    var next = els.foot.querySelector('#btnArenaNext');
+    if (next) next.addEventListener('click', function () {
+      close();
+      setTimeout(function () { if (NS.Arena) NS.Arena.beginMatch(); }, 280);
+    });
+    var again = els.foot.querySelector('#btnArenaAgain');
+    if (again) again.addEventListener('click', function () {
+      close();
+      setTimeout(function () { if (NS.Arena) NS.Arena.restart(); }, 280);
+    });
+    var retry = els.foot.querySelector('#btnArenaRetry');
+    if (retry) retry.addEventListener('click', function () {
+      close();
+      setTimeout(function () { if (NS.Arena) NS.Arena.beginMatch(); }, 280);
+    });
+  }
+
   /* ---------------- 结算 ---------------- */
   function settle() {
     var s = session;
     if (s.settled) return;
     s.settled = true;
 
+    if (s.mode === 'arena') { settleArena(s); return; }
+
     var res = (s.mode === 'zhenti'
       ? store().ztFinish(s.node.ztParent || s.node.id, { total: s.questions.length, correct: s.correct, maxCombo: s.maxRunCombo || 0 })
-      : store().finishNode(s.node.id, { total: s.questions.length, correct: s.correct, maxCombo: s.maxRunCombo || 0 }));
+      : s.mode === 'gourd'
+        ? store().gourdFinish({ total: s.questions.length, correct: s.correct, maxCombo: s.maxRunCombo || 0 })
+        : store().finishNode(s.node.id, { total: s.questions.length, correct: s.correct, maxCombo: s.maxRunCombo || 0 }));
 
     // 结算演出：通关凯歌 + 金色气浪；失败则震屏
     if (res.pass) {
@@ -932,8 +1019,10 @@ window.HNSF829 = window.HNSF829 || {};
 
     els.body.innerHTML =
       '<div class="settle ' + (res.pass ? 'win' : 'lose') + '">' +
-        '<div class="settle-icon">' + (res.perfect ? '💎' : res.pass ? '🏆' : '💀') + '</div>' +
-        '<div class="settle-title">' + (res.perfect ? '完美通关！' : res.pass ? '通关成功' : '挑战失败') + '</div>' +
+        '<div class="settle-icon">' + (s.mode === 'gourd' ? '🍐' : res.perfect ? '💎' : res.pass ? '🏆' : '💀') + '</div>' +
+        '<div class="settle-title">' + (s.mode === 'gourd'
+          ? (res.perfect ? '一炉大成！' : '复盘完成')
+          : (res.perfect ? '完美通关！' : res.pass ? '通关成功' : '挑战失败')) + '</div>' +
         '<div class="settle-sub">' + s.node.name + '</div>' +
         '<div class="settle-grid">' +
           '<div class="sg"><b>' + s.correct + '/' + s.questions.length + '</b><span>答对题数</span></div>' +
@@ -942,17 +1031,22 @@ window.HNSF829 = window.HNSF829 || {};
           '<div class="sg"><b>' + elapsed + 's</b><span>用时</span></div>' +
         '</div>' +
         recHtml +
-        '<div class="settle-row"><span>本节点历史最佳</span><b>' + Math.max(prevBestPct, rate) + '%' + (bestCmp ? '　' + bestCmp : '') + '</b></div>' +
-        '<div class="settle-row"><span>通关奖励</span><b>+' + res.bonus + ' XP</b></div>' +
+        (s.mode === 'gourd' ? '' :
+          '<div class="settle-row"><span>本节点历史最佳</span><b>' + Math.max(prevBestPct, rate) + '%' + (bestCmp ? '　' + bestCmp : '') + '</b></div>') +
+        '<div class="settle-row"><span>' + (s.mode === 'gourd' ? '皮肤碎片' : '通关奖励') + '</span><b>' +
+          (s.mode === 'gourd' ? '+' + (res.fragments || 0) + ' 枚' : '+' + res.bonus + ' XP') + '</b></div>' +
         (res.firstClear ? '<div class="settle-row hl">🎁 首次通关额外奖励已计入</div>' : '') +
         (res.pass ? '<div class="settle-row hl">' + (s.mode === 'wrong'
           ? '🧹 这批错题已消化　·　回错题本看看还剩哪些'
           : s.mode === 'zhenti'
             ? '📝 真题关通过　·　正确率 ' + rate + '%，可以再刷刷新纪录'
-            : '🤝 ' + esc((s.char && s.char.name) || '他') + ' 认可了你　·　本关心法已收录（简报里可随时回看）') +
+            : s.mode === 'gourd'
+              ? '🍐 葫芦已炼化　·　获得 ' + (res.fragments || 0) + ' 枚皮肤碎片' +
+                (res.firstBonus ? '（含开炉礼 +1）' : '') + '，按 C 去兑换皮肤'
+              : '🤝 ' + esc((s.char && s.char.name) || '他') + ' 认可了你　·　本关心法已收录（简报里可随时回看）') +
           '</div>' : '') +
         (!res.pass ? '<div class="settle-note">正确率需达到 ' + Math.round(store().PASS_RATE * 100) + '% 才能通关，再来一次！</div>' : '') +
-        (res.pass ? '<div class="loot-box" id="lootBox">' +
+        (res.pass && s.mode !== 'gourd' ? '<div class="loot-box" id="lootBox">' +
           '<div class="loot-head">🎁 通关宝箱</div>' +
           '<div class="loot-hint" id="lootHint">点开才知道是什么 —— ' +
             (res.firstClear ? '首通宝箱，奖池更好' : '常规宝箱') + '</div>' +
@@ -973,13 +1067,14 @@ window.HNSF829 = window.HNSF829 || {};
       '</div>';
 
     els.foot.innerHTML =
-      '<button class="btn" id="btnRetry">' + (res.pass ? '再刷一次' : '重新挑战') + '</button>' +
-      (res.pass && newly.length ? '<button class="btn btn-primary" id="btnGoNext">前往新节点：' + newly[0].name + '</button>' : '') +
+      (s.mode === 'gourd' ? '' : '<button class="btn" id="btnRetry">' + (res.pass ? '再刷一次' : '重新挑战') + '</button>') +
+      (s.mode !== 'gourd' && res.pass && newly.length ? '<button class="btn btn-primary" id="btnGoNext">前往新节点：' + newly[0].name + '</button>' : '') +
       '<button class="btn btn-primary" id="btnBack">返回地图</button>';
 
     var back = els.foot.querySelector('#btnBack');
     back.addEventListener('click', close);
-    els.foot.querySelector('#btnRetry').addEventListener('click', function () {
+    var retryBtn = els.foot.querySelector('#btnRetry');
+    if (retryBtn) retryBtn.addEventListener('click', function () {
       open({ node: s.node, questions: s.questions, mode: s.mode, onExit: onExitCb });
     });
     if (res.pass && newly.length) {

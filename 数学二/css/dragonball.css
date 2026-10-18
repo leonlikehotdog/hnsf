@@ -16,7 +16,14 @@
     display: none; pointer-events: none;
 }
 body.dz #bgCanvas { display: block; }
-body.dz { background: transparent; }
+/* 旧版动态背景已停用：保留一层静态深色渐变，避免露出浏览器默认白底。
+   动态氛围交给像素世界自己的 Canvas（地形离屏预渲染 + 少量粒子）。 */
+body.dz {
+    background:
+        radial-gradient(1200px 600px at 15% -10%, rgba(56, 189, 248, 0.10), transparent 60%),
+        radial-gradient(900px 500px at 90% 10%, rgba(167, 139, 250, 0.10), transparent 60%),
+        #05080f;
+}
 
 /* 背景视频：不直接显示，只当画布底图源（放在屏幕外但保持可解码，
    用 display:none / visibility:hidden 可能被浏览器暂停解码） */
@@ -133,7 +140,6 @@ body.dz .map-scroll { position: relative; z-index: 2; }
 .cutin-art {
     position: absolute; right: 1vw; bottom: 0; height: 94%; width: auto;
     object-fit: contain; object-position: bottom;
-    mix-blend-mode: screen;                      /* 与 .fullbody-img 一致：黑底自动扣底 */
     filter: drop-shadow(0 0 28px var(--aura, #a855f7));
     opacity: 0;
     animation: cutinArt 0.95s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -324,7 +330,8 @@ body.dz .dragonballs .dbtitle { color: #c4b5fd; }
 .dball.got::after {
     content: ''; position: absolute; inset: -4px; border-radius: 50%;
     border: 1px solid rgba(196, 181, 253, 0.5);
-    animation: pulse 2.4s ease-in-out infinite;
+    /* 旧版是一圈无限脉冲；HUD 常驻动画没必要一直跑，保留静态描边即可 */
+    animation: none;
 }
 @keyframes dballPop { 0% { transform: scale(0.4); } 60% { transform: scale(1.35); } 100% { transform: scale(1); } }
 
@@ -376,22 +383,22 @@ body.dz .node-label { color: #ede9fe; }
 body.dz .edge-active { stroke: #a855f7; filter: drop-shadow(0 0 8px rgba(168, 85, 247, 0.95)); }
 body.dz .edge-done { stroke: #ddd6fe; }
 
-/* ================= 战斗界面：比武场 ================= */
-body.dz .battle-mask { background: rgba(6, 4, 12, 0.88); }
+/* ================= 战斗界面：林间比武场 ================= */
+body.dz .battle-mask { background: rgba(4, 12, 9, 0.88); }
 body.dz .battle-panel {
     background:
-        linear-gradient(180deg, rgba(28, 14, 56, 0.96), rgba(14, 10, 34, 0.98));
-    border: 2px solid rgba(139, 92, 246, 0.5);
-    box-shadow: 0 30px 90px rgba(0, 0, 0, 0.8), 0 0 60px rgba(124, 58, 237, 0.22);
+        linear-gradient(180deg, rgba(22, 40, 31, 0.97), rgba(10, 20, 16, 0.99));
+    border: 2px solid rgba(214, 178, 106, 0.45);
+    box-shadow: 0 30px 90px rgba(0, 0, 0, 0.8), 0 0 60px rgba(52, 211, 153, 0.14);
 }
 body.dz .battle-head {
-    background: linear-gradient(90deg, rgba(109, 40, 217, 0.22), rgba(168, 85, 247, 0.08) 55%, transparent);
-    border-bottom-color: rgba(139, 92, 246, 0.35);
+    background: linear-gradient(90deg, rgba(52, 211, 153, 0.16), rgba(251, 191, 36, 0.07) 55%, transparent);
+    border-bottom-color: rgba(214, 178, 106, 0.3);
 }
 body.dz .monster-icon {
     font-size: 46px;
     animation: monsterBreathe 2.2s ease-in-out infinite;
-    filter: drop-shadow(0 0 16px rgba(244, 63, 94, 0.9));
+    filter: drop-shadow(0 0 16px rgba(251, 191, 36, 0.75));
 }
 /* 幅度刻意做小：外层的整体呼吸只负责轻微起伏，
    明显的"上下浮动"交给内层 .monster-emoji/.monster-img 的 monsterIdle，
@@ -400,75 +407,75 @@ body.dz .monster-icon {
     0%, 100% { transform: scale(1) rotate(-1.5deg); }
     50% { transform: scale(1.035) rotate(1.5deg); }
 }
-body.dz .monster-name { color: #ede9fe; font-size: 15.5px; letter-spacing: 1px; }
+body.dz .monster-name { color: #f3ecd8; font-size: 15.5px; letter-spacing: 1px; }
 body.dz .trial-bar {
-    height: 11px; border: 1px solid rgba(139, 92, 246, 0.5);
+    height: 11px; border: 1px solid rgba(214, 178, 106, 0.42);
     background: rgba(0, 0, 0, 0.5);
 }
 body.dz .trial-fill {
     background:
         repeating-linear-gradient(115deg, rgba(255,255,255,0.22) 0 8px, transparent 8px 16px),
-        linear-gradient(90deg, #0ea5e9, #34d399);
+        linear-gradient(90deg, #22c55e, #fbbf24);
     background-size: 32px 100%, 100% 100%;
     animation: trialFlow 0.8s linear infinite;
-    box-shadow: 0 0 16px rgba(52, 211, 153, 0.85);
+    box-shadow: 0 0 16px rgba(52, 211, 153, 0.75);
 }
 @keyframes trialFlow { to { background-position: -32px 0, 0 0; } }
-body.dz .trial-text { color: #c4b5fd; }
+body.dz .trial-text { color: #b9d8c2; }
 body.dz .combo-badge {
-    background: linear-gradient(135deg, #7c3aed, #c4b5fd);
-    color: #1a0b2e; font-size: 14px;
-    box-shadow: 0 0 22px rgba(139, 92, 246, 0.95);
+    background: linear-gradient(135deg, #f59e0b, #34d399);
+    color: #10231a; font-size: 14px;
+    box-shadow: 0 0 22px rgba(251, 191, 36, 0.6);
     animation: comboPop 0.28s;
 }
 @keyframes comboPop { 0% { transform: scale(0.6) rotate(-6deg); } 100% { transform: scale(1) rotate(0); } }
 
-body.dz .q-tag-type, body.dz .tag-type { background: rgba(139, 92, 246, 0.2); color: #c4b5fd; border-color: rgba(139, 92, 246, 0.45); }
-body.dz .tag-xp { background: rgba(168, 85, 247, 0.22); color: #ddd6fe; }
-body.dz .q-stem { color: #f5f3ff; }
-body.dz .inline-code { background: rgba(139, 92, 246, 0.16); color: #c4b5fd; }
+body.dz .q-tag-type, body.dz .tag-type { background: rgba(52, 211, 153, 0.16); color: #a7f3d0; border-color: rgba(52, 211, 153, 0.4); }
+body.dz .tag-xp { background: rgba(251, 191, 36, 0.18); color: #fde68a; }
+body.dz .q-stem { color: #f4f1e4; }
+body.dz .inline-code { background: rgba(251, 191, 36, 0.13); color: #fde68a; }
 body.dz .opt {
-    background: rgba(255, 255, 255, 0.045);
-    border-color: rgba(139, 92, 246, 0.22);
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(214, 178, 106, 0.22);
 }
 body.dz .opt:hover:not(:disabled) {
-    background: rgba(139, 92, 246, 0.16);
-    border-color: rgba(168, 85, 247, 0.75);
-    box-shadow: 0 0 18px rgba(139, 92, 246, 0.3);
+    background: rgba(52, 211, 153, 0.12);
+    border-color: rgba(52, 211, 153, 0.65);
+    box-shadow: 0 0 18px rgba(52, 211, 153, 0.22);
 }
 body.dz .opt.right { background: rgba(52, 211, 153, 0.18); border-color: #34d399; }
 body.dz .opt.wrong { background: rgba(255, 70, 70, 0.18); border-color: #ff5a5a; }
 body.dz .opt.wrong .opt-key { background: #ff5a5a; color: #1a0b2e; }
-body.dz .q-input:focus { border-color: #a855f7; box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.2); }
+body.dz .q-input:focus { border-color: #34d399; box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.18); }
 body.dz .btn-primary {
-    background: linear-gradient(135deg, #7c3aed, #a855f7);
-    color: #1a0b2e;
-    box-shadow: 0 6px 22px rgba(139, 92, 246, 0.45);
+    background: linear-gradient(135deg, #15803d, #34d399);
+    color: #04140d;
+    box-shadow: 0 6px 22px rgba(52, 211, 153, 0.32);
 }
-body.dz .btn-primary:hover { background: linear-gradient(135deg, #8b5cf6, #ddd6fe); }
+body.dz .btn-primary:hover { background: linear-gradient(135deg, #16a34a, #6ee7b7); }
 body.dz .btn-ok { background: linear-gradient(135deg, #059669, #34d399); }
 body.dz .btn-no { background: linear-gradient(135deg, #9f1239, #ff5a5a); }
-body.dz .battle-foot { background: rgba(18, 9, 36, 0.75); border-top-color: rgba(139, 92, 246, 0.3); }
-body.dz .fb-source { color: #c4b5fd; }
+body.dz .battle-foot { background: rgba(12, 26, 20, 0.78); border-top-color: rgba(214, 178, 106, 0.26); }
+body.dz .fb-source { color: #a7f3d0; }
 
 /* ================= 结算：胜利演出 ================= */
 body.dz .settle.win .settle-title {
-    color: #c4b5fd;
+    color: #fde68a;
     font-size: 30px;
-    text-shadow: 0 0 30px rgba(168, 85, 247, 0.9), 0 0 60px rgba(109, 40, 217, 0.6), 0 4px 12px #000;
+    text-shadow: 0 0 30px rgba(251, 191, 36, 0.85), 0 0 60px rgba(52, 211, 153, 0.5), 0 4px 12px #000;
     animation: victoryPulse 1.1s ease-in-out infinite;
 }
 @keyframes victoryPulse {
     0%, 100% { transform: scale(1); }
     50% { transform: scale(1.06); }
 }
-body.dz .settle-icon { font-size: 78px; filter: drop-shadow(0 0 24px rgba(168, 85, 247, 0.9)); }
-body.dz .sg b { color: #c4b5fd; }
-body.dz .settle-row b { color: #ddd6fe; }
-body.dz .unlock-box { background: rgba(139, 92, 246, 0.1); border-color: rgba(168, 85, 247, 0.45); }
-body.dz .ub-title { color: #c4b5fd; }
-body.dz .ach-box { background: rgba(196, 181, 253, 0.1); border-color: rgba(196, 181, 253, 0.4); }
-body.dz .ach-box .ub-title { color: #c4b5fd; }
+body.dz .settle-icon { font-size: 78px; filter: drop-shadow(0 0 24px rgba(251, 191, 36, 0.85)); }
+body.dz .sg b { color: #fde68a; }
+body.dz .settle-row b { color: #d9f3e2; }
+body.dz .unlock-box { background: rgba(52, 211, 153, 0.1); border-color: rgba(52, 211, 153, 0.4); }
+body.dz .ub-title { color: #a7f3d0; }
+body.dz .ach-box { background: rgba(251, 191, 36, 0.09); border-color: rgba(251, 191, 36, 0.38); }
+body.dz .ach-box .ub-title { color: #fde68a; }
 
 /* ================= 弹窗 / 面板 / 抽屉 ================= */
 body.dz .modal-card {
@@ -572,8 +579,8 @@ html.lowpower *, html.lowpower *::before, html.lowpower *::after {
    必须显式补回来，否则有图时 emoji 仍然可见 */
 .monster-emoji[hidden],
 .monster-img[hidden] { display: none !important; }
-/* 纯黑背景的 JPG：用 screen 混合自动扣掉黑底（暗色战场下更适合发光主体） */
-.monster-img.blend { mix-blend-mode: screen; }
+/* 立绘素材自带透明通道，直接叠放 */
+.monster-img.blend { mix-blend-mode: normal; }
 @keyframes monsterIdle {
     0%, 100% { transform: translateY(0) scale(1); }
     50% { transform: translateY(-5px) scale(1.022); }
@@ -707,12 +714,11 @@ body.dz .battle-figure-name {
 /* 有头像时藏掉 emoji 兜底（否则会从头像的透明区域透出来）。
    图片加载失败会被 onerror 移除，这条选择器随即不再匹配，兜底自动复现。 */
 .bond-img + .bond-fb { display: none; }
-/* 立绘是纯黑底 PNG：screen 混合抠底；没结伴的压成灰剪影 */
+/* 立绘素材自带透明通道；没结伴的压成灰剪影 */
 .bond-img {
     position: absolute; inset: 0; z-index: 1;
     width: 100%; height: 100%; object-fit: cover; object-position: 50% 26%;
     border-radius: 50%;
-    mix-blend-mode: screen;
     filter: grayscale(1) brightness(0.62);
 }
 .bond-cell.got { border-color: var(--aura); box-shadow: 0 0 9px var(--aura); }
@@ -917,7 +923,6 @@ select.ai-field { cursor: pointer; }
 }
 .master-face-img {
     width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%;
-    mix-blend-mode: screen;         /* 纯黑底立绘自动扣底 */
 }
 .master-face-emoji { font-size: 21px; line-height: 1; }
 .master-who { flex: 1; min-width: 0; }
