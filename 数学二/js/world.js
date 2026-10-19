@@ -18,9 +18,10 @@ window.HNSF829 = window.HNSF829 || {};
   /* ---------------- 常量 ---------------- */
   var TS = 32;                       // 碰撞格 / 地形格
   var COLS = 2, ROWS = 1;            // 一个场景里并排 2 块营地
-  var CELL_W = 1000, CELL_H = 880;
+  var CELL_W = 1800, CELL_H = 1500;
   var PAD = 40;
-  var WALK_SPEED = 190;
+  var MAP_S = CELL_W / 1000;         // 地图放大后，装饰/水景半径按同一比例放大
+  var WALK_SPEED = 210;
   var PATH_SPEED = 235;
   var NEAR_R = 72;                   // 交互半径
   var PLAYER_SPEC = {
@@ -461,7 +462,12 @@ window.HNSF829 = window.HNSF829 || {};
   function spawnX() { return WORLD_W / 2; }
   function spawnY() { return WORLD_H - 132; }
   function inSpawnLane(x, y) {
-    return Math.abs(x - WORLD_W / 2) < 120 && y > WORLD_H - 336;
+    return Math.abs(x - WORLD_W / 2) < 130 && y > spawnLaneTop();
+  }
+
+  /** 出生通道的北端：一直铺到第一块营地的广场，避免大地图里被森林堵住 */
+  function spawnLaneTop() {
+    return (areas[0] ? areas[0].cy + 70 : WORLD_H - 330);
   }
 
   function buildAreas() {
@@ -590,7 +596,17 @@ window.HNSF829 = window.HNSF829 || {};
 
   function assignIdle(npc) {
     var cid = (npc.spec && npc.spec.key) || '';
-    npc.idle = npc.kind === 'ref' ? 'talk' : (IDLE_BY_CHAR[cid] || 'breathe');
+    var base = IDLE_BY_CHAR[cid];
+    if (!base) {
+      if (npc.kind === 'ref') base = 'talk';
+      else if (npc.arena) base = 'breathe';
+      else {
+        // 没有指定动作的角色也分到不同待机：踱步 / 张望 / 闲聊 / 呼吸
+        var hr = hashStr(cid + '|idle') % 10;
+        base = hr < 3 ? 'pace' : (hr < 6 ? 'lookout' : (hr < 8 ? 'talk' : 'breathe'));
+      }
+    }
+    npc.idle = base;
     npc.idleT = 0;
     npc.lookT = 0;
     npc.lookDir = 'down';
@@ -635,7 +651,7 @@ window.HNSF829 = window.HNSF829 || {};
       for (var k = 0; k < 40; k++) {
         var ang = -Math.PI / 2 + i * 2.399963 + k * 0.7;
         var band = i % 3;
-        var rad = [150, 225, 298][band] + ((h >> 4) % 34) + (k % 4) * 7;
+        var rad = [240, 400, 545][band] + ((h >> 4) % 52) + (k % 4) * 7;
         var x = a.cx + Math.cos(ang) * rad;
         var y = a.cy + Math.sin(ang) * rad * 0.8;
         if (x < 80 || y < 80 || x > WORLD_W - 80 || y > WORLD_H - 120) continue;
@@ -644,7 +660,7 @@ window.HNSF829 = window.HNSF829 || {};
             y > lm.y - 20 && y < lm.y + lm.h + 26) continue;
         var ok = true;
         for (var j = 0; j < placed.length; j++) {
-          if (Math.hypot(placed[j].x - x, placed[j].y - y) < 64) { ok = false; break; }
+          if (Math.hypot(placed[j].x - x, placed[j].y - y) < 96) { ok = false; break; }
         }
         if (!ok) continue;
         best = { x: x, y: y };
@@ -652,7 +668,7 @@ window.HNSF829 = window.HNSF829 || {};
       }
       if (!best) {
         var a2 = -Math.PI / 2 + i * Math.PI * 2 / Math.max(list.length, 1);
-        best = { x: a.cx + Math.cos(a2) * 190, y: a.cy + Math.sin(a2) * 150 };
+        best = { x: a.cx + Math.cos(a2) * 340, y: a.cy + Math.sin(a2) * 270 };
       }
       placed.push(best);
       var npc = {
@@ -961,13 +977,13 @@ window.HNSF829 = window.HNSF829 || {};
   function drawSpawnLane(sc) {
     var pal = BIOMES[sc.chapters[0]] || ARENA_PAL;
     var cx = spawnX();
-    var y0 = WORLD_H - 330, y1 = WORLD_H - 8;
+    var y0 = spawnLaneTop(), y1 = WORLD_H - 8;
     // 外圈暗色
     tctx.fillStyle = pal.road[0];
     tctx.globalAlpha = 0.5;
     for (var y = y0; y < y1; y += 16) {
       tctx.beginPath();
-      tctx.arc(cx + Math.sin(y * 0.02) * 8, y, 74, 0, Math.PI * 2);
+      tctx.arc(cx + Math.sin(y * 0.02) * 8, y, 88, 0, Math.PI * 2);
       tctx.fill();
     }
     tctx.globalAlpha = 1;
@@ -975,24 +991,24 @@ window.HNSF829 = window.HNSF829 || {};
     tctx.fillStyle = pal.road[1];
     for (var y2 = y0 + 6; y2 < y1; y2 += 16) {
       tctx.beginPath();
-      tctx.arc(cx + Math.sin(y2 * 0.02) * 8, y2, 55, 0, Math.PI * 2);
+      tctx.arc(cx + Math.sin(y2 * 0.02) * 8, y2, 66, 0, Math.PI * 2);
       tctx.fill();
     }
     // 碎石
-    for (var k = 0; k < 40; k++) {
+    for (var k = 0; k < 70; k++) {
       var yy = y0 + Math.random() * (y1 - y0);
       tctx.fillStyle = k % 2 ? pal.road[2] : pal.road[0];
       tctx.globalAlpha = 0.6;
-      tctx.fillRect(cx + (Math.random() - 0.5) * 110, yy, 3, 3);
+      tctx.fillRect(cx + (Math.random() - 0.5) * 130, yy, 3, 3);
     }
     tctx.globalAlpha = 1;
   }
 
   function drawClearing(a, r, sc) {
     var pal = a.pal;
-    for (var i = 0; i < 560; i++) {
+    for (var i = 0; i < 1120; i++) {
       var ang = r() * Math.PI * 2;
-      var rad = Math.sqrt(r()) * 300;
+      var rad = Math.sqrt(r()) * 540;
       var x = a.cx + Math.cos(ang) * rad;
       var y = a.cy + Math.sin(ang) * rad * 0.82;
       tctx.fillStyle = r() < 0.5 ? pal.g1 : pal.g2;
@@ -1000,10 +1016,10 @@ window.HNSF829 = window.HNSF829 || {};
       tctx.fillRect(Math.floor(x), Math.floor(y), s, s);
     }
     // 外圈一圈深色草，作为营地边界
-    for (var j = 0; j < 96; j++) {
-      var ang2 = j / 96 * Math.PI * 2;
-      var rx = a.cx + Math.cos(ang2) * 305;
-      var ry = a.cy + Math.sin(ang2) * 248;
+    for (var j = 0; j < 148; j++) {
+      var ang2 = j / 148 * Math.PI * 2;
+      var rx = a.cx + Math.cos(ang2) * 548;
+      var ry = a.cy + Math.sin(ang2) * 448;
       tctx.fillStyle = pal.dark;
       tctx.globalAlpha = sc.theme === 'city' ? 0.10 : 0.18;
       tctx.fillRect(Math.floor(rx), Math.floor(ry), 8, 8);
@@ -1097,7 +1113,7 @@ window.HNSF829 = window.HNSF829 || {};
   /* ---------------- 广场 ---------------- */
   function drawPlaza(a, sc) {
     var pal = a.pal;
-    var radius = 88;
+    var radius = 124;
     if (sc.theme === 'city') {
       // 城市：方形拼色广场
       var x0 = a.cx - radius, y0 = a.cy - radius * 0.78;
@@ -1152,7 +1168,7 @@ window.HNSF829 = window.HNSF829 || {};
     var n = 2 + Math.floor(r() * 2);
     for (var i = 0; i < n; i++) {
       var ang = r() * Math.PI * 2;
-      var rad = 178 + r() * 100;
+      var rad = (178 + r() * 100) * MAP_S;
       var x = a.cx + Math.cos(ang) * rad;
       var y = a.cy + Math.sin(ang) * rad * 0.82;
       var w = 18 + r() * 20;
@@ -1742,7 +1758,7 @@ window.HNSF829 = window.HNSF829 || {};
     var a = areas[Math.floor(r() * areas.length)] || areas[0];
     if (!a) return null;
     var ang = r() * Math.PI * 2;
-    var rad = minR + r() * (maxR - minR);
+    var rad = (minR + r() * (maxR - minR)) * MAP_S;
     var x = a.cx + Math.cos(ang) * rad;
     var y = a.cy + Math.sin(ang) * rad * 0.82;
     return { x: x, y: y, a: a };
@@ -1755,7 +1771,7 @@ window.HNSF829 = window.HNSF829 || {};
     if (blockedAt(p.x, p.y)) return false;
     if (distToPath(p.x, p.y) < 54) return false;
     if (nearNpc(p.x, p.y, 56)) return false;
-    if (Math.hypot(p.x - p.a.cx, (p.y - p.a.cy) / 0.82) < 120) return false;
+    if (Math.hypot(p.x - p.a.cx, (p.y - p.a.cy) / 0.82) < 150) return false;
     return true;
   }
 
@@ -1778,18 +1794,19 @@ window.HNSF829 = window.HNSF829 || {};
   function drawSubLandmarks(sc) {
     areas.forEach(function (a) {
       var spots = [
-        { x: a.cx - 332, y: a.cy + 74, k: 0 },
-        { x: a.cx + 334, y: a.cy - 26, k: 1 }
+        { x: a.cx - 600, y: a.cy + 110, k: 0 },
+        { x: a.cx + 602, y: a.cy - 40, k: 1 },
+        { x: a.cx, y: a.cy + 430, k: 2 }
       ];
       spots.forEach(function (p) {
         if (!decorOK({ x: p.x, y: p.y, a: a })) return;
         switch (sc.theme) {
-          case 'market': p.k ? subNotice(p.x, p.y) : subWell(p.x, p.y); break;
-          case 'celestial': p.k ? subFloatingIsle(p.x, p.y) : subBridge(p.x, p.y); break;
-          case 'snow': p.k ? subSnowPond(p.x, p.y) : subIceArch(p.x, p.y); break;
-          case 'city': p.k ? subVending(p.x, p.y) : subNeon(p.x, p.y); break;
-          case 'island': p.k ? subStoneLantern(p.x, p.y) : subDock(p.x, p.y); break;
-          case 'palace': p.k ? subStarPool(p.x, p.y) : subCrystalPillar(p.x, p.y); break;
+          case 'market': p.k === 0 ? subWell(p.x, p.y) : (p.k === 1 ? subNotice(p.x, p.y) : subCampfire(p.x, p.y)); break;
+          case 'celestial': p.k === 0 ? subBridge(p.x, p.y) : (p.k === 1 ? subFloatingIsle(p.x, p.y) : subStairs(p.x, p.y)); break;
+          case 'snow': p.k === 0 ? subIceArch(p.x, p.y) : (p.k === 1 ? subSnowPond(p.x, p.y) : subSled(p.x, p.y)); break;
+          case 'city': p.k === 0 ? subNeon(p.x, p.y) : (p.k === 1 ? subVending(p.x, p.y) : subArcade(p.x, p.y)); break;
+          case 'island': p.k === 0 ? subDock(p.x, p.y) : (p.k === 1 ? subStoneLantern(p.x, p.y) : subRowboat(p.x, p.y)); break;
+          case 'palace': p.k === 0 ? subCrystalPillar(p.x, p.y) : (p.k === 1 ? subStarPool(p.x, p.y) : subFountain(p.x, p.y)); break;
         }
       });
     });
@@ -1916,14 +1933,104 @@ window.HNSF829 = window.HNSF829 || {};
     });
   }
 
+  function subCampfire(x, y) {
+    shadow(x, y + 12, 26, 8);
+    for (var i = 0; i < 8; i++) {
+      var ang = i / 8 * Math.PI * 2;
+      box(x + Math.cos(ang) * 22 - 3, y + Math.sin(ang) * 10 - 3, 6, 6, '#94a3b8');
+    }
+    box(x - 16, y - 2, 32, 6, '#8b5a2b');
+    box(x - 6, y - 8, 12, 6, '#a16207');
+    box(x - 6, y - 20, 12, 14, '#f97316');
+    box(x - 3, y - 26, 6, 10, '#fbbf24');
+    box(x - 1, y - 16, 2, 6, '#fef3c7');
+    tctx.globalAlpha = 0.16;
+    tctx.fillStyle = '#fbbf24';
+    tctx.beginPath(); tctx.arc(x, y - 12, 34, 0, Math.PI * 2); tctx.fill();
+    tctx.globalAlpha = 1;
+    markRect(x - 20, y - 10, 40, 24);
+  }
+
+  function subStairs(x, y) {
+    shadow(x, y + 22, 34, 8);
+    for (var i = 0; i < 4; i++) {
+      box(x - 34 + i * 4, y + 14 - i * 12, 68 - i * 8, 12, i % 2 ? '#e2e8f0' : '#cbd5e1');
+    }
+    box(x - 38, y - 34, 5, 20, '#f8fafc'); box(x + 33, y - 34, 5, 20, '#f8fafc');
+    box(x - 40, y - 38, 16, 4, '#fbbf24'); box(x + 24, y - 38, 16, 4, '#fbbf24');
+    markRect(x - 36, y - 18, 72, 40);
+  }
+
+  function subSled(x, y) {
+    shadow(x, y + 12, 30, 7);
+    box(x - 28, y - 6, 56, 6, '#8b5a2b');
+    box(x - 22, y - 16, 44, 10, '#a16207');
+    box(x - 30, y + 2, 60, 4, '#64748b');
+    box(x - 34, y - 2, 6, 8, '#94a3b8'); box(x + 28, y - 2, 6, 8, '#94a3b8');
+    box(x - 20, y - 22, 8, 8, '#e2c08d');
+    markRect(x - 30, y - 18, 60, 28);
+  }
+
+  function subArcade(x, y) {
+    shadow(x, y + 18, 15, 6);
+    box(x - 15, y - 30, 30, 48, '#0f172a');
+    box(x - 12, y - 26, 24, 20, '#111827');
+    box(x - 10, y - 24, 20, 16, '#22d3ee');
+    box(x - 7, y - 21, 14, 3, '#a5f3fc');
+    box(x - 7, y - 15, 9, 2, '#a5f3fc');
+    box(x - 10, y - 2, 20, 8, '#1e293b');
+    box(x - 7, y, 4, 4, '#f472b6');
+    box(x + 3, y, 4, 4, '#fbbf24');
+    tctx.globalAlpha = 0.18;
+    tctx.fillStyle = '#22d3ee';
+    tctx.beginPath(); tctx.arc(x, y - 16, 26, 0, Math.PI * 2); tctx.fill();
+    tctx.globalAlpha = 1;
+    markRect(x - 16, y - 32, 32, 50);
+  }
+
+  function subRowboat(x, y) {
+    shadow(x, y + 10, 32, 7);
+    tctx.fillStyle = '#8b5a2b';
+    tctx.beginPath();
+    tctx.moveTo(x - 34, y - 4); tctx.lineTo(x + 34, y - 4);
+    tctx.lineTo(x + 22, y + 10); tctx.lineTo(x - 22, y + 10);
+    tctx.closePath(); tctx.fill();
+    box(x - 30, y - 8, 60, 5, '#a16207');
+    box(x - 26, y - 12, 52, 4, '#c8a06a');
+    box(x + 26, y - 18, 4, 22, '#6b4226');
+    box(x + 14, y - 22, 26, 4, '#94a3b8');
+    markRect(x - 34, y - 10, 68, 24);
+  }
+
+  function subFountain(x, y) {
+    shadow(x, y + 16, 34, 9);
+    tctx.fillStyle = '#312a55';
+    tctx.beginPath(); tctx.ellipse(x, y + 4, 40, 16, 0, 0, Math.PI * 2); tctx.fill();
+    tctx.fillStyle = '#3f6fa8';
+    tctx.beginPath(); tctx.ellipse(x, y + 2, 33, 12, 0, 0, Math.PI * 2); tctx.fill();
+    box(x - 10, y - 20, 20, 22, '#8f7dd6');
+    box(x - 14, y - 24, 28, 6, '#c4b5fd');
+    box(x - 4, y - 34, 8, 12, '#e9e2ff');
+    tctx.fillStyle = 'rgba(125,211,252,0.55)';
+    tctx.fillRect(x - 2, y - 30, 4, 12);
+    tctx.fillStyle = 'rgba(224,242,254,0.8)';
+    tctx.fillRect(x - 12, y - 10, 3, 3); tctx.fillRect(x + 9, y - 8, 3, 3);
+    tctx.globalAlpha = 0.16;
+    tctx.fillStyle = '#7dd3fc';
+    tctx.beginPath(); tctx.arc(x, y - 8, 38, 0, Math.PI * 2); tctx.fill();
+    tctx.globalAlpha = 1;
+    markRect(x - 16, y - 30, 32, 42);
+  }
+
+
 
   function decorMarket(r, sc) {
     // 集市摊位：每个营地 3 个，沿营地外圈摆
     ['#e05252', '#3f8fbf', '#e0a13c'].forEach(function (c, k) {
       areas.forEach(function (a, ai) {
         var ang = -Math.PI * 0.82 + k * Math.PI * 0.55 + ai * 0.3;
-        var x = a.cx + Math.cos(ang) * 272;
-        var y = a.cy + Math.sin(ang) * 272 * 0.82;
+        var x = a.cx + Math.cos(ang) * 272 * MAP_S;
+        var y = a.cy + Math.sin(ang) * 272 * MAP_S * 0.82;
         var p = { x: x, y: y, a: a };
         if (!decorOK(p)) return;
         drawStall(x, y, c);
@@ -1944,8 +2051,8 @@ window.HNSF829 = window.HNSF829 || {};
       for (var k = 0; k < 14; k++) {
         var ang = -0.2 + k * 0.16;
         if (k % 5 === 4) continue;
-        var x = a.cx + Math.cos(ang) * 312;
-        var y = a.cy + Math.sin(ang) * 312 * 0.82;
+        var x = a.cx + Math.cos(ang) * 312 * MAP_S;
+        var y = a.cy + Math.sin(ang) * 312 * MAP_S * 0.82;
         if (y > WORLD_H - 130) continue;
         drawFenceBit(x, y);
         markRect(x - 12, y - 10, 24, 14);
@@ -2378,7 +2485,7 @@ window.HNSF829 = window.HNSF829 || {};
     var type = pal.tree;
     if (sc.theme === 'city') {
       // 城市不铺森林，只种少量行道树
-      for (var c = 0; c < 26; c++) {
+      for (var c = 0; c < 44; c++) {
         var cp = decorSpot(r, 150, 330);
         if (!decorOK(cp)) continue;
         drawStreetTree(cp.x, cp.y, 0.9 + r() * 0.3);
@@ -2387,13 +2494,13 @@ window.HNSF829 = window.HNSF829 || {};
       return;
     }
     var placed = 0, guard = 0;
-    var want = sc.theme === 'island' ? 90 : 180;
-    while (placed < want && guard < 9000) {
+    var want = Math.round((sc.theme === 'island' ? 90 : 180) * MAP_S * MAP_S);
+    while (placed < want && guard < 12000) {
       guard++;
       var x = 40 + r() * (WORLD_W - 80);
       var y = 40 + r() * (WORLD_H - 80);
       if (inSpawnLane(x, y)) continue;
-      if (nearArea(x, y, 300)) continue;
+      if (nearArea(x, y, 300 * MAP_S)) continue;
       if (distToPath(x, y) < 66) continue;
       if (blockedAt(x, y)) continue;
       if (nearNpc(x, y, 64)) continue;
@@ -4129,23 +4236,32 @@ window.HNSF829 = window.HNSF829 || {};
 
       if (n.idle === 'pace') {
         var dx = n.x - n.home.x;
-        if (n.paceDir > 0 && dx > 20) n.paceDir = -1;
-        if (n.paceDir < 0 && dx < -20) n.paceDir = 1;
+        if (n.paceDir > 0 && dx > 38) n.paceDir = -1;
+        if (n.paceDir < 0 && dx < -38) n.paceDir = 1;
         var oldX = n.x;
-        npcMove(n, n.paceDir * 22 * dt, 0);
+        npcMove(n, n.paceDir * 26 * dt, 0);
         n.paceMoving = Math.abs(n.x - oldX) > 0.001;
         if (n.paceMoving) n.walk += dt * 5.5;
       }
 
       var pkey = n.spec && n.spec.key;
       var persona = (NS.PERSONAS || {})[pkey];
+      var cleared = !n.arena && n.node && store.isCleared(n.id);
+      // 玩家走近时主动打招呼：让「拜访」像一次相遇，而不是走到一个菜单前
+      n.greetT = (n.greetT || 0) - dt;
+      if (n.greetT <= 0 && !n.say && now >= (n.tauntUntil || 0) && distToNpc(n) < 100) {
+        n.greetT = 16 + (hashStr(n.id) % 10);
+        var gp = persona ? (cleared ? persona.after : persona.meet) : null;
+        var gl = (gp && gp.length) ? gp : (IDLE_LINES[pkey] || IDLE_LINES['default']);
+        n.idleSay = gl[hashStr(n.id + Math.round(now / 400)) % gl.length];
+        n.idleSayUntil = now + 3000;
+      }
       // 有人物志的角色都会偶尔说话：没通关说「初见」，通关后说「认可」
       if (n.idle === 'talk' || persona) {
         n.talkT += dt;
         if (n.talkT >= n.talkGap) {
           n.talkT = 0;
           n.talkGap = 9 + (hashStr(n.id + Math.round(now / 1000)) % 60) / 10;
-          var cleared = !n.arena && n.node && store.isCleared(n.id);
           var pool = persona ? (cleared ? persona.after : persona.meet) : null;
           var lines = (pool && pool.length) ? pool : (IDLE_LINES[pkey] || IDLE_LINES['default']);
           // 狠话/挑衅正在显示时不抢气泡；玩家已经站在他面前时也不用重复
