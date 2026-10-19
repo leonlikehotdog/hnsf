@@ -2966,8 +2966,9 @@ window.HNSF829 = window.HNSF829 || {};
           var sx0 = segs[gj][0];
           var sw = segs[gj][1] - sx0 + 1;
           R(sx0 + gx, GH[gi][0], sw, 1, hair);
-          if (topOf[sx0] === undefined || GH[gi][0] < topOf[sx0]) topOf[sx0] = GH[gi][0];
-          if (topOf[sx0 + sw - 1] === undefined || GH[gi][0] < topOf[sx0 + sw - 1]) topOf[sx0 + sw - 1] = GH[gi][0];
+          for (var cx0 = sx0; cx0 < sx0 + sw; cx0++) {
+            if (topOf[cx0] === undefined || GH[gi][0] < topOf[cx0]) topOf[cx0] = GH[gi][0];
+          }
         }
       }
       // 发梢描边：沿锯齿顶边加一像素黑边，浅色地面上也能看清轮廓
