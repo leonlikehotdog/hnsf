@@ -125,7 +125,7 @@ window.HNSF829 = window.HNSF829 || {};
      sc 是坐骑本身的缩放。摩托要坐进座位，大猿要踩在肩膀上。 */
   var RIDE = {
     orb: { dy: -20 },
-    moto: { dy: -13 },
+    moto: { dy: -4 },
     pod: { dy: -10 },
     ball: { dy: -11 },
     fpod: { dy: -9 },
@@ -166,6 +166,16 @@ window.HNSF829 = window.HNSF829 || {};
     return specOfSkin(currentSkin());
   }
 
+  /** 预览 / 入场 CG 用：骑摩托时换成坐姿精灵 */
+  function specWithMount(sk, mt) {
+    var sp = specOfSkin(sk);
+    if (mt && mt.id === 'moto') {
+      sp.sit = true;
+      sp.key = sp.key + '-sit';
+    }
+    return sp;
+  }
+
   function equippedMount() {
     var g = Store.gear();
     var m = mountById(g.mount);
@@ -185,13 +195,15 @@ window.HNSF829 = window.HNSF829 || {};
   /* ============================================================
    * 世界渲染：坐骑 / 皮肤光效
    * ============================================================ */
-  function drawMountFor(ctx, x, y, t, moving, m) {
+  function drawMountFor(ctx, x, y, t, moving, m, dir) {
     if (!m) return;
     ctx.save();
     var bob = Math.sin(t * 4) * 1.6;
     ctx.translate(x, y + bob);
     var cfg = RIDE[m.id];
     if (cfg && cfg.sc) ctx.scale(cfg.sc, cfg.sc);
+    // 车头朝向：向左行进时整车镜像，骑手和车就不会一正一反
+    if (dir === 'left') ctx.scale(-1, 1);
     switch (m.id) {
       case 'cloud':
         cloud(ctx, t);
@@ -241,8 +253,21 @@ window.HNSF829 = window.HNSF829 || {};
     ctx.restore();
   }
 
-  function drawMount(ctx, x, y, t, moving) {
-    drawMountFor(ctx, x, y, t, moving, equippedMount());
+  /** 前景层：骑手画完之后再补的车身部件（摩托车用，遮住骑手的腿） */
+  function drawMountFront(ctx, x, y, t, moving, m, dir) {
+    if (!m || m.id !== 'moto') return;
+    ctx.save();
+    var bob = Math.sin(t * 4) * 1.6;
+    ctx.translate(x, y + bob);
+    var cfg = RIDE[m.id];
+    if (cfg && cfg.sc) ctx.scale(cfg.sc, cfg.sc);
+    if (dir === 'left') ctx.scale(-1, 1);
+    motoFront(ctx, t, moving);
+    ctx.restore();
+  }
+
+  function drawMount(ctx, x, y, t, moving, dir) {
+    drawMountFor(ctx, x, y, t, moving, equippedMount(), dir);
   }
 
   /* ---------------- 通用绘制小工具 ----------------
@@ -626,6 +651,38 @@ window.HNSF829 = window.HNSF829 || {};
       ctx.stroke();
     }
 
+    // 前后挡泥板
+    ctx.strokeStyle = '#b91c1c';
+    ctx.lineWidth = 2.2;
+    ctx.beginPath(); ctx.arc(-14, -3, 8.4, Math.PI * 1.05, Math.PI * 1.55); ctx.stroke();
+    ctx.beginPath(); ctx.arc(14, -3, 8.4, Math.PI * 1.35, Math.PI * 1.95); ctx.stroke();
+  }
+
+  /* 摩托车的前景层：侧盖 / 油箱 / 座垫 / 车把 / 前灯。
+     这些部件画在骑手之后，骑手的腿才能收在车身后面，而不是站在车上。 */
+  function motoFront(ctx, t) {
+    // 侧盖：挡住骑手的小腿与脚
+    var sg = ctx.createLinearGradient(0, -13, 0, -2);
+    sg.addColorStop(0, '#64748b');
+    sg.addColorStop(1, '#1e293b');
+    ctx.fillStyle = sg;
+    ctx.beginPath();
+    ctx.moveTo(-9, -12);
+    ctx.quadraticCurveTo(2, -14, 6.5, -10.5);
+    ctx.lineTo(6.5, -3.6);
+    ctx.quadraticCurveTo(-2, -2.2, -9, -5);
+    ctx.closePath();
+    ctx.fill();
+    outline(ctx, 1.2);
+    ctx.strokeStyle = 'rgba(148,163,184,0.45)';
+    ctx.lineWidth = 0.9;
+    for (var i = 0; i < 3; i++) {
+      ctx.beginPath();
+      ctx.moveTo(-6 + i * 3.4, -10.4);
+      ctx.lineTo(-5 + i * 3.4, -5.2);
+      ctx.stroke();
+    }
+
     // 油箱（红）
     var tank = ctx.createLinearGradient(0, -17, 0, -8);
     tank.addColorStop(0, '#f87171');
@@ -683,13 +740,8 @@ window.HNSF829 = window.HNSF829 || {};
     ctx.lineTo(16, -10.5);
     ctx.closePath();
     ctx.fill();
-
-    // 前后挡泥板
-    ctx.strokeStyle = '#b91c1c';
-    ctx.lineWidth = 2.2;
-    ctx.beginPath(); ctx.arc(-14, -3, 8.4, Math.PI * 1.05, Math.PI * 1.55); ctx.stroke();
-    ctx.beginPath(); ctx.arc(14, -3, 8.4, Math.PI * 1.35, Math.PI * 1.95); ctx.stroke();
   }
+
 
   /* 赛亚人太空舱：白色圆球 + 大圆红窗 + 三条收起着陆腿 */
   function saiyanPod(ctx, t) {
@@ -1820,8 +1872,8 @@ window.HNSF829 = window.HNSF829 || {};
     cgCtx.beginPath(); cgCtx.ellipse(cx, H * 0.79, 120, 22, 0, 0, Math.PI * 2); cgCtx.fill();
 
     // 角色 + 坐骑 + 气场
-    var img = NS.World && NS.World.previewSprite ? NS.World.previewSprite(specOfSkin(cgState.sk), 'down') : null;
-    var cgHp = (NS.World && NS.World.hairPad) ? NS.World.hairPad(specOfSkin(cgState.sk)) : 0;
+    var img = NS.World && NS.World.previewSprite ? NS.World.previewSprite(specWithMount(cgState.sk, cgState.mt), 'down') : null;
+    var cgHp = (NS.World && NS.World.hairPad) ? NS.World.hairPad(specWithMount(cgState.sk, cgState.mt)) : 0;
     var k = Math.max(4.2, Math.min(8.2, H / 128)) * (1 + 0.05 * Math.max(0, 1 - t * 2));
     var cgRo = riderOffset(cgState.mt);
     var cgRdy = cgRo ? cgRo.dy : 0;
@@ -1832,6 +1884,7 @@ window.HNSF829 = window.HNSF829 || {};
     drawFxFor(cgCtx, 0, cgRdy, t, cgState.sk.fx);
     cgCtx.imageSmoothingEnabled = false;
     if (img) cgCtx.drawImage(img, -20, -52 - 2 * cgHp + cgRdy, 40, 52 + 2 * cgHp);
+    if (cgState.mt && cgState.mt.id === 'moto') motoFront(cgCtx, t);
     cgCtx.restore();
 
     // 开场白闪
@@ -1877,8 +1930,8 @@ window.HNSF829 = window.HNSF829 || {};
     pctx.beginPath(); pctx.ellipse(W / 2, H - 26, 76, 16, 0, 0, Math.PI * 2); pctx.stroke();
 
     var sk = previewSkin(), mt = previewMount();
-    var img = NS.World.previewSprite(specOfSkin(sk), 'down');
-    var hp = NS.World.hairPad ? NS.World.hairPad(specOfSkin(sk)) : 0;
+    var img = NS.World.previewSprite(specWithMount(sk, mt), 'down');
+    var hp = NS.World.hairPad ? NS.World.hairPad(specWithMount(sk, mt)) : 0;
     var ro = riderOffset(mt);
     var rdy = ro ? ro.dy : 0;
     // 骑手被抬高时整体缩小一点，保证长坐骑不被画布裁掉
@@ -1892,6 +1945,7 @@ window.HNSF829 = window.HNSF829 || {};
     drawFxFor(pctx, 0, rdy, t, sk.fx);
     pctx.imageSmoothingEnabled = false;
     if (img) pctx.drawImage(img, -20, -52 - 2 * hp + rdy, 40, 52 + 2 * hp);
+    if (mt && mt.id === 'moto') motoFront(pctx, t);
     pctx.restore();
   }
 
@@ -2028,6 +2082,7 @@ window.HNSF829 = window.HNSF829 || {};
     speed: speed,
     fx: fx,
     drawMount: drawMount,
+    drawMountFront: drawMountFront,
     drawFx: drawFx,
     riderDy: function () { var ro = riderOffset(equippedMount()); return ro ? ro.dy : 0; },
     mounts: MOUNTS,

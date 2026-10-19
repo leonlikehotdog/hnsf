@@ -2848,21 +2848,35 @@ window.HNSF829 = window.HNSF829 || {};
     }
 
     /* ---- 腿 / 鞋 ---- */
-    R(6, ly, 9, legH, OL);
-    R(7, ly, 7, legH - 1, pants);
-    R(7, ly, 1, legH - 1, mix(pants, '#ffffff', 0.18));
-    R(13, ly, 1, legH - 1, pantsDk);
-    if (frame === 1) {
-      R(6, fb - 2, 3, 3, OL); R(7, fb - 1, 2, 2, boots); R(7, fb - 1, 1, 1, bootHi);
-      R(11, fb - 1, 3, 2, boots); R(11, fb - 1, 1, 1, bootHi);
-    } else if (frame === 3) {
-      R(11, fb - 2, 3, 3, OL); R(11, fb - 1, 2, 2, boots); R(11, fb - 1, 1, 1, bootHi);
-      R(6, fb - 1, 3, 2, boots); R(6, fb - 1, 1, 1, bootHi);
+    if (spec.sit) {
+      // 坐姿（骑摩托）：大腿向前搭在油箱上，小腿垂下踩踏板
+      R(7, ly - 1, 8, 4, OL);
+      R(8, ly - 1, 6, 2, pants);
+      R(8, ly - 1, 6, 1, mix(pants, '#ffffff', 0.18));
+      R(8, ly + 1, 6, 1, pantsDk);
+      R(13, ly + 1, 4, legH + 2, OL);
+      R(14, ly + 1, 2, legH + 1, pants);
+      R(15, ly + 1, 1, legH + 1, pantsDk);
+      R(12, fb + 1, 5, 2, OL);
+      R(13, fb + 1, 3, 1, boots);
+      R(13, fb + 1, 1, 1, bootHi);
     } else {
-      R(7, fb - 1, 2, 2, boots);
-      R(11, fb - 1, 2, 2, boots);
-      R(7, fb - 1, 1, 1, bootHi);
-      R(11, fb - 1, 1, 1, bootHi);
+      R(6, ly, 9, legH, OL);
+      R(7, ly, 7, legH - 1, pants);
+      R(7, ly, 1, legH - 1, mix(pants, '#ffffff', 0.18));
+      R(13, ly, 1, legH - 1, pantsDk);
+      if (frame === 1) {
+        R(6, fb - 2, 3, 3, OL); R(7, fb - 1, 2, 2, boots); R(7, fb - 1, 1, 1, bootHi);
+        R(11, fb - 1, 3, 2, boots); R(11, fb - 1, 1, 1, bootHi);
+      } else if (frame === 3) {
+        R(11, fb - 2, 3, 3, OL); R(11, fb - 1, 2, 2, boots); R(11, fb - 1, 1, 1, bootHi);
+        R(6, fb - 1, 3, 2, boots); R(6, fb - 1, 1, 1, bootHi);
+      } else {
+        R(7, fb - 1, 2, 2, boots);
+        R(11, fb - 1, 2, 2, boots);
+        R(7, fb - 1, 1, 1, bootHi);
+        R(11, fb - 1, 1, 1, bootHi);
+      }
     }
 
     /* ---- 躯干 ---- */
@@ -4995,6 +5009,10 @@ window.HNSF829 = window.HNSF829 || {};
     var sx = Math.round(player.x - cam.x);
     var sy = Math.round(player.y - cam.y);
     var spec = playerSpecNow();
+    var mountNow = (NS.Gear && NS.Gear.equippedMount) ? NS.Gear.equippedMount() : null;
+    if (mountNow && mountNow.id === 'moto') {
+      spec = Object.assign({}, spec, { sit: true, key: spec.key + '-sit' });
+    }
     var set = getSprites(spec);
     var hpz = hairPad(spec);
     var trailH = 52 + 2 * hpz;
@@ -5016,11 +5034,15 @@ window.HNSF829 = window.HNSF829 || {};
     // 骑乘姿势：摩托要坐进座位、大猿要踩在肩膀上，角色整体抬高
     var rdy = (NS.Gear && NS.Gear.riderDy) ? NS.Gear.riderDy() : 0;
     if (f && NS.Gear.drawFx) NS.Gear.drawFx(ctx, sx, sy + rdy, t);
-    if (NS.Gear && NS.Gear.drawMount) NS.Gear.drawMount(ctx, sx, sy, t, player.moving);
-
+    if (NS.Gear && NS.Gear.drawMount) NS.Gear.drawMount(ctx, sx, sy, t, player.moving, player.dir);
     var frame = player.moving ? Math.floor(player.walk) % 4 : 0;
     var bob = player.moving ? Math.sin(t * 12) * 0.8 : Math.sin(t * 2) * 0.6;
     blitSprite(set[player.dir][frame], sx - 20, sy - 50 - 2 * hpz + bob + rdy, 40, trailH);
+
+    // 摩托车的前景层：车身压在腿上，人物才是「坐在车上」
+    if (NS.Gear && NS.Gear.drawMountFront) {
+      NS.Gear.drawMountFront(ctx, sx, sy, t, player.moving, mountNow, player.dir);
+    }
 
     // 玩家标记（小小的青色箭头，避免和 NPC 混）
     ctx.fillStyle = 'rgba(125,211,252,0.9)';
