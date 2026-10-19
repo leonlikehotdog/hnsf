@@ -62,6 +62,10 @@ window.HNSF829 = window.HNSF829 || {};
     skin('ssj', '超级赛亚人', 'legend', 20, '金发金气，走路带火星。',
       S({ hair: '#fbbf24', hairStyle: 'goku', top: '#f97316', pants: '#f97316', belt: '#1e40af', collar: '#1e40af' }),
       { kind: 'flame', color: '#fbbf24' }),
+    skin('ssj4', '超级赛亚人 4', 'legend', 24, '黑发红毛，尾巴一甩，连气都是暗红色的。',
+      S({ hair: '#141821', hairStyle: 'ssj4', top: '#9f1239', pants: '#1e3a8a', belt: '#7c3aed',
+        collar: '#9f1239', boots: '#111827', eye: '#dc2626', extras: ['tail'], fur: '#9f1239' }),
+      { kind: 'flame', color: '#ef4444' }),
     skin('ultra', '自在极意', 'legend', 20, '银发银气，动作比思考还快。',
       S({ hair: '#e5e7eb', hairStyle: 'goku', top: '#f8fafc', pants: '#334155', belt: '#94a3b8', collar: '#94a3b8' }),
       { kind: 'silver', color: '#93c5fd' }),
@@ -79,6 +83,7 @@ window.HNSF829 = window.HNSF829 || {};
     future: { tagline: '来自未来的剑', lore: '紫发、黑背心，背后那把剑斩过时间线。' },
     demon: { tagline: '魔人战袍', lore: '粉身紫披，笑起来有点吓人。' },
     ssj: { tagline: '觉醒 · 超级赛亚人', lore: '金发倒竖，气焰把空气都点燃。' },
+    ssj4: { tagline: '觉醒 · 超级赛亚人 4', lore: '黑发垂到腰际，红毛覆满胸口与双臂。尾巴扫过的地方，连空气都在发烫。' },
     ultra: { tagline: '自在极意功', lore: '银发银气，身体比思考先一步做出反应。' },
     god: { tagline: '破坏神', lore: '紫气缠身，连地图都怕你。' }
   };
@@ -1606,6 +1611,7 @@ window.HNSF829 = window.HNSF829 || {};
 
     // 角色 + 坐骑 + 气场
     var img = NS.World && NS.World.previewSprite ? NS.World.previewSprite(specOfSkin(cgState.sk), 'down') : null;
+    var cgHp = (NS.World && NS.World.hairPad) ? NS.World.hairPad(specOfSkin(cgState.sk)) : 0;
     var k = Math.max(4.2, Math.min(8.2, H / 128)) * (1 + 0.05 * Math.max(0, 1 - t * 2));
     var cgRo = riderOffset(cgState.mt);
     var cgRdy = cgRo ? cgRo.dy : 0;
@@ -1615,7 +1621,7 @@ window.HNSF829 = window.HNSF829 || {};
     drawMountFor(cgCtx, 0, 0, t, false, cgState.mt);
     drawFxFor(cgCtx, 0, cgRdy, t, cgState.sk.fx);
     cgCtx.imageSmoothingEnabled = false;
-    if (img) cgCtx.drawImage(img, -20, -52 + cgRdy, 40, 52);
+    if (img) cgCtx.drawImage(img, -20, -52 - 2 * cgHp + cgRdy, 40, 52 + 2 * cgHp);
     cgCtx.restore();
 
     // 开场白闪
@@ -1662,10 +1668,11 @@ window.HNSF829 = window.HNSF829 || {};
 
     var sk = previewSkin(), mt = previewMount();
     var img = NS.World.previewSprite(specOfSkin(sk), 'down');
+    var hp = NS.World.hairPad ? NS.World.hairPad(specOfSkin(sk)) : 0;
     var ro = riderOffset(mt);
     var rdy = ro ? ro.dy : 0;
     // 骑手被抬高时整体缩小一点，保证长坐骑不被画布裁掉
-    var k = Math.max(2.0, Math.min(3.8, (H - 66) / (52 + Math.max(0, -rdy))));
+    var k = Math.max(2.0, Math.min(3.8, (H - 66) / (52 + 2 * hp + Math.max(0, -rdy))));
     var bob = Math.sin(t * 2.2) * 1.5;
 
     pctx.save();
@@ -1674,7 +1681,7 @@ window.HNSF829 = window.HNSF829 || {};
     drawMountFor(pctx, 0, 0, t, false, mt);
     drawFxFor(pctx, 0, rdy, t, sk.fx);
     pctx.imageSmoothingEnabled = false;
-    if (img) pctx.drawImage(img, -20, -52 + rdy, 40, 52);
+    if (img) pctx.drawImage(img, -20, -52 - 2 * hp + rdy, 40, 52 + 2 * hp);
     pctx.restore();
   }
 

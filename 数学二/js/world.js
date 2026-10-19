@@ -2749,6 +2749,12 @@ window.HNSF829 = window.HNSF829 || {};
    * ============================================================ */
   var SPR_W = 20, SPR_H = 26, SPR_S = 2;
 
+  /** 头发额外占用的顶部高度（像素）。炸毛类发型需要往上长，画布要留出空间 */
+  function hairPad(spec) {
+    var hs = spec && spec.hairStyle;
+    return (hs === 'goku' || hs === 'ssj4') ? 12 : 0;
+  }
+
   /* 颜色混合：给头发/衣服做高光和阴影，避免整块死色 */
   function hexRgb(h) {
     var s = (h || '#ffffff').replace('#', '');
@@ -2765,12 +2771,13 @@ window.HNSF829 = window.HNSF829 || {};
 
   function sprite(spec, dir, frame) {
     var HH = spec.h || 0;
-    var c = mk(SPR_W * SPR_S, (SPR_H + HH) * SPR_S), g = c.getContext('2d');
+    var HP = hairPad(spec);
+    var c = mk(SPR_W * SPR_S, (SPR_H + HH + HP) * SPR_S), g = c.getContext('2d');
     g.imageSmoothingEnabled = false;
+    // 整体下移，把画布顶部让给发尖
+    if (HP) g.translate(0, HP * SPR_S);
     function R(x, y, w, h, col) {
       if (w <= 0 || h <= 0) return;
-      if (y < 0) { h += y; y = 0; }           // 头发超出头顶时自动裁齐，不画到画布外
-      if (h <= 0) return;
       g.fillStyle = col;
       g.fillRect(Math.round(x * SPR_S), Math.round(y * SPR_S), Math.max(1, Math.round(w * SPR_S)), Math.max(1, Math.round(h * SPR_S)));
     }
@@ -2782,6 +2789,8 @@ window.HNSF829 = window.HNSF829 || {};
     var skinSh = mix(skin, '#000000', 0.22);
     var hairHi = mix(hair, '#ffffff', 0.38);
     var hairDk = mix(hair, '#000000', 0.32);
+    var hairTip = mix(hair, '#e11d48', 0.82);   // 超四发梢的暗红
+    var furry = spec.fur || null;
     var topHi = mix(top, '#ffffff', 0.28);
     var topDk = mix(top, '#000000', 0.28);
     var pantsDk = mix(pants, '#000000', 0.3);
@@ -2821,11 +2830,21 @@ window.HNSF829 = window.HNSF829 || {};
       R(16, bodyY + 4, 1, 7, '#94a3b8');
       R(15, bodyY + 4, 1, 1, '#f8fafc');
     }
+    if (hs === 'ssj4') {
+      // 及腰长发：先画背后的一层，让发丝垂到腰下
+      R(1, 4, 4, 15, hairDk);
+      R(15, 4, 4, 15, hairDk);
+      R(2, 4, 2, 12, hair);
+      R(16, 4, 2, 12, hair);
+      R(1, 17, 3, 3, hairTip);
+      R(16, 17, 3, 3, hairTip);
+    }
     if (ex.indexOf('tail') >= 0) {
-      R(15, fb - 5, 3, 2, '#8b5a2b');
-      R(17, fb - 3, 2, 3, '#8b5a2b');
-      R(18, fb - 1, 1, 2, '#6b4226');
-      R(16, fb - 5, 1, 1, '#b07a45');
+      var tc = furry || '#8b5a2b';
+      R(15, fb - 5, 3, 2, tc);
+      R(17, fb - 3, 2, 3, tc);
+      R(18, fb - 1, 1, 2, mix(tc, '#000000', 0.22));
+      R(16, fb - 5, 1, 1, mix(tc, '#ffffff', 0.3));
     }
 
     /* ---- 腿 / 鞋 ---- */
@@ -2873,6 +2892,14 @@ window.HNSF829 = window.HNSF829 || {};
       R(bx, bodyY + 5, bw, 1, mix(belt, '#ffffff', 0.4));
       R(9, bodyY + 6, 2, 1, mix(belt, '#ffffff', 0.6));   // 腰带扣
     }
+    // 兽毛：胸口一撮撮的毛，用明暗短笔触表现，而不是整块红色
+    if (furry) {
+      R(bx + 1, bodyY + 2, 2, 1, mix(furry, '#fda4af', 0.42));
+      R(bx + 4, bodyY + 3, 2, 1, mix(furry, '#000000', 0.24));
+      R(bx + 2, bodyY + 4, 2, 1, mix(furry, '#fda4af', 0.28));
+      R(bx + bw - 2, bodyY + 2, 1, 1, mix(furry, '#fda4af', 0.22));
+      R(bx + 1, bodyY + 1, 1, 1, mix(furry, '#ffffff', 0.2));
+    }
     // 女性角色：裙装 + 收腰
     if (spec.skirt) {
       R(5, bodyY + 4, 10, 5, OL);
@@ -2913,18 +2940,66 @@ window.HNSF829 = window.HNSF829 || {};
     R(6, hb + 8, 8, 1, mix(skin, '#000000', 0.1));
 
     /* ---- 头发（每种发型都有自己的轮廓和高光） ---- */
-    if (hs === 'goku') {
-      R(4, hb - 2, 12, 3, hair);
-      R(3, hb, 2, 3, hair);
-      R(15, hb, 2, 3, hair);
-      R(4, hb - 3, 3, 2, hair);
-      R(8, hb - 3, 3, 2, hair);
-      R(12, hb - 3, 2, 2, hair);
-      R(5, hb - 2, 2, 1, hairHi);
-      R(9, hb - 3, 1, 1, hairHi);
-      R(13, hb - 3, 1, 1, hairHi);
-      R(5, hb + 1, 2, 1, hair);
-      R(11, hb + 1, 2, 1, hair);
+    // 悟空式炸毛：手绘轮廓，五束发尖（中 / 左右内 / 左右外），越往下越并拢
+    var GH = [
+      [-12, [[9, 10]]],
+      [-11, [[9, 10]]],
+      [-10, [[8, 11]]],
+      [-9, [[8, 11], [4, 5], [14, 15]]],
+      [-8, [[8, 11], [4, 5], [14, 15]]],
+      [-7, [[7, 11], [3, 5], [14, 16]]],
+      [-6, [[7, 11], [3, 5], [14, 16], [0, 1], [18, 19]]],
+      [-5, [[6, 11], [3, 5], [14, 16], [0, 1], [18, 19]]],
+      [-4, [[6, 12], [2, 4], [15, 17], [0, 1], [18, 19]]],
+      [-3, [[6, 13], [2, 4], [15, 17], [0, 1], [18, 19]]],
+      [-2, [[6, 13], [1, 2], [17, 18]]],
+      [-1, [[4, 15]]],
+      [0, [[3, 16]]]
+    ];
+    if (hs === 'goku' || hs === 'ssj4') {
+      for (var gi = 0; gi < GH.length; gi++) {
+        var segs = GH[gi][1];
+        for (var gj = 0; gj < segs.length; gj++) {
+          // 侧面时发团整体往后脑偏，前面留出额头
+          var gx = side ? -2 : 0;
+          R(segs[gj][0] + gx, GH[gi][0], segs[gj][1] - segs[gj][0] + 1, 1, hair);
+        }
+      }
+      // 发根：贴着额头的窄发带与鬓角
+      var gx2 = side ? -2 : 0;
+      R(3 + gx2, hb - 2, 14, 3, hair);
+      R(3 + gx2, hb + 1, 2, 2, hair);
+      R(15 + gx2, hb + 1, 2, 2, hair);
+      // 额前碎发
+      R(5 + gx2, hb + 2, 2, 1, hair);
+      R(9 + gx2, hb + 2, 2, 1, hair);
+      R(13 + gx2, hb + 2, 2, 1, hair);
+      // 受光面高光（点在每束发尖的左侧棱上）
+      R(9 + gx2, -12, 1, 2, hairHi);
+      R(8 + gx2, -10, 1, 2, hairHi);
+      R(4 + gx2, -9, 1, 2, hairHi);
+      R(14 + gx2, -9, 1, 1, hairHi);
+      R(3 + gx2, -7, 1, 2, hairHi);
+      R(0 + gx2, -6, 1, 2, hairHi);
+      R(18 + gx2, -6, 1, 2, hairHi);
+      // 发根阴影
+      R(6 + gx2, hb, 9, 1, hairDk);
+      if (hs === 'ssj4') {
+        // 超四：两侧长发垂到肩膀，发梢染成暗红
+        R(2 + gx2, hb + 3, 3, 8, hair);
+        R(15 + gx2, hb + 3, 3, 8, hair);
+        R(2 + gx2, hb + 3, 3, 3, hairDk);
+        R(15 + gx2, hb + 3, 3, 3, hairDk);
+        R(2 + gx2, hb + 9, 3, 2, hairTip);
+        R(15 + gx2, hb + 9, 3, 2, hairTip);
+        R(9 + gx2, -12, 1, 1, hairTip);
+        R(4 + gx2, -9, 1, 1, hairTip);
+        R(14 + gx2, -9, 1, 1, hairTip);
+        R(0 + gx2, -6, 1, 2, hairTip);
+        R(18 + gx2, -6, 1, 2, hairTip);
+        R(9 + gx2, -11, 1, 2, hairHi);
+        R(4 + gx2, -8, 1, 2, hairHi);
+      }
     } else if (hs === 'vegeta') {
       R(4, hb - 2, 12, 3, hair);
       R(3, hb - 1, 3, 3, hair);
@@ -4598,7 +4673,8 @@ window.HNSF829 = window.HNSF829 || {};
 
     var idle = npc.idle || 'breathe';
     var hh = npc.spec.h || 0;
-    var spH = 52 + 2 * hh;
+    var hp = hairPad(npc.spec);
+    var spH = 52 + 2 * hh + 2 * hp;
     drawShadow(sx, sy + 1, (idle === 'float' ? 0.68 : 1) + hh * 0.04);
 
     var set = getSprites(npc.spec);
@@ -4620,7 +4696,7 @@ window.HNSF829 = window.HNSF829 || {};
 
     ctx.save();
     if (!unlocked || npc.defeated) ctx.globalAlpha = 0.55;
-    blitSprite(set[dir][frame], sx - 20 + sway, sy - 50 - 2 * hh + bob, 40, spH);
+    blitSprite(set[dir][frame], sx - 20 + sway, sy - 50 - 2 * hh - 2 * hp + bob, 40, spH);
     ctx.restore();
 
     // 名字牌：第一行守关人（龙珠角色），第二行考点
@@ -4632,7 +4708,7 @@ window.HNSF829 = window.HNSF829 || {};
     ctx.font = 'bold 12px "Microsoft YaHei", sans-serif';
     var w2 = ctx.measureText(label).width;
     var pw = Math.max(58, w1 + 16, w2 + 22);
-    var px = sx - pw / 2, py = sy - (50 + 2 * hh) - 8 - ph + bob;
+    var px = sx - pw / 2, py = sy - (50 + 2 * hh + 2 * hp) - 8 - ph + bob;
     roundRect(px, py, pw, ph, 5);
     ctx.fillStyle = 'rgba(8,14,26,0.84)';
     ctx.fill();
@@ -4919,6 +4995,8 @@ window.HNSF829 = window.HNSF829 || {};
     var sy = Math.round(player.y - cam.y);
     var spec = playerSpecNow();
     var set = getSprites(spec);
+    var hpz = hairPad(spec);
+    var trailH = 52 + 2 * hpz;
     var f = (NS.Gear && NS.Gear.fx) ? NS.Gear.fx() : null;
 
     // 皮肤残影（优秀 / 传说）
@@ -4927,7 +5005,7 @@ window.HNSF829 = window.HNSF829 || {};
         var p = trail[i];
         var tx = Math.round(p.x - cam.x), ty = Math.round(p.y - cam.y);
         ctx.globalAlpha = Math.max(0, p.life) * 0.22;
-        blitSprite(set[p.dir][1], tx - 20, ty - 50, 40, 52);
+        blitSprite(set[p.dir][1], tx - 20, ty - 50 - 2 * hpz, 40, trailH);
       }
       ctx.globalAlpha = 1;
     }
@@ -4941,14 +5019,14 @@ window.HNSF829 = window.HNSF829 || {};
 
     var frame = player.moving ? Math.floor(player.walk) % 4 : 0;
     var bob = player.moving ? Math.sin(t * 12) * 0.8 : Math.sin(t * 2) * 0.6;
-    blitSprite(set[player.dir][frame], sx - 20, sy - 50 + bob + rdy, 40, 52);
+    blitSprite(set[player.dir][frame], sx - 20, sy - 50 - 2 * hpz + bob + rdy, 40, trailH);
 
     // 玩家标记（小小的青色箭头，避免和 NPC 混）
     ctx.fillStyle = 'rgba(125,211,252,0.9)';
     ctx.beginPath();
-    ctx.moveTo(sx, sy - 60 + bob + rdy);
-    ctx.lineTo(sx - 4, sy - 67 + bob + rdy);
-    ctx.lineTo(sx + 4, sy - 67 + bob + rdy);
+    ctx.moveTo(sx, sy - 60 - 2 * hpz + bob + rdy);
+    ctx.lineTo(sx - 4, sy - 67 - 2 * hpz + bob + rdy);
+    ctx.lineTo(sx + 4, sy - 67 - 2 * hpz + bob + rdy);
     ctx.closePath();
     ctx.fill();
   }
@@ -5128,6 +5206,8 @@ window.HNSF829 = window.HNSF829 || {};
       return { x: Math.round(player.x), y: Math.round(player.y), blocked: hit(player.x, player.y) };
     },
     /** 背包 / 装备面板的试穿预览：拿到与地图完全一致的像素小人 */
-    previewSprite: function (spec, dir) { return getSprites(spec)[dir || 'down'][0]; }
+    previewSprite: function (spec, dir) { return getSprites(spec)[dir || 'down'][0]; },
+    /** 炸毛发型在精灵顶部额外占的高度，外部预览画布要按这个留白 */
+    hairPad: hairPad
   };
 })(window.HNSF829);
