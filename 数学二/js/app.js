@@ -331,6 +331,17 @@ window.HNSF829 = window.HNSF829 || {};
     open();
   }
 
+  /** 人物志：称号 + 小传 + 口头禅，让每个出题人不只是立绘 */
+  function personaHtml(mk) {
+    var p = mk && NS.PERSONAS && NS.PERSONAS[mk.id];
+    if (!p) return '';
+    return '<div class="trial-persona">' +
+      '<div class="tp-head"><span class="tp-title">' + sumEsc(p.title || '') + '</span>' +
+        (p.quote ? '<span class="tp-quote">「' + sumEsc(p.quote) + '」</span>' : '') + '</div>' +
+      (p.bio ? '<div class="tp-bio">' + sumEsc(p.bio) + '</div>' : '') +
+    '</div>';
+  }
+
   function openNodeDetail(id, n, qs) {
     var rec = Store.raw().cleared[id];
     var ch = chapterOf(n.chap);
@@ -363,6 +374,7 @@ window.HNSF829 = window.HNSF829 || {};
         '<div class="trial-who">' + (side === 'foe' ? '⚔️ 挑战者' : '🤝 引路人') +
           (charName ? '　·　' + sumEsc(charName) : '') + '</div>' +
         '<div class="trial-say">' + sumEsc(say || ('这一关由 ' + charName + ' 出题考你。')) + '</div>' +
+        personaHtml(mk) +
         (sum.intro ? '<div class="trial-goal"><b>本关要练</b>' + sumEsc(sum.intro) + '</div>' : '') +
       '</div>' +
       '<div class="nd-desc">' + n.desc + '</div>' +
@@ -1056,8 +1068,8 @@ window.HNSF829 = window.HNSF829 || {};
           return '<button class="btn ' + (tc.level === lv ? 'on' : '') + '" data-au="timer-lv" data-lv="' + lv + '">' + TLV[lv] + '</button>';
         }).join('') +
       '</div>' +
-      '<div class="audio-tip">🎵 背景音乐来自 <code class="inline-code">数学二/music/</code> 的洛克王国原声：场景曲 / 战斗曲 / BOSS 曲 / 对话曲四层，切歌采用「先淡出旧曲、再淡入新曲」，任何时刻只有一首在响。<br>' +
-        '🎸 <b>做题时 BGM 默认播放</b>：进关卡会切到独立的战斗曲，回地图会接着上次的探索曲位置继续放。读题嫌吵就切成「静音」，只保留打击音效。<br>' +
+      '<div class="audio-tip">🎵 背景音乐来自 <code class="inline-code">数学二/music/</code> 的洛克王国原声：场景曲 / 做题舒缓曲 / BOSS 曲 / 擂台曲 / 对话曲，切歌采用「先淡出旧曲、再淡入新曲」，任何时刻只有一首在响。<br>' +
+        '🎸 <b>做题时 BGM 默认播放</b>：普通做题在 3 首舒缓曲之间自然轮播（放完自动换，不再单曲循环），只有 BOSS 和擂台才切到热血战斗曲；回地图会接着上次的探索曲位置继续放。读题嫌吵就切成「静音」，只保留打击音效。<br>' +
         '浏览器规定必须与页面交互一次才能出声，若没声音请先点一下页面。</div>' +
       '<div class="audio-tip" style="margin-top:10px">⚡ <b>性能</b>：旧版悟空视频背景与全屏 Canvas 粒子已停用；主画面只由像素世界的一张离屏地形 Canvas 绘制。打开弹窗、答题界面或切到后台时，世界渲染会自动暂停。</div>' +
       '<div class="audio-tip" style="margin-top:10px">🔋 <b>低功耗模式</b>：关掉全部 CSS 常驻动画与高耗动效；桌面默认关闭，手机默认开启。它不是「降画质」，而是把不必要的持续动画停掉。</div>' +

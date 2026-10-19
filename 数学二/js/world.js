@@ -620,17 +620,52 @@ window.HNSF829 = window.HNSF829 || {};
         return q.weight - p.weight;
       });
       if (!list.length) return;
-      var inner, outer;
-      if (list.length <= 8) { inner = list; outer = []; }
-      else {
-        var cut = Math.ceil(list.length / 2);
-        inner = list.slice(0, cut);
-        outer = list.slice(cut);
-      }
-      var rIn = list.length <= 4 ? 108 : 132;
-      layoutRing(a, inner, rIn, -Math.PI / 2);
-      if (outer.length) layoutRing(a, outer, 206, -Math.PI / 2 + Math.PI / Math.max(outer.length, 1));
+      // 不再排成两个同心圆：按地貌散开，三圈交错 + 黄金角，避免「一圈人围观」
+      layoutSpread(a, list);
     });
+  }
+
+  /** 把守关人铺开在营地四周：三圈交错、彼此至少 64px，并避开地标与出生通道 */
+  function layoutSpread(a, list) {
+    var lm = landmarkFootprint(a);
+    var placed = [];
+    list.forEach(function (n, i) {
+      var h = hashStr(n.id);
+      var best = null;
+      for (var k = 0; k < 40; k++) {
+        var ang = -Math.PI / 2 + i * 2.399963 + k * 0.7;
+        var band = i % 3;
+        var rad = [150, 225, 298][band] + ((h >> 4) % 34) + (k % 4) * 7;
+        var x = a.cx + Math.cos(ang) * rad;
+        var y = a.cy + Math.sin(ang) * rad * 0.8;
+        if (x < 80 || y < 80 || x > WORLD_W - 80 || y > WORLD_H - 120) continue;
+        if (inSpawnLane(x, y)) continue;
+        if (x > lm.x - 26 && x < lm.x + lm.w + 26 &&
+            y > lm.y - 20 && y < lm.y + lm.h + 26) continue;
+        var ok = true;
+        for (var j = 0; j < placed.length; j++) {
+          if (Math.hypot(placed[j].x - x, placed[j].y - y) < 64) { ok = false; break; }
+        }
+        if (!ok) continue;
+        best = { x: x, y: y };
+        break;
+      }
+      if (!best) {
+        var a2 = -Math.PI / 2 + i * Math.PI * 2 / Math.max(list.length, 1);
+        best = { x: a.cx + Math.cos(a2) * 190, y: a.cy + Math.sin(a2) * 150 };
+      }
+      placed.push(best);
+      var npc = {
+        id: n.id, node: n, area: a.i,
+        x: best.x, y: best.y, home: { x: best.x, y: best.y },
+        spec: specFor(n),
+        phase: (hashStr(n.id) % 628) / 100
+      };
+      npcs.push(npc);
+      assignIdle(npc);
+      npcByNode[n.id] = npc;
+    });
+    a.nodesPlaced = true;
   }
 
   function placeArenaNpcs() {
@@ -679,25 +714,6 @@ window.HNSF829 = window.HNSF829 || {};
     updateArea();
     updateQuests(true);
     updatePrompt();
-  }
-
-  function layoutRing(a, list, radius, start) {
-    for (var i = 0; i < list.length; i++) {
-      var ang = start + i * Math.PI * 2 / list.length;
-      var x = a.cx + Math.cos(ang) * radius;
-      var y = a.cy + Math.sin(ang) * radius * 0.82;
-      var n = list[i];
-      var npc = {
-        id: n.id, node: n, area: a.i,
-        x: x, y: y, home: { x: x, y: y },
-        spec: specFor(n),
-        phase: (hashStr(n.id) % 628) / 100
-      };
-      npcs.push(npc);
-      assignIdle(npc);
-      npcByNode[n.id] = npc;
-      a.nodesPlaced = true;
-    }
   }
 
   function spawnPlayer() {
@@ -772,6 +788,9 @@ window.HNSF829 = window.HNSF829 || {};
 
     // 场景专属装饰
     drawDecor(r, sc);
+
+    // 营地两侧的小地标：让每张图不只剩中央一座建筑
+    drawSubLandmarks(sc);
 
     // 树 / 建筑：最后画，会盖住路边缘
     drawForest(r, sc);
@@ -1754,6 +1773,149 @@ window.HNSF829 = window.HNSF829 || {};
       case 'palace': decorPalace(r, sc); break;
     }
   }
+
+  /* ---- 营地两侧的小地标：水井 / 告示牌 / 拱桥 / 浮岛 / 冰拱 / 冻湖 …… ---- */
+  function drawSubLandmarks(sc) {
+    areas.forEach(function (a) {
+      var spots = [
+        { x: a.cx - 332, y: a.cy + 74, k: 0 },
+        { x: a.cx + 334, y: a.cy - 26, k: 1 }
+      ];
+      spots.forEach(function (p) {
+        if (!decorOK({ x: p.x, y: p.y, a: a })) return;
+        switch (sc.theme) {
+          case 'market': p.k ? subNotice(p.x, p.y) : subWell(p.x, p.y); break;
+          case 'celestial': p.k ? subFloatingIsle(p.x, p.y) : subBridge(p.x, p.y); break;
+          case 'snow': p.k ? subSnowPond(p.x, p.y) : subIceArch(p.x, p.y); break;
+          case 'city': p.k ? subVending(p.x, p.y) : subNeon(p.x, p.y); break;
+          case 'island': p.k ? subStoneLantern(p.x, p.y) : subDock(p.x, p.y); break;
+          case 'palace': p.k ? subStarPool(p.x, p.y) : subCrystalPillar(p.x, p.y); break;
+        }
+      });
+    });
+  }
+
+  function subWell(x, y) {
+    shadow(x, y + 16, 26, 9);
+    box(x - 18, y - 4, 36, 22, '#8b7355');
+    box(x - 13, y, 26, 12, '#2f6f86');
+    box(x - 20, y - 22, 4, 20, '#8b5a2b'); box(x + 16, y - 22, 4, 20, '#8b5a2b');
+    box(x - 25, y - 28, 50, 6, '#b45309');
+    box(x - 2, y - 38, 4, 12, '#6b7280');
+    box(x - 9, y - 44, 18, 7, '#b91c1c');
+    markRect(x - 20, y - 12, 40, 34);
+  }
+
+  function subNotice(x, y) {
+    shadow(x, y + 16, 24, 7);
+    box(x - 2, y - 4, 4, 24, '#8b5a2b');
+    box(x - 24, y - 26, 48, 26, '#b98a55');
+    box(x - 21, y - 23, 42, 20, '#e2c08d');
+    box(x - 16, y - 18, 14, 10, '#f8fafc');
+    box(x + 3, y - 18, 12, 10, '#f8fafc');
+    box(x - 14, y - 15, 10, 1, '#64748b'); box(x - 14, y - 12, 8, 1, '#64748b');
+    markRect(x - 25, y - 30, 50, 48);
+  }
+
+  function subBridge(x, y) {
+    shadow(x, y + 12, 48, 9);
+    for (var i = 0; i < 7; i++) {
+      var h = 8 + Math.round(Math.sin(i / 6 * Math.PI) * 10);
+      box(x - 42 + i * 12, y - h, 12, h + 8, '#cbd5e1');
+    }
+    box(x - 46, y - 27, 4, 16, '#b91c1c'); box(x + 42, y - 27, 4, 16, '#b91c1c');
+    box(x - 48, y - 31, 24, 4, '#f8fafc'); box(x + 24, y - 31, 24, 4, '#f8fafc');
+    markRect(x - 44, y - 16, 88, 28);
+  }
+
+  function subFloatingIsle(x, y) {
+    box(x - 24, y - 2, 48, 12, '#94a3b8');
+    box(x - 18, y + 10, 36, 8, '#64748b');
+    box(x - 10, y + 18, 20, 6, '#475569');
+    box(x - 5, y - 18, 10, 18, '#a5f3fc');
+    box(x - 2, y - 24, 4, 6, '#e0f2fe');
+    markRect(x - 26, y - 20, 52, 42);
+  }
+
+  function subIceArch(x, y) {
+    shadow(x, y + 18, 34, 9);
+    box(x - 30, y - 14, 8, 34, '#bfe8f7');
+    box(x + 22, y - 14, 8, 34, '#bfe8f7');
+    box(x - 34, y - 30, 68, 8, '#dff4fd');
+    box(x - 26, y - 36, 52, 7, '#eaf9ff');
+    box(x - 2, y - 42, 4, 8, '#a5f3fc');
+    markRect(x - 32, y - 16, 64, 36);
+  }
+
+  function subSnowPond(x, y) {
+    tctx.fillStyle = 'rgba(180,225,245,0.55)';
+    tctx.beginPath(); tctx.ellipse(x, y, 40, 18, 0, 0, Math.PI * 2); tctx.fill();
+    tctx.fillStyle = 'rgba(235,250,255,0.75)';
+    tctx.beginPath(); tctx.ellipse(x - 6, y - 2, 26, 10, 0, 0, Math.PI * 2); tctx.fill();
+    tctx.strokeStyle = 'rgba(120,170,200,0.55)'; tctx.lineWidth = 1;
+    tctx.beginPath(); tctx.moveTo(x - 30, y + 2); tctx.lineTo(x - 8, y - 1); tctx.lineTo(x + 8, y + 3); tctx.lineTo(x + 30, y); tctx.stroke();
+  }
+
+  function subNeon(x, y) {
+    shadow(x, y + 18, 9, 5);
+    box(x - 2, y - 34, 4, 54, '#475569');
+    box(x - 18, y - 46, 36, 18, '#111827');
+    box(x - 15, y - 43, 30, 12, '#f472b6');
+    box(x - 11, y - 40, 22, 3, '#fdf2f8');
+    box(x - 11, y - 35, 14, 2, '#fdf2f8');
+    markRect(x - 8, y - 8, 16, 28);
+  }
+
+  function subVending(x, y) {
+    shadow(x, y + 18, 15, 6);
+    box(x - 14, y - 26, 28, 44, '#1e293b');
+    box(x - 10, y - 22, 20, 24, '#38bdf8');
+    for (var r = 0; r < 2; r++) for (var c = 0; c < 3; c++) box(x - 8 + c * 6, y - 19 + r * 9, 4, 6, '#f8fafc');
+    box(x - 8, y + 6, 16, 7, '#0f172a');
+    markRect(x - 16, y - 28, 32, 48);
+  }
+
+  function subDock(x, y) {
+    tctx.fillStyle = 'rgba(150,110,70,0.35)';
+    tctx.fillRect(x - 38, y - 6, 76, 26);
+    for (var i = 0; i < 6; i++) box(x - 36 + i * 12, y - 8, 10, 20, '#a16207');
+    box(x - 40, y + 10, 80, 4, '#8b5a2b');
+    box(x - 38, y - 22, 5, 30, '#6b4226'); box(x + 33, y - 22, 5, 30, '#6b4226');
+    markRect(x - 38, y - 10, 76, 26);
+  }
+
+  function subStoneLantern(x, y) {
+    shadow(x, y + 15, 13, 5);
+    box(x - 8, y - 2, 16, 15, '#94a3b8');
+    box(x - 11, y - 10, 22, 8, '#cbd5e1');
+    box(x - 8, y - 24, 16, 14, '#64748b');
+    box(x - 5, y - 21, 10, 8, '#fde68a');
+    box(x - 12, y - 28, 24, 5, '#94a3b8');
+    markRect(x - 12, y - 26, 24, 40);
+  }
+
+  function subCrystalPillar(x, y) {
+    shadow(x, y + 20, 15, 6);
+    box(x - 12, y + 6, 24, 14, '#312a55');
+    box(x - 7, y - 30, 14, 38, '#8f7dd6');
+    box(x - 4, y - 36, 8, 10, '#c4b5fd');
+    box(x - 3, y - 24, 4, 20, '#e9e2ff');
+    box(x - 15, y - 2, 6, 10, '#7dd3fc');
+    markRect(x - 13, y - 34, 26, 52);
+  }
+
+  function subStarPool(x, y) {
+    tctx.fillStyle = 'rgba(40,70,120,0.55)';
+    tctx.beginPath(); tctx.ellipse(x, y, 42, 18, 0, 0, Math.PI * 2); tctx.fill();
+    tctx.fillStyle = 'rgba(125,211,252,0.25)';
+    tctx.beginPath(); tctx.ellipse(x, y - 2, 30, 11, 0, 0, Math.PI * 2); tctx.fill();
+    var stars = [[-26, 2], [-12, -4], [2, 3], [16, -2], [28, 4], [-4, -7], [22, 7]];
+    stars.forEach(function (s) {
+      tctx.fillStyle = 'rgba(224,242,254,0.9)';
+      tctx.fillRect(x + s[0], y + s[1], 2, 2);
+    });
+  }
+
 
   function decorMarket(r, sc) {
     // 集市摊位：每个营地 3 个，沿营地外圈摆
@@ -3975,14 +4137,22 @@ window.HNSF829 = window.HNSF829 || {};
         if (n.paceMoving) n.walk += dt * 5.5;
       }
 
-      if (n.idle === 'talk') {
+      var pkey = n.spec && n.spec.key;
+      var persona = (NS.PERSONAS || {})[pkey];
+      // 有人物志的角色都会偶尔说话：没通关说「初见」，通关后说「认可」
+      if (n.idle === 'talk' || persona) {
         n.talkT += dt;
         if (n.talkT >= n.talkGap) {
           n.talkT = 0;
-          n.talkGap = 7 + (hashStr(n.id + Math.round(now / 1000)) % 50) / 10;
-          var lines = IDLE_LINES[n.spec.key] || IDLE_LINES['default'];
-          n.idleSay = lines[hashStr(n.id + Math.round(now / 500)) % lines.length];
-          n.idleSayUntil = now + 2400;
+          n.talkGap = 9 + (hashStr(n.id + Math.round(now / 1000)) % 60) / 10;
+          var cleared = !n.arena && n.node && store.isCleared(n.id);
+          var pool = persona ? (cleared ? persona.after : persona.meet) : null;
+          var lines = (pool && pool.length) ? pool : (IDLE_LINES[pkey] || IDLE_LINES['default']);
+          // 狠话/挑衅正在显示时不抢气泡；玩家已经站在他面前时也不用重复
+          if (!n.say && now >= (n.tauntUntil || 0) && nearId !== n.id && distToNpc(n) < 420) {
+            n.idleSay = lines[hashStr(n.id + Math.round(now / 500)) % lines.length];
+            n.idleSayUntil = now + 2600;
+          }
         }
       }
 

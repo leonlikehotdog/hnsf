@@ -2,7 +2,7 @@
  * 302 数学二 · 场景音乐（文件播放 + 交叉淡入淡出）
  * ------------------------------------------------------------
  * 现代游戏的分层：
- *   探索（每个场景一条长曲） / 战斗 / BOSS / 对话
+ *   探索（每个场景一条长曲） / 做题舒缓轮播 / BOSS / 擂台 / 对话
  * 切换不是硬切：两路 <audio> 交叉淡化，地图 → 战斗 0.9s，
  * 战斗 → 地图 1.2s，对话 0.6s；对话结束自动回到当前场景曲。
  *
@@ -13,8 +13,9 @@
  *   场景 4  潮流街区·我的乐园  76.4s
  *   场景 5  英雄岛BGM          82.9s
  *   场景 6  天界·水平宫        61.7s
- *   战斗    宠物战斗1BGM      182.9s
+ *   做题    双鱼宫 / 雪人谷 / 水平宫 三首舒缓曲轮播（播完自动换，不再单曲循环）
  *   BOSS    宠物战斗2BGM      359.5s
+ *   擂台    宠物战斗3BGM
  *   对话    王国城堡·舞会厅     41.4s
  * ============================================================ */
 window.HNSF829 = window.HNSF829 || {};
@@ -32,8 +33,16 @@ window.HNSF829 = window.HNSF829 || {};
     'battle': { file: 'music/QG_草莓LOVELY炫 - 宠物战斗1BGM.mp3', name: '宠物战斗 1', vol: 0.72 },
     'boss': { file: 'music/QG_草莓LOVELY炫 - 宠物战斗2BGM.mp3', name: '宠物战斗 2', vol: 0.70 },
     'arenaBattle': { file: 'music/QG_草莓LOVELY炫 - 宠物战斗3BGM.mp3', name: '宠物战斗 3', vol: 0.72 },
-    'dialogue': { file: 'music/QG_草莓LOVELY炫 - 王国城堡-舞会厅.mp3', name: '王国城堡 · 舞会厅', vol: 0.62 }
+    'dialogue': { file: 'music/QG_草莓LOVELY炫 - 王国城堡-舞会厅.mp3', name: '王国城堡 · 舞会厅', vol: 0.62 },
+    // 做题专用：普通做题不再单曲循环战斗曲，改为这 3 首舒缓曲自然轮播；
+    // 单独用 study: 前缀，避免覆盖场景曲的播放进度（lastSceneKey）
+    'study:1': { file: 'music/QG_草莓LOVELY炫 - 天界-双鱼宫.mp3', name: '天界 · 双鱼宫（做题）', vol: 0.50 },
+    'study:2': { file: 'music/QG_草莓LOVELY炫 - 雪人谷BGM.mp3', name: '雪人谷（做题）', vol: 0.50 },
+    'study:3': { file: 'music/QG_草莓LOVELY炫 - 天界-水平宫.mp3', name: '天界 · 水平宫（做题）', vol: 0.48 }
   };
+
+  var STUDY_LIST = ['study:1', 'study:2', 'study:3'];
+  var studyIdx = -1;
 
   var a = null, b = null, active = null;
   var currentKey = null, lastSceneKey = 'scene:s1';
@@ -56,7 +65,29 @@ window.HNSF829 = window.HNSF829 || {};
       el.loop = true;
       el.preload = 'auto';
       el.volume = 0;
+      // 舒缓曲不循环：放完一首自然切下一首，避免同一段旋律反复
+      el.addEventListener('ended', onStudyEnded);
     });
+  }
+
+  /** 舒缓曲播完 → 自动轮换到下一首 */
+  function onStudyEnded(e) {
+    var el = e.currentTarget;
+    if (el !== active) return;
+    var k = el.dataset.key || '';
+    if (k.indexOf('study:') !== 0) return;
+    if (!enabled || !battleEnabled) return;
+    studyIdx = (studyIdx + 1) % STUDY_LIST.length;
+    playKey(STUDY_LIST[studyIdx]);
+  }
+
+  /** 普通做题：新开一局时换下一首；同一局里重复请求则保持当前这首 */
+  function studyKeyForBattle() {
+    var playingStudy = !!(active && !active.paused &&
+      (active.dataset.key || '').indexOf('study:') === 0);
+    if (!playingStudy) studyIdx = (studyIdx + 1) % STUDY_LIST.length;
+    if (studyIdx < 0) studyIdx = 0;
+    return STUDY_LIST[studyIdx];
   }
 
   function targetVol(key) {
@@ -139,12 +170,16 @@ window.HNSF829 = window.HNSF829 || {};
   function playKey(key) {
     ensureEls();
     key = resolve(key);
+    var wantBattleLayer = (key === 'battle');
+    // 普通做题不播热血战斗曲，改走 3 首舒缓曲轮播；BOSS / 擂台仍用战斗曲
+    if (wantBattleLayer) key = studyKeyForBattle();
     var t = TRACKS[key];
     if (!t) return;
     currentKey = key;
 
     if (!enabled) { stop(500); return; }
-    if ((key === 'battle' || key === 'boss' || key === 'arenaBattle') && !battleEnabled) { stop(600); return; }
+    if ((wantBattleLayer || key === 'boss' || key === 'arenaBattle' ||
+      key.indexOf('study:') === 0) && !battleEnabled) { stop(600); return; }
 
     // 同一首且在播：不重头开始
     if (active && active.dataset.key === key && !active.paused) return;
@@ -170,6 +205,8 @@ window.HNSF829 = window.HNSF829 || {};
       target.dataset.key = key;
       target.src = encodeURI(t.file);
       target.volume = 0;
+      // 舒缓曲不循环：放完由 ended 事件接下一首
+      target.loop = key.indexOf('study:') !== 0;
       try {
         // 探索曲回到原场景时接着上次的位置放；战斗/对话曲每次从头开始
         var memo = (key.indexOf('scene:') === 0) ? posMemo[key] : 0;
@@ -224,7 +261,10 @@ window.HNSF829 = window.HNSF829 || {};
 
   function setBattleEnabled(on) {
     battleEnabled = !!on;
-    if (!battleEnabled && active && (active.dataset.key === 'battle' || active.dataset.key === 'boss' || active.dataset.key === 'arenaBattle')) {
+    if (!battleEnabled && active && (
+      active.dataset.key === 'battle' || active.dataset.key === 'boss' ||
+      active.dataset.key === 'arenaBattle' ||
+      (active.dataset.key || '').indexOf('study:') === 0)) {
       stop(600);
     }
   }
