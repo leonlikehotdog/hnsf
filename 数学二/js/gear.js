@@ -20,7 +20,7 @@ window.HNSF829 = window.HNSF829 || {};
     { id: 'moto', name: '布尔玛摩托', icon: '🏍️', node: 'gs-ode-app', speed: 1.4, desc: '胶囊公司出品，油门一拧就窜出去。' },
     { id: 'pod', name: '赛亚人太空舱', icon: '🚀', node: 'xd-det-abstract', speed: 1.55, desc: '从拉蒂兹手里缴获，落地时记得关舱门。' },
     { id: 'ball', name: '战斗球', icon: '🛸', node: 'xd-mat-rankineq', speed: 1.5, desc: '弗利萨军的标准单兵飞行器。' },
-    { id: 'fpod', name: '弗利萨飞行舱', icon: '🟣', node: 'xd-solve-param', speed: 1.6, desc: '紫色圆舱，舒适度一般，速度很诚实。' },
+    { id: 'fpod', name: '弗利萨飞行舱', icon: '🟣', node: 'xd-solve-param', speed: 1.6, desc: '蛋形紫舱配碟形悬浮底座，舒适度一般，速度很诚实。' },
     { id: 'dragon', name: '神龙', icon: '🐉', node: 'xd-solve-common', speed: 1.8, desc: '集齐七颗龙珠换来的坐骑。飞得比谁都快。' },
     { id: 'ape', name: '大猿', icon: '🦍', node: 'xd-eig-abstract', speed: 1.7, desc: '满月限定。坐在肩膀上，视野极好。' }
   ];
@@ -95,8 +95,8 @@ window.HNSF829 = window.HNSF829 || {};
     turtle: { tagline: '慢，但稳', lore: '龟仙人说，这叫基本功。' },
     moto: { tagline: '胶囊公司出品', lore: '布尔玛的摩托，油门一拧就窜出去。' },
     pod: { tagline: '赛亚人单兵舱', lore: '从拉蒂兹手里缴获，落地时记得关舱门。' },
-    ball: { tagline: '弗利萨军制式', lore: '紫色圆舱，舒适度一般，速度很诚实。' },
-    fpod: { tagline: '军团长的专座', lore: '弗利萨军的飞行舱，座舱里还留着冷气。' },
+    ball: { tagline: '弗利萨军制式', lore: '漆黑的扁球，正面一条红色观察窗，底下拖着反重力光环。' },
+    fpod: { tagline: '军团长的专座', lore: '紫色蛋形舱悬在碟形底座上，座舱里还留着冷气。' },
     dragon: { tagline: '腾云驾雾，一声龙吟', lore: '集齐七颗龙珠换来的坐骑，飞得比谁都快。' },
     ape: { tagline: '满月限定', lore: '坐在大猿肩膀上，视野极好。' }
   };
@@ -126,9 +126,9 @@ window.HNSF829 = window.HNSF829 || {};
   var RIDE = {
     orb: { dy: -20 },
     moto: { dy: -13 },
-    pod: { dy: -6 },
-    ball: { dy: -6 },
-    fpod: { dy: -6 },
+    pod: { dy: -10 },
+    ball: { dy: -11 },
+    fpod: { dy: -9 },
     dragon: { dy: -18 },
     ape: { dy: -22, sc: 1.3 }
   };
@@ -209,13 +209,13 @@ window.HNSF829 = window.HNSF829 || {};
         moto(ctx, t, moving);
         break;
       case 'pod':
-        pod(ctx, '#f8fafc', '#38bdf8', false);
+        saiyanPod(ctx, t);
         break;
       case 'ball':
-        pod(ctx, '#1f2937', '#ef4444', true);
+        battleBall(ctx, t);
         break;
       case 'fpod':
-        pod(ctx, '#7c3aed', '#c4b5fd', false);
+        friezaPod(ctx, t);
         break;
       case 'dragon':
         dragon(ctx, t);
@@ -691,75 +691,285 @@ window.HNSF829 = window.HNSF829 || {};
     ctx.beginPath(); ctx.arc(14, -3, 8.4, Math.PI * 1.35, Math.PI * 1.95); ctx.stroke();
   }
 
-  function pod(ctx, body, glass, dark) {
-    var now = Date.now();
-    var flame = 0.7 + Math.sin(now / 90) * 0.25;
+  /* 赛亚人太空舱：白色圆球 + 大圆红窗 + 三条收起着陆腿 */
+  function saiyanPod(ctx, t) {
+    var pulse = 0.55 + 0.25 * Math.sin(t * 3.2);
 
-    // 推进尾焰：外蓝内白，两层
-    var fg = ctx.createLinearGradient(0, 2, 0, 16);
-    fg.addColorStop(0, 'rgba(125,211,252,0.9)');
-    fg.addColorStop(0.5, 'rgba(56,189,248,0.45)');
-    fg.addColorStop(1, 'rgba(56,189,248,0)');
-    ctx.fillStyle = fg;
-    ctx.beginPath();
-    ctx.moveTo(-7, 2);
-    ctx.quadraticCurveTo(0, 14 * flame, 7, 2);
-    ctx.closePath();
-    ctx.fill();
-    ctx.fillStyle = 'rgba(255,255,255,0.8)';
-    ell(ctx, 0, 7, 2.2, 4 * flame);
+    // 底部推进口的小尾焰
+    ctx.fillStyle = 'rgba(125,211,252,' + (0.25 + pulse * 0.35).toFixed(2) + ')';
+    ell(ctx, 0, 1.5, 4.6, 2.8);
     ctx.fill();
 
-    // 侧翼（先画，压舱体下面）
-    [-1, 1].forEach(function (sd) {
-      ctx.fillStyle = dark ? '#b91c1c' : '#94a3b8';
+    // 三条着陆腿（折叠贴在球体下方）
+    [-11, 0, 11].forEach(function (lx) {
+      ctx.fillStyle = '#94a3b8';
       ctx.beginPath();
-      ctx.moveTo(sd * 13, -8);
-      ctx.lineTo(sd * 25, -12);
-      ctx.lineTo(sd * 22, -3);
-      ctx.lineTo(sd * 12, -2);
+      ctx.moveTo(lx - 1.8, -13);
+      ctx.lineTo(lx + 1.8, -13);
+      ctx.lineTo(lx + 3.2, -1.6);
+      ctx.lineTo(lx - 3.2, -1.6);
       ctx.closePath();
       ctx.fill();
       outline(ctx, 1);
+      ctx.fillStyle = '#475569';
+      ell(ctx, lx, -1.2, 4, 2);
+      ctx.fill();
+      outline(ctx, 0.9);
     });
 
-    // 舱体
-    var bg = ctx.createRadialGradient(-5, -17, 2, 0, -10, 19);
+    // 舱体：白色球
+    var bg = ctx.createRadialGradient(-6, -20, 2, 0, -13, 18);
     bg.addColorStop(0, '#ffffff');
-    bg.addColorStop(0.35, body);
-    bg.addColorStop(1, dark ? '#111827' : '#475569');
+    bg.addColorStop(0.45, '#e2e8f0');
+    bg.addColorStop(1, '#94a3b8');
     ctx.fillStyle = bg;
-    ell(ctx, 0, -10, 16, 13.5);
+    ell(ctx, 0, -13, 15.2, 14.2);
     ctx.fill();
     outline(ctx, 1.6);
 
-    // 舱体金属带
-    ctx.strokeStyle = dark ? 'rgba(248,250,252,0.28)' : 'rgba(255,255,255,0.6)';
+    // 舱盖接缝
+    ctx.strokeStyle = 'rgba(100,116,139,0.55)';
     ctx.lineWidth = 1.2;
-    ctx.beginPath(); ctx.ellipse(0, -6.5, 15.2, 5.4, 0, 0, Math.PI); ctx.stroke();
+    ctx.beginPath();
+    ctx.ellipse(0, -13, 15.2, 14.2, 0, Math.PI * 1.04, Math.PI * 1.96);
+    ctx.stroke();
 
-    // 舷窗
-    var wg = ctx.createRadialGradient(-2, -15, 1, 0, -12, 9);
+    // 大圆舷窗
+    var wg = ctx.createRadialGradient(-3, -19, 1, 0, -15, 11);
     wg.addColorStop(0, 'rgba(255,255,255,0.95)');
-    wg.addColorStop(0.4, glass);
-    wg.addColorStop(1, dark ? '#1e1b4b' : '#0c4a6e');
+    wg.addColorStop(0.25, '#fca5a5');
+    wg.addColorStop(0.7, '#dc2626');
+    wg.addColorStop(1, '#7f1d1d');
     ctx.fillStyle = wg;
-    ell(ctx, 0, -12, 8.4, 6.6);
+    ell(ctx, 0, -15, 9.4, 8);
     ctx.fill();
     outline(ctx, 1.1);
-    ctx.fillStyle = 'rgba(255,255,255,0.7)';
+    // 窗框
+    ctx.strokeStyle = 'rgba(248,250,252,0.6)';
+    ctx.lineWidth = 1.8;
     ctx.beginPath();
-    ctx.ellipse(-2.4, -14.6, 3.4, 1.8, -0.5, 0, Math.PI * 2);
+    ctx.ellipse(0, -15, 11, 9.6, 0, 0, Math.PI * 2);
+    ctx.stroke();
+    // 玻璃反光
+    ctx.fillStyle = 'rgba(255,255,255,0.62)';
+    ctx.beginPath();
+    ctx.ellipse(-3.4, -18.2, 3.5, 1.8, -0.5, 0, Math.PI * 2);
     ctx.fill();
 
-    // 顶部铆钉与天线灯
-    ctx.fillStyle = 'rgba(255,255,255,0.55)';
-    for (var i = -1; i <= 1; i++) ctx.fillRect(i * 7 - 1, -22.4, 2, 2);
-    ctx.strokeStyle = '#94a3b8';
+    // 铆钉
+    ctx.fillStyle = 'rgba(71,85,105,0.75)';
+    [[-12, -8], [12, -8], [-9, -19], [9, -19], [0, -26]].forEach(function (p) {
+      ctx.beginPath();
+      ctx.arc(p[0], p[1], 1.2, 0, Math.PI * 2);
+      ctx.fill();
+    });
+  }
+
+  /* 战斗球：扁平黑色球体 + 横向观察窗 + 悬浮反重力环 + 侧推进器 */
+  function battleBall(ctx, t) {
+    var gy = -1.5;
+
+    // 反重力环：分段灯绕着转
+    ctx.fillStyle = 'rgba(244,63,94,0.16)';
+    ell(ctx, 0, gy + 1, 18, 5.4);
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(244,63,94,0.45)';
+    ctx.lineWidth = 1.6;
+    ctx.beginPath();
+    ctx.ellipse(0, gy, 17, 4.8, 0, 0, Math.PI * 2);
+    ctx.stroke();
+    for (var s = 0; s < 8; s++) {
+      var a = t * 1.7 + s * Math.PI / 4;
+      var px = Math.cos(a) * 17;
+      var py = gy + Math.sin(a) * 4.8;
+      ctx.fillStyle = (s % 2 ? 'rgba(251,113,133,' : 'rgba(56,189,248,') + (0.35 + 0.35 * Math.sin(t * 4 + s)).toFixed(2) + ')';
+      ctx.beginPath();
+      ctx.arc(px, py, 1.6, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // 球体（略扁）
+    var bg = ctx.createRadialGradient(-6, -20, 2, 0, -12, 18);
+    bg.addColorStop(0, '#4b5563');
+    bg.addColorStop(0.5, '#1f2937');
+    bg.addColorStop(1, '#0b1220');
+    ctx.fillStyle = bg;
+    ell(ctx, 0, -12, 14.8, 12.6);
+    ctx.fill();
+    outline(ctx, 1.6);
+
+    // 装甲分缝
+    ctx.strokeStyle = 'rgba(148,163,184,0.3)';
     ctx.lineWidth = 1;
-    ctx.beginPath(); ctx.moveTo(0, -23.5); ctx.lineTo(0, -29); ctx.stroke();
-    ctx.fillStyle = 'rgba(248,113,113,' + (0.45 + 0.45 * Math.sin(now / 220)).toFixed(2) + ')';
-    ctx.beginPath(); ctx.arc(0, -30, 2, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath();
+    ctx.ellipse(0, -12, 14.8, 12.6, 0, Math.PI * 1.12, Math.PI * 1.88);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(-12.6, -19.5);
+    ctx.lineTo(12.6, -19.5);
+    ctx.stroke();
+
+    // 横向观察窗 + 扫描线
+    ctx.save();
+    ell(ctx, 0, -12, 14, 5.6);
+    ctx.clip();
+    var wg = ctx.createLinearGradient(0, -18, 0, -6);
+    wg.addColorStop(0, 'rgba(248,113,113,0.95)');
+    wg.addColorStop(0.55, 'rgba(127,29,29,0.92)');
+    wg.addColorStop(1, 'rgba(15,23,42,0.95)');
+    ctx.fillStyle = wg;
+    ctx.fillRect(-15, -20, 30, 16);
+    ctx.fillStyle = 'rgba(254,226,226,0.28)';
+    ctx.fillRect(-15, -19 + ((t * 9) % 12), 30, 1);
+    ctx.restore();
+    ctx.strokeStyle = 'rgba(248,113,113,0.8)';
+    ctx.lineWidth = 1.3;
+    ctx.beginPath();
+    ctx.ellipse(0, -12, 14, 5.6, 0, 0, Math.PI * 2);
+    ctx.stroke();
+
+    // 两侧姿态推进器
+    [-1, 1].forEach(function (sd) {
+      ctx.fillStyle = '#334155';
+      ctx.beginPath();
+      ctx.moveTo(sd * 12.5, -18);
+      ctx.lineTo(sd * 19.5, -16.5);
+      ctx.lineTo(sd * 19.5, -11);
+      ctx.lineTo(sd * 12.5, -9.5);
+      ctx.closePath();
+      ctx.fill();
+      outline(ctx, 1);
+      ctx.fillStyle = 'rgba(125,211,252,0.85)';
+      ell(ctx, sd * 20.2, -13.8, 1.7, 2.8);
+      ctx.fill();
+    });
+
+    // 顶部传感器
+    ctx.fillStyle = '#0f172a';
+    ell(ctx, 0, -25, 4.2, 2.4);
+    ctx.fill();
+    outline(ctx, 1);
+    ctx.strokeStyle = 'rgba(148,163,184,0.85)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(0, -25);
+    ctx.lineTo(0, -29);
+    ctx.stroke();
+    ctx.fillStyle = 'rgba(248,113,113,' + (0.45 + 0.4 * Math.sin(t * 5)).toFixed(2) + ')';
+    ctx.beginPath();
+    ctx.arc(0, -30, 2.2, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  /* 弗利萨飞行舱：蛋形紫舱 + 大玻璃泡 + 碟形悬浮底座 + 三片尾鳍 */
+  function friezaPod(ctx, t) {
+    var pulse = 0.5 + 0.4 * Math.sin(t * 2.6);
+
+    // 悬浮光晕
+    var gl = ctx.createRadialGradient(0, 4, 1, 0, 4, 20);
+    gl.addColorStop(0, 'rgba(168,85,247,0.32)');
+    gl.addColorStop(1, 'rgba(168,85,247,0)');
+    ctx.fillStyle = gl;
+    ell(ctx, 0, 4, 19, 6);
+    ctx.fill();
+
+    // 底座尾鳍
+    [-1, 0, 1].forEach(function (sd) {
+      ctx.fillStyle = '#4c1d95';
+      ctx.beginPath();
+      ctx.moveTo(sd * 8 - 2, -5);
+      ctx.lineTo(sd * 15, 3.4);
+      ctx.lineTo(sd * 8 + 2, -3.6);
+      ctx.closePath();
+      ctx.fill();
+      outline(ctx, 0.9);
+    });
+
+    // 碟形底座
+    var dg = ctx.createLinearGradient(0, -7, 0, 4);
+    dg.addColorStop(0, '#a78bfa');
+    dg.addColorStop(0.6, '#6d28d9');
+    dg.addColorStop(1, '#3b0764');
+    ctx.fillStyle = dg;
+    ell(ctx, 0, -2.4, 16, 6);
+    ctx.fill();
+    outline(ctx, 1.3);
+    ctx.strokeStyle = 'rgba(251,191,36,0.9)';
+    ctx.lineWidth = 1.4;
+    ctx.beginPath();
+    ctx.ellipse(0, -3.6, 15, 5.2, 0, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.fillStyle = 'rgba(233,213,255,' + (0.3 + pulse * 0.4).toFixed(2) + ')';
+    ell(ctx, 0, 2.2, 13, 2.4);
+    ctx.fill();
+
+    // 蛋形舱体
+    var bg = ctx.createRadialGradient(-5, -21, 2, 0, -14, 20);
+    bg.addColorStop(0, '#c4b5fd');
+    bg.addColorStop(0.5, '#7c3aed');
+    bg.addColorStop(1, '#2e1065');
+    ctx.fillStyle = bg;
+    ctx.beginPath();
+    ctx.moveTo(-14, -4);
+    ctx.bezierCurveTo(-16, -22, -8, -27, 0, -27);
+    ctx.bezierCurveTo(8, -27, 16, -22, 14, -4);
+    ctx.closePath();
+    ctx.fill();
+    outline(ctx, 1.6);
+
+    // 舱体金属条
+    ctx.strokeStyle = 'rgba(233,213,255,0.45)';
+    ctx.lineWidth = 1.1;
+    ctx.beginPath();
+    ctx.moveTo(-13.4, -8);
+    ctx.bezierCurveTo(-12, -3, 12, -3, 13.4, -8);
+    ctx.stroke();
+
+    // 前舱盖
+    var wg = ctx.createRadialGradient(-3, -20, 1, 0, -16, 13);
+    wg.addColorStop(0, 'rgba(255,255,255,0.95)');
+    wg.addColorStop(0.3, 'rgba(196,181,253,0.9)');
+    wg.addColorStop(0.75, 'rgba(91,33,182,0.88)');
+    wg.addColorStop(1, 'rgba(30,27,75,0.92)');
+    ctx.fillStyle = wg;
+    ell(ctx, 0, -16, 10.2, 9.2);
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(251,191,36,0.85)';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.ellipse(0, -16, 10.2, 9.2, 0, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.fillStyle = 'rgba(255,255,255,0.6)';
+    ctx.beginPath();
+    ctx.ellipse(-3.4, -20, 3.6, 1.8, -0.5, 0, Math.PI * 2);
+    ctx.fill();
+
+    // 侧面扶手
+    [-1, 1].forEach(function (sd) {
+      ctx.strokeStyle = '#e9d5ff';
+      ctx.lineWidth = 1.6;
+      ctx.beginPath();
+      ctx.moveTo(sd * 12.4, -20);
+      ctx.quadraticCurveTo(sd * 16.5, -16, sd * 12.6, -11);
+      ctx.stroke();
+    });
+
+    // 顶部宝石与信号灯
+    ctx.fillStyle = '#f472b6';
+    ctx.beginPath();
+    ctx.arc(0, -28, 2.3, 0, Math.PI * 2);
+    ctx.fill();
+    outline(ctx, 0.9);
+    ctx.strokeStyle = '#c4b5fd';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(0, -30.4);
+    ctx.lineTo(0, -33.4);
+    ctx.stroke();
+    ctx.fillStyle = 'rgba(244,114,182,' + (0.4 + pulse * 0.45).toFixed(2) + ')';
+    ctx.beginPath();
+    ctx.arc(0, -34.4, 1.8, 0, Math.PI * 2);
+    ctx.fill();
   }
 
   function dragon(ctx, t) {
