@@ -5,6 +5,8 @@
  *   秘籍内容优先给「难题套路」，其次才是定义与公式 —— 背公式是为了
  *   上手做题，不是背字典。
  * 入口：右上角 🎒 按钮，或按 B 键；Esc / B 关闭。
+ *       答题过程中也能随时翻（答题页右上角的「📖 秘籍」按钮，或 B 键），
+ *       打开时这道题的倒计时会暂停，关掉后接着走。
  * 注意：本文件必须在 data-summary.js、store.js、engine.js 之后加载。
  * ============================================================ */
 window.HNSF829 = window.HNSF829 || {};
@@ -319,6 +321,8 @@ window.HNSF829 = window.HNSF829 || {};
     mask.classList.add('show');
     mask.setAttribute('aria-hidden', 'false');
     document.body.classList.add('no-scroll');
+    // 答题中翻秘籍：把这道题的倒计时冻住，别让看秘籍的时间算作答时
+    if (NS.Engine && NS.Engine.pauseClock) NS.Engine.pauseClock();
     if (nodeId) {
       currentId = nodeId;
       delete newSet[nodeId];
@@ -340,6 +344,7 @@ window.HNSF829 = window.HNSF829 || {};
     mask.classList.remove('show');
     mask.setAttribute('aria-hidden', 'true');
     document.body.classList.remove('no-scroll');
+    if (NS.Engine && NS.Engine.resumeClock) NS.Engine.resumeClock();
   }
 
   function isOpen() { return !!(mask && mask.classList.contains('show')); }
@@ -442,6 +447,11 @@ window.HNSF829 = window.HNSF829 || {};
     mask.addEventListener('click', function (e) {
       if (e.target === mask) close();
     });
+    // 秘籍开着时切回来（比如从别的标签页回来）：别让倒计时偷偷跑起来
+    document.addEventListener('visibilitychange', function () {
+      if (document.visibilityState === 'visible' && isOpen() &&
+        NS.Engine && NS.Engine.pauseClock) NS.Engine.pauseClock();
+    });
     document.getElementById('lootOk').addEventListener('click', function () { closeLoot(false); });
     document.getElementById('lootOpen').addEventListener('click', function () { closeLoot(true); });
 
@@ -471,7 +481,7 @@ window.HNSF829 = window.HNSF829 || {};
       if (k === 'escape' && isOpen()) { close(); return; }
       if (k !== 'b' || e.repeat) return;
       if (isOpen()) { close(); e.preventDefault(); return; }
-      var busy = document.querySelector('#battleMask.show, #storyMask.show, #masterMask.show, #hlMask.show, #lootMask.show, #nodeDetail.show, #panel.show, #gearMask.show');
+      var busy = document.querySelector('#storyMask.show, #masterMask.show, #hlMask.show, #lootMask.show, #nodeDetail.show, #panel.show, #gearMask.show');
       if (busy) return;
       open();
       e.preventDefault();

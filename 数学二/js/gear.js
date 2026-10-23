@@ -2085,6 +2085,12 @@ window.HNSF829 = window.HNSF829 || {};
     drawMountFront: drawMountFront,
     drawFx: drawFx,
     riderDy: function () { var ro = riderOffset(equippedMount()); return ro ? ro.dy : 0; },
+    // ---- 联机：好友按自己的皮肤/坐骑绘制（不查本机装备与解锁状态） ----
+    specOfSkinId: function (id) { return specOfSkin(skinById(id) || SKINS[0]); },
+    mountById: mountById,
+    riderDyOf: function (id) { var ro = riderOffset(mountById(id)); return ro ? ro.dy : 0; },
+    drawMountFor: drawMountFor,
+    drawMountFrontFor: drawMountFront,
     mounts: MOUNTS,
     skins: SKINS
   };

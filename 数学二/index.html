@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -7,7 +7,7 @@
     <meta name="description" content="围绕考研 302 数学二（085411 大数据技术与工程）的闯关式刷题系统：考点分层节点地图、章节剧情、羁绊收集、成就系统、错题复盘与考点溯源，支持 LaTeX 公式渲染。">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <link rel="stylesheet" href="css/katex.min.css">
-    <link rel="stylesheet" href="css/style.css?v=20261018g">
+    <link rel="stylesheet" href="css/style.css?v=20261019g">
     <link rel="stylesheet" href="css/dragonball.css?v=20261018j">
     <link rel="stylesheet" href="css/world.css?v=20261018n">
 </head>
@@ -16,6 +16,9 @@
 <!-- 旧版悟空动态背景（视频 + 全屏 Canvas）已停用：
      主画面由 2D 像素世界的 Canvas 绘制，不再额外解码视频或跑第二套全屏粒子。 -->
 <div id="fxFlash"></div>
+
+<!-- 隐藏界面后的恢复入口（沉浸模式） -->
+<button class="ui-restore" id="btnUiRestore" type="button" hidden title="显示界面（H）">☰ 显示界面</button>
 
 <!-- ============ 顶部 HUD ============ -->
 <header class="hud">
@@ -41,6 +44,9 @@
         <button class="btn btn-ghost btn-icon" id="btnMusic" title="背景音乐开关">🔊</button>
         <button class="btn btn-ghost btn-icon" id="btnSfx" title="音效开关">🎵</button>
         <button class="btn btn-ghost btn-icon" id="btnTheme" title="切换 热血模式 / 简洁模式">🥋</button>
+        <button class="btn btn-ghost btn-icon" id="btnImmersive" title="隐藏界面（I）：收起顶栏、图例与任务框">🖥</button>
+        <button class="btn btn-ghost btn-icon" id="btnStaff" title="召唤金箍棒（H）：考点总览 / 题库 / 笔记">🪄</button>
+        <button class="btn btn-ghost" id="btnMp" title="好友联机：同屏闲逛 + 聊天">🌐<span class="lbl-long"> 联机</span><span class="lbl-short"> 联</span></button>
         <button class="btn btn-ghost" id="btnBag" title="背包：B 键随时打开，查看已获得的秘籍">🎒<span class="lbl-long"> 背包</span><span class="lbl-short"> 包</span><b class="hud-badge" id="hudBag">0</b></button>
         <button class="btn btn-ghost" id="btnPanel" title="成就 / 错题本">🏅<span class="lbl-long"> 成就 / 错题本</span><span class="lbl-short"> 成就</span></button>
         <button class="btn btn-ghost danger" id="btnReset" title="清空存档">重置</button>
@@ -69,7 +75,7 @@
         <span class="lg-item"><i class="dot m3"></i>扎实 ≥85%</span>
     </div>
     <div class="legend-group hint">
-        <span>💡 WASD / 方向键走路 · 点击地面自动寻路 · 走到人物旁按 <b>空格</b> 挑战 · 通关掉落「兵器」 · <b>M</b> 切换场景</span>
+        <span>💡 WASD / 方向键走路 · 点击地面自动寻路 · 走到人物旁按 <b>空格</b> 挑战 · <b>H</b> 召唤金箍棒看考点 · <b>I</b> 隐藏界面</span>
     </div>
 </section>
 
@@ -92,7 +98,7 @@
             <i class="mini-tip">点击小地图传送</i>
         </div>
     </div>
-    <div class="world-hint">WASD 走路 · 点击寻路 · 滚轮缩放 · 拖动地图 · 空格挑战 · <b>M</b> 世界地图 · <b></b>C</b> 坐骑/皮肤 · <b>R</b> 葫芦复盘 · <b>B</b> 背包</div>
+    <div class="world-hint">WASD 走路 · 点击寻路 · 滚轮缩放 · 拖动地图 · 空格挑战 · <b>H</b> 金箍棒 · <b>M</b> 世界地图 · <b>C</b> 坐骑/皮肤 · <b>R</b> 葫芦复盘 · <b>B</b> 背包 · <b>I</b> 隐藏界面</div>
     <div class="world-zoom" id="worldZoom">
         <button type="button" data-z="in" title="放大">＋</button>
         <span id="worldZoomVal">100%</span>
@@ -172,6 +178,7 @@
             <div class="battle-meta">
                 <span class="q-progress" id="qProgress"></span>
                 <span class="combo-badge" id="comboBadge"></span>
+                <button class="battle-cheat" id="battleCheat" title="秘籍（B）：答题中也能翻，倒计时会暂停">📖<span>秘籍</span></button>
                 <button class="battle-close" id="battleClose" aria-label="退出关卡">✕</button>
             </div>
         </header>
@@ -224,6 +231,7 @@
         <div class="panel-tabs">
             <button class="panel-tab active" data-view="ach">🏅 成就</button>
             <button class="panel-tab" data-view="wrong">📕<span class="lbl-long"> 错题本</span><span class="lbl-short"> 错题</span></button>
+            <button class="panel-tab" data-view="notes">📒<span class="lbl-long"> 笔记</span><span class="lbl-short"> 笔记</span></button>
             <button class="panel-tab" data-view="bond">🤝<span class="lbl-long"> 羁绊录</span><span class="lbl-short"> 羁绊</span></button>
             <button class="panel-tab" data-view="weapon">🗡️<span class="lbl-long"> 兵器库</span><span class="lbl-short"> 兵器</span></button>
             <button class="panel-tab" data-view="diary">📔<span class="lbl-long"> 疑问日记</span><span class="lbl-short"> 日记</span></button>
@@ -234,6 +242,7 @@
     <div class="panel-body">
         <div class="panel-view active" id="view-ach"></div>
         <div class="panel-view" id="view-wrong"></div>
+        <div class="panel-view" id="view-notes"></div>
         <div class="panel-view" id="view-bond"></div>
         <div class="panel-view" id="view-weapon"></div>
         <div class="panel-view" id="view-diary"></div>
@@ -257,6 +266,51 @@
             <button class="story-btn" id="storyBtn">继 续 ▸</button>
             <button class="story-skip" id="storySkip" type="button" hidden>跳过 ▸▸</button>
         </div>
+    </div>
+</div>
+
+<!-- ============ 金箍棒 · 考点总览 ============ -->
+<div class="staff-mask" id="staffMask" aria-hidden="true">
+    <div class="staff-panel" role="dialog" aria-modal="true" aria-label="如意金箍棒">
+        <header class="staff-head">
+            <div class="staff-title">
+                <span class="staff-stick" aria-hidden="true"></span>
+                <b>如意金箍棒</b><i>考点总览 / 题库 / 笔记</i>
+            </div>
+            <div class="staff-tabs">
+                <button class="staff-tab active" data-stab="map" type="button">🗺️ 考点地图</button>
+                <button class="staff-tab" data-stab="quiz" type="button">📚 题库总览</button>
+            </div>
+            <button class="battle-close" id="staffClose" aria-label="关闭">✕</button>
+        </header>
+        <div class="staff-body" id="staffBody"></div>
+    </div>
+</div>
+
+<!-- ============ 好友联机：资料 / 房间面板 ============ -->
+<div class="mp-mask" id="mpMask" aria-hidden="true">
+    <div class="mp-panel" role="dialog" aria-modal="true" aria-label="好友联机">
+        <header class="mp-head">
+            <div class="mp-title">🌐 好友联机</div>
+            <button class="battle-close" id="mpClose" aria-label="关闭">✕</button>
+        </header>
+        <div class="mp-body" id="mpBody"></div>
+    </div>
+</div>
+
+<!-- ============ 好友联机：聊天侧栏（进房后常驻左下角） ============ -->
+<div class="mp-chat" id="mpChat" hidden>
+    <header class="mp-chat-head">
+        <span class="mp-live"></span>
+        <b>房间 <span id="mpChatCode">—</span></b>
+        <span class="mp-count" id="mpChatCount">0/4</span>
+        <button class="mp-chat-fold" id="mpChatFold" type="button" title="收起">▾</button>
+    </header>
+    <div class="mp-chat-log" id="mpChatLog"></div>
+    <div class="mp-chat-quick" id="mpQuick"></div>
+    <div class="mp-chat-input">
+        <input id="mpChatInput" maxlength="120" placeholder="说点什么…（Enter 发送）" autocomplete="off">
+        <button id="mpChatSend" class="btn btn-mini" type="button">发送</button>
     </div>
 </div>
 
@@ -419,24 +473,27 @@
 <script src="js/data-trial.js"></script>
 <script src="js/data-story.js"></script>
 <script src="js/data-links.js"></script>
-<script src="js/store.js?v=20261018h"></script>
+<script src="js/store.js?v=20261019e"></script>
 <script src="monsters/monsters.js"></script>
 <script src="js/personas.js?v=20261018a"></script>
-<script src="js/music.js?v=20261018k"></script>
+<script src="js/music.js?v=20261019g"></script>
 <script src="js/audio.js?v=20261018i"></script>
 <script src="js/ai.js"></script>
 <script src="js/fx.js?v=20261018j"></script>
-<script src="js/engine.js?v=20261018j"></script>
-<script src="js/world.js?v=20261018y"></script>
-<script src="js/bag.js?v=20261018d"></script>
+<script src="js/engine.js?v=20261019g"></script>
+<script src="js/world.js?v=20261019e"></script>
+<script src="js/bag.js?v=20261019g"></script>
 <script src="js/gourd.js?v=20261018d"></script>
-<script src="js/gear.js?v=20261018r"></script>
+<script src="js/gear.js?v=20261019c"></script>
 <script src="js/arena.js?v=20261018h"></script>
 <script src="js/huilu.js?v=20261018h"></script>
 <script src="js/story.js?v=20261018g"></script>
 <script src="js/diary.js"></script>
-<script src="js/cloud.js"></script>
+<script src="js/cloud.js?v=20261019a"></script>
 <script src="js/master.js?v=20261018g"></script>
-<script src="js/app.js?v=20261018l"></script>
+<script src="js/app.js?v=20261019g"></script>
+<script src="js/vendor/supabase.js"></script>
+<script src="js/mp.js?v=20261019d"></script>
+<script src="js/staff.js?v=20261019f"></script>
 </body>
 </html>

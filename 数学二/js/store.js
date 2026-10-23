@@ -33,7 +33,10 @@ window.HNSF829 = window.HNSF829 || {};
     gear: { fragments: 0, skins: { starter: 1 }, skin: 'starter', mount: '' }, // 皮肤碎片 / 已拥有皮肤 / 当前皮肤 / 当前坐骑
     gourd: { last: 0, total: 0 },    // 葫芦法宝：上次炼化时间 + 累计炼化炉数
     arena: { runs: 0, best: 0, champion: 0 }, // 天下第一武道会：参赛次数 / 最好轮数 / 夺冠次数
-    lastNodeId: ''      // 最近一次打的关卡（结算页可一键再来）
+    lastNodeId: '',     // 最近一次打的关卡（结算页可一键再来）
+    notes: {},          // qid -> { text, ts } 每题笔记（跟着存档一起云同步）
+    fav: {},            // qid -> ts 金箍棒里的收藏
+    mastered: {}        // qid -> ts 手动标记「已掌握」（独立于自动统计）
   };
 
   var state = null;          // 真正的初始化放在 load()/save() 定义之后（迁移表要先就位）
@@ -939,6 +942,74 @@ window.HNSF829 = window.HNSF829 || {};
     };
   }
 
+  /* ---------------- 每题笔记 ---------------- */
+  /** 读某题的笔记（没有就返回空串） */
+  function noteGet(qid) {
+    var n = (state.notes || {})[qid];
+    return n && n.text ? n.text : '';
+  }
+
+  /** 写某题的笔记；空白即删除。会触发 save()，于是跟着云端同步走 */
+  function noteSet(qid, text) {
+    if (!qid) return;
+    var t = String(text == null ? '' : text);
+    if (!t.trim()) {
+      if (state.notes && state.notes[qid]) { delete state.notes[qid]; save(); emit(); }
+      return;
+    }
+    state.notes = state.notes || {};
+    var old = state.notes[qid];
+    if (old && old.text === t) return;
+    state.notes[qid] = { text: t, ts: Date.now() };
+    save(); emit();
+  }
+
+  /** 全部笔记（新写的在前），供「笔记」面板列出来看 */
+  function noteList() {
+    var out = [];
+    Object.keys(state.notes || {}).forEach(function (qid) {
+      var n = state.notes[qid];
+      if (!n || !n.text) return;
+      out.push({ qid: qid, text: n.text, ts: n.ts || 0 });
+    });
+    out.sort(function (a, b) { return b.ts - a.ts; });
+    return out;
+  }
+
+  function noteCount() {
+    return Object.keys(state.notes || {}).filter(function (qid) {
+      var n = state.notes[qid];
+      return n && n.text;
+    }).length;
+  }
+
+  /* ---------------- 金箍棒：收藏 / 手动掌握 ---------------- */
+  function isFav(qid) { return !!(qid && state.fav && state.fav[qid]); }
+
+  function toggleFav(qid) {
+    if (!qid) return false;
+    state.fav = state.fav || {};
+    if (state.fav[qid]) delete state.fav[qid];
+    else state.fav[qid] = Date.now();
+    save(); emit();
+    return !!state.fav[qid];
+  }
+
+  function favCount() { return Object.keys(state.fav || {}).length; }
+
+  function isMastered(qid) { return !!(qid && state.mastered && state.mastered[qid]); }
+
+  function setMastered(qid, on) {
+    if (!qid) return false;
+    state.mastered = state.mastered || {};
+    if (on) state.mastered[qid] = Date.now();
+    else delete state.mastered[qid];
+    save(); emit();
+    return !!state.mastered[qid];
+  }
+
+  function masteredCount() { return Object.keys(state.mastered || {}).length; }
+
   /* ---------------- 订阅 / 重置 ---------------- */
   function subscribe(fn) { listeners.push(fn); }
   function emit() { listeners.forEach(function (fn) { try { fn(state); } catch (e) {} }); }
@@ -1014,6 +1085,16 @@ window.HNSF829 = window.HNSF829 || {};
     reset: reset,
     replace: replace,
     raw: raw,
+    noteGet: noteGet,
+    noteSet: noteSet,
+    noteList: noteList,
+    noteCount: noteCount,
+    isFav: isFav,
+    toggleFav: toggleFav,
+    favCount: favCount,
+    isMastered: isMastered,
+    setMastered: setMastered,
+    masteredCount: masteredCount,
     PASS_RATE: PASS_RATE
   };
 })(window.HNSF829);

@@ -25,6 +25,7 @@ window.HNSF829 = window.HNSF829 || {};
   // 与 store.js / diary.js 里的 key 保持一致（那两处是私有的，这里只能重写一遍）
   var SAVE_KEY = 'hnsf302_save_v1';
   var DIARY_KEY = 'hnsf302_diary_v1';
+  var PREV_KEY = 'hnsf302_save_prev_v1';     // 被云端覆盖前的本机存档快照（可一键找回）
   var SYNC_KEY = 'hnsf302_sync_v1';          // { code, ts }
   var TS_KEY = 'hnsf302_autots_v1';          // 旧档兼容：今天以前的设备时钟存这里，只读不写
 
@@ -42,6 +43,7 @@ window.HNSF829 = window.HNSF829 || {};
   var suppress = false;                      // 正在应用云端/外部数据：期间本机保存不上传
   var autoReady = false;                     // 开机第一次对照完成前，禁止一切上传
   var pushTimer = null;                      // 实时上传的合流计时器（1.2s 内只发一次）
+  var lastCloud = null;                      // 最近一次拉到的云端进度摘要（上传前的防呆用）
 
   /* ---------------- 同步码存取 ---------------- */
   function meta() {
@@ -59,6 +61,15 @@ window.HNSF829 = window.HNSF829 || {};
   }
   function lastSync() { return meta().ts || 0; }
   function touchSync() { var m = meta(); m.ts = Date.now(); writeMeta(m); }
+
+  /** 记下云端那份的进度摘要（跨页面保存，页面隐藏时的补传也能用它防呆） */
+  function noteCloud(save) {
+    var m = meta();
+    m.cloudXp = (save && save.xp) || 0;
+    m.cloudCleared = Object.keys((save && save.cleared) || {}).length;
+    m.cloudTs = Date.now();
+    writeMeta(m);
+  }
   function codeOk(c) { return String(c || '').trim().length >= MIN_CODE; }
 
   function genCode() {
@@ -113,6 +124,7 @@ window.HNSF829 = window.HNSF829 || {};
 
   /** 用云端 payload 覆盖本机。期间的本机保存事件不上传，防止立刻回写。 */
   function applyPayload(p) {
+    snapshotLocal('cloud', p && p.save);
     suppress = true;
     try {
       if (p && p.save) {
@@ -139,6 +151,59 @@ window.HNSF829 = window.HNSF829 || {};
       (s.stats && (s.stats.answered || 0) > 0)));
     var hasDiary = !!(d && d.items && d.items.length);
     return !hasSave && !hasDiary;
+  }
+
+  /* ---------------- 覆盖前的本机快照（防云端事故） ---------------- */
+  function progressOf(s) {
+    return { xp: (s && s.xp) || 0, cleared: Object.keys((s && s.cleared) || {}).length };
+  }
+
+  /** 进度的单一可比分数：经验 + 通关关数折算（避免「关数多但零经验」的假档压过真档） */
+  function wealthOf(s) {
+    var p = progressOf(s);
+    return p.xp + p.cleared * 25;
+  }
+
+  /** 云端要覆盖本机之前，先把本机现有的实货存档留一份快照 */
+  function snapshotLocal(reason, incoming) {
+    try {
+      var raw = localStorage.getItem(SAVE_KEY);
+      if (!raw) return;
+      var save = JSON.parse(raw);
+      var pc = progressOf(save);
+      if (!(pc.xp > 0 || pc.cleared > 0)) return;      // 空壳不占位
+      // 云端明显更全 = 正常升级，不是「被误覆盖」，不留快照（免得恢复按钮给出旧档）
+      if (incoming && wealthOf(incoming) > wealthOf(save) + 50) return;
+      var diary = null;
+      try { diary = JSON.parse(localStorage.getItem(DIARY_KEY) || 'null'); } catch (e) {}
+      localStorage.setItem(PREV_KEY, JSON.stringify({
+        at: Date.now(), reason: reason || '', save: save, diary: diary
+      }));
+    } catch (e) {}
+  }
+
+  /** 上一次本机快照的摘要（设置面板展示用） */
+  function prev() {
+    try {
+      var b = JSON.parse(localStorage.getItem(PREV_KEY) || 'null');
+      if (!b || !b.save) return null;
+      var pc = progressOf(b.save);
+      return { at: b.at || 0, reason: b.reason || '', xp: pc.xp, cleared: pc.cleared };
+    } catch (e) { return null; }
+  }
+
+  /** 把快照写回本机（覆盖当前存档与日记），并把时间戳刷新为现在，避免下次开机又被云端旧档盖回去 */
+  function restorePrev() {
+    try {
+      var b = JSON.parse(localStorage.getItem(PREV_KEY) || 'null');
+      if (!b || !b.save) return false;
+      b.save.ts = Date.now();
+      localStorage.setItem(SAVE_KEY, JSON.stringify(b.save));
+      if (b.diary) localStorage.setItem(DIARY_KEY, JSON.stringify(b.diary));
+      if (NS.Store && NS.Store.replace) NS.Store.replace(b.save);
+      if (NS.Diary && NS.Diary.refresh) NS.Diary.refresh();
+      return true;
+    } catch (e) { return false; }
   }
 
   /** 本机时间：存档对象里的 ts（save() 随存档一起写）为准；旧档回落到独立时间键 */
@@ -190,6 +255,7 @@ window.HNSF829 = window.HNSF829 || {};
         var payload = row && row.payload && row.payload.save ? row.payload : null;
         if (!payload) { done(true, { empty: true }); return; }   // 云端没有实货 → 整份覆盖无从谈起
         applyPayload(payload);
+        noteCloud(payload.save);
         touchSync();
         done(true, { at: Date.parse(row.updated_at) || Date.now(), save: payload.save });
       }, function (e) {
@@ -216,32 +282,58 @@ window.HNSF829 = window.HNSF829 || {};
     var c = code();
     if (!autoReady || !codeOk(c) || busy) return;
     if (isLocalEmpty()) return;
+    // 防呆：本机进度明显少于已知的云端（比如旧档/测试档），不许覆盖云端
+    var lsave = JSON.parse(localStorage.getItem(SAVE_KEY) || 'null');
+    var m = meta();
+    var cw = Math.max(
+      lastCloud ? lastCloud.xp + lastCloud.cleared * 25 : 0,
+      (m.cloudXp || 0) + (m.cloudCleared || 0) * 25);
+    if (cw > wealthOf(lsave) + 50) return;
     busy = true;
     rpc('math2_push', { p_code: c, p_payload: collect() }, flush).then(function () {
       busy = false;
+      noteCloud(JSON.parse(localStorage.getItem(SAVE_KEY) || 'null'));
       touchSync();
     }, function () { busy = false; });
   }
 
   /** 开机对照：有实货的哪边新哪边赢，只比对这一次。 */
-  function autoInit() {
+  function autoInit(attempt) {
+    var n = attempt || 0;
     var c = code();
     if (!codeOk(c)) { autoReady = true; return; }
     rpc('math2_pull', { p_code: c }).then(function (rows) {
       var row = (rows && rows.length) ? rows[0] : null;
       var payload = row && row.payload && row.payload.save ? row.payload : null;
       var cloudAt = row ? (Date.parse(row.updated_at) || 0) : 0;
+      if (payload) {
+        lastCloud = {
+          xp: payload.save.xp || 0,
+          cleared: Object.keys(payload.save.cleared || {}).length,
+          at: cloudAt
+        };
+      }
       var empty = isLocalEmpty();
       var lt = localTs();
-      if (payload && (empty || !(lt > 0) || cloudAt > lt)) {
-        applyPayload(payload);                              // 云端有实货且不比本机旧 → 云端赢
+      var lsave = null;
+      try { lsave = JSON.parse(localStorage.getItem(SAVE_KEY) || 'null'); } catch (e) {}
+      var lw = wealthOf(lsave);
+      var cw = payload ? wealthOf(payload.save) : 0;
+      var poorer = !!(payload && (cw > lw + 50));
+      // 本机明显更全（比如换设备后第一次回来）→ 本机赢，哪怕云端时间戳更新
+      var richer = !!(payload && (lw > cw + 50));
+      autoReady = true;                                     // 对照完成，放行上传
+      if (payload && !richer && (empty || !(lt > 0) || cloudAt > lt || poorer)) {
+        applyPayload(payload);                              // 云端有实货且不比本机旧（或本机明显更少）→ 云端赢
+        noteCloud(payload.save);
         touchSync();
       } else if (!empty) {
-        autoPush(true);                                     // 本机有实货且云端没有/更旧 → 本机赢
+        autoPush(true);                                     // 本机有实货且云端没有/更旧/明显更少 → 本机赢
       }
-      autoReady = true;
     }, function () {
-      autoReady = true;                                     // 离线也放行，别把上传卡死
+      // 没核对成功前绝不放行上传：否则本机的旧档/空档会把云端盖掉
+      autoReady = false;
+      setTimeout(function () { autoInit(n + 1); }, n < 3 ? 8000 * (n + 1) : 60000);
     });
   }
 
@@ -257,6 +349,8 @@ window.HNSF829 = window.HNSF829 || {};
     setCode: setCode,
     genCode: genCode,
     codeOk: codeOk,
+    prev: prev,
+    restorePrev: restorePrev,
     lastSync: lastSync,
     minCode: MIN_CODE,
     defaultCode: DEFAULT_CODE,

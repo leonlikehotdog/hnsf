@@ -13,7 +13,9 @@
  *   场景 4  潮流街区·我的乐园  76.4s
  *   场景 5  英雄岛BGM          82.9s
  *   场景 6  天界·水平宫        61.7s
- *   做题    双鱼宫 / 雪人谷 / 水平宫 三首舒缓曲轮播（播完自动换，不再单曲循环）
+ *   做题    12 首舒缓曲轮播（双鱼宫 / 雪人谷 / 圣诞小屋 / 梦想广场 / 白落落村 /
+ *           梦想屋 / 怀特冰山 / 彩虹仙境 / 星之法阵 / 星之泉 / 光羽圣殿 / 水平宫），
+ *           每首放完自动换下一首，轮完一圈才重复
  *   BOSS    宠物战斗2BGM      359.5s
  *   擂台    宠物战斗3BGM
  *   对话    王国城堡·舞会厅     41.4s
@@ -34,14 +36,27 @@ window.HNSF829 = window.HNSF829 || {};
     'boss': { file: 'music/QG_草莓LOVELY炫 - 宠物战斗2BGM.mp3', name: '宠物战斗 2', vol: 0.70 },
     'arenaBattle': { file: 'music/QG_草莓LOVELY炫 - 宠物战斗3BGM.mp3', name: '宠物战斗 3', vol: 0.72 },
     'dialogue': { file: 'music/QG_草莓LOVELY炫 - 王国城堡-舞会厅.mp3', name: '王国城堡 · 舞会厅', vol: 0.62 },
-    // 做题专用：普通做题不再单曲循环战斗曲，改为这 3 首舒缓曲自然轮播；
-    // 单独用 study: 前缀，避免覆盖场景曲的播放进度（lastSceneKey）
+    // 做题专用：普通做题不再单曲循环战斗曲，改为舒缓曲自然轮播；
+    // 单独用 study: 前缀，避免覆盖场景曲的播放进度（lastSceneKey）。
+    // 曲目统一挑 ≥55s 的，一首放完再换下一首，轮完一圈才重复。
     'study:1': { file: 'music/QG_草莓LOVELY炫 - 天界-双鱼宫.mp3', name: '天界 · 双鱼宫（做题）', vol: 0.50 },
     'study:2': { file: 'music/QG_草莓LOVELY炫 - 雪人谷BGM.mp3', name: '雪人谷（做题）', vol: 0.50 },
-    'study:3': { file: 'music/QG_草莓LOVELY炫 - 天界-水平宫.mp3', name: '天界 · 水平宫（做题）', vol: 0.48 }
+    'study:3': { file: 'music/QG_草莓LOVELY炫 - 雪人谷-圣诞小屋BGM.mp3', name: '雪人谷 · 圣诞小屋（做题）', vol: 0.50 },
+    'study:4': { file: 'music/游戏原声 - 梦想广场.mp3', name: '梦想广场（做题）', vol: 0.50 },
+    'study:5': { file: 'music/QG_草莓LOVELY炫 - 雪人谷-白落落村BGM.mp3', name: '雪人谷 · 白落落村（做题）', vol: 0.48 },
+    'study:6': { file: 'music/游戏原声 - 梦想屋.mp3', name: '梦想屋（做题）', vol: 0.50 },
+    'study:7': { file: 'music/QG_草莓LOVELY炫 - 雪人谷-怀特冰山BGM.mp3', name: '雪人谷 · 怀特冰山（做题）', vol: 0.48 },
+    'study:8': { file: 'music/游戏原声 - 彩虹河流、彩虹仙境.mp3', name: '彩虹河流 · 彩虹仙境（做题）', vol: 0.50 },
+    'study:9': { file: 'music/游戏原声 - 试炼者之林、朗伊尔之门、朗伊尔神庙群、星之法阵.mp3', name: '试炼者之林 · 星之法阵（做题）', vol: 0.48 },
+    'study:10': { file: 'music/纯音乐 - 星之路、星之泉 (57秒片段).mp3', name: '星之路 · 星之泉（做题）', vol: 0.50 },
+    'study:11': { file: 'music/游戏原声 - 光之藤、光之蔓、藤蔓之源、风铃岛、光羽圣殿.mp3', name: '光之藤 · 光羽圣殿（做题）', vol: 0.48 },
+    'study:12': { file: 'music/QG_草莓LOVELY炫 - 天界-水平宫.mp3', name: '天界 · 水平宫（做题）', vol: 0.48 }
   };
 
-  var STUDY_LIST = ['study:1', 'study:2', 'study:3'];
+  var STUDY_LIST = [
+    'study:1', 'study:2', 'study:3', 'study:4', 'study:5', 'study:6',
+    'study:7', 'study:8', 'study:9', 'study:10', 'study:11', 'study:12'
+  ];
   var studyIdx = -1;
 
   var a = null, b = null, active = null;

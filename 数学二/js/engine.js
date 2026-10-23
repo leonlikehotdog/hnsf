@@ -432,6 +432,7 @@ window.HNSF829 = window.HNSF829 || {};
   }
 
   function close() {
+    if (noteFlush) { noteFlush(); noteFlush = null; }   // 还有没落盘的笔记，先存掉
     stopClock();
     els.mask.classList.remove('show');
     document.body.classList.remove('no-scroll');
@@ -507,6 +508,22 @@ window.HNSF829 = window.HNSF829 || {};
     paintClock(left);
   }
 
+  /** 暂停当前题的倒计时（打开秘籍 / 切到后台时用） */
+  function pauseClock() {
+    if (!clock || clock.pausedAt) return;
+    clock.pausedAt = Date.now();
+    if (clock.tid) { clearInterval(clock.tid); clock.tid = 0; }
+  }
+
+  /** 恢复倒计时：把暂停期间的时间补回 deadline，表继续从原处走 */
+  function resumeClock() {
+    if (!clock || !clock.pausedAt) return;
+    clock.deadline += Date.now() - clock.pausedAt;
+    clock.pausedAt = 0;
+    if (!clock.tid) clock.tid = setInterval(tickClock, 200);
+    tickClock();
+  }
+
   /** 每渲染完一道题调用：给选择 / 填空起表；其它题型把计时条移除 */
   function startClock(q) {
     stopClock();
@@ -544,20 +561,70 @@ window.HNSF829 = window.HNSF829 || {};
 
   document.addEventListener('visibilitychange', function () {
     if (!clock) return;
-    if (document.visibilityState === 'hidden') {
-      clock.pausedAt = Date.now();
-      if (clock.tid) { clearInterval(clock.tid); clock.tid = 0; }
-    } else if (clock.pausedAt) {
-      clock.deadline += Date.now() - clock.pausedAt;
-      clock.pausedAt = 0;
-      clock.tid = setInterval(tickClock, 200);
-      tickClock();
-    }
+    if (document.visibilityState === 'hidden') pauseClock();
+    else resumeClock();
   });
+
+  /* ---------------- 每题笔记（右上角记事本） ----------------
+   * 只记在「这道题」上（qid），不是考点笔记；输入后 0.5 秒自动落盘，
+   * 落盘走 Store.save() → 1.2 秒内推上云端，换设备也在。 */
+  var noteTimer = null;
+  var noteFlush = null;
+
+  function bindNote(q) {
+    var btn = els.body.querySelector('#qNoteBtn');
+    var box = els.body.querySelector('#qNoteEdit');
+    var input = els.body.querySelector('#qNoteInput');
+    if (!btn || !box || !input) return;
+
+    input.value = store().noteGet(q.id) || '';
+
+    function flush() {
+      var v = input.value;
+      store().noteSet(q.id, v);
+      btn.classList.toggle('has', !!v.trim());
+    }
+    noteFlush = function () {
+      if (noteTimer) { clearTimeout(noteTimer); noteTimer = null; }
+      flush();
+    };
+    function toggle(on) {
+      box.hidden = !on;
+      btn.classList.toggle('on', on);
+      if (on) {
+        input.focus();
+        try { input.setSelectionRange(input.value.length, input.value.length); } catch (e) {}
+      }
+    }
+
+    btn.addEventListener('click', function () {
+      if (noteTimer) { clearTimeout(noteTimer); noteTimer = null; flush(); }
+      toggle(box.hidden);
+    });
+    input.addEventListener('input', function () {
+      if (noteTimer) clearTimeout(noteTimer);
+      noteTimer = setTimeout(function () { noteTimer = null; flush(); }, 500);
+    });
+    input.addEventListener('blur', function () {
+      if (noteTimer) { clearTimeout(noteTimer); noteTimer = null; }
+      flush();
+    });
+    input.addEventListener('keydown', function (e) {
+      e.stopPropagation();                       // 别触发题目的快捷键
+      if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+        e.preventDefault();
+        flush();
+        toggle(false);
+      }
+    });
+    var done = els.body.querySelector('#qNoteDone');
+    if (done) done.addEventListener('click', function () { flush(); toggle(false); });
+  }
 
   /* ---------------- 渲染当前题 ---------------- */
   function renderQuestion() {
     var s = session, q = s.questions[s.idx];
+    if (noteFlush) noteFlush();            // 上一题还没落盘的笔记先存掉
     s.locked = false;
     updateHud();
 
@@ -573,8 +640,11 @@ window.HNSF829 = window.HNSF829 || {};
       optsHtml = '<textarea class="q-input" id="qInput" rows="' + (q.type === 'blank' ? 2 : 10) + '" placeholder="' + ph + '"></textarea>';
     }
 
+    var note = store().noteGet(q.id);
     els.body.innerHTML =
       '<div class="q-card">' +
+        '<button class="q-note-btn' + (note.trim() ? ' has' : '') + '" id="qNoteBtn" type="button" ' +
+          'title="本题笔记" aria-label="本题笔记">📒</button>' +
         '<div class="q-tags">' +
           (q.year ? '<span class="tag tag-year">' + q.year + ' 真题</span>' : '') +
           '<span class="tag tag-type">' + (TYPE_LABEL[q.type] || q.type) + '</span>' +
@@ -582,6 +652,12 @@ window.HNSF829 = window.HNSF829 || {};
           (q.diff ? '<span class="tag tag-diff d-' + q.diff + '">' + (DIFF_LABEL[q.diff] || q.diff) + '</span>' : '') +
           '<span class="tag tag-score">' + (q.year ? '满分 ' + (q.score || 3) + ' 分' : '真题权重 ' + (q.score || 3)) + '</span>' +
           '<span class="tag tag-xp">+' + xpFor(q) + ' XP</span>' +
+        '</div>' +
+        '<div class="q-note-edit" id="qNoteEdit" hidden>' +
+          '<textarea class="q-note-input" id="qNoteInput" rows="4" ' +
+            'placeholder="随手记：这题卡在哪、关键一步是什么、下次怎么起手…（自动保存，跟存档一起云同步）"></textarea>' +
+          '<div class="q-note-foot"><span class="q-note-hint">自动保存 · 记在本题上</span>' +
+            '<button class="btn btn-mini" id="qNoteDone" type="button">完成</button></div>' +
         '</div>' +
         ((q.type === 'choice' || q.type === 'blank')
           ? '<div class="q-clock"><span class="q-clock-num">--</span><div class="q-clock-bar"><i></i></div></div>'
@@ -593,6 +669,7 @@ window.HNSF829 = window.HNSF829 || {};
       '</div>';
 
     renderMathLater(els.body);          // 渲染题干与选项里的公式
+    bindNote(q);                        // 右上角记事本：读写「本题笔记」
 
     if (q.type === 'choice') {
       els.body.querySelectorAll('.opt').forEach(function (btn) {
@@ -1231,6 +1308,8 @@ window.HNSF829 = window.HNSF829 || {};
     RARITY: RARITY,
     renderMath: renderMath,
     timerCfg: timerCfg,
-    setTimerCfg: setTimerCfg
+    setTimerCfg: setTimerCfg,
+    pauseClock: pauseClock,
+    resumeClock: resumeClock
   };
 })(window.HNSF829);

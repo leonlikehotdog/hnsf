@@ -115,6 +115,12 @@ window.HNSF829 = window.HNSF829 || {};
       mark.title = '通关线：正确率 ' + Math.round(Store.PASS_RATE * 100) + '%';
     }
     bindGlobal();
+    // 恢复上次的沉浸模式（地图全屏）
+    if (uiHiddenOn()) {
+      document.body.classList.add('ui-hidden');
+      var rb = $('#btnUiRestore');
+      if (rb) rb.hidden = false;
+    }
     renderMap();
     renderHud();
     Store.subscribe(renderHud);
@@ -124,8 +130,25 @@ window.HNSF829 = window.HNSF829 || {};
   function $(sel, root) { return (root || document).querySelector(sel); }
   function $$(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
 
+  /* ---------------- 沉浸模式：隐藏顶栏 / 图例 / 任务框 ----------------
+     地图是主角，顶栏和任务框会挡视线；按 H 或右上角「☰」随时恢复。 */
+  var UI_HIDE_KEY = 'hnsf302_ui_hidden_v1';
+  function uiHiddenOn() {
+    try { return localStorage.getItem(UI_HIDE_KEY) === '1'; } catch (e) { return false; }
+  }
+  function setUiHidden(on) {
+    document.body.classList.toggle('ui-hidden', !!on);
+    var b = $('#btnUiRestore');
+    if (b) b.hidden = !on;
+    try { localStorage.setItem(UI_HIDE_KEY, on ? '1' : '0'); } catch (e) {}
+    if (NS.World) setTimeout(function () { NS.World.resize(); }, 40);
+  }
+
   function bindGlobal() {
     $('#battleClose').addEventListener('click', function () { Engine.close(); });
+    // 答题中翻秘籍：顶部 📖 按钮，效果同 B 键
+    var cheatBtn = $('#battleCheat');
+    if (cheatBtn) cheatBtn.addEventListener('click', function () { if (NS.BAG) NS.BAG.open(); });
     $('#btnPanel').addEventListener('click', function () { togglePanel(true); });
     $('#panelClose').addEventListener('click', function () { togglePanel(false); });
     $('#panelMask').addEventListener('click', function () { togglePanel(false); });
@@ -149,6 +172,23 @@ window.HNSF829 = window.HNSF829 || {};
     $('#btnSfx').addEventListener('click', function () {
       NS.Audio.setSfx(!NS.Audio.isSfxOn());
       syncAudioBtns();
+    });
+
+    /* ---- 沉浸模式：隐藏顶栏 / 图例 / 任务框 ---- */
+    var immB = $('#btnImmersive');
+    if (immB) immB.addEventListener('click', function () {
+      setUiHidden(true);
+      Engine.toast('界面已隐藏 · 按 I 或点右上角「☰ 显示界面」恢复');
+    });
+    var restoreB = $('#btnUiRestore');
+    if (restoreB) restoreB.addEventListener('click', function () { setUiHidden(false); });
+    document.addEventListener('keydown', function (e) {
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
+      var t = e.target;
+      if (t && /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)) return;
+      if (e.key === 'i' || e.key === 'I') {
+        setUiHidden(!document.body.classList.contains('ui-hidden'));
+      }
     });
     $$('.panel-tab').forEach(function (tab) {
       tab.addEventListener('click', function () {
@@ -635,6 +675,7 @@ window.HNSF829 = window.HNSF829 || {};
     if (!$('#panel').classList.contains('show')) return;
     renderAchievements();
     renderWrongBook();
+    renderNotes();
     renderBondBook();
     renderWeaponBook();
     renderStats();
@@ -735,6 +776,61 @@ window.HNSF829 = window.HNSF829 || {};
         (a.got ? '<div class="ach-date">' + new Date(a.ts).toLocaleDateString() + '</div>' : '') +
         '</div>';
     }).join('') + '</div>';
+  }
+
+  /* ---------------- 笔记：集中回看每道题记了什么 ---------------- */
+  function renderNotes() {
+    var box = $('#view-notes');
+    if (!box) return;
+    var list = Store.noteList();
+    var head = '<div class="note-head"><b>共 ' + list.length + ' 道题有笔记</b>' +
+      '<span>答题时点题目右上角的 📒 记录；这里可以集中回看</span></div>';
+    if (!list.length) {
+      box.innerHTML = head + '<div class="empty">📒 还没有笔记。<br>遇到卡壳的题，点题目右上角的记事本记一句。</div>';
+      return;
+    }
+
+    var qmap = {};
+    BANK.forEach(function (q) { qmap[q.id] = q; });
+    (ZT.qs || []).forEach(function (q) { qmap[q.id] = q; });   // 真题关的题单独一库
+    var groups = {};
+    list.forEach(function (it) {
+      var q = qmap[it.qid];
+      var nid = (q && q.node) || '';
+      (groups[nid] = groups[nid] || []).push(it);
+    });
+
+    // 按考点在知识树里的顺序排，找不到考点的归到最后
+    var order = {};
+    NODES.forEach(function (n, i) { order[n.id] = i; });
+    var keys = Object.keys(groups).sort(function (a, b) {
+      var ia = order[a] == null ? 9999 : order[a];
+      var ib = order[b] == null ? 9999 : order[b];
+      return ia - ib;
+    });
+
+    box.innerHTML = head + keys.map(function (nid) {
+      var n = Store.nodeById(nid);
+      var ch = n ? chapterOf(n.chap) : null;
+      return '<div class="note-group">' +
+        '<div class="note-group-title">' + (n ? sumEsc(n.name) : '未归类') +
+          (ch ? '<i>第 ' + ch.no + ' 章</i>' : '') + '</div>' +
+        groups[nid].map(function (it) {
+          var q = qmap[it.qid] || {};
+          var stem = String(q.stem || it.qid)
+            .replace(/\$[^$]*\$/g, '…')
+            .replace(/\\\([\s\S]*?\\\)/g, '…')
+            .replace(/\\\[[\s\S]*?\\\]/g, '…')
+            .replace(/\s+/g, ' ');
+          return '<details class="note-item">' +
+            '<summary><span class="note-stem">' + sumEsc(stem.slice(0, 100)) +
+              (stem.length > 100 ? '…' : '') + '</span>' +
+              '<span class="note-time">' + fmtTime(it.ts) + '</span></summary>' +
+            '<div class="note-body">' + sumEsc(it.text).replace(/\n/g, '<br>') + '</div>' +
+          '</details>';
+        }).join('') +
+      '</div>';
+    }).join('');
   }
 
   function renderWrongBook() {
@@ -1147,6 +1243,9 @@ window.HNSF829 = window.HNSF829 || {};
         '<button class="btn" data-cl="push">⬆️ 上传本机</button>' +
         '<button class="btn" data-cl="pull">⬇️ 下载云端</button>' +
       '</div>' +
+      '<div class="audio-row"><span>误覆盖</span>' +
+        '<button class="btn" data-cl="restore">↩️ 恢复上一份本机存档</button>' +
+      '</div>' +
       '<div class="cloud-status" data-cl="status">本机同步码：' + (C.codeOk(c) ? '已设置' : '未设置') +
         '　·　自动同步：已开启　·　最后同步：' + fmtTime(C.lastSync()) + '</div>' +
       '<div class="audio-tip"><b>实时同步已开启</b>：进度只有云端一份（Supabase），本机只是镜像 —— 打开页面自动读取云端，答题存档后 1~2 秒内自动推上去，换设备、清缓存、换域名都不用管。<br>' +
@@ -1260,6 +1359,43 @@ window.HNSF829 = window.HNSF829 || {};
         Engine.toast('☁️ 已下载云端进度，本机已更新');
         renderMap(); renderHud();                            // 解锁状态与 HUD 都要重算
       });
+    });
+
+    // 恢复上一份本机存档：只在「被云端覆盖」时留有快照
+    var restoreB = box.querySelector('[data-cl="restore"]');
+    var restoreArmed = 0;
+    restoreB.addEventListener('click', function () {
+      var pv = C.prev();
+      if (!pv) {
+        cloudStatus('还没有可恢复的快照 —— 只有「云端覆盖本机」之前才会自动留一份。', 'warn');
+        return;
+      }
+      var now = Date.now();
+      if (!(restoreArmed && now - restoreArmed < 5000)) {
+        restoreArmed = now;
+        restoreB.textContent = '⚠️ 再点一次：回到 ' + fmtTime(pv.at);
+        restoreB.classList.add('danger');
+        cloudStatus('快照：XP ' + pv.xp + ' · 通关 ' + pv.cleared + ' 关 · 保存于 ' + fmtTime(pv.at) +
+          '。恢复会覆盖当前本机进度，确认请再点一次。', 'warn');
+        setTimeout(function () {
+          if (Date.now() - restoreArmed >= 4900) {
+            restoreArmed = 0;
+            restoreB.textContent = '↩️ 恢复上一份本机存档';
+            restoreB.classList.remove('danger');
+          }
+        }, 5000);
+        return;
+      }
+      restoreArmed = 0;
+      restoreB.textContent = '↩️ 恢复上一份本机存档';
+      restoreB.classList.remove('danger');
+      if (C.restorePrev()) {
+        cloudStatus('✅ 已恢复 ' + fmtTime(pv.at) + ' 的存档，正在刷新…', 'ok');
+        Engine.toast('↩️ 已恢复上一份存档');
+        setTimeout(function () { location.reload(); }, 900);
+      } else {
+        cloudStatus('恢复失败：快照读取不到', 'err');
+      }
     });
   }
 

@@ -62,6 +62,12 @@ window.HNSF829 = window.HNSF829 || {};
     return !!(f && TRAIL_KINDS.indexOf(f.kind) >= 0);
   }
   var player = { x: 0, y: 0, dir: 'down', walk: 0, moving: false, path: [], speed: WALK_SPEED };
+  /* ---------------- 联机：好友的像素小人 ----------------
+     remotes: uid -> { x,y,tx,ty,dir,moving,skin,mount,name,bubble,bubbleAt,ts,walk }
+     位置由 mp.js 每 200ms 灌进来，这里做插值，避免一跳一跳。 */
+  var remotes = {};
+  var selfSkin = '';              // 房间内自己的联机形象（空 = 用装备皮肤）
+  var selfName = '你';            // 自己头顶的名字（联机昵称，没建角色就叫「你」）
   var cam = { x: 0, y: 0, z: 1 };
   var ZOOM_MIN = 0.6, ZOOM_MAX = 2.2;
   var drag = null, camFree = 0;
@@ -93,7 +99,7 @@ window.HNSF829 = window.HNSF829 || {};
   function pick(arr, r) { return arr[Math.floor(r * arr.length) % arr.length]; }
   function trunc(s, n) { return s.length > n ? s.slice(0, n) + '…' : s; }
   function uiBlocked() {
-    var ids = ['battleMask', 'nodeDetail', 'panel', 'storyMask', 'masterMask', 'hlMask', 'bagMask', 'lootMask', 'gearMask', 'gearCg', 'sceneMask', 'arenaMask'];
+    var ids = ['battleMask', 'nodeDetail', 'panel', 'storyMask', 'masterMask', 'hlMask', 'bagMask', 'lootMask', 'gearMask', 'gearCg', 'sceneMask', 'arenaMask', 'staffMask', 'mpMask'];
     for (var i = 0; i < ids.length; i++) {
       var el = $(ids[i]);
       if (el && el.classList.contains('show')) return true;
@@ -422,6 +428,8 @@ window.HNSF829 = window.HNSF829 || {};
 
   /** 当前玩家外观（皮肤系统会换掉整套配色） */
   function playerSpecNow() {
+    // 联机房间里用自己的「联机形象」；退出房间恢复装备皮肤
+    if (selfSkin && NS.Gear && NS.Gear.specOfSkinId) return NS.Gear.specOfSkinId(selfSkin);
     return (NS.Gear && NS.Gear.playerSpec) ? NS.Gear.playerSpec() : PLAYER_SPEC;
   }
   /** 坐骑速度倍率 */
@@ -3944,6 +3952,7 @@ window.HNSF829 = window.HNSF829 || {};
     updateWeather(dt);
     updateProvoke(dt);
     updateNpcIdle(dt);
+    updateRemotes(dt);
     if (uiBlocked()) {
       keys = {};
       player.path = [];
@@ -4560,11 +4569,16 @@ window.HNSF829 = window.HNSF829 || {};
       id: '__player', node: null, x: player.x, y: player.y, spec: PLAYER_SPEC,
       phase: 0, isPlayer: true
     });
+    Object.keys(remotes).forEach(function (uid) {
+      var r = remotes[uid];
+      order.push({ id: '__r_' + uid, x: r.x, y: r.y, isRemote: true, remote: r });
+    });
     order.sort(function (a, b) { return a.y - b.y; });
 
     for (var i = 0; i < order.length; i++) {
       var e = order[i];
       if (e.isPlayer) drawPlayer(t);
+      else if (e.isRemote) drawRemote(e.remote, t);
       else drawNpc(e, t);
     }
 
@@ -4618,6 +4632,8 @@ window.HNSF829 = window.HNSF829 || {};
     vg.addColorStop(1, sc.vignette || 'rgba(6,10,20,0.42)');
     ctx.fillStyle = vg;
     ctx.fillRect(0, 0, view.w, view.h);
+
+    drawRemoteBubbles();          // 气泡放在最上层，别被天气/暗角压暗
   }
 
   function drawShadow(x, y, s) {
@@ -5005,6 +5021,147 @@ window.HNSF829 = window.HNSF829 || {};
     ctx.fillRect(x - 1, y + 1, 2, 4);
   }
 
+  /* ---------------- 联机：远端玩家的收/插值/绘制 ---------------- */
+  function setRemotes(list) {
+    var now = Date.now();
+    var seen = {};
+    (list || []).forEach(function (r) {
+      if (!r || !r.uid) return;
+      seen[r.uid] = 1;
+      var cur = remotes[r.uid];
+      if (!cur) {
+        cur = remotes[r.uid] = {
+          uid: r.uid, x: r.x, y: r.y, tx: r.x, ty: r.y,
+          dir: r.dir || 'down', moving: !!r.moving, walk: 0,
+          name: r.name || '好友', skin: r.skin || 'starter', mount: r.mount || '',
+          bubble: '', bubbleAt: 0, ts: now
+        };
+      } else {
+        cur.tx = r.x; cur.ty = r.y;
+        cur.dir = r.dir || cur.dir;
+        cur.moving = !!r.moving;
+      }
+      if (r.name) cur.name = r.name;
+      if (r.skin) cur.skin = r.skin;
+      cur.mount = r.mount || '';
+      cur.ts = now;
+      if (r.bubble && r.bubble !== cur.bubble) {
+        cur.bubble = r.bubble;
+        cur.bubbleAt = r.bubbleAt || now;
+      }
+    });
+    // mp.js 每次给的都是完整名单：没出现的立刻撤掉，不等超时
+    Object.keys(remotes).forEach(function (uid) {
+      if (!seen[uid]) delete remotes[uid];
+    });
+  }
+
+  function clearRemotes() { remotes = {}; }
+
+  function updateRemotes(dt) {
+    Object.keys(remotes).forEach(function (uid) {
+      var r = remotes[uid];
+      var dx = r.tx - r.x, dy = r.ty - r.y;
+      var k = Math.min(1, dt * 12);
+      r.x += dx * k;
+      r.y += dy * k;
+      var moving = Math.abs(dx) > 0.6 || Math.abs(dy) > 0.6 || r.moving;
+      r.moving = moving;
+      if (moving) r.walk += dt * 9;
+    });
+  }
+
+  function drawRemote(r, t) {
+    var sx = Math.round(r.x - cam.x), sy = Math.round(r.y - cam.y);
+    if (sx < -120 || sx > vw() + 120 || sy < -180 || sy > vh() + 150) return;
+    var G = NS.Gear;
+    var spec = (G && G.specOfSkinId) ? G.specOfSkinId(r.skin) : PLAYER_SPEC;
+    var mt = (G && G.mountById) ? G.mountById(r.mount) : null;
+    if (mt && mt.id === 'moto') spec = Object.assign({}, spec, { sit: true, key: spec.key + '-sit' });
+    var set = getSprites(spec);
+    var hpz = hairPad(spec);
+    var trailH = 52 + 2 * hpz;
+    var rdy = (G && G.riderDyOf) ? G.riderDyOf(r.mount) : 0;
+
+    drawShadow(sx, sy + 1);
+    if (G && G.drawMountFor) G.drawMountFor(ctx, sx, sy, t, r.moving, mt, r.dir);
+    var frame = r.moving ? Math.floor(r.walk) % 4 : 0;
+    var bob = r.moving ? Math.sin(t * 12) * 0.8 : Math.sin(t * 2) * 0.6;
+    blitSprite(set[r.dir][frame], sx - 20, sy - 50 - 2 * hpz + bob + rdy, 40, trailH);
+    if (mt && G.drawMountFrontFor) G.drawMountFrontFor(ctx, sx, sy, t, r.moving, mt, r.dir);
+
+    // 名字牌（比 NPC 的更小、更淡，避免抢主线人物的视觉）
+    var ty = sy - 62 - 2 * hpz + rdy;
+    ctx.save();
+    ctx.font = 'bold 11px "Microsoft YaHei", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    var tw = ctx.measureText(r.name).width + 14;
+    ctx.fillStyle = 'rgba(6,12,24,0.72)';
+    roundRect(sx - tw / 2, ty - 11, tw, 16, 5); ctx.fill();
+    ctx.fillStyle = '#bae6fd';
+    ctx.fillText(r.name, sx, ty - 2);
+    ctx.restore();
+  }
+
+  /** 聊天气泡固定在屏幕层绘制，不随地图缩放变形 */
+  function drawRemoteBubbles() {
+    var now = Date.now();
+    Object.keys(remotes).forEach(function (uid) {
+      var r = remotes[uid];
+      if (!r.bubble || now - r.bubbleAt > 4500) return;
+      var sx = (r.x - cam.x) * cam.z, sy = (r.y - cam.y) * cam.z;
+      if (sx < 30 || sx > view.w - 30 || sy < 40 || sy > view.h - 10) return;
+      var alpha = Math.min(1, (4500 - (now - r.bubbleAt)) / 500);
+      var text = r.bubble.length > 26 ? r.bubble.slice(0, 26) + '…' : r.bubble;
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      ctx.font = 'bold 12px "Microsoft YaHei", sans-serif';
+      ctx.textBaseline = 'middle';
+      var tw = Math.min(260, ctx.measureText(text).width);
+      var bw = tw + 20, bh = 28;
+      var bx = Math.max(6, Math.min(view.w - bw - 6, sx - bw / 2));
+      var by = Math.max(6, sy - 104);
+      ctx.fillStyle = 'rgba(8,14,28,0.92)';
+      roundRect(bx, by, bw, bh, 9); ctx.fill();
+      ctx.strokeStyle = 'rgba(125,211,252,0.55)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      ctx.fillStyle = 'rgba(8,14,28,0.92)';
+      ctx.beginPath();
+      ctx.moveTo(Math.max(bx + 10, sx - 5), by + bh);
+      ctx.lineTo(Math.max(bx + 10, sx), by + bh + 6);
+      ctx.lineTo(Math.max(bx + 10, sx + 5), by + bh);
+      ctx.closePath(); ctx.fill();
+      ctx.fillStyle = '#e8f1ff';
+      ctx.fillText(text, bx + 10, by + bh / 2);
+      ctx.restore();
+    });
+  }
+
+  /** 金箍棒：缩小后跟在玩家侧后方漂浮（按 H 才展开总览） */
+  function drawStaffCompanion(sx, sy, t) {
+    var side = player.dir === 'left' ? -1 : 1;
+    var bob = Math.sin(t * 2.4) * 3;
+    var x = sx + side * 22, y = sy - 26 + bob;
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(side * (0.2 + Math.sin(t * 1.8) * 0.06));
+    var g = ctx.createRadialGradient(0, 0, 2, 0, 0, 20);
+    g.addColorStop(0, 'rgba(251,191,36,0.32)');
+    g.addColorStop(1, 'rgba(251,191,36,0)');
+    ctx.fillStyle = g;
+    ctx.beginPath(); ctx.arc(0, 0, 20, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#b45309'; ctx.fillRect(-3, -20, 6, 40);
+    ctx.fillStyle = '#fbbf24'; ctx.fillRect(-2, -19, 4, 38);
+    ctx.fillStyle = '#fde68a'; ctx.fillRect(-1, -18, 1, 36);
+    ctx.fillStyle = '#dc2626'; ctx.fillRect(-4, -23, 8, 5); ctx.fillRect(-4, 18, 8, 5);
+    ctx.fillStyle = '#fca5a5'; ctx.fillRect(-3, -22, 6, 1); ctx.fillRect(-3, 19, 6, 1);
+    ctx.restore();
+    ctx.fillStyle = 'rgba(253,230,138,' + (0.45 + 0.3 * Math.sin(t * 4)).toFixed(2) + ')';
+    ctx.fillRect(Math.round(x + side * 10), Math.round(y - 26 + Math.sin(t * 3) * 3), 2, 2);
+  }
+
   function drawPlayer(t) {
     var sx = Math.round(player.x - cam.x);
     var sy = Math.round(player.y - cam.y);
@@ -5030,6 +5187,7 @@ window.HNSF829 = window.HNSF829 || {};
     }
 
     drawShadow(sx, sy + 1);
+    drawStaffCompanion(sx, sy, t);
 
     // 骑乘姿势：摩托要坐进座位、大猿要踩在肩膀上，角色整体抬高
     var rdy = (NS.Gear && NS.Gear.riderDy) ? NS.Gear.riderDy() : 0;
@@ -5052,6 +5210,19 @@ window.HNSF829 = window.HNSF829 || {};
     ctx.lineTo(sx + 4, sy - 67 - 2 * hpz + bob + rdy);
     ctx.closePath();
     ctx.fill();
+
+    // 自己的名字牌（联机昵称；没建角色时显示「你」）
+    var ny = sy - 75 - 2 * hpz + bob + rdy;
+    ctx.save();
+    ctx.font = 'bold 11px "Microsoft YaHei", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    var nw = ctx.measureText(selfName).width + 14;
+    ctx.fillStyle = 'rgba(6,12,24,0.72)';
+    roundRect(sx - nw / 2, ny - 11, nw, 16, 5); ctx.fill();
+    ctx.fillStyle = '#fde68a';
+    ctx.fillText(selfName, sx, ny - 2);
+    ctx.restore();
   }
 
   /* ============================================================
@@ -5231,6 +5402,28 @@ window.HNSF829 = window.HNSF829 || {};
     /** 背包 / 装备面板的试穿预览：拿到与地图完全一致的像素小人 */
     previewSprite: function (spec, dir) { return getSprites(spec)[dir || 'down'][0]; },
     /** 炸毛发型在精灵顶部额外占的高度，外部预览画布要按这个留白 */
-    hairPad: hairPad
+    hairPad: hairPad,
+    /** 某个考点守关人的像素小人规格（金箍棒头像用） */
+    nodeSpec: function (nodeId) {
+      var n = BY_ID[nodeId];
+      return n ? specFor(n) : null;
+    },
+    /* ---- 联机：远端玩家 ---- */
+    setRemotes: setRemotes,
+    clearRemotes: clearRemotes,
+    setSelfSkin: function (id) { selfSkin = id || ''; },
+    setSelfName: function (name) {
+      selfName = String(name || '').trim().slice(0, 8) || '你';
+    },
+    playerState: function () {
+      return { x: player.x, y: player.y, dir: player.dir, moving: player.moving };
+    },
+    remoteCount: function () { return Object.keys(remotes).length; },
+    remoteInfo: function () {
+      return Object.keys(remotes).map(function (uid) {
+        var r = remotes[uid];
+        return { uid: uid, name: r.name, x: Math.round(r.x), y: Math.round(r.y), bubble: r.bubble };
+      });
+    }
   };
 })(window.HNSF829);
