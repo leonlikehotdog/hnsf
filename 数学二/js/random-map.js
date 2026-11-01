@@ -1,24 +1,20 @@
 (function () {
   'use strict';
 
-  var STORAGE_KEY = 'hnsf.math2.randomMap.v2';
-  var WORLD_W = 5;
-  var WORLD_H = 6;
+  var STORAGE_KEY = 'hnsf.math2.randomMap.v3';
+  var GRID_COLS = 5;
+  var GRID_ROWS = 4;
 
   var tileKinds = [
-    { key: 'quest', label: '题', color: '#38bdf8', icon: '❔' },
-    { key: 'treasure', label: '宝', color: '#fbbf24', icon: '💎' },
-    { key: 'trap', label: '险', color: '#f87171', icon: '⚠️' },
-    { key: 'shop', label: '店', color: '#a78bfa', icon: '🛒' },
-    { key: 'boss', label: 'Boss', color: '#fb923c', icon: '👹' }
+    { key: 'quest', label: '题', color: '#38bdf8', icon: '❔', glow: '#7dd3fc' },
+    { key: 'treasure', label: '宝', color: '#fbbf24', icon: '💎', glow: '#fcd34d' },
+    { key: 'trap', label: '险', color: '#f87171', icon: '⚠️', glow: '#fca5a5' },
+    { key: 'shop', label: '店', color: '#a78bfa', icon: '🛒', glow: '#c4b5fd' },
+    { key: 'boss', label: 'Boss', color: '#fb923c', icon: '👹', glow: '#fdba74' }
   ];
 
   function safeParse(raw, fallback) {
-    try {
-      return raw ? JSON.parse(raw) : fallback;
-    } catch (e) {
-      return fallback;
-    }
+    try { return raw ? JSON.parse(raw) : fallback; } catch (e) { return fallback; }
   }
 
   function getState() {
@@ -31,9 +27,7 @@
   }
 
   function saveState(next) {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-    } catch (e) {}
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(next)); } catch (e) {}
   }
 
   function randomInt(min, max) {
@@ -45,19 +39,19 @@
   }
 
   function shuffle(arr) {
-    var a = arr.slice();
-    for (var i = a.length - 1; i > 0; i--) {
+    var copy = arr.slice();
+    for (var i = copy.length - 1; i > 0; i--) {
       var j = Math.floor(Math.random() * (i + 1));
-      var temp = a[i];
-      a[i] = a[j];
-      a[j] = temp;
+      var temp = copy[i];
+      copy[i] = copy[j];
+      copy[j] = temp;
     }
-    return a;
+    return copy;
   }
 
   function buildQuestion() {
-    var type = randomInt(0, 3);
-    if (type === 0) {
+    var mode = randomInt(0, 3);
+    if (mode === 0) {
       var a = randomInt(2, 18);
       var b = randomInt(2, 18);
       var answer = a + b;
@@ -67,88 +61,89 @@
         choices: shuffle([answer, answer + 1, answer - 2, answer + 3])
       };
     }
-    if (type === 1) {
+    if (mode === 1) {
       var x = randomInt(3, 25);
       var y = randomInt(2, 12);
-      var prod = x * y;
+      var answer = x * y;
       return {
         label: '乘法挑战',
         text: x + ' × ' + y + ' = ?',
-        choices: shuffle([prod, prod + 4, prod - 3, prod + 9])
+        choices: shuffle([answer, answer + 4, answer - 3, answer + 9])
       };
     }
-    if (type === 2) {
+    if (mode === 2) {
       var c = randomInt(6, 40);
       var d = randomInt(2, 8);
-      var q = Math.floor(c / d);
+      var answer = Math.floor(c / d);
       return {
         label: '除法挑战',
         text: c + ' ÷ ' + d + ' = ?',
-        choices: shuffle([q, q + 2, q - 1, q + 5])
+        choices: shuffle([answer, answer + 2, answer - 1, answer + 5])
       };
     }
     var m = randomInt(4, 40);
     var n = randomInt(2, 12);
-    var diff = m - n;
+    var answer = m - n;
     return {
       label: '减法挑战',
       text: m + ' - ' + n + ' = ?',
-      choices: shuffle([diff, diff + 2, diff - 3, diff + 6])
+      choices: shuffle([answer, answer + 2, answer - 3, answer + 6])
     };
   }
 
   function calcAnswerByText(text) {
-    var add = text.match(/(\d+) \+ (\d+)/);
-    if (add) return Number(add[1]) + Number(add[2]);
-    var sub = text.match(/(\d+) - (\d+)/);
-    if (sub) return Number(sub[1]) - Number(sub[2]);
-    var mul = text.match(/(\d+) × (\d+)/);
-    if (mul) return Number(mul[1]) * Number(mul[2]);
-    var div = text.match(/(\d+) ÷ (\d+)/);
-    if (div) return Math.floor(Number(div[1]) / Number(div[2]));
+    var matches = text.match(/(\d+) \+ (\d+)/);
+    if (matches) return Number(matches[1]) + Number(matches[2]);
+    matches = text.match(/(\d+) - (\d+)/);
+    if (matches) return Number(matches[1]) - Number(matches[2]);
+    matches = text.match(/(\d+) × (\d+)/);
+    if (matches) return Number(matches[1]) * Number(matches[2]);
+    matches = text.match(/(\d+) ÷ (\d+)/);
+    if (matches) return Math.floor(Number(matches[1]) / Number(matches[2]));
     return 0;
   }
 
   function formatMapName() {
-    var names = ['晨风迷路', '数理森林', '云顶渡口', '极限荒地', '星河试炼', '记忆村'];
-    return pick(names);
+    var list = ['晨风迷路', '云顶渡口', '数理森林', '星河试炼', '极限荒地', '记忆村'];
+    return pick(list);
   }
 
-  function generateGrid() {
+  function generateCells() {
     var cells = [];
-    var sx = 0;
-    var sy = 0;
-    var path = [];
-    for (var i = 0; i < 8; i++) {
+    for (var i = 0; i < GRID_COLS * GRID_ROWS; i++) {
+      var row = Math.floor(i / GRID_COLS);
+      var col = i % GRID_COLS;
       var kind = pick(tileKinds);
-      var cell = {
+      cells.push({
         id: i,
-        x: sx,
-        y: sy,
+        x: col,
+        y: row,
         kind: kind.key,
         label: kind.label,
         icon: kind.icon,
         color: kind.color,
-        reward: randomInt(10, 35),
-        danger: i === 7 ? 2 : randomInt(0, 2)
-      };
-      path.push(cell);
-      if (i < 7) {
-        sx += 1;
-        if (sx >= WORLD_W) {
-          sx = 0;
-          sy += 1;
-        }
-      }
+        glow: kind.glow,
+        reward: randomInt(8, 32),
+        danger: i === GRID_COLS * GRID_ROWS - 1 ? 2 : randomInt(0, 2)
+      });
     }
-    return path;
+    // 强制起点与终点位置
+    cells[0].kind = 'quest';
+    cells[0].label = '起';
+    cells[0].icon = '🚩';
+    cells[0].color = '#34d399';
+    cells[cells.length - 1].kind = 'boss';
+    cells[cells.length - 1].label = '终';
+    cells[cells.length - 1].icon = '🏁';
+    cells[cells.length - 1].color = '#fb923c';
+    return cells;
   }
 
   function generateRoute() {
     return {
       id: Date.now(),
       mapName: formatMapName(),
-      cells: generateGrid(),
+      cells: generateCells(),
       index: 0,
       hp: 3,
       score: 0,
@@ -156,7 +151,7 @@
       started: false,
       finished: false,
       currentQuestion: null,
-      note: '向终点前进，答对题目可推进并获奖励。'
+      note: '前往终点，答对题获得奖励，答错会失去生命值。'
     };
   }
 
@@ -168,7 +163,7 @@
     button.id = 'btnRandomMap';
     button.type = 'button';
     button.className = 'btn btn-ghost';
-    button.title = '随机地图挑战：像素地图 + 题目冒险';
+    button.title = '随机地图挑战：像素冒险地图';
     button.innerHTML = '🗺️<span class="lbl-long"> 随机地图</span><span class="lbl-short"> 地图</span>';
     var panelBtn = document.getElementById('btnPanel');
     if (panelBtn) {
@@ -187,26 +182,27 @@
     mask.style.inset = '0';
     mask.style.zIndex = '60';
     mask.style.display = 'none';
-    mask.style.background = 'rgba(15,23,42,0.78)';
+    mask.style.background = 'rgba(15, 23, 42, 0.8)';
     mask.style.alignItems = 'center';
     mask.style.justifyContent = 'center';
     mask.innerHTML = [
-      '<div style="width:min(960px,92vw);position:relative;background:linear-gradient(180deg,#0f172a,#1e293b 48%,#111827);border:1px solid rgba(148,163,184,0.35);border-radius:22px;box-shadow:0 28px 80px rgba(0,0,0,0.45);padding:22px;color:#e5eefc;">',
-      '  <button id="randomMapClose" type="button" style="position:absolute;right:18px;top:16px;border:none;background:rgba(148,163,184,0.14);color:#e5eefc;border-radius:10px;padding:8px 12px;cursor:pointer;">✕</button>',
-      '  <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:18px;">',
+      '<div style="position:relative;width:min(980px,94vw);background:linear-gradient(180deg,#0f172a,#1e293b 52%,#111827);border:1px solid rgba(148,163,184,0.35);border-radius:24px;box-shadow:0 32px 90px rgba(0,0,0,0.5);padding:22px;color:#e5eefc;">',
+      '  <button id="randomMapClose" type="button" style="position:absolute;right:18px;top:16px;border:none;background:rgba(148,163,184,0.12);border-radius:10px;color:#e5eefc;padding:8px 12px;cursor:pointer;">✕</button>',
+      '  <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:16px;">',
       '    <div>',
       '      <div style="font-size:11px;letter-spacing:2px;color:#7dd3fc;text-transform:uppercase;">pixel adventure</div>',
-      '      <h2 style="margin:5px 0 0;font-size:30px;">随机地图挑战</h2>',
+      '      <h2 style="margin:6px 0 0;font-size:30px;">随机地图挑战</h2>',
       '    </div>',
       '    <div style="display:flex;gap:8px;flex-wrap:wrap;">',
       '      <button id="randomMapGenerateBtn" type="button" style="border:none;border-radius:12px;background:linear-gradient(135deg,#38bdf8,#8b5cf6);padding:10px 16px;color:#fff;font-weight:800;cursor:pointer;">新地图</button>',
       '      <button id="randomMapStartBtn" type="button" style="border:none;border-radius:12px;background:#1f2937;border:1px solid rgba(148,163,184,0.35);padding:10px 16px;color:#e5eefc;font-weight:700;cursor:pointer;">开始冒险</button>',
       '    </div>',
       '  </div>',
-      '  <div id="randomMapMeta" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px;"></div>',
-      '  <div id="randomMapBoard" style="display:grid;grid-template-columns:repeat(5,minmax(84px,1fr));gap:12px;padding:12px;border-radius:18px;background:rgba(15,23,42,0.58);border:1px solid rgba(148,163,184,0.2);min-height:260px;"></div>',
-      '  <div id="randomMapQuestion" style="display:none;margin-top:20px;padding:18px;border-radius:16px;background:rgba(15,23,42,0.68);border:1px solid rgba(148,163,184,0.25);"></div>',
-      '  <div style="display:flex;justify-content:flex-end;gap:12px;margin-top:16px;">',
+      '  <div id="randomMapLegend" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;"></div>',
+      '  <div id="randomMapMeta" style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:18px;"></div>',
+      '  <div id="randomMapBoard" style="display:grid;grid-template-columns:repeat(5,minmax(84px,1fr));gap:12px;padding:12px;border-radius:18px;background:rgba(15,23,42,0.6);border:1px solid rgba(148,163,184,0.2);min-height:280px;"></div>',
+      '  <div id="randomMapQuestion" style="display:none;margin-top:18px;padding:18px;border-radius:16px;background:rgba(15,23,42,0.7);border:1px solid rgba(148,163,184,0.25);"></div>',
+      '  <div style="display:flex;justify-content:flex-end;margin-top:16px;">',
       '    <button id="randomMapNextBtn" type="button" style="display:none;border:none;border-radius:12px;background:linear-gradient(135deg,#fbbf24,#f97316);padding:10px 16px;color:#1f2937;font-weight:800;cursor:pointer;">下一步</button>',
       '  </div>',
       '</div>'
@@ -230,9 +226,7 @@
 
     startBtn.addEventListener('click', function () {
       var state = getState();
-      if (!state.current) {
-        state.current = generateRoute();
-      }
+      if (!state.current) state.current = generateRoute();
       state.current.started = true;
       state.current.finished = false;
       state.current.index = 0;
@@ -253,8 +247,8 @@
         return;
       }
       route.index += 1;
-      route.score += 10;
       route.rewardTotal += route.cells[route.index - 1].reward || 0;
+      route.score += 10;
       saveState(state);
       renderMapUi();
       renderQuestion();
@@ -264,25 +258,29 @@
   function openMask() {
     ensureMask();
     var mask = document.getElementById('randomMapMask');
-    if (mask) {
-      mask.style.display = 'flex';
-    }
+    if (mask) mask.style.display = 'flex';
     renderMapUi();
+  }
+
+  function renderLegend() {
+    var legend = document.getElementById('randomMapLegend');
+    if (!legend) return;
+    legend.innerHTML = tileKinds.map(function (kind) {
+      return '<span style="display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:rgba(148,163,184,0.08);border:1px solid rgba(148,163,184,0.25);color:#e5eefc;font-size:12px;">' + kind.icon + ' ' + kind.label + '</span>';
+    }).join('');
   }
 
   function renderMeta(state) {
     var meta = document.getElementById('randomMapMeta');
     if (!meta) return;
-    var best = state.best || 0;
-    var total = state.total || 0;
     var route = state.current || generateRoute();
-    var hp = route.hp || 3;
-    var score = route.score || 0;
+    var total = state.total || 0;
+    var best = state.best || 0;
     meta.innerHTML = [
-      '<span style="padding:6px 10px;border-radius:999px;background:rgba(56,189,248,.15);color:#7dd3fc;border:1px solid rgba(125,211,252,.3);">挑战 ' + total + '</span>',
+      '<span style="padding:6px 10px;border-radius:999px;background:rgba(56,189,248,.15);color:#7dd3fc;border:1px solid rgba(125,211,252,.3);">总挑战 ' + total + '</span>',
       '<span style="padding:6px 10px;border-radius:999px;background:rgba(251,191,36,.15);color:#fbbf24;border:1px solid rgba(251,191,36,.3);">最高分 ' + best + '</span>',
-      '<span style="padding:6px 10px;border-radius:999px;background:rgba(52,211,153,.15);color:#6ee7b7;border:1px solid rgba(52,211,153,.3);">HP ' + hp + '</span>',
-      '<span style="padding:6px 10px;border-radius:999px;background:rgba(168,85,247,.15);color:#c4b5fd;border:1px solid rgba(168,85,247,.3);">分数 ' + score + '</span>'
+      '<span style="padding:6px 10px;border-radius:999px;background:rgba(52,211,153,.15);color:#6ee7b7;border:1px solid rgba(52,211,153,.3);">HP ' + (route.hp || 3) + '</span>',
+      '<span style="padding:6px 10px;border-radius:999px;background:rgba(168,85,247,.15);color:#c4b5fd;border:1px solid rgba(168,85,247,.3);">分数 ' + (route.score || 0) + '</span>'
     ].join('');
   }
 
@@ -290,20 +288,36 @@
     var board = document.getElementById('randomMapBoard');
     if (!board) return;
     var route = state.current || generateRoute();
-    var playerIndex = route.started ? route.index : 0;
+    var playerPos = route.started ? route.index : 0;
     board.innerHTML = route.cells.map(function (cell, idx) {
-      var active = idx === playerIndex;
-      var done = idx < playerIndex && route.started;
-      var glow = active ? 'box-shadow:0 0 0 3px rgba(255,255,255,0.9), 0 0 24px rgba(59,130,246,0.75)' : '';
-      var border = done ? 'border:2px solid rgba(134,239,172,0.7)' : 'border:2px solid rgba(148,163,184,0.2)';
-      var tileStyle = 'display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:92px;border-radius:16px;background:' + cell.color + ';color:#0f172a;font-weight:900;' + border + ';' + glow + ';position:relative;';
+      var isPlayer = idx === playerPos && route.started && !route.finished;
+      var isDone = idx < playerPos && route.started;
+      var showPlayer = isPlayer ? '<div style="position:absolute;right:6px;top:6px;width:18px;height:18px;border-radius:6px;background:#0f172a;color:#fff;border:1px solid rgba(255,255,255,.45);display:flex;align-items:center;justify-content:center;font-size:10px;">你</div>' : '';
+      var shadow = isPlayer ? 'box-shadow:0 0 0 3px rgba(255,255,255,.9),0 0 20px rgba(59,130,246,.7)' : '';
+      var border = isDone ? 'border:2px solid rgba(134,239,172,.8)' : 'border:2px solid rgba(148,163,184,.22)';
+      var tileStyle = [
+        'position:relative',
+        'display:flex',
+        'flex-direction:column',
+        'align-items:center',
+        'justify-content:center',
+        'min-height:88px',
+        'border-radius:16px',
+        'background:' + cell.color,
+        'color:#0f172a',
+        'font-weight:900',
+        border,
+        'box-sizing:border-box',
+        shadow,
+        'padding:8px 4px'
+      ].join(';');
+
       var mark = idx === 0 ? '起' : idx === route.cells.length - 1 ? '终' : '·';
-      var player = idx === playerIndex && route.started ? '<div style="position:absolute;right:6px;top:6px;width:18px;height:18px;border-radius:6px;background:#0f172a;color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;">你</div>' : '';
-      return '<div style="' + tileStyle + '">' + player +
-        '<div style="font-size:12px;opacity:0.8;">' + mark + '</div>' +
-        '<div style="font-size:20px;">' + cell.icon + '</div>' +
-        '<div style="font-size:12px;">' + cell.label + '</div>' +
-        '<div style="font-size:10px;opacity:0.85;">+' + cell.reward + '</div>' +
+      return '<div style="' + tileStyle + '">' + showPlayer +
+        '<div style="font-size:10px;opacity:.8;">' + mark + '</div>' +
+        '<div style="font-size:22px;line-height:1;">' + cell.icon + '</div>' +
+        '<div style="font-size:11px;">' + cell.label + '</div>' +
+        '<div style="font-size:10px;opacity:.8;">+' + cell.reward + '</div>' +
       '</div>';
     }).join('');
   }
@@ -314,6 +328,7 @@
       state.current = generateRoute();
       saveState(state);
     }
+    renderLegend();
     renderMeta(state);
     renderBoard(state);
 
@@ -342,15 +357,15 @@
     saveState(state);
 
     questionBox.innerHTML = [
-      '<div style="display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:12px;">',
-      '  <div style="font-size:12px;letter-spacing:2px;color:#c4b5fd;">' + route.mapName + ' · ' + cell.label + '</div>',
-      '  <div style="font-size:12px;color:#fbbf24;">当前格子：' + cell.icon + ' ' + cell.kind + '</div>',
+      '<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px;">',
+      '  <div style="font-size:12px;letter-spacing:2px;color:#c4b5fd;">' + route.mapName + ' · 当前格子：' + cell.label + '</div>',
+      '  <div style="font-size:12px;color:#fbbf24;">' + cell.icon + ' ' + cell.kind + '</div>',
       '</div>',
-      '<div style="font-size:30px;font-weight:900;margin-bottom:12px;">' + q.label + '</div>',
-      '<div style="font-size:38px;font-weight:900;margin-bottom:18px;">' + q.text + '</div>',
-      '<div style="display:grid;grid-template-columns:repeat(2,minmax(160px,1fr));gap:12px;">',
+      '<div style="font-size:28px;font-weight:900;margin-bottom:10px;">' + q.label + '</div>',
+      '<div style="font-size:42px;font-weight:900;margin-bottom:18px;">' + q.text + '</div>',
+      '<div style="display:grid;grid-template-columns:repeat(2,minmax(170px,1fr));gap:12px;">',
       q.choices.map(function (choice) {
-        return '<button type="button" class="random-choice-btn" style="padding:12px 10px;border-radius:12px;border:1px solid rgba(148,163,184,0.35);background:rgba(15,23,42,0.9);color:#e5eefc;font-size:20px;font-weight:700;cursor:pointer;">' + choice + '</button>';
+        return '<button type="button" class="random-choice-btn" style="padding:12px 10px;border-radius:12px;border:1px solid rgba(148,163,184,0.35);background:rgba(15,23,42,0.92);color:#e5eefc;font-size:20px;font-weight:800;cursor:pointer;">' + choice + '</button>';
       }).join(''),
       '</div>'
     ].join('');
@@ -370,30 +385,32 @@
           route2.score += 25;
           route2.rewardTotal += cell2.reward;
           route2.index += 1;
+          route2.note = '答对了，继续前进。';
+
           if (route2.index >= route2.cells.length) {
             finishRoute();
             return;
           }
-          route2.note = '答对了，继续前进，进入下一格。';
+
           saveState(state2);
           renderMapUi();
           renderQuestion();
         } else {
-          route2.hp -= 1;
-          route2.note = '答案错误，生命值 -1，先来一次重试。';
+          route2.hp = Math.max(0, (route2.hp || 1) - 1);
+          route2.note = '答案错误，HP -1。';
           saveState(state2);
           renderMapUi();
+
           if (route2.hp <= 0) {
-            route2.finished = true;
             route2.started = false;
+            route2.finished = true;
             state2.total = (state2.total || 0) + 1;
             saveState(state2);
             questionBox.innerHTML = '<div style="font-size:24px;font-weight:800;color:#fca5a5;">冒险失败，地图已重置。</div>';
-            if (nextBtn) nextBtn.style.display = 'none';
             renderMapUi();
           } else {
             btn.style.borderColor = '#f87171';
-            btn.style.boxShadow = '0 0 0 2px rgba(248,113,113,0.7)';
+            btn.style.boxShadow = '0 0 0 2px rgba(248,113,113,0.8)';
             setTimeout(function () {
               btn.style.borderColor = 'rgba(148,163,184,0.35)';
               btn.style.boxShadow = 'none';
@@ -408,8 +425,9 @@
     var state = getState();
     var route = state.current;
     if (!route) return;
-    route.finished = true;
+
     route.started = false;
+    route.finished = true;
     route.note = '地图已通关，奖励已结算。';
     state.total = (state.total || 0) + 1;
     state.best = Math.max(state.best || 0, route.score || 0);
@@ -426,14 +444,13 @@
     if (questionBox) {
       questionBox.innerHTML = [
         '<div style="font-size:30px;font-weight:900;color:#86efac;">地图通关！</div>',
-        '<div style="margin-top:12px;font-size:20px;">' + route.mapName + ' · 获得 ' + (route.rewardTotal || 0) + ' 奖励 · 分数 ' + (route.score || 0) + '</div>'
+        '<div style="margin-top:12px;font-size:20px;">' + route.mapName + ' · 获得 ' + (route.rewardTotal || 0) + ' 奖励 · 总分 ' + (route.score || 0) + '</div>'
       ].join('');
       questionBox.style.display = 'block';
     }
 
     var nextBtn = document.getElementById('randomMapNextBtn');
     if (nextBtn) nextBtn.style.display = 'none';
-
     renderMapUi();
   }
 
@@ -441,9 +458,7 @@
     ensureUi();
     var button = document.getElementById('btnRandomMap');
     if (button) {
-      button.addEventListener('click', function () {
-        openMask();
-      });
+      button.addEventListener('click', function () { openMask(); });
     }
   });
 })();
